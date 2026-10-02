@@ -1,11 +1,51 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const tools = [
+  {
+    name: 'Word Counter',
+    description: 'Count words, characters, and estimate reading time instantly.',
+    href: '/tools/word-counter',
+    icon: '📝',
+  },
+  {
+    name: 'QR Code Generator',
+    description: 'Create custom QR codes with your logo, free and fast.',
+    href: '/tools/qr-generator',
+    icon: '🔳',
+  },
+  {
+    name: 'JSON Formatter',
+    description: 'Format, validate, and beautify JSON data online.',
+    href: '/tools/json-formatter',
+    icon: '{}',
+  },
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+  title="ToolsSite — Free Online Tools for Everyone"
+  description="Free, fast, and privacy-friendly online tools. Word counter, QR code generator, JSON formatter, and more."
+>
+  <section class="text-center py-12">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">
+      Free Online Tools, <span class="text-blue-600">Made Simple</span>
+    </h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+      Fast, privacy-friendly tools that work right in your browser. No signup, no ads clutter.
+    </p>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+    {tools.map((tool) => (
+      <a
+        href={tool.href}
+        class="block p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+      >
+        <div class="text-3xl mb-3">{tool.icon}</div>
+        <h2 class="text-xl font-semibold mb-2">{tool.name}</h2>
+        <p class="text-gray-600 text-sm">{tool.description}</p>
+      </a>
+    ))}
+  </section>
 </Layout>

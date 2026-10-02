@@ -1,0 +1,188 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="QR Code Generator — Free Online QR Code Maker"
+  description="Generate free QR codes online. Enter any text or URL, customize size, and download as PNG. No signup required."
+>
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl md:text-4xl font-bold mb-3">QR Code Generator</h1>
+    <p class="text-gray-600 mb-6">
+      Enter any text or URL below and generate a QR code instantly. Download it as a PNG image.
+    </p>
+
+    <div class="bg-white p-6 rounded-lg border border-gray-200">
+      <label for="qr-input" class="block text-sm font-medium mb-2">Text or URL</label>
+      <input
+        id="qr-input"
+        type="text"
+        value="https://example.com"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Enter text or URL..."
+      />
+
+      <div class="grid grid-cols-2 gap-4 mt-4">
+        <div>
+          <label for="qr-size" class="block text-sm font-medium mb-2">Size (px)</label>
+          <select
+            id="qr-size"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="200">200 x 200</option>
+            <option value="300" selected>300 x 300</option>
+            <option value="400">400 x 400</option>
+            <option value="500">500 x 500</option>
+          </select>
+        </div>
+        <div>
+          <label for="qr-level" class="block text-sm font-medium mb-2">Error Correction</label>
+          <select
+            id="qr-level"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="L">Low (L)</option>
+            <option value="M" selected>Medium (M)</option>
+            <option value="Q">Quartile (Q)</option>
+            <option value="H">High (H)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-4">
+        <button
+          id="generate-btn"
+          class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+        >
+          Generate QR Code
+        </button>
+        <button
+          id="download-btn"
+          class="px-5 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 text-sm font-medium"
+          disabled
+        >
+          Download PNG
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-8 flex justify-center">
+      <div id="qr-output" class="bg-white p-4 rounded-lg border border-gray-200 hidden">
+        <img id="qr-image" alt="Generated QR Code" class="max-w-full" />
+      </div>
+    </div>
+  </div>
+
+    <section class="max-w-3xl mx-auto mt-16 prose prose-gray">
+    <h2 class="text-2xl font-bold mb-4">About This QR Code Generator</h2>
+    <p class="text-gray-700 mb-4">
+      This free online QR code generator lets you create QR codes for any text, URL, phone number,
+      or message. Customize the size and error correction level, then download your QR code as a
+      PNG image. No signup, no watermark, completely free.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
+    <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+      <li>Enter the text or URL you want to encode.</li>
+      <li>Choose the size (in pixels) and error correction level.</li>
+      <li>Click "Generate QR Code" to create your QR code.</li>
+      <li>Click "Download PNG" to save the image to your device.</li>
+    </ol>
+
+    <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+    <ul class="list-disc pl-6 text-gray-700 space-y-2">
+      <li>Generate QR codes for any text or URL</li>
+      <li>Customizable size (200px to 500px)</li>
+      <li>Four error correction levels (L, M, Q, H)</li>
+      <li>Download as high-quality PNG</li>
+      <li>100% free, no signup required, no watermark</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-6 mb-3">Frequently Asked Questions</h3>
+    <div class="space-y-4 mt-3">
+      <div>
+        <h4 class="font-semibold text-gray-900">What is error correction level?</h4>
+        <p class="text-gray-700">
+          Error correction level determines how much damage a QR code can sustain and still be
+          readable. Higher levels (H) make the QR code more robust but denser.
+        </p>
+      </div>
+      <div>
+        <h4 class="font-semibold text-gray-900">Do QR codes expire?</h4>
+        <p class="text-gray-700">
+          No, QR codes generated here are static and never expire. They encode your text directly.
+        </p>
+      </div>
+      <div>
+        <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
+        <p class="text-gray-700">
+          Yes, completely free with no limits, no signup, and no watermark.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import QRCode from 'qrcode';
+
+    const input = document.getElementById('qr-input') as HTMLInputElement;
+    const sizeSelect = document.getElementById('qr-size') as HTMLSelectElement;
+    const levelSelect = document.getElementById('qr-level') as HTMLSelectElement;
+    const generateBtn = document.getElementById('generate-btn')!;
+    const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
+    const output = document.getElementById('qr-output')!;
+    const qrImage = document.getElementById('qr-image') as HTMLImageElement;
+
+    async function generateQR() {
+      const text = input.value.trim();
+      if (!text) {
+        alert('Please enter some text or URL.');
+        return;
+      }
+
+      const size = parseInt(sizeSelect.value);
+      const level = levelSelect.value as 'L' | 'M' | 'Q' | 'H';
+
+      try {
+        const dataUrl = await QRCode.toDataURL(text, {
+          width: size,
+          margin: 2,
+          errorCorrectionLevel: level,
+        });
+        qrImage.src = dataUrl;
+        output.classList.remove('hidden');
+        downloadBtn.disabled = false;
+      } catch (err) {
+        alert('Failed to generate QR code. Please try again.');
+      }
+    }
+
+    generateBtn.addEventListener('click', generateQR);
+
+    downloadBtn.addEventListener('click', () => {
+      if (!qrImage.src) return;
+      const link = document.createElement('a');
+      link.href = qrImage.src;
+      link.download = 'qrcode.png';
+      link.click();
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') generateQR();
+    });
+  </script>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "QR Code Generator",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "description": "Free online QR code generator. Create custom QR codes for any text or URL and download as PNG.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+</Layout>

@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="JSON Explained: A Beginner's Guide (2026)"
+  description="Learn what JSON is, why developers use it, and how to format JSON online for free."
+>
+  <article class="max-w-3xl mx-auto">
+    <header class="mb-8">
+      <p class="text-sm text-gray-500 mb-2">Published: October 2, 2026</p>
+      <h1 class="text-3xl md:text-4xl font-bold mb-3">
+        JSON Explained: A Beginner's Guide
+      </h1>
+      <p class="text-lg text-gray-600">
+        JSON is everywhere in modern web development. Here's what it is and why it matters.
+      </p>
+    </header>
+
+    <section class="space-y-6 text-gray-700 leading-relaxed">
+      <p>
+        JSON stands for <strong>JavaScript Object Notation</strong>. It's a lightweight
+        format for storing and exchanging data. Despite the name, it's not tied to
+        JavaScript — almost every programming language can read and write JSON.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-3">What Does JSON Look Like?</h2>
+      <p>Here's a simple example:</p>
+      <pre class="bg-gray-100 p-4 rounded-lg text-sm overflow-x-auto"><code>{`{
+  "name": "Ali",
+  "age": 25,
+  "city": "Karachi",
+  "skills": ["HTML", "CSS", "JavaScript"]
+}`}</code></pre>
+      <p>
+        JSON uses key-value pairs inside curly braces. Values can be text, numbers,
+        true/false, arrays, or nested objects.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-3">Why Developers Use JSON</h2>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Easy to read and write</li>
+        <li>Small in size — fast to transfer over the internet</li>
+        <li>Supported by every major programming language</li>
+        <li>Perfect for APIs and web services</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-3">Common JSON Mistakes</h2>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Using single quotes instead of double quotes</li>
+        <li>Trailing commas after the last item</li>
+        <li>Forgetting to escape special characters</li>
+        <li>Using undefined instead of null</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-3">How to Format JSON Online</h2>
+      <p>
+        When JSON is minified (all in one line), it's hard to read. Our{' '}
+        <a href="/tools/json-formatter" class="text-blue-600 hover:underline font-medium">
+          free JSON Formatter
+        </a>{' '}
+        beautifies it with proper indentation and also validates it — catching any errors
+        before you use it.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-3">Final Thoughts</h2>
+      <p>
+        JSON is a fundamental tool for anyone working with modern web applications. Whether
+        you're building an API, debugging data, or just learning to code, understanding
+        JSON is essential. Try our{' '}
+        <a href="/tools/json-formatter" class="text-blue-600 hover:underline font-medium">
+          free JSON Formatter
+        </a>{' '}
+        to format, validate, and beautify JSON instantly.
+      </p>
+    </section>
+
+    <footer class="mt-12 pt-8 border-t border-gray-200">
+      <a href="/blog" class="text-blue-600 hover:underline font-medium">
+        ← Back to Blog
+      </a>
+    </footer>
+  </article>
+</Layout>

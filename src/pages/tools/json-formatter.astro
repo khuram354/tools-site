@@ -1,0 +1,196 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="JSON Formatter & Validator — Free Online JSON Tool"
+  description="Format, validate, and beautify JSON online. Free JSON formatter with syntax error detection. No signup required."
+>
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl md:text-4xl font-bold mb-3">JSON Formatter & Validator</h1>
+    <p class="text-gray-600 mb-6">
+      Paste your JSON below to format, validate, and beautify it. Errors will be highlighted.
+    </p>
+
+    <div class="flex gap-3 mb-4 flex-wrap">
+      <button
+        id="format-btn"
+        class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+      >
+        Format
+      </button>
+      <button
+        id="minify-btn"
+        class="px-5 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 text-sm font-medium"
+      >
+        Minify
+      </button>
+      <button
+        id="copy-btn"
+        class="px-5 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 text-sm font-medium"
+      >
+        Copy
+      </button>
+      <button
+        id="clear-btn"
+        class="px-5 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 text-sm font-medium"
+      >
+        Clear
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-2">Input JSON</label>
+        <textarea
+          id="json-input"
+          class="w-full h-96 p-4 border border-gray-300 rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
+          placeholder='{"name": "John", "age": 30}'
+        ></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Output</label>
+        <textarea
+          id="json-output"
+          readonly
+          class="w-full h-96 p-4 border border-gray-300 rounded-lg font-mono text-sm bg-gray-50 focus:outline-none resize-y"
+          placeholder="Formatted output will appear here..."
+        ></textarea>
+      </div>
+    </div>
+
+  <div id="status" class="mt-4 text-sm font-medium"></div>
+  </div>
+
+    <section class="max-w-3xl mx-auto mt-16 prose prose-gray">
+    <h2 class="text-2xl font-bold mb-4">About This JSON Formatter</h2>
+    <p class="text-gray-700 mb-4">
+      This free online JSON formatter and validator helps developers format, beautify, and
+      validate JSON data instantly. It detects syntax errors and shows clear messages so you
+      can fix your JSON quickly. Everything runs in your browser — your data never leaves
+      your device.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
+    <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+      <li>Paste your JSON into the input box.</li>
+      <li>Click "Format" to beautify it with proper indentation.</li>
+      <li>Click "Minify" to remove all whitespace.</li>
+      <li>Use "Copy" to copy the result, or "Clear" to start over.</li>
+    </ol>
+
+    <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+    <ul class="list-disc pl-6 text-gray-700 space-y-2">
+      <li>Validate JSON and detect syntax errors</li>
+      <li>Beautify JSON with 2-space indentation</li>
+      <li>Minify JSON into a single line</li>
+      <li>Syntax highlighting and error messages</li>
+      <li>100% free, no signup required</li>
+      <li>Works offline — data never leaves your browser</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-6 mb-3">Frequently Asked Questions</h3>
+    <div class="space-y-4 mt-3">
+      <div>
+        <h4 class="font-semibold text-gray-900">Is my JSON data safe?</h4>
+        <p class="text-gray-700">
+          Yes. All formatting and validation happens in your browser. No data is sent to any server.
+        </p>
+      </div>
+      <div>
+        <h4 class="font-semibold text-gray-900">What is JSON?</h4>
+        <p class="text-gray-700">
+          JSON (JavaScript Object Notation) is a lightweight data format used to exchange data
+          between servers and web applications. It is easy for humans to read and machines to parse.
+        </p>
+      </div>
+      <div>
+        <h4 class="font-semibold text-gray-900">Does this tool support large JSON files?</h4>
+        <p class="text-gray-700">
+          Yes, it can handle large JSON files. Performance depends on your browser and device memory.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const input = document.getElementById('json-input') as HTMLTextAreaElement;
+    const output = document.getElementById('json-output') as HTMLTextAreaElement;
+    const status = document.getElementById('status')!;
+    const formatBtn = document.getElementById('format-btn')!;
+    const minifyBtn = document.getElementById('minify-btn')!;
+    const copyBtn = document.getElementById('copy-btn')!;
+    const clearBtn = document.getElementById('clear-btn')!;
+
+    function showStatus(message: string, type: 'success' | 'error') {
+    status.textContent = message;
+    const color = type === 'success' ? 'text-green-600' : 'text-red-600';
+    status.className = 'mt-4 text-sm font-medium ' + color;
+    }
+
+    function clearStatus() {
+      status.textContent = '';
+      status.className = 'mt-4 text-sm font-medium';
+    }
+
+    formatBtn.addEventListener('click', () => {
+      const text = input.value.trim();
+      if (!text) {
+        showStatus('Please enter some JSON.', 'error');
+        return;
+      }
+      try {
+        const parsed = JSON.parse(text);
+        output.value = JSON.stringify(parsed, null, 2);
+        showStatus('✓ Valid JSON — formatted successfully.', 'success');
+      } catch (err) {
+        output.value = '';
+        showStatus('✗ Invalid JSON: ' + (err as Error).message, 'error');
+      }
+    });
+
+    minifyBtn.addEventListener('click', () => {
+      const text = input.value.trim();
+      if (!text) {
+        showStatus('Please enter some JSON.', 'error');
+        return;
+      }
+      try {
+        const parsed = JSON.parse(text);
+        output.value = JSON.stringify(parsed);
+        showStatus('✓ JSON minified successfully.', 'success');
+      } catch (err) {
+        output.value = '';
+        showStatus('✗ Invalid JSON: ' + (err as Error).message, 'error');
+      }
+    });
+
+    copyBtn.addEventListener('click', () => {
+      if (output.value) {
+        navigator.clipboard.writeText(output.value);
+        showStatus('✓ Copied to clipboard.', 'success');
+      }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      output.value = '';
+      clearStatus();
+      input.focus();
+    });
+  </script>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "JSON Formatter & Validator",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "description": "Free online JSON formatter and validator. Format, beautify, and validate JSON data instantly.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+</Layout>
