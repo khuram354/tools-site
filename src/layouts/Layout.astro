@@ -25,10 +25,18 @@ const imageURL = new URL(image, Astro.site);
       <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8YVT8WPSLF"></script>
     <script is:inline>
+      setTimeout(function() {
+      var head = document.getElementsByTagName("head")[0];
+      var script = document.createElement("script");
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtag/js?id=G-8YVT8WPSLF";
+      head.appendChild(script);
+
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-8YVT8WPSLF');
+      }, 6000);
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
