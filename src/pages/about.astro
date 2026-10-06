@@ -1,49 +1,133 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const faqs = [
+  {
+    q: 'Who runs ToolsVibe?',
+    a: 'ToolsVibe is an independent project built by a small team passionate about fast, private online tools. We are not backed by any large corporation and rely on minimal ads to keep the site running.',
+  },
+  {
+    q: 'Is ToolsVibe really free?',
+    a: 'Yes. Every tool on ToolsVibe is free to use with no hidden charges, no premium tiers, and no forced signups. We fund the site through minimal, non-intrusive advertising.',
+  },
+  {
+    q: 'How do you protect my privacy?',
+    a: 'All tools run entirely in your browser. Your text, files, and data never leave your device. We do not store, sell, or share any user data.',
+  },
+  {
+    q: 'Can I use ToolsVibe tools for commercial work?',
+    a: 'Yes. Our tools are free for personal and commercial use. Students, writers, developers, and businesses all use ToolsVibe regularly.',
+  },
+];
 ---
 
 <Layout
-  title="About — ToolsSite"
-  description="Learn about ToolsSite, a free collection of fast, privacy-friendly online tools."
+  title="About — Free Online Tools by ToolsVibe"
+  description="Learn about ToolsVibe, a free collection of fast, privacy-friendly online tools for writing, development, and everyday tasks."
 >
   <article class="max-w-3xl mx-auto">
-    <h1 class="text-3xl md:text-4xl font-bold mb-4">About ToolsSite</h1>
+    <header class="mb-10">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">About ToolsVibe</h1>
+      <p class="text-lg text-gray-600">
+        A free collection of fast, privacy-friendly online tools — built for people who
+        value their time and their data.
+      </p>
+    </header>
 
     <section class="space-y-6 text-gray-700 leading-relaxed">
       <p>
-        ToolsSite is a free collection of online tools built for speed, simplicity, and
+        ToolsVibe is a free collection of online tools built for speed, simplicity, and
         privacy. Every tool runs entirely in your browser — nothing is uploaded to a
         server, and no signup is required.
       </p>
-
-      <h2 class="text-2xl font-bold mt-8 mb-3">Why We Built This</h2>
       <p>
-        Most online tools are cluttered with ads, popups, and unnecessary steps. We wanted
-        something different: clean, fast tools that just work. No distractions, no account
-        creation, no hidden limits.
+        We started ToolsVibe because we were tired of tool websites cluttered with ads,
+        popups, and forced account creation. We wanted something different: clean, fast
+        tools that just work.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-3">Our Mission</h2>
+      <p>
+        Our goal is simple: build the fastest, most private online tools on the web.
+        No distractions, no data collection, no hidden fees. Just tools that do one thing
+        well — and do it in your browser.
       </p>
 
       <h2 class="text-2xl font-bold mt-8 mb-3">What We Offer</h2>
+      <p>
+        ToolsVibe currently offers three core tools, with more added regularly:
+      </p>
       <ul class="list-disc pl-6 space-y-2">
-        <li><a href="/tools/word-counter" class="text-blue-600 hover:underline">Word Counter</a> — count words, characters, and reading time</li>
-        <li><a href="/tools/qr-generator" class="text-blue-600 hover:underline">QR Code Generator</a> — create custom QR codes instantly</li>
-        <li><a href="/tools/json-formatter" class="text-blue-600 hover:underline">JSON Formatter</a> — format and validate JSON data</li>
+        <li>
+          <a href="/tools/word-counter" class="text-blue-600 hover:underline font-medium">
+            Word Counter
+          </a>{' '}
+          — count words, characters, sentences, and estimate reading time.
+        </li>
+        <li>
+          <a href="/tools/qr-generator" class="text-blue-600 hover:underline font-medium">
+            QR Code Generator
+          </a>{' '}
+          — create custom QR codes for any text or URL and download as PNG.
+        </li>
+        <li>
+          <a href="/tools/json-formatter" class="text-blue-600 hover:underline font-medium">
+            JSON Formatter
+          </a>{' '}
+          — format, validate, and beautify JSON data online.
+        </li>
       </ul>
-      <p>And more tools are on the way.</p>
 
       <h2 class="text-2xl font-bold mt-8 mb-3">Our Principles</h2>
       <ul class="list-disc pl-6 space-y-2">
-        <li><strong>Privacy first:</strong> your data never leaves your browser.</li>
-        <li><strong>Free forever:</strong> no paywalls, no forced signups.</li>
-        <li><strong>Fast and simple:</strong> built for speed and ease of use.</li>
+        <li>
+          <strong>Privacy first:</strong> your data never leaves your browser. No uploads,
+          no server processing, no tracking beyond basic analytics.
+        </li>
+        <li>
+          <strong>Free forever:</strong> no paywalls, no forced signups, no premium tiers.
+        </li>
+        <li>
+          <strong>Fast and simple:</strong> built with modern web technology for instant
+          load times on any device.
+        </li>
+        <li>
+          <strong>Focused:</strong> each tool does one thing, and does it well.
+        </li>
       </ul>
 
-      <h2 class="text-2xl font-bold mt-8 mb-3">Contact</h2>
+      <h2 class="text-2xl font-bold mt-8 mb-3">Technology</h2>
       <p>
-        Have feedback or suggestions? Visit our{' '}
-        <a href="/contact" class="text-blue-600 hover:underline">contact page</a>{' '}
-        to get in touch.
+        ToolsVibe is built with{' '}
+        <a href="https://astro.build" target="_blank" rel="noopener" class="text-blue-600 hover:underline">
+          Astro
+        </a>
+        , a modern web framework that ships zero JavaScript by default. That means pages
+        load almost instantly and work smoothly even on slower connections.
       </p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-3">Get in Touch</h2>
+      <p>
+        Have feedback, found a bug, or want to suggest a new tool? Visit our{' '}
+        <a href="/contact" class="text-blue-600 hover:underline">contact page</a>{' '}
+        or explore our{' '}
+        <a href="/blog" class="text-blue-600 hover:underline">blog</a>{' '}
+        for guides and tips.
+      </p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="mt-16">
+      <h2 class="text-2xl md:text-3xl font-bold mb-3">Frequently Asked Questions</h2>
+      <p class="text-gray-600 mb-8">Common questions about ToolsVibe.</p>
+      <div class="space-y-4">
+        {faqs.map((faq) => (
+          <div class="p-5 bg-white rounded-xl border border-gray-200">
+            <h3 class="font-semibold mb-2">{faq.q}</h3>
+            <p class="text-sm text-gray-600">{faq.a}</p>
+          </div>
+        ))}
+      </div>
     </section>
   </article>
 </Layout>
