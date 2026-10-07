@@ -1,195 +1,239 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from "../../layouts/Layout.astro";
 
 const posts = [
-  {
-    title: 'How to Scan a QR Code on iPhone (2026 Guide)',
-    description:
-      'Learn how to scan QR codes on iPhone using the Camera app, Control Center, or Photos app. Step-by-step guide.',
-    href: '/blog/scan-qr-code-iphone',
-    date: 'October 5, 2026',
-    category: 'QR Codes',
-  },
-  {
-    title: 'How to Count Words Across All Tabs in Google Docs (2026)',
-    description:
-      'Google Docs shows word count for one tab only. Learn how to count words across all tabs with a simple workaround.',
-    href: '/blog/word-count-google-docs-all-tabs',
-    date: 'October 5, 2026',
-    category: 'Word Counter',
-  },
-  {
-    title: 'How to Count Words Accurately (2026 Guide)',
-    description:
-      'Learn how to count words accurately for essays, blogs, and social media. Free online word counter tool included.',
-    href: '/blog/how-to-count-words',
-    date: 'October 2, 2026',
-    category: 'Word Counter',
-  },
-  {
-    title: 'What is a QR Code and How Does It Work?',
-    description:
-      'Learn what QR codes are, how they work, and how to create your own free QR code online.',
-    href: '/blog/what-is-qr-code',
-    date: 'October 2, 2026',
-    category: 'QR Codes',
-  },
-  {
-    title: "JSON Explained: A Beginner's Guide (2026)",
-    description:
-      'Learn what JSON is, why developers use it, and how to format JSON online for free.',
-    href: '/blog/json-explained',
-    date: 'October 2, 2026',
-    category: 'JSON',
-  },
+    {
+        title: "How to Scan a QR Code on Android (2026 Guide)",
+        description:
+            "Learn how to scan QR codes on Android using Google Lens, the Camera app, or Quick Settings. Includes troubleshooting tips.",
+        href: "/blog/scan-qr-code-android",
+        date: "October 8, 2026",
+        category: "QR Codes",
+    },
+    {
+        title: "How to Scan a QR Code on iPhone (2026 Guide)",
+        description:
+            "Learn how to scan QR codes on iPhone using the Camera app, Control Center, or Photos app. Step-by-step guide.",
+        href: "/blog/scan-qr-code-iphone",
+        date: "October 5, 2026",
+        category: "QR Codes",
+    },
+    {
+        title: "How to Count Words Across All Tabs in Google Docs (2026)",
+        description:
+            "Google Docs shows word count for one tab only. Learn how to count words across all tabs with a simple workaround.",
+        href: "/blog/word-count-google-docs-all-tabs",
+        date: "October 5, 2026",
+        category: "Word Counter",
+    },
+    {
+        title: "How to Count Words Accurately (2026 Guide)",
+        description:
+            "Learn how to count words accurately for essays, blogs, and social media. Free online word counter tool included.",
+        href: "/blog/how-to-count-words",
+        date: "October 2, 2026",
+        category: "Word Counter",
+    },
+    {
+        title: "What is a QR Code and How Does It Work?",
+        description:
+            "Learn what QR codes are, how they work, and how to create your own free QR code online.",
+        href: "/blog/what-is-qr-code",
+        date: "October 2, 2026",
+        category: "QR Codes",
+    },
+    {
+        title: "JSON Explained: A Beginner's Guide (2026)",
+        description:
+            "Learn what JSON is, why developers use it, and how to format JSON online for free.",
+        href: "/blog/json-explained",
+        date: "October 2, 2026",
+        category: "JSON",
+    },
 ];
 
-const categories = ['All', 'Word Counter', 'QR Codes', 'JSON', 'Productivity'];
+const categories = ["All", "Word Counter", "QR Codes", "JSON", "Productivity"];
 
 const faqs = [
-  {
-    q: 'How often do you publish new articles?',
-    a: 'We publish new guides and tutorials every week. Topics cover our tools, productivity tips, and developer guides.',
-  },
-  {
-    q: 'Can I suggest a topic for a future article?',
-    a: 'Yes. We welcome suggestions. Visit our contact page and let us know what you would like to read about.',
-  },
-  {
-    q: 'Are your guides beginner-friendly?',
-    a: 'Most of our guides are written for beginners, with step-by-step instructions. Developer-focused articles assume basic technical knowledge.',
-  },
-  {
-    q: 'Do you accept guest posts?',
-    a: 'We are not accepting guest posts at the moment, but we may open this up in the future.',
-  },
+    {
+        q: "How often do you publish new articles?",
+        a: "We publish new guides and tutorials every week. Topics cover our tools, productivity tips, and developer guides.",
+    },
+    {
+        q: "Can I suggest a topic for a future article?",
+        a: "Yes. We welcome suggestions. Visit our contact page and let us know what you would like to read about.",
+    },
+    {
+        q: "Are your guides beginner-friendly?",
+        a: "Most of our guides are written for beginners, with step-by-step instructions. Developer-focused articles assume basic technical knowledge.",
+    },
+    {
+        q: "Do you accept guest posts?",
+        a: "We are not accepting guest posts at the moment, but we may open this up in the future.",
+    },
 ];
 ---
 
 <Layout
-  title="Blog — Guides, Tips & Tutorials | ToolsVibe"
-  description="Read guides, tips, and tutorials about online tools, productivity, word counting, QR codes, JSON, and more."
+    title="Blog — Guides, Tips & Tutorials | ToolsVibe"
+    description="Read guides, tips, and tutorials about online tools, productivity, word counting, QR codes, JSON, and more."
 >
-  <div class="max-w-4xl mx-auto">
-    <header class="mb-10">
-      <h1 class="text-3xl md:text-4xl font-bold mb-3">Blog</h1>
-      <p class="text-gray-600 max-w-2xl">
-        Guides, tips, and tutorials about online tools, productivity, and writing.
-      </p>
-    </header>
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">Blog</h1>
+            <p class="text-gray-600 max-w-2xl">
+                Guides, tips, and tutorials about online tools, productivity,
+                and writing.
+            </p>
+        </header>
 
-    <!-- Category Filter -->
-    <div class="flex flex-wrap gap-2 mb-8">
-      {categories.map((cat, i) => (
-        <button
-          class:list={[
-            'px-4 py-2 rounded-full text-sm font-medium transition',
-            i === 0
-              ? 'bg-blue-600 text-white'
-              : 'bg-white text-gray-700 border border-gray-200 hover:border-blue-300',
-          ]}
-          data-category={cat}
-        >
-          {cat}
-        </button>
-      ))}
+        <!-- Category Filter -->
+        <div class="flex flex-wrap gap-2 mb-8">
+            {
+                categories.map((cat, i) => (
+                    <button
+                        class:list={[
+                            "px-4 py-2 rounded-full text-sm font-medium transition",
+                            i === 0
+                                ? "bg-blue-600 text-white"
+                                : "bg-white text-gray-700 border border-gray-200 hover:border-blue-300",
+                        ]}
+                        data-category={cat}
+                    >
+                        {cat}
+                    </button>
+                ))
+            }
+        </div>
+
+        <!-- Posts Grid -->
+        <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {
+                posts.map((post) => (
+                    <a
+                        href={post.href}
+                        data-category={post.category}
+                        class="post-card block p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+                    >
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-medium px-2 py-1 bg-blue-50 text-blue-700 rounded">
+                                {post.category}
+                            </span>
+                            <span class="text-xs text-gray-500">
+                                {post.date}
+                            </span>
+                        </div>
+                        <h2 class="text-lg font-semibold mb-2 leading-snug">
+                            {post.title}
+                        </h2>
+                        <p class="text-gray-600 text-sm">{post.description}</p>
+                    </a>
+                ))
+            }
+        </div>
+
+        <!-- SEO Content -->
+        <section class="mt-20 max-w-3xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4">
+                Guides & Tutorials for Everyday Tools
+            </h2>
+            <p class="text-gray-700 mb-4">
+                The ToolsVibe blog covers practical guides on using our tools
+                effectively, plus broader topics like productivity, writing, and
+                development. Every article is written to be clear, actionable,
+                and beginner-friendly.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-8 mb-3">Word Counter Guides</h3>
+            <p class="text-gray-700 mb-4">
+                Learn how to count words in Google Docs, Microsoft Word, and
+                other platforms. Our guides cover shortcuts, workarounds, and
+                tips for essays, blog posts, and social media content.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-8 mb-3">QR Code Guides</h3>
+            <p class="text-gray-700 mb-4">
+                Discover how QR codes work, how to scan them on iPhone and
+                Android, and how to create your own for business cards, menus,
+                Wi-Fi access, and more.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-8 mb-3">
+                JSON & Developer Topics
+            </h3>
+            <p class="text-gray-700 mb-4">
+                Beginner-friendly introductions to JSON, common errors and
+                fixes, and how to format and validate JSON efficiently using
+                online tools.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-8 mb-3">
+                Productivity & Tools
+            </h3>
+            <p class="text-gray-700">
+                Tips and recommendations for free online tools, workflows, and
+                productivity techniques for students, writers, and developers.
+            </p>
+        </section>
+
+        <!-- FAQ -->
+        <section class="mt-20 max-w-3xl mx-auto">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-3">
+                Frequently Asked Questions
+            </h2>
+            <p class="text-gray-600 text-center mb-10">
+                Common questions about our blog.
+            </p>
+            <div class="space-y-4">
+                {
+                    faqs.map((faq) => (
+                        <div class="p-5 bg-white rounded-xl border border-gray-200">
+                            <h3 class="font-semibold mb-2">{faq.q}</h3>
+                            <p class="text-sm text-gray-600">{faq.a}</p>
+                        </div>
+                    ))
+                }
+            </div>
+        </section>
     </div>
 
-    <!-- Posts Grid -->
-    <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {posts.map((post) => (
-        <a
-          href={post.href}
-          data-category={post.category}
-          class="post-card block p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-        >
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-medium px-2 py-1 bg-blue-50 text-blue-700 rounded">
-              {post.category}
-            </span>
-            <span class="text-xs text-gray-500">{post.date}</span>
-          </div>
-          <h2 class="text-lg font-semibold mb-2 leading-snug">{post.title}</h2>
-          <p class="text-gray-600 text-sm">{post.description}</p>
-        </a>
-      ))}
-    </div>
+    <!-- Filter Script -->
+    <script>
+        const buttons =
+            document.querySelectorAll<HTMLButtonElement>("[data-category]");
+        const posts =
+            document.querySelectorAll<HTMLAnchorElement>(".post-card");
 
-    <!-- SEO Content -->
-    <section class="mt-20 max-w-3xl mx-auto">
-      <h2 class="text-2xl font-bold mb-4">Guides & Tutorials for Everyday Tools</h2>
-      <p class="text-gray-700 mb-4">
-        The ToolsVibe blog covers practical guides on using our tools effectively, plus
-        broader topics like productivity, writing, and development. Every article is
-        written to be clear, actionable, and beginner-friendly.
-      </p>
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const category = btn.dataset.category;
 
-      <h3 class="text-xl font-semibold mt-8 mb-3">Word Counter Guides</h3>
-      <p class="text-gray-700 mb-4">
-        Learn how to count words in Google Docs, Microsoft Word, and other platforms.
-        Our guides cover shortcuts, workarounds, and tips for essays, blog posts, and
-        social media content.
-      </p>
+                buttons.forEach((b) => {
+                    b.classList.remove("bg-blue-600", "text-white");
+                    b.classList.add(
+                        "bg-white",
+                        "text-gray-700",
+                        "border",
+                        "border-gray-200",
+                    );
+                });
+                btn.classList.remove(
+                    "bg-white",
+                    "text-gray-700",
+                    "border",
+                    "border-gray-200",
+                );
+                btn.classList.add("bg-blue-600", "text-white");
 
-      <h3 class="text-xl font-semibold mt-8 mb-3">QR Code Guides</h3>
-      <p class="text-gray-700 mb-4">
-        Discover how QR codes work, how to scan them on iPhone and Android, and how to
-        create your own for business cards, menus, Wi-Fi access, and more.
-      </p>
-
-      <h3 class="text-xl font-semibold mt-8 mb-3">JSON & Developer Topics</h3>
-      <p class="text-gray-700 mb-4">
-        Beginner-friendly introductions to JSON, common errors and fixes, and how to
-        format and validate JSON efficiently using online tools.
-      </p>
-
-      <h3 class="text-xl font-semibold mt-8 mb-3">Productivity & Tools</h3>
-      <p class="text-gray-700">
-        Tips and recommendations for free online tools, workflows, and productivity
-        techniques for students, writers, and developers.
-      </p>
-    </section>
-
-    <!-- FAQ -->
-    <section class="mt-20 max-w-3xl mx-auto">
-      <h2 class="text-2xl md:text-3xl font-bold text-center mb-3">Frequently Asked Questions</h2>
-      <p class="text-gray-600 text-center mb-10">Common questions about our blog.</p>
-      <div class="space-y-4">
-        {faqs.map((faq) => (
-          <div class="p-5 bg-white rounded-xl border border-gray-200">
-            <h3 class="font-semibold mb-2">{faq.q}</h3>
-            <p class="text-sm text-gray-600">{faq.a}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-  </div>
-
-  <!-- Filter Script -->
-  <script>
-    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-category]');
-    const posts = document.querySelectorAll<HTMLAnchorElement>('.post-card');
-
-    buttons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const category = btn.dataset.category;
-
-        buttons.forEach((b) => {
-          b.classList.remove('bg-blue-600', 'text-white');
-          b.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+                posts.forEach((post) => {
+                    const postCategory = post.dataset.category;
+                    if (category === "All" || postCategory === category) {
+                        post.style.display = "block";
+                    } else {
+                        post.style.display = "none";
+                    }
+                });
+            });
         });
-        btn.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
-        btn.classList.add('bg-blue-600', 'text-white');
-
-        posts.forEach((post) => {
-          const postCategory = post.dataset.category;
-          if (category === 'All' || postCategory === category) {
-            post.style.display = 'block';
-          } else {
-            post.style.display = 'none';
-          }
-        });
-      });
-    });
-  </script>
+    </script>
 </Layout>
