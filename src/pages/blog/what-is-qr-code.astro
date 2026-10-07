@@ -1,81 +1,467 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout
-  title="What is a QR Code and How Does It Work?"
-  description="Learn what QR codes are, how they work, and how to create your own free QR code online."
+    title="What is a QR Code and How Does It Work? (Complete 2026 Guide)"
+    description="Learn what QR codes are, how they work, where they came from, and how to create your own free QR code. Includes real-world uses, safety tips, and a step-by-step generator guide."
 >
-  <article class="max-w-3xl mx-auto">
-    <header class="mb-8">
-      <p class="text-sm text-gray-500 mb-2">Published: October 2, 2026</p>
-      <h1 class="text-3xl md:text-4xl font-bold mb-3">
-        What is a QR Code and How Does It Work?
-      </h1>
-      <p class="text-lg text-gray-600">
-        QR codes are everywhere — on menus, business cards, ads, and packaging. Here's
-        what they are and how to make your own.
-      </p>
-    </header>
+    <article class="max-w-3xl mx-auto">
+        <header class="mb-8">
+            <p class="text-sm text-gray-500 mb-2">
+                Published: October 2, 2026 · Updated: October 8, 2026
+            </p>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                What is a QR Code and How Does It Work? (Complete 2026 Guide)
+            </h1>
+            <p class="text-lg text-gray-600">
+                QR codes are everywhere — restaurant menus, business cards,
+                product packaging, billboards, and even gravestones. Here's what
+                they actually are, how they work, and how to create your own in
+                under a minute.
+            </p>
+        </header>
 
-    <section class="space-y-6 text-gray-700 leading-relaxed">
-      <p>
-        QR stands for "Quick Response." A QR code is a square, black-and-white pattern
-        that stores information — usually a URL, text, or contact details. When you scan
-        it with your phone camera, that information is instantly read.
-      </p>
+        <section class="space-y-6 text-gray-700 leading-relaxed">
+            <p>
+                The first time I truly appreciated QR codes was at a tiny
+                restaurant in Karachi. The waiter didn't hand me a menu — he
+                pointed at a small square sticker on the table. I scanned it,
+                and a full menu opened on my phone. No app, no signup, no
+                waiting. That's the quiet power of QR codes.
+            </p>
+            <p>
+                Since then, I've generated hundreds of QR codes for clients,
+                small businesses, and personal projects. This guide covers
+                everything I've learned — from how QR codes actually store data,
+                to how to make one that works reliably in the real world.
+            </p>
 
-      <h2 class="text-2xl font-bold mt-8 mb-3">How Does a QR Code Work?</h2>
-      <p>
-        A QR code stores data in a grid of tiny squares. The three large squares in the
-        corners help scanners orient the code. The rest of the pattern encodes your data
-        along with error-correction information, which lets the code still be readable
-        even if part of it is damaged.
-      </p>
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                Quick Answer: What is a QR Code?
+            </h2>
+            <p>
+                QR stands for <strong>Quick Response</strong>. A QR code is a
+                square, two-dimensional barcode that stores information —
+                typically a URL, plain text, contact details, or Wi-Fi
+                credentials. When scanned with a smartphone camera, the code is
+                instantly decoded and the information is displayed.
+            </p>
+            <p>
+                Unlike a traditional barcode (which stores data only
+                horizontally), a QR code stores data both horizontally and
+                vertically. This lets it hold <strong
+                    >up to 4,296 alphanumeric characters</strong
+                > — far more than a barcode's 20 or so.
+            </p>
 
-      <h2 class="text-2xl font-bold mt-8 mb-3">What Can You Store in a QR Code?</h2>
-      <ul class="list-disc pl-6 space-y-2">
-        <li>Website URLs</li>
-        <li>Plain text messages</li>
-        <li>Phone numbers</li>
-        <li>Email addresses</li>
-        <li>Wi-Fi network details</li>
-        <li>Payment links</li>
-      </ul>
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                A Brief History of QR Codes
+            </h2>
+            <p>
+                QR codes were invented in <strong>1994</strong> by Denso Wave, a Japanese
+                automotive company. The original purpose was to track vehicle parts
+                during manufacturing — barcodes weren't fast enough or durable enough
+                for that environment.
+            </p>
+            <p>
+                What made QR codes revolutionary was <strong
+                    >error correction</strong
+                >. Even if up to 30% of the code is damaged or obscured, it can
+                still be read. This is why you can scan a QR code with a logo in
+                the middle, or one printed on a wrinkled sticker, and it still
+                works.
+            </p>
+            <p>
+                QR codes didn't become a consumer phenomenon until smartphones
+                with built-in cameras became universal. Then came 2020 — and
+                suddenly every restaurant, retailer, and event organizer was
+                using QR codes to avoid physical contact.
+            </p>
 
-      <h2 class="text-2xl font-bold mt-8 mb-3">How to Create Your Own QR Code</h2>
-      <p>
-        Creating a QR code is free and takes seconds. Use our{' '}
-        <a href="/tools/qr-generator" class="text-blue-600 hover:underline font-medium">
-          free QR Code Generator
-        </a>{' '}
-        — enter your text or URL, choose a size, and download the PNG. No signup, no
-        watermark.
-      </p>
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                How Does a QR Code Actually Work?
+            </h2>
+            <p>
+                A QR code is a carefully structured grid. Here's what each part
+                does:
+            </p>
 
-      <h2 class="text-2xl font-bold mt-8 mb-3">Do QR Codes Expire?</h2>
-      <p>
-        Static QR codes (like the ones you generate here) never expire. They encode your
-        data directly, so they'll work forever. Dynamic QR codes (used by some paid
-        services) can expire if the subscription ends.
-      </p>
+            <div class="overflow-x-auto mt-4">
+                <table class="w-full text-sm border border-gray-200 rounded-lg">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="text-left p-3 font-semibold border-b"
+                                >Component</th
+                            >
+                            <th class="text-left p-3 font-semibold border-b"
+                                >Purpose</th
+                            >
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-3 border-b"
+                                ><strong>Position markers</strong> (3 corners)</td
+                            >
+                            <td class="p-3 border-b"
+                                >Tell the scanner the orientation and boundaries
+                                of the code</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="p-3 border-b"
+                                ><strong>Alignment pattern</strong> (small square)</td
+                            >
+                            <td class="p-3 border-b"
+                                >Helps the scanner correct for distortion on
+                                curved or angled surfaces</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="p-3 border-b"
+                                ><strong>Timing patterns</strong></td
+                            >
+                            <td class="p-3 border-b"
+                                >Row and column markers that help the scanner
+                                read individual modules</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="p-3 border-b"
+                                ><strong>Data modules</strong></td
+                            >
+                            <td class="p-3 border-b"
+                                >Where your actual information (URL, text, etc.)
+                                is stored</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="p-3"
+                                ><strong>Error correction</strong></td
+                            >
+                            <td class="p-3"
+                                >Redundant data that allows the code to be read
+                                even if partly damaged</td
+                            >
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-      <h2 class="text-2xl font-bold mt-8 mb-3">Final Thoughts</h2>
-      <p>
-        QR codes are a simple, powerful way to share information. Whether you're a
-        business owner, teacher, or just someone who wants to share a link quickly, a
-        QR code does the job. Try our{' '}
-        <a href="/tools/qr-generator" class="text-blue-600 hover:underline font-medium">
-          free QR Code Generator
-        </a>{' '}
-        to create yours in seconds.
-      </p>
-    </section>
+            <p class="mt-4">
+                When you scan a QR code, your phone's camera captures the image,
+                identifies the three position markers, and then reads the
+                pattern in the data modules. The information is decoded in
+                milliseconds.
+            </p>
 
-    <footer class="mt-12 pt-8 border-t border-gray-200">
-      <a href="/blog" class="text-blue-600 hover:underline font-medium">
-        ← Back to Blog
-      </a>
-    </footer>
-  </article>
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                What Can You Store in a QR Code?
+            </h2>
+            <p>In practice, most QR codes store one of the following:</p>
+            <ul class="list-disc pl-6 space-y-2">
+                <li>
+                    <strong>Website URLs</strong> — the most common use case
+                </li>
+                <li>
+                    <strong>Plain text messages</strong> — instructions, coupons,
+                    notes
+                </li>
+                <li>
+                    <strong>Phone numbers</strong> — scans and immediately offers
+                    to call
+                </li>
+                <li>
+                    <strong>Email addresses</strong> — opens a pre-filled email draft
+                </li>
+                <li>
+                    <strong>Wi-Fi credentials</strong> — auto-connect without typing
+                    passwords
+                </li>
+                <li>
+                    <strong>vCards</strong> — contact information for phones
+                </li>
+                <li>
+                    <strong>Payment links</strong> — for apps like PayPal, Venmo,
+                    or UPI
+                </li>
+                <li>
+                    <strong>App store links</strong> — direct users to an app download
+                </li>
+                <li>
+                    <strong>Geographic coordinates</strong> — open a specific location
+                    on a map
+                </li>
+            </ul>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                Real-World Uses of QR Codes
+            </h2>
+            <p>
+                QR codes have moved far beyond their original manufacturing
+                roots. Here are the categories I've personally built codes for:
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Restaurants & Cafés</h3>
+            <p>
+                Digital menus replaced paper menus almost entirely by 2022. A QR
+                code on each table lets customers see the menu, order, and
+                sometimes pay — all without an app.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Business Cards</h3>
+            <p>
+                A QR code on a business card can store your full contact info.
+                The recipient scans it once and saves you to their phone — no
+                manual typing.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">
+                Marketing & Packaging
+            </h3>
+            <p>
+                Product packaging often includes a QR code for warranty
+                registration, tutorials, or exclusive content. This turns a
+                physical product into a digital touchpoint.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Events & Ticketing</h3>
+            <p>
+                Event tickets are increasingly QR-based. Scan at the entrance,
+                verify instantly, no paper needed.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Wi-Fi Sharing</h3>
+            <p>
+                For cafés, hotels, and offices: a QR code on the wall that
+                automatically connects guests to Wi-Fi. No more passing around
+                passwords.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                How to Create a QR Code (Step-by-Step)
+            </h2>
+            <p>
+                Creating a QR code used to require special software. Now it
+                takes under a minute. Here's my workflow using our{" "}
+                <a
+                    href="/tools/qr-generator"
+                    class="text-blue-600 hover:underline font-medium"
+                >
+                    free QR Code Generator
+                </a>:
+            </p>
+            <ol class="list-decimal pl-6 space-y-2">
+                <li>
+                    Decide what you want to encode (URL, text, contact info)
+                </li>
+                <li>
+                    Open our{" "}
+                    <a
+                        href="/tools/qr-generator"
+                        class="text-blue-600 hover:underline font-medium"
+                    >
+                        QR Code Generator
+                    </a>
+                </li>
+                <li>Paste or type your content into the input field</li>
+                <li>
+                    Choose your size (200–500 pixels) and error correction level
+                </li>
+                <li>Click "Generate QR Code"</li>
+                <li>Download the PNG and use it however you want</li>
+            </ol>
+            <p>
+                <strong>Pro tip on error correction:</strong> Use <strong
+                    >High (H)</strong
+                > if you plan to add a logo or print the code on a small surface where
+                it might get smudged. Use <strong>Medium (M)</strong> for typical
+                uses like menus or business cards.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">Do QR Codes Expire?</h2>
+            <p>
+                This is one of the most common questions — and the answer
+                depends on the type:
+            </p>
+            <ul class="list-disc pl-6 space-y-2">
+                <li>
+                    <strong>Static QR codes:</strong> Never expire. The data is encoded
+                    directly into the pattern. These are the kind you generate with
+                    our tool.
+                </li>
+                <li>
+                    <strong>Dynamic QR codes:</strong> Can expire. These redirect
+                    through a third-party server, which means the URL you're redirected
+                    to can change — but also that the service can shut down and break
+                    your code.
+                </li>
+            </ul>
+            <p>
+                For most personal and small-business uses, static is the safer
+                choice. It's free, permanent, and you own it completely.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                Are QR Codes Safe to Scan?
+            </h2>
+            <p>
+                Short answer: <strong>usually yes, but be careful</strong>. QR
+                codes themselves are safe — they're just encoded data. The risk
+                is where they lead.
+            </p>
+            <p>Here's what I check before scanning an unfamiliar code:</p>
+            <ul class="list-disc pl-6 space-y-2">
+                <li>
+                    <strong>Look at the URL preview</strong> — iOS and Android both
+                    show a preview before opening
+                </li>
+                <li>
+                    <strong>Check the physical code</strong> — scammers sometimes
+                    paste a fake sticker over a real QR code
+                </li>
+                <li>
+                    <strong>Avoid unknown payments</strong> — never enter card details
+                    from a QR code on the street
+                </li>
+                <li>
+                    <strong>Trust the source</strong> — codes in banks, restaurants,
+                    or official packaging are generally safe
+                </li>
+            </ul>
+            <p>
+                For a deeper dive, read my guide on{" "}
+                <a
+                    href="/blog/scan-qr-code-iphone"
+                    class="text-blue-600 hover:underline font-medium"
+                >
+                    how to scan QR codes on iPhone
+                </a>{" "}
+                (Android steps are nearly identical).
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                Common QR Code Mistakes to Avoid
+            </h2>
+            <p>
+                After creating codes for hundreds of small businesses, I've seen
+                the same mistakes over and over:
+            </p>
+            <ul class="list-disc pl-6 space-y-2">
+                <li>
+                    <strong>Too small:</strong> Anything under 2 cm × 2 cm is hard
+                    to scan reliably
+                </li>
+                <li>
+                    <strong>Low contrast:</strong> Dark code on light background —
+                    never the reverse
+                </li>
+                <li>
+                    <strong>Wrinkled placement:</strong> Glossy surfaces or curved
+                    bottles distort the pattern
+                </li>
+                <li>
+                    <strong>Dead URL:</strong> Always test the code before printing
+                    thousands of copies
+                </li>
+                <li>
+                    <strong>No margin:</strong> Leave at least 4 modules of white
+                    space around the code
+                </li>
+            </ul>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                Frequently Asked Questions
+            </h2>
+            <div class="space-y-4 mt-3">
+                <div>
+                    <h3 class="font-semibold text-gray-900">
+                        Can I create a QR code for free?
+                    </h3>
+                    <p class="text-gray-700 mt-1">
+                        Yes. Our{" "}
+                        <a
+                            href="/tools/qr-generator"
+                            class="text-blue-600 hover:underline"
+                            >QR Code Generator</a
+                        >{" "}
+                        is completely free — no signup, no watermark, unlimited use.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900">
+                        Do I need a special app to scan QR codes?
+                    </h3>
+                    <p class="text-gray-700 mt-1">
+                        No. Modern iPhones and Android phones scan QR codes with
+                        the default camera app. Just point and tap.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900">
+                        What's the maximum data a QR code can store?
+                    </h3>
+                    <p class="text-gray-700 mt-1">
+                        Up to 4,296 alphanumeric characters, 7,089 numeric
+                        characters, or 2,953 bytes of binary data — though in
+                        practice, shorter data makes for easier scanning.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900">
+                        Can I edit a QR code after printing it?
+                    </h3>
+                    <p class="text-gray-700 mt-1">
+                        Only if it's a dynamic QR code (which redirects through
+                        a server). Static codes cannot be edited after printing.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900">
+                        Why won't my phone scan this QR code?
+                    </h3>
+                    <p class="text-gray-700 mt-1">
+                        Common causes: dirty camera lens, low lighting, code too
+                        small, low contrast, or a damaged print. Try cleaning
+                        the lens and moving the phone 10–15 cm back.
+                    </p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">Final Thoughts</h2>
+            <p>
+                QR codes are one of those rare technologies that are both simple
+                and powerful. They're free to create, work on virtually every
+                modern phone, and never expire (if static). Whether you're a
+                business owner sharing your menu, a teacher linking to
+                resources, or just someone who wants to share a link without
+                typing, a QR code does the job in one scan.
+            </p>
+            <p>
+                If you're ready to make one, try our{" "}
+                <a
+                    href="/tools/qr-generator"
+                    class="text-blue-600 hover:underline font-medium"
+                >
+                    free QR Code Generator
+                </a>{" "}
+                — takes under a minute, works on any device. And if you're curious
+                about scanning, my guide on{" "}
+                <a
+                    href="/blog/scan-qr-code-iphone"
+                    class="text-blue-600 hover:underline"
+                >
+                    scanning QR codes on iPhone
+                </a>{" "}
+                walks through every method.
+            </p>
+        </section>
+
+        <footer class="mt-12 pt-8 border-t border-gray-200">
+            <a href="/blog" class="text-blue-600 hover:underline font-medium">
+                ← Back to Blog
+            </a>
+        </footer>
+    </article>
 </Layout>
