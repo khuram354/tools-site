@@ -2,6 +2,8 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
+import critters from "astro-critters";
+import compress from "@playform/compress";
 
 // https://astro.build/config
 export default defineConfig({
@@ -9,5 +11,15 @@ export default defineConfig({
     vite: {
         plugins: [tailwindcss()],
     },
-    integrations: [sitemap()],
+    integrations: [
+        sitemap(),
+        critters(),
+        compress({
+            CSS: true,
+            HTML: true,
+            JavaScript: true,
+            SVG: false,
+            Image: false,
+        }),
+    ],
 });

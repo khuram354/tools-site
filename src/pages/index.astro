@@ -1,252 +1,231 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 
 const tools = [
-  {
-    name: 'Word Counter',
-    description: 'Count words, characters, sentences, and reading time instantly.',
-    href: '/tools/word-counter',
-    icon: 'word',
-  },
-  {
-    name: 'QR Code Generator',
-    description: 'Create custom QR codes for any text or URL. Download as PNG.',
-    href: '/tools/qr-generator',
-    icon: 'qr',
-  },
-  {
-    name: 'JSON Formatter',
-    description: 'Format, validate, and beautify JSON data online.',
-    href: '/tools/json-formatter',
-    icon: 'json',
-  },
+    {
+        name: "Word Counter",
+        description:
+            "Count words, characters, sentences, and reading time instantly.",
+        href: "/tools/word-counter",
+        icon: "word",
+    },
+    {
+        name: "QR Code Generator",
+        description:
+            "Create custom QR codes for any text or URL. Download as PNG.",
+        href: "/tools/qr-generator",
+        icon: "qr",
+    },
+    {
+        name: "JSON Formatter",
+        description: "Format, validate, and beautify JSON data online.",
+        href: "/tools/json-formatter",
+        icon: "json",
+    },
 ];
 
 const features = [
-  { title: '100% Free', description: 'No hidden fees, no premium plans.' },
-  { title: 'No Signup', description: 'Use any tool without creating an account.' },
-  { title: 'Privacy First', description: 'Everything runs in your browser.' },
-  { title: 'Fast & Lightweight', description: 'Built with modern web technology.' },
+    { title: "100% Free", description: "No hidden fees, no premium plans." },
+    {
+        title: "No Signup",
+        description: "Use any tool without creating an account.",
+    },
+    { title: "Privacy First", description: "Everything runs in your browser." },
+    {
+        title: "Fast & Lightweight",
+        description: "Built with modern web technology.",
+    },
 ];
 
 const recentPosts = [
-  {
-    title: 'How to Scan a QR Code on iPhone (2026 Guide)',
-    href: '/blog/scan-qr-code-iphone',
-    date: 'October 5, 2026',
-  },
-  {
-    title: 'How to Count Words Across All Tabs in Google Docs',
-    href: '/blog/word-count-google-docs-all-tabs',
-    date: 'October 5, 2026',
-  },
-  {
-    title: 'How to Count Words Accurately (2026 Guide)',
-    href: '/blog/how-to-count-words',
-    date: 'October 2, 2026',
-  },
+    {
+        title: "How to Scan a QR Code on iPhone (2026 Guide)",
+        href: "/blog/scan-qr-code-iphone",
+        date: "October 5, 2026",
+    },
+    {
+        title: "How to Count Words Across All Tabs in Google Docs",
+        href: "/blog/word-count-google-docs-all-tabs",
+        date: "October 5, 2026",
+    },
+    {
+        title: "How to Count Words Accurately (2026 Guide)",
+        href: "/blog/how-to-count-words",
+        date: "October 2, 2026",
+    },
 ];
 
 const faqs = [
-  {
-    q: 'What is ToolsVibe?',
-    a: 'ToolsVibe is a free online tools platform built for speed and privacy. We offer a growing collection of browser-based tools for writing, development, and everyday tasks.',
-  },
-  {
-    q: 'Why should I use ToolsVibe instead of other tool websites?',
-    a: 'Three reasons: speed, privacy, and simplicity. Our tools run entirely in your browser, load instantly, and never ask for signup or personal information.',
-  },
-  {
-    q: 'How does ToolsVibe make money if the tools are free?',
-    a: 'We display minimal, non-intrusive ads. We do not sell user data, and we do not charge for any tool.',
-  },
-  {
-    q: 'How often are new tools added?',
-    a: 'We add new tools regularly based on user feedback and demand. If you have a suggestion, reach out through our contact page.',
-  },
+    {
+        q: "What is ToolsVibe?",
+        a: "ToolsVibe is a free online tools platform built for speed and privacy. We offer a growing collection of browser-based tools for writing, development, and everyday tasks.",
+    },
+    {
+        q: "Why should I use ToolsVibe instead of other tool websites?",
+        a: "Three reasons: speed, privacy, and simplicity. Our tools run entirely in your browser, load instantly, and never ask for signup or personal information.",
+    },
+    {
+        q: "How does ToolsVibe make money if the tools are free?",
+        a: "We display minimal, non-intrusive ads. We do not sell user data, and we do not charge for any tool.",
+    },
+    {
+        q: "How often are new tools added?",
+        a: "We add new tools regularly based on user feedback and demand. If you have a suggestion, reach out through our contact page.",
+    },
 ];
 ---
 
 <Layout
-  title="ToolsVibe — Free Online Tools for Everyone"
-  description="Free, fast, and privacy-friendly online tools. Word counter, QR code generator, JSON formatter, and more. No signup required."
+    title="ToolsVibe — Free Online Tools for Everyone"
+    description="Free, fast, and privacy-friendly online tools. Word counter, QR code generator, JSON formatter, and more. No signup required."
 >
-  <!-- Hero Section -->
-  <section class="text-center py-16">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">
-      Free Online Tools, <span class="text-blue-600">Made Simple</span>
-    </h1>
-    <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-      Fast, privacy-friendly tools that work right in your browser.
-      No signup, no clutter, no data collection.
-    </p>
-    <div class="flex flex-wrap gap-3 justify-center">
-      <a
-        href="/tools"
-        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
-      >
-        Browse All Tools
-      </a>
-      <a
-        href="/tools/word-counter"
-        class="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 font-medium transition"
-      >
-        Try Word Counter
-      </a>
-    </div>
-    <div class="flex flex-wrap gap-6 justify-center mt-8 text-sm text-gray-500">
-      <span class="flex items-center gap-1">✓ 100% Free</span>
-      <span class="flex items-center gap-1">✓ No Signup</span>
-      <span class="flex items-center gap-1">✓ Privacy First</span>
-    </div>
-  </section>
-
-  <!-- Tools Section -->
-  <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-    {tools.map((tool) => (
-      <a
-        href={tool.href}
-        class="block p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-      >
-        <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
-          {tool.icon === 'word' && (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-              <polyline points="10 9 9 9 8 9"/>
-            </svg>
-          )}
-          {tool.icon === 'qr' && (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7"/>
-              <rect x="14" y="3" width="7" height="7"/>
-              <rect x="3" y="14" width="7" height="7"/>
-              <rect x="14" y="14" width="7" height="7"/>
-            </svg>
-          )}
-          {tool.icon === 'json' && (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="16 18 22 12 16 6"/>
-              <polyline points="8 6 2 12 8 18"/>
-            </svg>
-          )}
+    <!-- Hero Section -->
+    <section class="text-center py-16">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">
+            Free Online Tools, <span class="text-blue-600">Made Simple</span>
+        </h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+            Fast, privacy-friendly tools that work right in your browser. No
+            signup, no clutter, no data collection.
+        </p>
+        <div class="flex flex-wrap gap-3 justify-center">
+            <a
+                href="/tools"
+                class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
+            >
+                Browse All Tools
+            </a>
+            <a
+                href="/tools/word-counter"
+                class="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 font-medium transition"
+            >
+                Try Word Counter
+            </a>
         </div>
-        <h2 class="text-xl font-semibold mb-2">{tool.name}</h2>
-        <p class="text-gray-600 text-sm">{tool.description}</p>
-      </a>
-    ))}
-  </section>
-
-  <!-- Why Choose Us -->
-  <section class="mt-20">
-    <h2 class="text-2xl md:text-3xl font-bold text-center mb-3">Why Choose ToolsVibe?</h2>
-    <p class="text-gray-600 text-center max-w-2xl mx-auto mb-10">
-      We focus on speed, privacy, and simplicity — so you can get things done.
-    </p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {features.map((f) => (
-        <div class="p-5 bg-white rounded-xl border border-gray-200 text-center">
-          <h3 class="font-semibold mb-2">{f.title}</h3>
-          <p class="text-sm text-gray-600">{f.description}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- How It Works -->
-  <section class="mt-20">
-    <h2 class="text-2xl md:text-3xl font-bold text-center mb-3">How It Works</h2>
-    <p class="text-gray-600 text-center max-w-2xl mx-auto mb-10">
-      Three simple steps — no account, no hassle.
-    </p>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="p-6 bg-white rounded-xl border border-gray-200 text-center">
-        <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold mx-auto mb-3">1</div>
-        <h3 class="font-semibold mb-2">Choose a Tool</h3>
-        <p class="text-sm text-gray-600">Pick from our collection of free tools.</p>
-      </div>
-      <div class="p-6 bg-white rounded-xl border border-gray-200 text-center">
-        <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold mx-auto mb-3">2</div>
-        <h3 class="font-semibold mb-2">Use It Instantly</h3>
-        <p class="text-sm text-gray-600">Everything runs in your browser. No upload, no wait.</p>
-      </div>
-      <div class="p-6 bg-white rounded-xl border border-gray-200 text-center">
-        <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold mx-auto mb-3">3</div>
-        <h3 class="font-semibold mb-2">Get Your Result</h3>
-        <p class="text-sm text-gray-600">Copy, download, or share — done in seconds.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Recent Blog Posts -->
-  <section class="mt-20">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl md:text-3xl font-bold">Latest from the Blog</h2>
-      <a href="/blog" class="text-blue-600 hover:underline text-sm font-medium">View all →</a>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {recentPosts.map((post) => (
-        <a
-          href={post.href}
-          class="block p-5 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+        <div
+            class="flex flex-wrap gap-6 justify-center mt-8 text-sm text-gray-500"
         >
-          <p class="text-xs text-gray-500 mb-2">{post.date}</p>
-          <h3 class="font-semibold mb-2 leading-snug">{post.title}</h3>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mt-20 max-w-3xl mx-auto">
-    <h2 class="text-2xl md:text-3xl font-bold text-center mb-3">Frequently Asked Questions</h2>
-    <p class="text-gray-600 text-center mb-10">Quick answers to common questions.</p>
-    <div class="space-y-4">
-      {faqs.map((faq) => (
-        <div class="p-5 bg-white rounded-xl border border-gray-200">
-          <h3 class="font-semibold mb-2">{faq.q}</h3>
-          <p class="text-sm text-gray-600">{faq.a}</p>
+            <span class="flex items-center gap-1">✓ 100% Free</span>
+            <span class="flex items-center gap-1">✓ No Signup</span>
+            <span class="flex items-center gap-1">✓ Privacy First</span>
         </div>
-      ))}
-    </div>
-  </section>
+    </section>
 
-  <!-- SEO Content -->
-  <section class="mt-20 max-w-3xl mx-auto">
-    <h2 class="text-2xl font-bold mb-4">Why ToolsVibe Exists</h2>
-    <p class="text-gray-700 mb-4">
-      Most online tool websites are cluttered with ads, popups, and forced signups. We
-      built ToolsVibe to offer a cleaner alternative: simple, fast tools that respect
-      your time and your privacy.
-    </p>
-    <p class="text-gray-700 mb-4">
-      Every tool on ToolsVibe runs entirely in your browser. That means your text, files,
-      and data never leave your device. No uploads, no server processing, no tracking
-      beyond basic analytics.
-    </p>
+    <!-- Tools Section -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+        {
+            tools.map((tool) => (
+                <a
+                    href={tool.href}
+                    class="block p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+                >
+                    <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+                        {tool.icon === "word" && (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#2563eb"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                                <polyline points="10 9 9 9 8 9" />
+                            </svg>
+                        )}
+                        {tool.icon === "qr" && (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#2563eb"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <rect x="3" y="3" width="7" height="7" />
+                                <rect x="14" y="3" width="7" height="7" />
+                                <rect x="3" y="14" width="7" height="7" />
+                                <rect x="14" y="14" width="7" height="7" />
+                            </svg>
+                        )}
+                        {tool.icon === "json" && (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#2563eb"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <polyline points="16 18 22 12 16 6" />
+                                <polyline points="8 6 2 12 8 18" />
+                            </svg>
+                        )}
+                    </div>
+                    <h2 class="text-xl font-semibold mb-2">{tool.name}</h2>
+                    <p class="text-gray-600 text-sm">{tool.description}</p>
+                </a>
+            ))
+        }
+    </section>
 
-    <h3 class="text-xl font-semibold mt-8 mb-3">Built for Speed</h3>
-    <p class="text-gray-700 mb-4">
-      ToolsVibe is built with modern web technology (Astro), which means pages load
-      almost instantly and work smoothly on any device — from budget smartphones to
-      high-end desktops.
-    </p>
+    <!-- Why Choose Us -->
+    <section class="mt-20">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-3">
+            Why Choose ToolsVibe?
+        </h2>
+        <p class="text-gray-600 text-center max-w-2xl mx-auto mb-10">
+            We focus on speed, privacy, and simplicity — so you can get things
+            done.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {
+                features.map((f) => (
+                    <div class="p-5 bg-white rounded-xl border border-gray-200 text-center">
+                        <h3 class="font-semibold mb-2">{f.title}</h3>
+                        <p class="text-sm text-gray-600">{f.description}</p>
+                    </div>
+                ))
+            }
+        </div>
+    </section>
 
-    <h3 class="text-xl font-semibold mt-8 mb-3">Built for Privacy</h3>
-    <p class="text-gray-700 mb-4">
-      We do not store your data, we do not require accounts, and we do not sell
-      information to third parties. Your work stays yours.
-    </p>
-
-    <h3 class="text-xl font-semibold mt-8 mb-3">What's Next</h3>
-    <p class="text-gray-700">
-      We're constantly adding new tools based on what users ask for. Browse our{' '}
-      <a href="/tools" class="text-blue-600 hover:underline">tools page</a>{' '}
-      to see what's available now, or read our{' '}
-      <a href="/blog" class="text-blue-600 hover:underline">blog</a>{' '}
-      for guides and tips.
-    </p>
-  </section>
+    <!-- Recent Blog Posts -->
+    <section class="mt-20">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl md:text-3xl font-bold">Latest from the Blog</h2>
+            <a
+                href="/blog"
+                class="text-blue-600 hover:underline text-sm font-medium"
+                >View all →</a
+            >
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {
+                recentPosts.map((post) => (
+                    <a
+                        href={post.href}
+                        class="block p-5 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+                    >
+                        <p class="text-xs text-gray-500 mb-2">{post.date}</p>
+                        <h3 class="font-semibold mb-2 leading-snug">
+                            {post.title}
+                        </h3>
+                    </a>
+                ))
+            }
+        </div>
+    </section>
 </Layout>

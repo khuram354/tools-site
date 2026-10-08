@@ -36,23 +36,39 @@ const imageURL = new URL(image, Astro.site);
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={imageURL} />
 
-        <!-- Google Analytics (GA4) - Deferred for performance -->
+        <!-- Google Analytics (GA4) - Load on interaction or idle -->
         <script is:inline>
-            setTimeout(function () {
-                var head = document.getElementsByTagName("head")[0];
-                var script = document.createElement("script");
-                script.async = true;
-                script.src =
-                    "https://www.googletagmanager.com/gtag/js?id=G-8YVT8WPSLF";
-                head.appendChild(script);
-
-                window.dataLayer = window.dataLayer || [];
-                function gtag() {
-                    dataLayer.push(arguments);
+            (function () {
+                var loaded = false;
+                function loadGA4() {
+                    if (loaded) return;
+                    loaded = true;
+                    var script = document.createElement("script");
+                    script.async = true;
+                    script.src =
+                        "https://www.googletagmanager.com/gtag/js?id=G-8YVT8WPSLF";
+                    document.head.appendChild(script);
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag() {
+                        dataLayer.push(arguments);
+                    }
+                    gtag("js", new Date());
+                    gtag("config", "G-8YVT8WPSLF");
                 }
-                gtag("js", new Date());
-                gtag("config", "G-8YVT8WPSLF");
-            }, 6000);
+                ["scroll", "pointerdown", "keydown", "touchstart"].forEach(
+                    function (evt) {
+                        window.addEventListener(evt, loadGA4, {
+                            once: true,
+                            passive: true,
+                        });
+                    },
+                );
+                if ("requestIdleCallback" in window) {
+                    requestIdleCallback(loadGA4, { timeout: 5000 });
+                } else {
+                    setTimeout(loadGA4, 5000);
+                }
+            })();
         </script>
     </head>
     <body class="min-h-screen bg-gray-50 text-gray-900">
