@@ -37,24 +37,6 @@ const features = [
     },
 ];
 
-const recentPosts = [
-    {
-        title: "How to Scan a QR Code on iPhone (2026 Guide)",
-        href: "/blog/scan-qr-code-iphone",
-        date: "October 5, 2026",
-    },
-    {
-        title: "How to Count Words Across All Tabs in Google Docs",
-        href: "/blog/word-count-google-docs-all-tabs",
-        date: "October 5, 2026",
-    },
-    {
-        title: "How to Count Words Accurately (2026 Guide)",
-        href: "/blog/how-to-count-words",
-        date: "October 2, 2026",
-    },
-];
-
 const faqs = [
     {
         q: "What is ToolsVibe?",
@@ -197,33 +179,6 @@ const faqs = [
                         <h3 class="font-semibold mb-2">{f.title}</h3>
                         <p class="text-sm text-gray-600">{f.description}</p>
                     </div>
-                ))
-            }
-        </div>
-    </section>
-
-    <!-- Recent Blog Posts -->
-    <section class="mt-20">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl md:text-3xl font-bold">Latest from the Blog</h2>
-            <a
-                href="/blog"
-                class="text-blue-600 hover:underline text-sm font-medium"
-                >View all →</a
-            >
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {
-                recentPosts.map((post) => (
-                    <a
-                        href={post.href}
-                        class="block p-5 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-                    >
-                        <p class="text-xs text-gray-500 mb-2">{post.date}</p>
-                        <h3 class="font-semibold mb-2 leading-snug">
-                            {post.title}
-                        </h3>
-                    </a>
                 ))
             }
         </div>
