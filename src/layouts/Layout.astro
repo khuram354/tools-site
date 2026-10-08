@@ -36,40 +36,19 @@ const imageURL = new URL(image, Astro.site);
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={imageURL} />
 
-        <!-- Google Analytics (GA4) - Load on interaction or idle -->
-        <script is:inline>
-            (function () {
-                var loaded = false;
-                function loadGA4() {
-                    if (loaded) return;
-                    loaded = true;
-                    var script = document.createElement("script");
-                    script.async = true;
-                    script.src =
-                        "https://www.googletagmanager.com/gtag/js?id=G-8YVT8WPSLF";
-                    document.head.appendChild(script);
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag() {
-                        dataLayer.push(arguments);
-                    }
-                    gtag("js", new Date());
-                    gtag("config", "G-8YVT8WPSLF");
-                }
-                ["scroll", "pointerdown", "keydown", "touchstart"].forEach(
-                    function (evt) {
-                        window.addEventListener(evt, loadGA4, {
-                            once: true,
-                            passive: true,
-                        });
-                    },
-                );
-                if ("requestIdleCallback" in window) {
-                    requestIdleCallback(loadGA4, { timeout: 5000 });
-                } else {
-                    setTimeout(loadGA4, 5000);
-                }
-            })();
+        <!-- Google Analytics (GA4) - Runs in Web Worker via Partytown -->
+        <script type="text/partytown">
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", "G-8YVT8WPSLF");
         </script>
+        <script
+            type="text/partytown"
+            src="https://www.googletagmanager.com/gtag/js?id=G-8YVT8WPSLF"
+        ></script>
     </head>
     <body class="min-h-screen bg-gray-50 text-gray-900">
         <header class="bg-white shadow-sm sticky top-0 z-50">
