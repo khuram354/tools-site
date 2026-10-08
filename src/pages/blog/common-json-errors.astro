@@ -1,0 +1,424 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+    title="10 Common JSON Errors and How to Fix Them (2026 Guide)"
+    description="Learn the most common JSON syntax errors developers make and how to fix them fast. Includes real examples and a free online JSON validator."
+>
+    <article class="max-w-3xl mx-auto">
+        <header class="mb-8">
+            <p class="text-sm text-gray-500 mb-2">Published: October 9, 2026</p>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                10 Common JSON Errors and How to Fix Them (2026 Guide)
+            </h1>
+            <p class="text-lg text-gray-600">
+                I've debugged hundreds of broken JSON files. These are the ten
+                errors that show up again and again — and the fastest way to fix
+                each one.
+            </p>
+        </header>
+
+        <section class="space-y-6 text-gray-700 leading-relaxed">
+            <p>
+                JSON looks simple. So simple that beginners assume they can't
+                get it wrong. Then they paste a config into an API tool, hit
+                "Send," and get back an error that says "Unexpected token at
+                position 347" — with no hint about what's actually broken.
+            </p>
+            <p>
+                I've been there. After years of working with APIs, config files,
+                and data pipelines, I've made every JSON mistake in the book.
+                This guide covers the top ten — with exact examples and fixes.
+                If you're stuck right now, paste your JSON into our{" "}
+                <a
+                    href="/tools/json-formatter"
+                    class="text-blue-600 hover:underline font-medium"
+                >
+                    free JSON Formatter
+                </a>{" "}
+                and it'll show you exactly where the error is.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                Quick Answer: Most JSON Errors Are One of These Three
+            </h2>
+            <p>
+                If you don't want to read all ten, here's the short version: 80%
+                of JSON errors come from <strong>trailing commas</strong>, <strong
+                    >single quotes</strong
+                >, or
+                <strong>unquoted keys</strong>. Fix those three habits and
+                you'll eliminate most of your debugging time.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">1. Trailing Commas</h2>
+            <p>
+                This is the #1 JSON error I see. JavaScript allows trailing
+                commas in objects and arrays; JSON does not.
+            </p>
+            <div class="mt-4 space-y-3">
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="font-semibold text-red-900 mb-1">❌ Invalid:</p>
+                    <pre
+                        class="text-sm text-red-800 overflow-x-auto"><code>{`{
+  "name": "Ali",
+  "age": 25,
+}`}</code></pre>
+                </div>
+                <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p class="font-semibold text-green-900 mb-1">✅ Valid:</p>
+                    <pre
+                        class="text-sm text-green-800 overflow-x-auto"><code>{`{
+  "name": "Ali",
+  "age": 25
+}`}</code></pre>
+                </div>
+            </div>
+            <p class="mt-3">
+                <strong>Fix:</strong> Remove the comma after the last item in every
+                object and array. Most modern editors catch this, but if you're hand-editing
+                a config file, it's easy to miss.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                2. Single Quotes Instead of Double Quotes
+            </h2>
+            <p>
+                JavaScript accepts both <code>'single'</code> and <code
+                    >"double"</code
+                > quotes. JSON only accepts double quotes.
+            </p>
+            <div class="mt-4 space-y-3">
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="font-semibold text-red-900 mb-1">❌ Invalid:</p>
+                    <pre
+                        class="text-sm text-red-800 overflow-x-auto"><code>{`{ 'name': 'Ali' }`}</code></pre>
+                </div>
+                <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p class="font-semibold text-green-900 mb-1">✅ Valid:</p>
+                    <pre
+                        class="text-sm text-green-800 overflow-x-auto"><code>{`{ "name": "Ali" }`}</code></pre>
+                </div>
+            </div>
+            <p class="mt-3">
+                <strong>Fix:</strong> Replace all single quotes with double quotes.
+                If you're converting from a JavaScript object, use <code
+                    >JSON.stringify()</code
+                > instead of manual editing.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">3. Unquoted Keys</h2>
+            <p>
+                In JavaScript, object keys don't need quotes. In JSON, they do.
+            </p>
+            <div class="mt-4 space-y-3">
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="font-semibold text-red-900 mb-1">❌ Invalid:</p>
+                    <pre
+                        class="text-sm text-red-800 overflow-x-auto"><code>{`{ name: "Ali", age: 25 }`}</code></pre>
+                </div>
+                <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p class="font-semibold text-green-900 mb-1">✅ Valid:</p>
+                    <pre
+                        class="text-sm text-green-800 overflow-x-auto"><code>{`{ "name": "Ali", "age": 25 }`}</code></pre>
+                </div>
+            </div>
+            <p class="mt-3">
+                <strong>Fix:</strong> Quote every key with double quotes. No exceptions.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">4. Comments in JSON</h2>
+            <p>
+                JSON does not support comments — not <code>//</code>, not <code
+                    >/* */</code
+                >, not <code>#</code>. If you need comments, you're not using
+                JSON anymore (you're using JSONC, JSON5, or YAML).
+            </p>
+            <div class="mt-4 space-y-3">
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="font-semibold text-red-900 mb-1">❌ Invalid:</p>
+                    <pre
+                        class="text-sm text-red-800 overflow-x-auto"><code>{`{
+  // user info
+  "name": "Ali"
+}`}</code></pre>
+                </div>
+            </div>
+            <p class="mt-3">
+                <strong>Fix:</strong> Remove comments. If you need documentation,
+                store it in a separate file or use JSONC (which supports comments
+                but isn't standard JSON).
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                5. Using <code>undefined</code>
+            </h2>
+            <p>
+                JavaScript has <code>undefined</code>; JSON doesn't. Use <code
+                    >null</code
+                >
+                instead.
+            </p>
+            <div class="mt-4 space-y-3">
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="font-semibold text-red-900 mb-1">❌ Invalid:</p>
+                    <pre
+                        class="text-sm text-red-800 overflow-x-auto"><code>{`{ "middleName": undefined }`}</code></pre>
+                </div>
+                <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p class="font-semibold text-green-900 mb-1">✅ Valid:</p>
+                    <pre
+                        class="text-sm text-green-800 overflow-x-auto"><code>{`{ "middleName": null }`}</code></pre>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                6. Numbers in Quotes (When They Shouldn't Be)
+            </h2>
+            <p>
+                <code>"25"</code> (string) and <code>25</code> (number) are different
+                types. If your API expects a number and gets a string, it breaks.
+            </p>
+            <div class="mt-4 space-y-3">
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="font-semibold text-red-900 mb-1">
+                        ❌ Wrong type:
+                    </p>
+                    <pre
+                        class="text-sm text-red-800 overflow-x-auto"><code>{`{ "age": "25" }`}</code></pre>
+                </div>
+                <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p class="font-semibold text-green-900 mb-1">
+                        ✅ Correct type:
+                    </p>
+                    <pre
+                        class="text-sm text-green-800 overflow-x-auto"><code>{`{ "age": 25 }`}</code></pre>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                7. Unescaped Special Characters
+            </h2>
+            <p>
+                Newlines, tabs, and quotes inside strings must be escaped with a
+                backslash. Otherwise JSON breaks.
+            </p>
+            <div class="mt-4 space-y-3">
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="font-semibold text-red-900 mb-1">❌ Invalid:</p>
+                    <pre
+                        class="text-sm text-red-800 overflow-x-auto"><code>{`{ "message": "He said "hello"" }`}</code></pre>
+                </div>
+                <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p class="font-semibold text-green-900 mb-1">✅ Valid:</p>
+                    <pre
+                        class="text-sm text-green-800 overflow-x-auto"><code>{`{ "message": "He said \\"hello\\"" }`}</code></pre>
+                </div>
+            </div>
+            <p class="mt-3">
+                <strong>Common escapes:</strong>
+                <code>\"</code> (quote), <code>\\</code>
+                (backslash), <code>\n</code> (newline), <code>\t</code> (tab).
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                8. Missing Closing Brackets
+            </h2>
+            <p>
+                When you have deeply nested objects and arrays, it's easy to
+                lose track of which bracket closes what.
+            </p>
+            <div class="mt-4 space-y-3">
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="font-semibold text-red-900 mb-1">
+                        ❌ Invalid (missing <code>{"}"}</code>):
+                    </p>
+                    <pre
+                        class="text-sm text-red-800 overflow-x-auto"><code>{`{
+  "user": {
+    "name": "Ali",
+    "scores": [90, 85, 88]
+}`}</code></pre>
+                </div>
+            </div>
+            <p class="mt-3">
+                <strong>Fix:</strong> Format your JSON with proper indentation. Our{
+                    " "
+                }
+                <a
+                    href="/tools/json-formatter"
+                    class="text-blue-600 hover:underline font-medium"
+                >
+                    JSON Formatter
+                </a>{" "}
+                auto-indents and shows exactly where the error is.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">9. Duplicate Keys</h2>
+            <p>
+                JSON technically allows duplicate keys, but most parsers take
+                the last value. This leads to silent bugs — the worst kind.
+            </p>
+            <div class="mt-4 space-y-3">
+                <div
+                    class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg"
+                >
+                    <p class="font-semibold text-yellow-900 mb-1">
+                        ⚠️ Technically valid, but dangerous:
+                    </p>
+                    <pre
+                        class="text-sm text-yellow-800 overflow-x-auto"><code>{`{
+  "name": "Ali",
+  "name": "Ahmed"
+}`}</code></pre>
+                </div>
+            </div>
+            <p class="mt-3">
+                <strong>Fix:</strong> Never use duplicate keys. If you need multiple
+                values, use an array.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                10. Trailing Whitespace and Invisible Characters
+            </h2>
+            <p>
+                If you copy JSON from a Word document or a chat app, you might
+                bring in invisible characters — non-breaking spaces, BOM
+                markers, zero-width spaces. These aren't visible but break JSON
+                parsing.
+            </p>
+            <p>
+                <strong>Fix:</strong> Paste your JSON into a plain text editor (like
+                Notepad or VS Code with "show invisibles" enabled) to spot them. Our{
+                    " "
+                }
+                <a
+                    href="/tools/json-formatter"
+                    class="text-blue-600 hover:underline font-medium"
+                >
+                    JSON Formatter
+                </a>{" "}
+                strips them automatically when it validates.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                The Fastest Way to Debug Any JSON Error
+            </h2>
+            <p>Here's the workflow I use when JSON breaks:</p>
+            <ol class="list-decimal pl-6 space-y-2">
+                <li>
+                    Paste the entire JSON into our{" "}
+                    <a
+                        href="/tools/json-formatter"
+                        class="text-blue-600 hover:underline font-medium"
+                    >
+                        free JSON Formatter
+                    </a>
+                </li>
+                <li>
+                    Click <strong>"Format"</strong> — if there's an error, it shows
+                    exactly where
+                </li>
+                <li>Fix the error and re-check</li>
+                <li>Once valid, the tool beautifies it for easier reading</li>
+            </ol>
+            <p>
+                This is faster than reading through hundreds of lines of JSON
+                trying to spot a missing comma. I use it every day.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                Frequently Asked Questions
+            </h2>
+            <div class="space-y-4 mt-3">
+                <div>
+                    <h3 class="font-semibold text-gray-900">
+                        Why does my JSON work in JavaScript but fail in an API?
+                    </h3>
+                    <p class="text-gray-700 mt-1">
+                        JavaScript is lenient — it accepts single quotes,
+                        trailing commas, and unquoted keys. JSON is strict. Use <code
+                            >JSON.stringify()</code
+                        > to convert a JavaScript object into valid JSON.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900">
+                        What's the fastest way to find a JSON error?
+                    </h3>
+                    <p class="text-gray-700 mt-1">
+                        Paste it into our{" "}
+                        <a
+                            href="/tools/json-formatter"
+                            class="text-blue-600 hover:underline"
+                            >JSON Formatter</a
+                        >. It shows the exact line and character where the
+                        syntax breaks.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900">
+                        Can I use comments in JSON?
+                    </h3>
+                    <p class="text-gray-700 mt-1">
+                        No. Standard JSON has no comment syntax. Use JSONC if
+                        you need comments — but note that most APIs won't accept
+                        JSONC.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900">
+                        Why does my JSON have a BOM at the beginning?
+                    </h3>
+                    <p class="text-gray-700 mt-1">
+                        Some text editors save files with a Byte Order Mark
+                        (BOM) by default. This is invisible but breaks JSON
+                        parsing. In VS Code, save as "UTF-8 without BOM."
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900">
+                        Is there a JSON linter for VS Code?
+                    </h3>
+                    <p class="text-gray-700 mt-1">
+                        Yes. VS Code has built-in JSON validation, and
+                        extensions like "JSON Formatter" add more features. For
+                        quick one-off checks, our online tool is faster.
+                    </p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">Final Thoughts</h2>
+            <p>
+                JSON errors are frustrating because they're small — a single
+                comma, a quote character, an unquoted key. But once you know the
+                ten most common mistakes, you can spot them in seconds.
+            </p>
+            <p>
+                If you're stuck right now, don't waste time reading through your
+                file manually. Paste it into our{" "}
+                <a
+                    href="/tools/json-formatter"
+                    class="text-blue-600 hover:underline font-medium"
+                >
+                    free JSON Formatter
+                </a>{" "}
+                and let it tell you exactly where the error is. For a beginner's introduction
+                to JSON itself, see my{" "}
+                <a
+                    href="/blog/json-explained"
+                    class="text-blue-600 hover:underline"
+                >
+                    JSON explained guide
+                </a>.
+            </p>
+        </section>
+
+        <footer class="mt-12 pt-8 border-t border-gray-200">
+            <a href="/blog" class="text-blue-600 hover:underline font-medium">
+                ← Back to Blog
+            </a>
+        </footer>
+    </article>
+</Layout>
