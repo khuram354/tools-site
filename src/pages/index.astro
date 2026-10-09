@@ -58,7 +58,7 @@ const faqs = [
 ---
 
 <Layout
-    title="ToolsVibe — Free Online Tools for Everyone"
+    title="Free Online Tools: Word Counter, QR Code Generator & JSON Formatter"
     description="Free, fast, and privacy-friendly online tools. Word counter, QR code generator, JSON formatter, and more. No signup required."
 >
     <!-- Hero Section -->
@@ -183,4 +183,21 @@ const faqs = [
             }
         </div>
     </section>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "ToolsVibe",
+            url: "https://toolsvibe.online",
+            description:
+                "Free, fast, and privacy-friendly online tools. Word counter, QR code generator, JSON formatter, and more.",
+            potentialAction: {
+                "@type": "SearchAction",
+                target: "https://toolsvibe.online/blog?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+            },
+        })}
+    />
 </Layout>
