@@ -1,0 +1,454 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+    title="Salary Tax Calculator Pakistan 2026-27 — Take-Home Pay"
+    description="Calculate your monthly salary tax, take-home pay, and income tax for Tax Year 2027 (FY 2026-27) in Pakistan. Free, fast, and accurate FBR slab-based calculator."
+>
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                Salary Tax Calculator — Pakistan
+            </h1>
+            <p class="text-gray-600 mb-2">
+                Calculate your income tax and take-home salary based on FBR Tax
+                Year 2027 (FY 2026-27) slabs.
+            </p>
+            <p class="text-xs text-gray-500">
+                Last updated: October 10, 2026 · Source: Finance Act 2026
+            </p>
+        </header>
+
+        <!-- Input Section -->
+        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label
+                        for="monthly-salary"
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Monthly Gross Salary (PKR)
+                    </label>
+                    <input
+                        type="number"
+                        id="monthly-salary"
+                        value="150000"
+                        min="0"
+                        step="1000"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="e.g. 150000"
+                    />
+                </div>
+                <div>
+                    <label
+                        for="tax-year"
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Tax Year
+                    </label>
+                    <select
+                        id="tax-year"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="2026-27" selected
+                            >Tax Year 2027 (FY 2026-27)</option
+                        >
+                        <option value="2025-26" disabled
+                            >Tax Year 2026 (FY 2025-26) — Coming Soon</option
+                        >
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <label class="flex items-center gap-2 text-sm">
+                    <input
+                        type="checkbox"
+                        id="apply-eobi"
+                        class="rounded"
+                        checked
+                    />
+                    <span
+                        >Include EOBI deduction (PKR 370/month, if applicable)</span
+                    >
+                </label>
+            </div>
+
+            <button
+                id="calculate-btn"
+                class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
+            >
+                Calculate Tax
+            </button>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results" class="hidden">
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div class="text-sm text-gray-500 mb-1">Monthly Tax</div>
+                    <div
+                        id="monthly-tax"
+                        class="text-xl font-bold text-red-600"
+                    >
+                        PKR 0
+                    </div>
+                </div>
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div class="text-sm text-gray-500 mb-1">Yearly Tax</div>
+                    <div id="yearly-tax" class="text-xl font-bold text-red-600">
+                        PKR 0
+                    </div>
+                </div>
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div class="text-sm text-gray-500 mb-1">
+                        Monthly Take-Home
+                    </div>
+                    <div
+                        id="monthly-net"
+                        class="text-xl font-bold text-green-600"
+                    >
+                        PKR 0
+                    </div>
+                </div>
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div class="text-sm text-gray-500 mb-1">
+                        Yearly Take-Home
+                    </div>
+                    <div
+                        id="yearly-net"
+                        class="text-xl font-bold text-green-600"
+                    >
+                        PKR 0
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Breakdown -->
+            <div class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+                <h2 class="text-xl font-semibold mb-4">Detailed Breakdown</h2>
+                <table class="w-full text-sm">
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="py-2 text-gray-600"
+                                >Monthly Gross Salary</td
+                            >
+                            <td
+                                id="breakdown-gross-monthly"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600"
+                                >Yearly Gross Salary</td
+                            >
+                            <td
+                                id="breakdown-gross-yearly"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600"
+                                >EOBI Deduction (Monthly)</td
+                            >
+                            <td
+                                id="breakdown-eobi"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600"
+                                >Taxable Annual Income</td
+                            >
+                            <td
+                                id="breakdown-taxable"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600"
+                                >FBR Income Tax (Yearly)</td
+                            >
+                            <td
+                                id="breakdown-tax-yearly"
+                                class="py-2 text-right font-medium text-red-600"
+                                >PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600"
+                                >FBR Income Tax (Monthly)</td
+                            >
+                            <td
+                                id="breakdown-tax-monthly"
+                                class="py-2 text-right font-medium text-red-600"
+                                >PKR 0</td
+                            >
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="py-3 font-semibold"
+                                >Net Monthly Take-Home</td
+                            >
+                            <td
+                                id="breakdown-net"
+                                class="py-3 text-right font-bold text-green-600 text-lg"
+                                >PKR 0</td
+                            >
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Slab Info -->
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 mb-6">
+                <h3 class="font-semibold mb-2">Your Tax Slab</h3>
+                <p id="slab-info" class="text-sm text-gray-700">—</p>
+            </div>
+
+            <!-- Tax Saving Tips -->
+            <div
+                id="tax-tips"
+                class="hidden bg-yellow-50 p-4 rounded-xl border border-yellow-200 mb-6"
+            >
+                <h3 class="font-semibold mb-2">💡 Tax Saving Tips</h3>
+                <ul class="text-sm text-gray-700 space-y-1 list-disc pl-5">
+                    <li>
+                        Invest in Voluntary Pension Schemes (VPS) to reduce
+                        taxable income
+                    </li>
+                    <li>
+                        Legal Zakat and donations under Section 61 can provide
+                        tax credits
+                    </li>
+                    <li>Keep documentation of all tax-deductible expenses</li>
+                    <li>Consult a tax professional for personalized advice</li>
+                </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap gap-3">
+                <button
+                    id="copy-btn"
+                    class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+                >
+                    Copy Summary
+                </button>
+                <button
+                    id="reset-btn"
+                    class="px-5 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 text-sm font-medium"
+                >
+                    Reset
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-4">
+            About This Salary Tax Calculator
+        </h2>
+        <p class="text-gray-700 mb-4">
+            This free salary tax calculator helps Pakistani salaried individuals
+            calculate their monthly and yearly income tax based on the latest
+            FBR tax slabs for Tax Year 2027 (FY 2026-27). It's accurate, fast,
+            and runs entirely in your browser.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
+        <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+            <li>Enter your monthly gross salary in PKR</li>
+            <li>Select the tax year (currently supports Tax Year 2027)</li>
+            <li>Optionally include EOBI deduction</li>
+            <li>Click "Calculate Tax" to see your breakdown</li>
+        </ol>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>Based on Finance Act 2026 FBR tax slabs</li>
+            <li>Monthly and yearly tax calculation</li>
+            <li>Detailed breakdown of gross, deductions, and net salary</li>
+            <li>EOBI deduction support</li>
+            <li>Copy summary to share on WhatsApp or email</li>
+            <li>100% free, no signup required</li>
+            <li>
+                All calculations run in your browser — your data stays private
+            </li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Frequently Asked Questions
+        </h3>
+        <div class="space-y-4 mt-3">
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Are these tax slabs accurate for 2026-27?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. These slabs are based on the Finance Act 2026 and apply
+                    to salaried individuals for Tax Year 2027 (July 2026 – June
+                    2027).
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Does this calculator include the 9% surcharge?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. The 9% surcharge on salaried individuals has been
+                    abolished in the Finance Act 2026.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Is my salary data stored anywhere?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. All calculations happen in your browser. Your salary
+                    information never leaves your device.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
+                <p class="text-gray-700 mt-1">
+                    Yes, completely free with no signup, no ads clutter, and no
+                    limits.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        import {
+            calculateAnnualTax,
+            formatPKR,
+            EOBI_EMPLOYEE_CONTRIBUTION,
+            salariedSlabs,
+        } from "../../data/tax-data/pakistan-salaried";
+
+        const salaryInput = document.getElementById(
+            "monthly-salary",
+        ) as HTMLInputElement;
+        const eobiCheckbox = document.getElementById(
+            "apply-eobi",
+        ) as HTMLInputElement;
+        const calculateBtn = document.getElementById("calculate-btn")!;
+        const results = document.getElementById("results")!;
+        const copyBtn = document.getElementById("copy-btn")!;
+        const resetBtn = document.getElementById("reset-btn")!;
+
+        let lastCalculation: any = null;
+
+        function calculate() {
+            const monthlyGross = parseFloat(salaryInput.value) || 0;
+            if (monthlyGross <= 0) {
+                alert("Please enter a valid monthly salary.");
+                return;
+            }
+
+            const yearlyGross = monthlyGross * 12;
+            const eobiMonthly = eobiCheckbox.checked
+                ? EOBI_EMPLOYEE_CONTRIBUTION
+                : 0;
+            const eobiYearly = eobiMonthly * 12;
+            const taxableIncome = yearlyGross - eobiYearly;
+
+            const { tax, slab } = calculateAnnualTax(taxableIncome);
+            const monthlyTax = tax / 12;
+            const netMonthly = monthlyGross - monthlyTax - eobiMonthly;
+            const netYearly = netMonthly * 12;
+
+            // Update summary cards
+            document.getElementById("monthly-tax")!.textContent =
+                formatPKR(monthlyTax);
+            document.getElementById("yearly-tax")!.textContent = formatPKR(tax);
+            document.getElementById("monthly-net")!.textContent =
+                formatPKR(netMonthly);
+            document.getElementById("yearly-net")!.textContent =
+                formatPKR(netYearly);
+
+            // Update breakdown
+            document.getElementById("breakdown-gross-monthly")!.textContent =
+                formatPKR(monthlyGross);
+            document.getElementById("breakdown-gross-yearly")!.textContent =
+                formatPKR(yearlyGross);
+            document.getElementById("breakdown-eobi")!.textContent =
+                formatPKR(eobiMonthly);
+            document.getElementById("breakdown-taxable")!.textContent =
+                formatPKR(taxableIncome);
+            document.getElementById("breakdown-tax-yearly")!.textContent =
+                formatPKR(tax);
+            document.getElementById("breakdown-tax-monthly")!.textContent =
+                formatPKR(monthlyTax);
+            document.getElementById("breakdown-net")!.textContent =
+                formatPKR(netMonthly);
+
+            // Slab info
+            if (slab) {
+                document.getElementById("slab-info")!.textContent =
+                    slab.description;
+            }
+
+            // Show/hide tax tips
+            const tips = document.getElementById("tax-tips")!;
+            if (tax > 0) {
+                tips.classList.remove("hidden");
+            } else {
+                tips.classList.add("hidden");
+            }
+
+            results.classList.remove("hidden");
+
+            lastCalculation = {
+                monthlyGross,
+                yearlyGross,
+                eobiMonthly,
+                taxableIncome,
+                tax,
+                monthlyTax,
+                netMonthly,
+                netYearly,
+            };
+        }
+
+        calculateBtn.addEventListener("click", calculate);
+
+        copyBtn.addEventListener("click", () => {
+            if (!lastCalculation) return;
+            const c = lastCalculation;
+            const text = `📊 ToolsVibe Tax Report (FY 2026-27)
+-----------------------------------
+Monthly Gross: ${formatPKR(c.monthlyGross)}
+Yearly Gross: ${formatPKR(c.yearlyGross)}
+EOBI Deduction: ${formatPKR(c.eobiMonthly)}/month
+Taxable Income: ${formatPKR(c.taxableIncome)}
+FBR Tax (Monthly): ${formatPKR(c.monthlyTax)}
+Net Take-Home (Monthly): ${formatPKR(c.netMonthly)}
+
+Calculated via: toolsvibe.online`;
+            navigator.clipboard.writeText(text);
+            copyBtn.textContent = "Copied!";
+            setTimeout(() => (copyBtn.textContent = "Copy Summary"), 2000);
+        });
+
+        resetBtn.addEventListener("click", () => {
+            salaryInput.value = "150000";
+            eobiCheckbox.checked = true;
+            results.classList.add("hidden");
+            lastCalculation = null;
+        });
+
+        // Auto-calculate on load
+        calculate();
+    </script>
+</Layout>
