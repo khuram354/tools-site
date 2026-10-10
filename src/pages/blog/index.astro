@@ -99,7 +99,7 @@ const faqs = [
 ---
 
 <Layout
-    title="Blog — Guides, Tips & Tutorials | ToolsVibe"
+    title="Blog: Word Counter, QR Code & JSON Guides | ToolsVibe"
     description="Read guides, tips, and tutorials about online tools, productivity, word counting, QR codes, JSON, and more."
 >
     <div class="max-w-4xl mx-auto">
@@ -280,4 +280,17 @@ const faqs = [
             });
         });
     </script>
+
+    <!-- Blog Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            name: "ToolsVibe Blog",
+            url: "https://toolsvibe.online/blog",
+            description:
+                "Guides, tips, and tutorials about online tools, productivity, word counting, QR codes, JSON, and more.",
+        })}
+    />
 </Layout>
