@@ -37,6 +37,24 @@ const features = [
     },
 ];
 
+const recentPosts = [
+    {
+        title: "How to Calculate Salary Tax in Pakistan (2026-27 Guide)",
+        href: "/blog/salary-tax-pakistan",
+        date: "October 11, 2026",
+    },
+    {
+        title: "JSON vs XML: What's the Difference? (2026 Guide)",
+        href: "/blog/json-vs-xml",
+        date: "October 10, 2026",
+    },
+    {
+        title: "10 Common JSON Errors and How to Fix Them (2026 Guide)",
+        href: "/blog/common-json-errors",
+        date: "October 9, 2026",
+    },
+];
+
 const faqs = [
     {
         q: "What is ToolsVibe?",
@@ -67,8 +85,10 @@ const faqs = [
             Free Online Tools, <span class="text-blue-600">Made Simple</span>
         </h1>
         <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-            Fast, privacy-friendly tools that work right in your browser. No
-            signup, no clutter, no data collection.
+            ToolsVibe offers free online tools that work right in your browser —
+            no signup, no clutter, no data collection. Whether you need to count
+            words, generate a QR code, format JSON, or calculate your salary tax
+            in Pakistan, our tools are fast, accurate, and completely private.
         </p>
         <div class="flex flex-wrap gap-3 justify-center">
             <a
@@ -184,6 +204,74 @@ const faqs = [
         </div>
     </section>
 
+    <!-- Why ToolsVibe (Long-form) -->
+    <section class="mt-20 max-w-3xl mx-auto">
+        <h2 class="text-2xl font-bold mb-4">Why ToolsVibe?</h2>
+        <p class="text-gray-700 mb-4">
+            Most online tool websites are cluttered with ads, popups, and forced
+            signups. ToolsVibe is different. We built a clean, fast, and
+            privacy-friendly alternative where every tool runs entirely in your
+            browser.
+        </p>
+        <p class="text-gray-700">
+            No accounts, no uploads, no data collection — just tools that work.
+            Whether you're a student, writer, developer, or business owner,
+            you'll find what you need without the usual clutter.
+        </p>
+    </section>
+
+    <!-- Latest from the Blog -->
+    <section class="mt-20 max-w-3xl mx-auto">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold">Latest from the Blog</h2>
+            <a
+                href="/blog"
+                class="text-blue-600 hover:underline text-sm font-medium"
+                >View all →</a
+            >
+        </div>
+        <div class="space-y-3">
+            {
+                recentPosts.map((post) => (
+                    <a
+                        href={post.href}
+                        class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+                    >
+                        <div class="flex items-center justify-between gap-3">
+                            <h3 class="font-medium leading-snug">
+                                {post.title}
+                            </h3>
+                            <span class="text-xs text-gray-500 whitespace-nowrap">
+                                {post.date}
+                            </span>
+                        </div>
+                    </a>
+                ))
+            }
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="mt-20 max-w-3xl mx-auto">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-3">
+            Frequently Asked Questions
+        </h2>
+        <p class="text-gray-600 text-center mb-10">
+            Quick answers to common questions.
+        </p>
+        <div class="space-y-4">
+            {
+                faqs.map((faq) => (
+                    <div class="p-5 bg-white rounded-xl border border-gray-200">
+                        <h3 class="font-semibold mb-2">{faq.q}</h3>
+                        <p class="text-sm text-gray-600">{faq.a}</p>
+                    </div>
+                ))
+            }
+        </div>
+    </section>
+
+    <!-- WebSite Schema -->
     <script
         type="application/ld+json"
         set:html={JSON.stringify({
