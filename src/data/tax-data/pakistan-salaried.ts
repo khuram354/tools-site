@@ -74,8 +74,8 @@ export const salariedSlabs: TaxSlab[] = [
 ];
 
 // Standard deductions (commonly applied)
-export const EOBI_EMPLOYEE_CONTRIBUTION = 370; // PKR per month
-export const EOBI_WAGE_LIMIT = 30000; // PKR per month
+export const EOBI_EMPLOYEE_CONTRIBUTION = 407; // PKR per month
+export const EOBI_WAGE_LIMIT = 40700; // PKR per month (minimum wage, effective July 2026)
 
 // Calculate annual income tax based on annual taxable income
 export function calculateAnnualTax(annualIncome: number): {

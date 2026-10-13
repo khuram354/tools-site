@@ -16,7 +16,16 @@ import Layout from "../../layouts/Layout.astro";
                 Year 2027 (FY 2026-27) slabs.
             </p>
             <p class="text-xs text-gray-500">
-                Last updated: October 10, 2026 · Source: Finance Act 2026
+                Last updated: October 14, 2026 · Source:{" "}
+                <a
+                    href="https://www.fbr.gov.pk/"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 hover:underline"
+                >
+                    Federal Board of Revenue (FBR)
+                </a>{" "}
+                — Finance Act 2026
             </p>
         </header>
 
@@ -70,7 +79,7 @@ import Layout from "../../layouts/Layout.astro";
                         checked
                     />
                     <span
-                        >Include EOBI deduction (PKR 370/month, if applicable)</span
+                        >Include EOBI deduction (PKR 407/month, if applicable)</span
                     >
                 </label>
             </div>
@@ -82,6 +91,12 @@ import Layout from "../../layouts/Layout.astro";
                 Calculate Tax
             </button>
         </section>
+
+        <p class="text-sm text-gray-500 mb-6">
+            <strong>Note:</strong> Ye slabs un logon ke liye hain jinki income ka
+            75% se zyada hissa salary ho. Agar aapki income ka 75% se kam salary hai,
+            to non-salaried slabs apply hongi.
+        </p>
 
         <!-- Results Section -->
         <section id="results" class="hidden">
@@ -325,6 +340,13 @@ import Layout from "../../layouts/Layout.astro";
                     limits.
                 </p>
             </div>
+            <p
+                class="text-xs text-gray-500 mt-6 p-3 bg-gray-50 rounded-lg border border-gray-200"
+            >
+                <strong>Disclaimer:</strong> Ye calculator sirf estimate ke liye hai,
+                tax advice nahi. Final figures ke liye FBR ya certified tax professional
+                se rujoo karein.
+            </p>
         </div>
     </section>
 
@@ -361,7 +383,7 @@ import Layout from "../../layouts/Layout.astro";
                 ? EOBI_EMPLOYEE_CONTRIBUTION
                 : 0;
             const eobiYearly = eobiMonthly * 12;
-            const taxableIncome = yearlyGross - eobiYearly;
+            const taxableIncome = yearlyGross; // EOBI is not income-tax deductible
 
             const { tax, slab } = calculateAnnualTax(taxableIncome);
             const monthlyTax = tax / 12;
