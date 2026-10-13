@@ -1,0 +1,374 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+    title="Image Compressor — Compress JPG, PNG & WebP Online Free"
+    description="Compress JPG, PNG, and WebP images online for free. Reduce image file size without losing quality. No signup, no upload to server — 100% private."
+>
+    <div class="max-w-3xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                Image Compressor
+            </h1>
+            <p class="text-gray-600 mb-2">
+                Compress JPG, PNG, and WebP images right in your browser. No
+                upload, no signup, 100% private.
+            </p>
+            <p class="text-xs text-gray-500">
+                Works entirely in your browser. Your images never leave your
+                device.
+            </p>
+        </header>
+
+        <!-- Upload Section -->
+        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+            <div
+                id="drop-zone"
+                class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition cursor-pointer"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#2563eb"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="mx-auto mb-3"
+                >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <p class="font-medium mb-1">Drop your image here</p>
+                <p class="text-sm text-gray-500">
+                    or click to select (JPG, PNG, WebP)
+                </p>
+                <input
+                    type="file"
+                    id="file-input"
+                    accept="image/jpeg,image/png,image/webp"
+                    class="hidden"
+                />
+            </div>
+
+            <div class="mt-4">
+                <label for="quality" class="block text-sm font-medium mb-2">
+                    Compression Quality: <span id="quality-value">70</span>%
+                </label>
+                <input
+                    type="range"
+                    id="quality"
+                    min="10"
+                    max="100"
+                    value="70"
+                    class="w-full"
+                />
+                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>Smaller file</span>
+                    <span>Better quality</span>
+                </div>
+            </div>
+
+            <button
+                id="compress-btn"
+                class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled
+            >
+                Compress Image
+            </button>
+        </section>
+
+        <!-- Results -->
+        <section id="results" class="hidden">
+            <div class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+                <h2 class="text-xl font-semibold mb-4">Compression Result</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-gray-50 p-4 rounded-lg text-center">
+                        <div class="text-sm text-gray-500 mb-1">
+                            Original Size
+                        </div>
+                        <div
+                            id="original-size"
+                            class="text-lg font-bold text-gray-700"
+                        >
+                            —
+                        </div>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg text-center">
+                        <div class="text-sm text-gray-500 mb-1">
+                            Compressed Size
+                        </div>
+                        <div
+                            id="compressed-size"
+                            class="text-lg font-bold text-green-600"
+                        >
+                            —
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg text-center">
+                        <div class="text-sm text-gray-500 mb-1">Saved</div>
+                        <div
+                            id="saved-percent"
+                            class="text-lg font-bold text-blue-600"
+                        >
+                            —
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm font-medium mb-2">Original</p>
+                        <img
+                            id="preview-original"
+                            class="w-full rounded-lg border border-gray-200"
+                            alt="Original"
+                        />
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium mb-2">Compressed</p>
+                        <img
+                            id="preview-compressed"
+                            class="w-full rounded-lg border border-gray-200"
+                            alt="Compressed"
+                        />
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3 mt-6">
+                    <a
+                        id="download-btn"
+                        class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium transition"
+                        download
+                    >
+                        Download Compressed Image
+                    </a>
+                    <button
+                        id="reset-btn"
+                        class="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-medium transition"
+                    >
+                        Compress Another Image
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-4">About This Image Compressor</h2>
+        <p class="text-gray-700 mb-4">
+            This free online image compressor helps you reduce the file size of
+            JPG, PNG, and WebP images without losing visible quality. It runs
+            entirely in your browser, which means your images are never uploaded
+            to any server.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
+        <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+            <li>
+                Drop your image into the box above, or click to select a file
+            </li>
+            <li>Adjust the compression quality using the slider</li>
+            <li>Click "Compress Image"</li>
+            <li>Compare the original and compressed versions</li>
+            <li>Download the compressed image</li>
+        </ol>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>Supports JPG, PNG, and WebP formats</li>
+            <li>Adjustable compression quality (10–100%)</li>
+            <li>Before/after preview</li>
+            <li>Shows exact file size savings</li>
+            <li>100% client-side — your images never leave your device</li>
+            <li>No signup, no watermarks, completely free</li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Frequently Asked Questions
+        </h3>
+        <div class="space-y-4 mt-3">
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Are my images uploaded to a server?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. All compression happens in your browser using
+                    JavaScript. Your images never leave your device.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    What quality setting should I use?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    For most web images, 70–80% is a good balance between file
+                    size and quality. For photos you plan to print, use 90% or
+                    higher.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Does compression affect image dimensions?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. This tool only reduces file size, not the width or
+                    height of the image. If you need to resize, check back soon
+                    — we're adding a resizer tool.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
+                <p class="text-gray-700 mt-1">
+                    Yes, completely free with no signup, no limits, and no
+                    watermarks.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        import imageCompression from "browser-image-compression";
+
+        const dropZone = document.getElementById("drop-zone") as HTMLDivElement;
+        const fileInput = document.getElementById(
+            "file-input",
+        ) as HTMLInputElement;
+        const qualitySlider = document.getElementById(
+            "quality",
+        ) as HTMLInputElement;
+        const qualityValue = document.getElementById("quality-value")!;
+        const compressBtn = document.getElementById(
+            "compress-btn",
+        ) as HTMLButtonElement;
+        const results = document.getElementById("results")!;
+        const downloadBtn = document.getElementById(
+            "download-btn",
+        ) as HTMLAnchorElement;
+        const resetBtn = document.getElementById("reset-btn")!;
+
+        let selectedFile: File | null = null;
+
+        qualitySlider.addEventListener("input", () => {
+            qualityValue.textContent = qualitySlider.value;
+        });
+
+        dropZone.addEventListener("click", () => fileInput.click());
+
+        dropZone.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropZone.classList.add("border-blue-500", "bg-blue-50");
+        });
+
+        dropZone.addEventListener("dragleave", () => {
+            dropZone.classList.remove("border-blue-500", "bg-blue-50");
+        });
+
+        dropZone.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropZone.classList.remove("border-blue-500", "bg-blue-50");
+            const files = (e as DragEvent).dataTransfer?.files;
+            if (files && files.length > 0) handleFile(files[0]);
+        });
+
+        fileInput.addEventListener("change", () => {
+            if (fileInput.files && fileInput.files.length > 0) {
+                handleFile(fileInput.files[0]);
+            }
+        });
+
+        function handleFile(file: File) {
+            if (!file.type.startsWith("image/")) {
+                alert("Please select an image file (JPG, PNG, or WebP).");
+                return;
+            }
+            if (file.size > 20 * 1024 * 1024) {
+                alert(
+                    "File size too large. Please select an image under 20 MB.",
+                );
+                return;
+            }
+            selectedFile = file;
+            compressBtn.disabled = false;
+            dropZone.querySelector("p")!.textContent = `Selected: ${file.name}`;
+        }
+
+        function formatBytes(bytes: number): string {
+            if (bytes < 1024) return bytes + " B";
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+            return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+        }
+
+        compressBtn.addEventListener("click", async () => {
+            if (!selectedFile) return;
+            compressBtn.disabled = true;
+            compressBtn.textContent = "Compressing...";
+
+            const quality = parseInt(qualitySlider.value) / 100;
+
+            try {
+                const compressedFile = await imageCompression(selectedFile, {
+                    maxSizeMB: 10,
+                    initialQuality: quality,
+                    useWebWorker: true,
+                });
+
+                const originalSize = selectedFile.size;
+                const compressedSize = compressedFile.size;
+                const savedPercent =
+                    ((originalSize - compressedSize) / originalSize) * 100;
+
+                document.getElementById("original-size")!.textContent =
+                    formatBytes(originalSize);
+                document.getElementById("compressed-size")!.textContent =
+                    formatBytes(compressedSize);
+                document.getElementById("saved-percent")!.textContent =
+                    savedPercent.toFixed(1) + "%";
+
+                const originalUrl = URL.createObjectURL(selectedFile);
+                const compressedUrl = URL.createObjectURL(compressedFile);
+                (
+                    document.getElementById(
+                        "preview-original",
+                    ) as HTMLImageElement
+                ).src = originalUrl;
+                (
+                    document.getElementById(
+                        "preview-compressed",
+                    ) as HTMLImageElement
+                ).src = compressedUrl;
+
+                const originalName = selectedFile.name;
+                const ext = originalName.split(".").pop();
+                const baseName = originalName.replace(/\.[^.]+$/, "");
+                downloadBtn.href = compressedUrl;
+                downloadBtn.download = `${baseName}-compressed.${ext}`;
+
+                results.classList.remove("hidden");
+                results.scrollIntoView({ behavior: "smooth" });
+            } catch (err) {
+                alert(
+                    "Compression failed. Please try again with a different image.",
+                );
+            } finally {
+                compressBtn.disabled = false;
+                compressBtn.textContent = "Compress Image";
+            }
+        });
+
+        resetBtn.addEventListener("click", () => {
+            selectedFile = null;
+            fileInput.value = "";
+            results.classList.add("hidden");
+            compressBtn.disabled = true;
+            compressBtn.textContent = "Compress Image";
+            dropZone.querySelector("p")!.textContent = "Drop your image here";
+        });
+    </script>
+</Layout>

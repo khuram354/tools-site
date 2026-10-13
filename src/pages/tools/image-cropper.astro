@@ -1,0 +1,398 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+    title="Image Cropper — Crop JPG, PNG & WebP Online Free"
+    description="Crop JPG, PNG, and WebP images online for free. Custom crop, aspect ratio presets, and instant download. No signup, 100% private."
+>
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">Image Cropper</h1>
+            <p class="text-gray-600 mb-2">
+                Crop JPG, PNG, and WebP images to any size or aspect ratio.
+                Simple drag-to-crop, presets, and instant download.
+            </p>
+            <p class="text-xs text-gray-500">
+                Works entirely in your browser. Your images never leave your
+                device.
+            </p>
+        </header>
+
+        <!-- Upload Section -->
+        <section
+            id="upload-section"
+            class="bg-white p-6 rounded-xl border border-gray-200 mb-6"
+        >
+            <div
+                id="drop-zone"
+                class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition cursor-pointer"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#2563eb"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="mx-auto mb-3"
+                >
+                    <path d="M6.13 1L6 16a2 2 0 0 0 2 2h15"></path>
+                    <path d="M1 6.13L16 6a2 2 0 0 1 2 2v15"></path>
+                </svg>
+                <p class="font-medium mb-1">Drop your image here</p>
+                <p class="text-sm text-gray-500">
+                    or click to select (JPG, PNG, WebP)
+                </p>
+                <input
+                    type="file"
+                    id="file-input"
+                    accept="image/jpeg,image/png,image/webp"
+                    class="hidden"
+                />
+            </div>
+        </section>
+
+        <!-- Crop Section -->
+        <section id="crop-section" class="hidden">
+            <div class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+                <h2 class="text-xl font-semibold mb-4">Crop Your Image</h2>
+
+                <!-- Presets -->
+                <div class="mb-4">
+                    <p class="text-sm font-medium mb-2">Aspect Ratio:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button
+                            data-ratio="free"
+                            class="ratio-btn px-3 py-2 text-sm font-medium bg-blue-600 text-white border border-blue-600 rounded-lg transition"
+                            >Free</button
+                        >
+                        <button
+                            data-ratio="1"
+                            class="ratio-btn px-3 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 hover:border-blue-400 transition"
+                            >1:1</button
+                        >
+                        <button
+                            data-ratio="1.7777"
+                            class="ratio-btn px-3 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 hover:border-blue-400 transition"
+                            >16:9</button
+                        >
+                        <button
+                            data-ratio="1.3333"
+                            class="ratio-btn px-3 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 hover:border-blue-400 transition"
+                            >4:3</button
+                        >
+                        <button
+                            data-ratio="0.8"
+                            class="ratio-btn px-3 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 hover:border-blue-400 transition"
+                            >4:5</button
+                        >
+                        <button
+                            data-ratio="0.5625"
+                            class="ratio-btn px-3 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 hover:border-blue-400 transition"
+                            >9:16</button
+                        >
+                    </div>
+                </div>
+
+                <!-- Crop Area -->
+                <div class="bg-gray-100 rounded-lg p-4 overflow-hidden">
+                    <img
+                        id="crop-image"
+                        alt="Image to crop"
+                        style="max-width: 100%; display: block;"
+                    />
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-3 mt-6">
+                    <button
+                        id="crop-btn"
+                        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
+                    >
+                        Crop & Download
+                    </button>
+                    <button
+                        id="reset-btn"
+                        class="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-medium transition"
+                    >
+                        Choose Another Image
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Result -->
+        <section id="result-section" class="hidden">
+            <div class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+                <h2 class="text-xl font-semibold mb-4">Cropped Result</h2>
+
+                <div class="bg-gray-100 rounded-lg p-4 mb-4">
+                    <img
+                        id="result-image"
+                        alt="Cropped result"
+                        class="w-full rounded-lg"
+                    />
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                    <a
+                        id="download-link"
+                        class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium transition"
+                        download
+                    >
+                        Download Cropped Image
+                    </a>
+                    <button
+                        id="crop-again-btn"
+                        class="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-medium transition"
+                    >
+                        Crop Again
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-4">About This Image Cropper</h2>
+        <p class="text-gray-700 mb-4">
+            This free online image cropper lets you trim JPG, PNG, and WebP
+            images to the perfect size. It runs entirely in your browser — your
+            images never leave your device.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
+        <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+            <li>
+                Drop your image into the box above, or click to select a file
+            </li>
+            <li>Choose an aspect ratio or keep it free</li>
+            <li>Drag the crop box to select the area you want to keep</li>
+            <li>Click "Crop & Download"</li>
+            <li>Download the cropped image</li>
+        </ol>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>Supports JPG, PNG, and WebP formats</li>
+            <li>Aspect ratio presets (1:1, 16:9, 4:3, 4:5, 9:16)</li>
+            <li>Free-form cropping</li>
+            <li>Drag, resize, and reposition the crop box</li>
+            <li>100% client-side — your images never leave your device</li>
+            <li>No signup, no watermarks, completely free</li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Frequently Asked Questions
+        </h3>
+        <div class="space-y-4 mt-3">
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Are my images uploaded to a server?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. All cropping happens in your browser using JavaScript.
+                    Your images never leave your device.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    What's the best aspect ratio for Instagram?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Instagram posts use 1:1 (square) or 4:5 (portrait). Stories
+                    and Reels use 9:16. Use the presets above to crop to these
+                    ratios.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Does cropping affect image quality?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. Cropping removes pixels outside the crop area but
+                    doesn't change the quality of the pixels that remain.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
+                <p class="text-gray-700 mt-1">
+                    Yes, completely free with no signup, no limits, and no
+                    watermarks.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        import Cropper from "cropperjs";
+        import "cropperjs/dist/cropper.css";
+
+        const uploadSection = document.getElementById("upload-section")!;
+        const cropSection = document.getElementById("crop-section")!;
+        const resultSection = document.getElementById("result-section")!;
+        const dropZone = document.getElementById("drop-zone") as HTMLDivElement;
+        const fileInput = document.getElementById(
+            "file-input",
+        ) as HTMLInputElement;
+        const cropImage = document.getElementById(
+            "crop-image",
+        ) as HTMLImageElement;
+        const cropBtn = document.getElementById("crop-btn")!;
+        const resetBtn = document.getElementById("reset-btn")!;
+        const cropAgainBtn = document.getElementById("crop-again-btn")!;
+        const downloadLink = document.getElementById(
+            "download-link",
+        ) as HTMLAnchorElement;
+        const resultImage = document.getElementById(
+            "result-image",
+        ) as HTMLImageElement;
+        const ratioBtns =
+            document.querySelectorAll<HTMLButtonElement>(".ratio-btn");
+
+        let cropper: Cropper | null = null;
+        let currentFileName = "image";
+
+        dropZone.addEventListener("click", () => fileInput.click());
+
+        dropZone.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropZone.classList.add("border-blue-500", "bg-blue-50");
+        });
+
+        dropZone.addEventListener("dragleave", () => {
+            dropZone.classList.remove("border-blue-500", "bg-blue-50");
+        });
+
+        dropZone.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropZone.classList.remove("border-blue-500", "bg-blue-50");
+            const files = (e as DragEvent).dataTransfer?.files;
+            if (files && files.length > 0) handleFile(files[0]);
+        });
+
+        fileInput.addEventListener("change", () => {
+            if (fileInput.files && fileInput.files.length > 0) {
+                handleFile(fileInput.files[0]);
+            }
+        });
+
+        function handleFile(file: File) {
+            if (!file.type.startsWith("image/")) {
+                alert("Please select an image file (JPG, PNG, or WebP).");
+                return;
+            }
+            if (file.size > 20 * 1024 * 1024) {
+                alert(
+                    "File size too large. Please select an image under 20 MB.",
+                );
+                return;
+            }
+
+            currentFileName = file.name.replace(/\.[^.]+$/, "");
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                cropImage.src = e.target?.result as string;
+
+                uploadSection.classList.add("hidden");
+                resultSection.classList.add("hidden");
+                cropSection.classList.remove("hidden");
+
+                if (cropper) cropper.destroy();
+                cropper = new Cropper(cropImage, {
+                    viewMode: 1,
+                    dragMode: "move",
+                    autoCropArea: 0.8,
+                    background: false,
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        ratioBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                ratioBtns.forEach((b) => {
+                    b.classList.remove(
+                        "bg-blue-600",
+                        "text-white",
+                        "border-blue-600",
+                    );
+                    b.classList.add(
+                        "bg-white",
+                        "text-gray-700",
+                        "border-gray-300",
+                    );
+                });
+                btn.classList.remove(
+                    "bg-white",
+                    "text-gray-700",
+                    "border-gray-300",
+                );
+                btn.classList.add(
+                    "bg-blue-600",
+                    "text-white",
+                    "border-blue-600",
+                );
+
+                if (!cropper) return;
+                const ratio = btn.dataset.ratio!;
+                if (ratio === "free") {
+                    cropper.setAspectRatio(NaN);
+                } else {
+                    cropper.setAspectRatio(parseFloat(ratio));
+                }
+            });
+        });
+
+        cropBtn.addEventListener("click", () => {
+            if (!cropper) return;
+            const canvas = cropper.getCroppedCanvas({
+                maxWidth: 4096,
+                maxHeight: 4096,
+                imageSmoothingQuality: "high",
+            });
+            if (!canvas) return;
+
+            canvas.toBlob((blob) => {
+                if (!blob) return;
+                const url = URL.createObjectURL(blob);
+                resultImage.src = url;
+                downloadLink.href = url;
+                downloadLink.download = `${currentFileName}-cropped.png`;
+
+                cropSection.classList.add("hidden");
+                resultSection.classList.remove("hidden");
+                resultSection.scrollIntoView({ behavior: "smooth" });
+            }, "image/png");
+        });
+
+        resetBtn.addEventListener("click", () => {
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+            fileInput.value = "";
+            cropSection.classList.add("hidden");
+            resultSection.classList.add("hidden");
+            uploadSection.classList.remove("hidden");
+        });
+
+        cropAgainBtn.addEventListener("click", () => {
+            resultSection.classList.add("hidden");
+            cropSection.classList.remove("hidden");
+            if (cropper) cropper.destroy();
+            cropper = new Cropper(cropImage, {
+                viewMode: 1,
+                dragMode: "move",
+                autoCropArea: 0.8,
+                background: false,
+            });
+        });
+    </script>
+</Layout>
