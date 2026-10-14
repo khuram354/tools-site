@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getLatestPosts } from "../data/blog-data/blog-posts";
 
 const tools = [
     {
@@ -37,23 +38,7 @@ const features = [
     },
 ];
 
-const recentPosts = [
-    {
-        title: "How to Calculate Salary Tax in Pakistan (2026-27 Guide)",
-        href: "/blog/salary-tax-pakistan",
-        date: "October 11, 2026",
-    },
-    {
-        title: "JSON vs XML: What's the Difference? (2026 Guide)",
-        href: "/blog/json-vs-xml",
-        date: "October 10, 2026",
-    },
-    {
-        title: "10 Common JSON Errors and How to Fix Them (2026 Guide)",
-        href: "/blog/common-json-errors",
-        date: "October 9, 2026",
-    },
-];
+const recentPosts = getLatestPosts(3);
 
 const faqs = [
     {
@@ -77,7 +62,7 @@ const faqs = [
 
 <Layout
     title="Free Online Tools: Word Counter, QR Code & JSON Formatter"
-    description="Free, fast, and privacy-friendly online tools. Word counter, QR code generator, JSON formatter, and more. No signup required."
+    description="Free, fast, and privacy-friendly online tools. Word counter, QR code generator, JSON formatter, salary tax calculator, and image tools. No signup required."
 >
     <!-- Hero Section -->
     <section class="text-center py-16">
@@ -111,6 +96,38 @@ const faqs = [
             <span class="flex items-center gap-1">✓ No Signup</span>
             <span class="flex items-center gap-1">✓ Privacy First</span>
         </div>
+    </section>
+
+    <!-- Quick Links to All Tools -->
+    <section class="mt-8 text-center">
+        <p class="text-sm text-gray-500">
+            Also try:{" "}
+            <a
+                href="/tools/salary-tax-calculator"
+                class="text-blue-600 hover:underline font-medium"
+                >Salary Tax Calculator</a
+            >,{" "}
+            <a
+                href="/tools/image-compressor"
+                class="text-blue-600 hover:underline font-medium"
+                >Image Compressor</a
+            >,{" "}
+            <a
+                href="/tools/image-resizer"
+                class="text-blue-600 hover:underline font-medium"
+                >Image Resizer</a
+            >,{" "}
+            <a
+                href="/tools/image-cropper"
+                class="text-blue-600 hover:underline font-medium"
+                >Image Cropper</a
+            >,{" "}
+            <a
+                href="/tools/image-converter"
+                class="text-blue-600 hover:underline font-medium"
+                >Image Converter</a
+            >
+        </p>
     </section>
 
     <!-- Tools Section -->
@@ -280,12 +297,7 @@ const faqs = [
             name: "ToolsVibe",
             url: "https://toolsvibe.online",
             description:
-                "Free, fast, and privacy-friendly online tools. Word counter, QR code generator, JSON formatter, and more.",
-            potentialAction: {
-                "@type": "SearchAction",
-                target: "https://toolsvibe.online/blog?q={search_term_string}",
-                "query-input": "required name=search_term_string",
-            },
+                "Free, fast, and privacy-friendly online tools. Word counter, QR code generator, JSON formatter, salary tax calculator, and image tools.",
         })}
     />
 </Layout>
