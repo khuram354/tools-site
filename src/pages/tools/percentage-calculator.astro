@@ -1,0 +1,291 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+    title="Percentage Calculator — Solve Percentage Problems Free"
+    description="Free online percentage calculator. Solve X% of Y, percentage increase/decrease, discounts, and more. Instant results, no signup."
+>
+    <div class="max-w-3xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                Percentage Calculator
+            </h1>
+            <p class="text-gray-600 mb-2">
+                Solve every percentage problem: X% of Y, percentage change,
+                discounts, and more.
+            </p>
+            <p class="text-xs text-gray-500">
+                Works entirely in your browser. No data sent to any server.
+            </p>
+        </header>
+
+        <!-- Calculator 1: X% of Y -->
+        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-4">
+            <h2 class="text-lg font-semibold mb-4">What is X% of Y?</h2>
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="text-gray-700">What is</span>
+                <input
+                    type="number"
+                    id="c1-x"
+                    value="15"
+                    class="w-24 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-gray-700">% of</span>
+                <input
+                    type="number"
+                    id="c1-y"
+                    value="200"
+                    class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-gray-700">?</span>
+            </div>
+            <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p class="text-sm text-gray-600 mb-1">Result</p>
+                <p id="c1-result" class="text-2xl font-bold text-blue-700">
+                    30
+                </p>
+            </div>
+        </section>
+
+        <!-- Calculator 2: X is what % of Y -->
+        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-4">
+            <h2 class="text-lg font-semibold mb-4">X is what percent of Y?</h2>
+            <div class="flex flex-wrap items-center gap-3">
+                <input
+                    type="number"
+                    id="c2-x"
+                    value="30"
+                    class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-gray-700">is what percent of</span>
+                <input
+                    type="number"
+                    id="c2-y"
+                    value="200"
+                    class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-gray-700">?</span>
+            </div>
+            <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p class="text-sm text-gray-600 mb-1">Result</p>
+                <p id="c2-result" class="text-2xl font-bold text-blue-700">
+                    15%
+                </p>
+            </div>
+        </section>
+
+        <!-- Calculator 3: Percentage Increase/Decrease -->
+        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-4">
+            <h2 class="text-lg font-semibold mb-4">
+                Percentage Increase / Decrease
+            </h2>
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="text-gray-700">From</span>
+                <input
+                    type="number"
+                    id="c3-from"
+                    value="100"
+                    class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-gray-700">to</span>
+                <input
+                    type="number"
+                    id="c3-to"
+                    value="150"
+                    class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+            </div>
+            <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p class="text-sm text-gray-600 mb-1">Change</p>
+                <p id="c3-result" class="text-2xl font-bold text-blue-700">
+                    +50%
+                </p>
+            </div>
+        </section>
+
+        <!-- Calculator 4: Discount -->
+        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-4">
+            <h2 class="text-lg font-semibold mb-4">Discount Calculator</h2>
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="text-gray-700">Original price</span>
+                <input
+                    type="number"
+                    id="c4-price"
+                    value="1000"
+                    class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-gray-700">with</span>
+                <input
+                    type="number"
+                    id="c4-discount"
+                    value="20"
+                    class="w-24 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-gray-700">% off</span>
+            </div>
+            <div class="mt-4 grid grid-cols-2 gap-3">
+                <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p class="text-sm text-gray-600 mb-1">Final Price</p>
+                    <p id="c4-final" class="text-xl font-bold text-green-700">
+                        800
+                    </p>
+                </div>
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="text-sm text-gray-600 mb-1">You Save</p>
+                    <p id="c4-saved" class="text-xl font-bold text-red-700">
+                        200
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-4">
+            About This Percentage Calculator
+        </h2>
+        <p class="text-gray-700 mb-4">
+            This free percentage calculator handles the four most common
+            percentage problems: finding X% of Y, calculating what percent X is
+            of Y, percentage increase/decrease, and discount calculations. All
+            results update instantly as you type.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">The Four Calculators</h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li><strong>What is X% of Y:</strong> Find 15% of 200 = 30</li>
+            <li>
+                <strong>X is what % of Y:</strong> 30 is what percent of 200 = 15%
+            </li>
+            <li>
+                <strong>Percentage Change:</strong> From 100 to 150 = +50% increase
+            </li>
+            <li>
+                <strong>Discount:</strong> 20% off 1000 = 800 (you save 200)
+            </li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Common Percentage Formulas
+        </h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>X% of Y = (X ÷ 100) × Y</li>
+            <li>X is what % of Y = (X ÷ Y) × 100</li>
+            <li>Percentage change = ((New − Old) ÷ Old) × 100</li>
+            <li>Final price = Original × (1 − Discount ÷ 100)</li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Frequently Asked Questions
+        </h3>
+        <div class="space-y-4 mt-3">
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    What's the difference between percentage and percent?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    They mean the same thing. "Percent" (per cent) literally
+                    means "per hundred." "Percentage" is the noun form — e.g.
+                    "calculate the percentage."
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    How do I calculate percentage increase?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Subtract the original value from the new value, divide by
+                    the original value, then multiply by 100. Example: 100 → 150
+                    gives (50 ÷ 100) × 100 = 50% increase.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
+                <p class="text-gray-700 mt-1">
+                    Yes, completely free with no signup, no limits, and no
+                    watermarks.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const c1x = document.getElementById("c1-x") as HTMLInputElement;
+        const c1y = document.getElementById("c1-y") as HTMLInputElement;
+        const c1Result = document.getElementById("c1-result")!;
+
+        const c2x = document.getElementById("c2-x") as HTMLInputElement;
+        const c2y = document.getElementById("c2-y") as HTMLInputElement;
+        const c2Result = document.getElementById("c2-result")!;
+
+        const c3From = document.getElementById("c3-from") as HTMLInputElement;
+        const c3To = document.getElementById("c3-to") as HTMLInputElement;
+        const c3Result = document.getElementById("c3-result")!;
+
+        const c4Price = document.getElementById("c4-price") as HTMLInputElement;
+        const c4Discount = document.getElementById(
+            "c4-discount",
+        ) as HTMLInputElement;
+        const c4Final = document.getElementById("c4-final")!;
+        const c4Saved = document.getElementById("c4-saved")!;
+
+        function format(num: number): string {
+            if (!isFinite(num)) return "—";
+            return num.toLocaleString("en-US", { maximumFractionDigits: 4 });
+        }
+
+        function calc1() {
+            const x = parseFloat(c1x.value) || 0;
+            const y = parseFloat(c1y.value) || 0;
+            c1Result.textContent = format((x / 100) * y);
+        }
+
+        function calc2() {
+            const x = parseFloat(c2x.value) || 0;
+            const y = parseFloat(c2y.value) || 0;
+            if (y === 0) {
+                c2Result.textContent = "—";
+                return;
+            }
+            c2Result.textContent = format((x / y) * 100) + "%";
+        }
+
+        function calc3() {
+            const from = parseFloat(c3From.value) || 0;
+            const to = parseFloat(c3To.value) || 0;
+            if (from === 0) {
+                c3Result.textContent = "—";
+                return;
+            }
+            const change = ((to - from) / from) * 100;
+            const sign = change > 0 ? "+" : "";
+            c3Result.textContent = sign + format(change) + "%";
+            c3Result.className =
+                "text-2xl font-bold " +
+                (change >= 0 ? "text-green-600" : "text-red-600");
+        }
+
+        function calc4() {
+            const price = parseFloat(c4Price.value) || 0;
+            const discount = parseFloat(c4Discount.value) || 0;
+            const saved = (price * discount) / 100;
+            const final = price - saved;
+            c4Final.textContent = format(final);
+            c4Saved.textContent = format(saved);
+        }
+
+        [c1x, c1y].forEach((el) => el.addEventListener("input", calc1));
+        [c2x, c2y].forEach((el) => el.addEventListener("input", calc2));
+        [c3From, c3To].forEach((el) => el.addEventListener("input", calc3));
+        [c4Price, c4Discount].forEach((el) =>
+            el.addEventListener("input", calc4),
+        );
+
+        calc1();
+        calc2();
+        calc3();
+        calc4();
+    </script>
+</Layout>

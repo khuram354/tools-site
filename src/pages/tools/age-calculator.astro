@@ -1,0 +1,319 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+    title="Age Calculator — Find Your Exact Age in Years, Months & Days"
+    description="Calculate your exact age in years, months, days, hours, and minutes. Free online age calculator with next birthday countdown."
+>
+    <div class="max-w-3xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">Age Calculator</h1>
+            <p class="text-gray-600 mb-2">
+                Find your exact age in years, months, days — plus hours,
+                minutes, and your next birthday countdown.
+            </p>
+            <p class="text-xs text-gray-500">
+                Works entirely in your browser. Your date of birth is never sent
+                to a server.
+            </p>
+        </header>
+
+        <!-- Input Section -->
+        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="dob" class="block text-sm font-medium mb-2"
+                        >Date of Birth</label
+                    >
+                    <input
+                        type="date"
+                        id="dob"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+                <div>
+                    <label
+                        for="calc-date"
+                        class="block text-sm font-medium mb-2"
+                        >Age at Date (default: today)</label
+                    >
+                    <input
+                        type="date"
+                        id="calc-date"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+            </div>
+
+            <button
+                id="calculate-btn"
+                class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
+            >
+                Calculate Age
+            </button>
+        </section>
+
+        <!-- Results -->
+        <section id="results" class="hidden">
+            <!-- Main Result -->
+            <div
+                class="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-6 text-center"
+            >
+                <p class="text-sm text-gray-600 mb-2">Your Age</p>
+                <p id="age-main" class="text-4xl font-bold text-blue-700 mb-2">
+                    —
+                </p>
+                <p id="age-sub" class="text-sm text-gray-600">—</p>
+            </div>
+
+            <!-- Detailed Breakdown -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div id="years" class="text-2xl font-bold text-gray-800">
+                        —
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Years</div>
+                </div>
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div id="months" class="text-2xl font-bold text-gray-800">
+                        —
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Months</div>
+                </div>
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div id="days" class="text-2xl font-bold text-gray-800">
+                        —
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Days</div>
+                </div>
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div
+                        id="total-days"
+                        class="text-xl font-bold text-gray-800"
+                    >
+                        —
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Total Days</div>
+                </div>
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div
+                        id="total-hours"
+                        class="text-xl font-bold text-gray-800"
+                    >
+                        —
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Total Hours</div>
+                </div>
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div
+                        id="total-minutes"
+                        class="text-xl font-bold text-gray-800"
+                    >
+                        —
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Total Minutes</div>
+                </div>
+            </div>
+
+            <!-- Next Birthday -->
+            <div class="bg-green-50 border border-green-200 p-6 rounded-xl">
+                <h2 class="text-lg font-semibold mb-3">Next Birthday</h2>
+                <p id="next-birthday" class="text-sm text-gray-700 mb-2">—</p>
+                <p id="next-birthday-day" class="text-sm text-gray-700">—</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-4">About This Age Calculator</h2>
+        <p class="text-gray-700 mb-4">
+            This free age calculator tells you your exact age in years, months,
+            days, hours, and minutes. It also shows your next birthday
+            countdown. Runs entirely in your browser — no data is sent anywhere.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
+        <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+            <li>Enter your date of birth</li>
+            <li>
+                (Optional) Change the calculation date — useful for finding your
+                age on a specific date
+            </li>
+            <li>Click "Calculate Age"</li>
+            <li>
+                See your exact age, total days, hours, minutes, and next
+                birthday countdown
+            </li>
+        </ol>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>Exact age in years, months, and days</li>
+            <li>Total days, hours, and minutes lived</li>
+            <li>Next birthday countdown with day of week</li>
+            <li>Custom calculation date (for historical or future dates)</li>
+            <li>100% client-side — your data never leaves your device</li>
+            <li>No signup, no limits, completely free</li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Frequently Asked Questions
+        </h3>
+        <div class="space-y-4 mt-3">
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    How is age calculated?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Age is calculated using the standard international method:
+                    full years first, then remaining months, then remaining
+                    days. This is the same method used for official documents.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Does this account for leap years?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. Leap years are automatically handled, so your age will
+                    be accurate even if you were born on February 29.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Is my date of birth saved?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. All calculations happen in your browser. Your date of
+                    birth is never sent to any server or stored anywhere.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
+                <p class="text-gray-700 mt-1">
+                    Yes, completely free with no signup, no limits, and no
+                    watermarks.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const dobInput = document.getElementById("dob") as HTMLInputElement;
+        const calcDateInput = document.getElementById(
+            "calc-date",
+        ) as HTMLInputElement;
+        const calculateBtn = document.getElementById("calculate-btn")!;
+        const results = document.getElementById("results")!;
+
+        const today = new Date();
+        calcDateInput.value = today.toISOString().split("T")[0];
+
+        function calculateAge() {
+            if (!dobInput.value) {
+                alert("Please enter your date of birth.");
+                return;
+            }
+
+            const dob = new Date(dobInput.value);
+            const calcDate = calcDateInput.value
+                ? new Date(calcDateInput.value)
+                : new Date();
+
+            if (dob > calcDate) {
+                alert("Date of birth cannot be after the calculation date.");
+                return;
+            }
+
+            // Exact years, months, days
+            let years = calcDate.getFullYear() - dob.getFullYear();
+            let months = calcDate.getMonth() - dob.getMonth();
+            let days = calcDate.getDate() - dob.getDate();
+
+            if (days < 0) {
+                months--;
+                const prevMonth = new Date(
+                    calcDate.getFullYear(),
+                    calcDate.getMonth(),
+                    0,
+                );
+                days += prevMonth.getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Total days/hours/minutes
+            const msPerDay = 1000 * 60 * 60 * 24;
+            const totalDays = Math.floor(
+                (calcDate.getTime() - dob.getTime()) / msPerDay,
+            );
+            const totalHours = totalDays * 24;
+            const totalMinutes = totalHours * 60;
+
+            // Update UI
+            document.getElementById("age-main")!.textContent =
+                `${years} years, ${months} months, ${days} days`;
+            document.getElementById("age-sub")!.textContent =
+                `Calculated on ${calcDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`;
+
+            document.getElementById("years")!.textContent = years.toString();
+            document.getElementById("months")!.textContent = months.toString();
+            document.getElementById("days")!.textContent = days.toString();
+            document.getElementById("total-days")!.textContent =
+                totalDays.toLocaleString();
+            document.getElementById("total-hours")!.textContent =
+                totalHours.toLocaleString();
+            document.getElementById("total-minutes")!.textContent =
+                totalMinutes.toLocaleString();
+
+            // Next birthday
+            const nextBday = new Date(
+                calcDate.getFullYear(),
+                dob.getMonth(),
+                dob.getDate(),
+            );
+            if (nextBday < calcDate) {
+                nextBday.setFullYear(calcDate.getFullYear() + 1);
+            }
+            const daysUntil = Math.ceil(
+                (nextBday.getTime() - calcDate.getTime()) / msPerDay,
+            );
+            const dayName = nextBday.toLocaleDateString("en-US", {
+                weekday: "long",
+            });
+            const dateStr = nextBday.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            });
+
+            document.getElementById("next-birthday")!.textContent =
+                daysUntil === 0
+                    ? `🎉 Today is your birthday!`
+                    : `${daysUntil} day${daysUntil === 1 ? "" : "s"} until your next birthday`;
+            document.getElementById("next-birthday-day")!.textContent =
+                daysUntil === 0 ? `—` : `Falls on ${dateStr} (${dayName})`;
+
+            results.classList.remove("hidden");
+            results.scrollIntoView({ behavior: "smooth" });
+        }
+
+        calculateBtn.addEventListener("click", calculateAge);
+    </script>
+</Layout>

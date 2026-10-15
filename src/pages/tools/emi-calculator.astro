@@ -1,0 +1,421 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+    title="EMI Calculator — Loan EMI, Interest & Payment Calculator"
+    description="Calculate loan EMI, total interest, and total payment. Free EMI calculator for home loans, car loans, and personal loans in Pakistan."
+>
+    <div class="max-w-3xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">EMI Calculator</h1>
+            <p class="text-gray-600 mb-2">
+                Calculate your monthly loan EMI, total interest, and total
+                payment. Works for home loans, car loans, and personal loans.
+            </p>
+            <p class="text-xs text-gray-500">
+                Works entirely in your browser. Your financial data never leaves
+                your device.
+            </p>
+        </header>
+
+        <!-- Input Section -->
+        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+            <div class="space-y-5">
+                <div>
+                    <label
+                        for="loan-amount"
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Loan Amount (PKR)
+                    </label>
+                    <input
+                        type="number"
+                        id="loan-amount"
+                        value="2000000"
+                        min="0"
+                        step="10000"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <div class="flex gap-2 mt-2">
+                        <button
+                            data-amount="500000"
+                            class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
+                            >5 Lakh</button
+                        >
+                        <button
+                            data-amount="1000000"
+                            class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
+                            >10 Lakh</button
+                        >
+                        <button
+                            data-amount="2000000"
+                            class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
+                            >20 Lakh</button
+                        >
+                        <button
+                            data-amount="5000000"
+                            class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
+                            >50 Lakh</button
+                        >
+                        <button
+                            data-amount="10000000"
+                            class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
+                            >1 Crore</button
+                        >
+                    </div>
+                </div>
+
+                <div>
+                    <label
+                        for="interest-rate"
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Annual Interest Rate (%)
+                    </label>
+                    <input
+                        type="number"
+                        id="interest-rate"
+                        value="12"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                <div>
+                    <label
+                        for="tenure-years"
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Loan Tenure: <span id="tenure-value">5</span> years
+                    </label>
+                    <input
+                        type="range"
+                        id="tenure-years"
+                        min="1"
+                        max="30"
+                        value="5"
+                        class="w-full"
+                    />
+                    <div
+                        class="flex justify-between text-xs text-gray-500 mt-1"
+                    >
+                        <span>1 year</span>
+                        <span>30 years</span>
+                    </div>
+                </div>
+
+                <button
+                    id="calculate-btn"
+                    class="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
+                >
+                    Calculate EMI
+                </button>
+            </div>
+        </section>
+
+        <!-- Results -->
+        <section id="results" class="hidden">
+            <!-- Main EMI -->
+            <div
+                class="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-6 text-center"
+            >
+                <p class="text-sm text-gray-600 mb-2">Monthly EMI</p>
+                <p id="emi-result" class="text-4xl font-bold text-blue-700">
+                    PKR 0
+                </p>
+                <p id="emi-sub" class="text-sm text-gray-600 mt-2">—</p>
+            </div>
+
+            <!-- Breakdown -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div class="text-xs text-gray-500 mb-1">Principal</div>
+                    <div id="principal" class="text-lg font-bold text-gray-700">
+                        —
+                    </div>
+                </div>
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div class="text-xs text-gray-500 mb-1">Total Interest</div>
+                    <div
+                        id="total-interest"
+                        class="text-lg font-bold text-red-600"
+                    >
+                        —
+                    </div>
+                </div>
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
+                >
+                    <div class="text-xs text-gray-500 mb-1">Total Payment</div>
+                    <div
+                        id="total-payment"
+                        class="text-lg font-bold text-blue-700"
+                    >
+                        —
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Bar -->
+            <div class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+                <h3 class="text-lg font-semibold mb-4">
+                    Principal vs Interest
+                </h3>
+                <div class="h-8 rounded-lg overflow-hidden flex">
+                    <div
+                        id="principal-bar"
+                        class="bg-blue-500 transition-all duration-500"
+                        style="width: 0%"
+                    >
+                    </div>
+                    <div
+                        id="interest-bar"
+                        class="bg-red-500 transition-all duration-500"
+                        style="width: 0%"
+                    >
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-4 mt-3 text-xs">
+                    <span class="flex items-center gap-1"
+                        ><span class="w-3 h-3 bg-blue-500 rounded"></span> Principal</span
+                    >
+                    <span class="flex items-center gap-1"
+                        ><span class="w-3 h-3 bg-red-500 rounded"></span> Interest</span
+                    >
+                </div>
+            </div>
+
+            <!-- Yearly Breakdown Table -->
+            <div class="bg-white p-6 rounded-xl border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4">Yearly Breakdown</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left p-2 font-semibold">Year</th
+                                >
+                                <th class="text-right p-2 font-semibold"
+                                    >Principal Paid</th
+                                >
+                                <th class="text-right p-2 font-semibold"
+                                    >Interest Paid</th
+                                >
+                                <th class="text-right p-2 font-semibold"
+                                    >Balance</th
+                                >
+                            </tr>
+                        </thead>
+                        <tbody id="yearly-table"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-4">About This EMI Calculator</h2>
+        <p class="text-gray-700 mb-4">
+            This free EMI calculator helps you estimate your monthly loan
+            payment (EMI), total interest, and total amount payable. It works
+            for home loans, car loans, personal loans, and any other type of
+            amortized loan.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">What is EMI?</h3>
+        <p class="text-gray-700 mb-4">
+            EMI stands for Equated Monthly Installment. It's the fixed amount
+            you pay to your lender every month until the loan is fully repaid.
+            Each EMI includes both principal and interest.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">EMI Formula</h3>
+        <p class="text-gray-700 mb-4">The standard EMI formula is:</p>
+        <p
+            class="text-gray-700 mb-4 p-3 bg-gray-50 rounded-lg font-mono text-sm"
+        >
+            EMI = P × r × (1+r)ⁿ ÷ ((1+r)ⁿ − 1)
+        </p>
+        <p class="text-gray-700 mb-4">
+            Where:<br />
+            <strong>P</strong> = Principal loan amount<br />
+            <strong>r</strong> = Monthly interest rate (annual rate ÷ 12 ÷ 100)<br
+            />
+            <strong>n</strong> = Total number of monthly installments
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Frequently Asked Questions
+        </h3>
+        <div class="space-y-4 mt-3">
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    What interest rate should I use?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Use the rate quoted by your bank. In Pakistan, home loans
+                    typically range from 10-25% and car loans from 12-30%
+                    depending on the bank and your profile.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Does a longer tenure reduce my EMI?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes, a longer tenure reduces your monthly EMI but increases
+                    the total interest you pay over the life of the loan.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Is this EMI calculator accurate?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. It uses the standard EMI formula used by banks
+                    worldwide. Real-world figures may vary slightly due to
+                    processing fees, insurance, and other charges.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Is my financial data safe?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. All calculations happen in your browser. Your loan
+                    amount, interest rate, and tenure are never sent to any
+                    server.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const loanAmount = document.getElementById(
+            "loan-amount",
+        ) as HTMLInputElement;
+        const interestRate = document.getElementById(
+            "interest-rate",
+        ) as HTMLInputElement;
+        const tenureYears = document.getElementById(
+            "tenure-years",
+        ) as HTMLInputElement;
+        const tenureValue = document.getElementById("tenure-value")!;
+        const calculateBtn = document.getElementById("calculate-btn")!;
+        const results = document.getElementById("results")!;
+        const amtBtns =
+            document.querySelectorAll<HTMLButtonElement>(".amt-btn");
+
+        function formatPKR(num: number): string {
+            return "PKR " + Math.round(num).toLocaleString("en-US");
+        }
+
+        function calculateEMI(
+            principal: number,
+            annualRate: number,
+            years: number,
+        ) {
+            const monthlyRate = annualRate / 12 / 100;
+            const months = years * 12;
+
+            let emi: number;
+            if (monthlyRate === 0) {
+                emi = principal / months;
+            } else {
+                const factor = Math.pow(1 + monthlyRate, months);
+                emi = (principal * monthlyRate * factor) / (factor - 1);
+            }
+
+            const totalPayment = emi * months;
+            const totalInterest = totalPayment - principal;
+
+            return { emi, totalPayment, totalInterest, months, monthlyRate };
+        }
+
+        function calculate() {
+            const principal = parseFloat(loanAmount.value) || 0;
+            const rate = parseFloat(interestRate.value) || 0;
+            const years = parseInt(tenureYears.value) || 1;
+
+            if (principal <= 0) {
+                alert("Please enter a valid loan amount.");
+                return;
+            }
+
+            const { emi, totalPayment, totalInterest, months, monthlyRate } =
+                calculateEMI(principal, rate, years);
+
+            document.getElementById("emi-result")!.textContent = formatPKR(emi);
+            document.getElementById("emi-sub")!.textContent =
+                `${years} year${years > 1 ? "s" : ""} (${months} months) at ${rate}% per year`;
+
+            document.getElementById("principal")!.textContent =
+                formatPKR(principal);
+            document.getElementById("total-interest")!.textContent =
+                formatPKR(totalInterest);
+            document.getElementById("total-payment")!.textContent =
+                formatPKR(totalPayment);
+
+            // Visual bar
+            const principalPct = (principal / totalPayment) * 100;
+            const interestPct = 100 - principalPct;
+            document.getElementById("principal-bar")!.style.width =
+                principalPct + "%";
+            document.getElementById("interest-bar")!.style.width =
+                interestPct + "%";
+
+            // Yearly breakdown
+            const tableBody = document.getElementById("yearly-table")!;
+            tableBody.innerHTML = "";
+
+            let balance = principal;
+            for (let y = 1; y <= years; y++) {
+                let yearlyPrincipal = 0;
+                let yearlyInterest = 0;
+                for (let m = 0; m < 12; m++) {
+                    const monthInterest = balance * monthlyRate;
+                    const monthPrincipal = emi - monthInterest;
+                    yearlyInterest += monthInterest;
+                    yearlyPrincipal += monthPrincipal;
+                    balance -= monthPrincipal;
+                }
+                if (balance < 0) balance = 0;
+
+                const row = document.createElement("tr");
+                row.className = "border-b border-gray-100";
+                row.innerHTML = `
+          <td class="p-2 font-medium">Year ${y}</td>
+          <td class="p-2 text-right">${formatPKR(yearlyPrincipal)}</td>
+          <td class="p-2 text-right text-red-600">${formatPKR(yearlyInterest)}</td>
+          <td class="p-2 text-right text-gray-600">${formatPKR(balance)}</td>
+        `;
+                tableBody.appendChild(row);
+            }
+
+            results.classList.remove("hidden");
+            results.scrollIntoView({ behavior: "smooth" });
+        }
+
+        tenureYears.addEventListener("input", () => {
+            tenureValue.textContent = tenureYears.value;
+        });
+
+        amtBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                loanAmount.value = btn.dataset.amount!;
+            });
+        });
+
+        calculateBtn.addEventListener("click", calculate);
+
+        // Auto-calculate on load
+        calculate();
+    </script>
+</Layout>

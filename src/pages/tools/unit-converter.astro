@@ -1,0 +1,406 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+    title="Unit Converter — Length, Weight, Temperature & More Free"
+    description="Free online unit converter for length, weight, temperature, area, volume, speed, and time. Convert between metric and imperial units instantly."
+>
+    <div class="max-w-3xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">Unit Converter</h1>
+            <p class="text-gray-600 mb-2">
+                Convert between metric and imperial units for length, weight,
+                temperature, area, volume, speed, and time.
+            </p>
+            <p class="text-xs text-gray-500">
+                Works entirely in your browser. No data sent to any server.
+            </p>
+        </header>
+
+        <!-- Converter Section -->
+        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+            <!-- Category Tabs -->
+            <div class="flex flex-wrap gap-2 mb-6">
+                <button
+                    data-category="length"
+                    class="cat-btn px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg transition"
+                    >Length</button
+                >
+                <button
+                    data-category="weight"
+                    class="cat-btn px-4 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 transition"
+                    >Weight</button
+                >
+                <button
+                    data-category="temperature"
+                    class="cat-btn px-4 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 transition"
+                    >Temperature</button
+                >
+                <button
+                    data-category="area"
+                    class="cat-btn px-4 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 transition"
+                    >Area</button
+                >
+                <button
+                    data-category="volume"
+                    class="cat-btn px-4 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 transition"
+                    >Volume</button
+                >
+                <button
+                    data-category="speed"
+                    class="cat-btn px-4 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 transition"
+                    >Speed</button
+                >
+                <button
+                    data-category="time"
+                    class="cat-btn px-4 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 transition"
+                    >Time</button
+                >
+            </div>
+
+            <!-- Input Row -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                <div class="md:col-span-2">
+                    <label
+                        for="from-value"
+                        class="block text-sm font-medium mb-2">From</label
+                    >
+                    <input
+                        type="number"
+                        id="from-value"
+                        value="1"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+                <div class="md:col-span-1">
+                    <label
+                        for="from-unit"
+                        class="block text-sm font-medium mb-2">Unit</label
+                    >
+                    <select
+                        id="from-unit"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    ></select>
+                </div>
+                <div class="md:col-span-1 text-center">
+                    <button
+                        id="swap-btn"
+                        class="w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+                        title="Swap units"
+                    >
+                        ⇄
+                    </button>
+                </div>
+                <div class="md:col-span-1">
+                    <label for="to-unit" class="block text-sm font-medium mb-2"
+                        >To</label
+                    >
+                    <select
+                        id="to-unit"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    ></select>
+                </div>
+            </div>
+
+            <!-- Result -->
+            <div class="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-xl">
+                <p class="text-sm text-gray-600 mb-1">Result</p>
+                <p id="result" class="text-3xl font-bold text-blue-700">1</p>
+                <p id="result-unit" class="text-sm text-gray-600 mt-1">—</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-4">About This Unit Converter</h2>
+        <p class="text-gray-700 mb-4">
+            This free unit converter handles length, weight, temperature, area,
+            volume, speed, and time conversions. It supports both metric and
+            imperial units, runs entirely in your browser, and updates results
+            in real time.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
+        <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+            <li>Choose a category (Length, Weight, Temperature, etc.)</li>
+            <li>Enter the value you want to convert</li>
+            <li>Select the "from" and "to" units</li>
+            <li>The result updates automatically</li>
+        </ol>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Supported Categories</h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>Length:</strong> millimeters, centimeters, meters, kilometers,
+                inches, feet, yards, miles
+            </li>
+            <li>
+                <strong>Weight:</strong> milligrams, grams, kilograms, ounces, pounds,
+                stones
+            </li>
+            <li><strong>Temperature:</strong> Celsius, Fahrenheit, Kelvin</li>
+            <li>
+                <strong>Area:</strong> square meters, square feet, square yards, acres,
+                hectares
+            </li>
+            <li>
+                <strong>Volume:</strong> milliliters, liters, cups, pints, quarts,
+                gallons
+            </li>
+            <li><strong>Speed:</strong> km/h, mph, m/s, knots</li>
+            <li>
+                <strong>Time:</strong> seconds, minutes, hours, days, weeks, years
+            </li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Frequently Asked Questions
+        </h3>
+        <div class="space-y-4 mt-3">
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Is this unit converter accurate?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. We use internationally recognized conversion factors
+                    (e.g. 1 inch = 2.54 cm exactly) for all conversions.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Does it work offline?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. Once the page loads, all conversions happen in your
+                    browser — no internet connection required.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Why do temperature conversions work differently?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Unlike other units, temperature scales have different
+                    starting points. Celsius and Fahrenheit require an offset,
+                    not just multiplication.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
+                <p class="text-gray-700 mt-1">
+                    Yes, completely free with no signup, no limits, and no
+                    watermarks.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const fromValue = document.getElementById(
+            "from-value",
+        ) as HTMLInputElement;
+        const fromUnit = document.getElementById(
+            "from-unit",
+        ) as HTMLSelectElement;
+        const toUnit = document.getElementById("to-unit") as HTMLSelectElement;
+        const result = document.getElementById("result")!;
+        const resultUnit = document.getElementById("result-unit")!;
+        const swapBtn = document.getElementById("swap-btn")!;
+        const catBtns =
+            document.querySelectorAll<HTMLButtonElement>(".cat-btn");
+
+        // Conversion data: each unit has a factor relative to base unit
+        // Temperature uses special functions
+        const categories: Record<
+            string,
+            {
+                name: string;
+                units: { name: string; factor?: number; symbol: string }[];
+                special?: boolean;
+            }
+        > = {
+            length: {
+                name: "Length",
+                units: [
+                    { name: "Millimeters", factor: 0.001, symbol: "mm" },
+                    { name: "Centimeters", factor: 0.01, symbol: "cm" },
+                    { name: "Meters", factor: 1, symbol: "m" },
+                    { name: "Kilometers", factor: 1000, symbol: "km" },
+                    { name: "Inches", factor: 0.0254, symbol: "in" },
+                    { name: "Feet", factor: 0.3048, symbol: "ft" },
+                    { name: "Yards", factor: 0.9144, symbol: "yd" },
+                    { name: "Miles", factor: 1609.344, symbol: "mi" },
+                ],
+            },
+            weight: {
+                name: "Weight",
+                units: [
+                    { name: "Milligrams", factor: 0.000001, symbol: "mg" },
+                    { name: "Grams", factor: 0.001, symbol: "g" },
+                    { name: "Kilograms", factor: 1, symbol: "kg" },
+                    { name: "Ounces", factor: 0.0283495, symbol: "oz" },
+                    { name: "Pounds", factor: 0.453592, symbol: "lb" },
+                    { name: "Stones", factor: 6.35029, symbol: "st" },
+                ],
+            },
+            temperature: {
+                name: "Temperature",
+                special: true,
+                units: [
+                    { name: "Celsius", symbol: "°C" },
+                    { name: "Fahrenheit", symbol: "°F" },
+                    { name: "Kelvin", symbol: "K" },
+                ],
+            },
+            area: {
+                name: "Area",
+                units: [
+                    { name: "Square Meters", factor: 1, symbol: "m²" },
+                    { name: "Square Feet", factor: 0.092903, symbol: "ft²" },
+                    { name: "Square Yards", factor: 0.836127, symbol: "yd²" },
+                    { name: "Acres", factor: 4046.86, symbol: "ac" },
+                    { name: "Hectares", factor: 10000, symbol: "ha" },
+                ],
+            },
+            volume: {
+                name: "Volume",
+                units: [
+                    { name: "Milliliters", factor: 0.001, symbol: "mL" },
+                    { name: "Liters", factor: 1, symbol: "L" },
+                    { name: "Cups", factor: 0.236588, symbol: "cup" },
+                    { name: "Pints", factor: 0.473176, symbol: "pt" },
+                    { name: "Quarts", factor: 0.946353, symbol: "qt" },
+                    { name: "Gallons (US)", factor: 3.78541, symbol: "gal" },
+                ],
+            },
+            speed: {
+                name: "Speed",
+                units: [
+                    { name: "Meters/second", factor: 1, symbol: "m/s" },
+                    {
+                        name: "Kilometers/hour",
+                        factor: 0.277778,
+                        symbol: "km/h",
+                    },
+                    { name: "Miles/hour", factor: 0.44704, symbol: "mph" },
+                    { name: "Knots", factor: 0.514444, symbol: "kn" },
+                ],
+            },
+            time: {
+                name: "Time",
+                units: [
+                    { name: "Seconds", factor: 1, symbol: "s" },
+                    { name: "Minutes", factor: 60, symbol: "min" },
+                    { name: "Hours", factor: 3600, symbol: "h" },
+                    { name: "Days", factor: 86400, symbol: "d" },
+                    { name: "Weeks", factor: 604800, symbol: "wk" },
+                    { name: "Years", factor: 31536000, symbol: "yr" },
+                ],
+            },
+        };
+
+        let currentCategory = "length";
+
+        function populateUnits() {
+            const cat = categories[currentCategory];
+            fromUnit.innerHTML = "";
+            toUnit.innerHTML = "";
+            cat.units.forEach((unit, i) => {
+                const opt1 = document.createElement("option");
+                opt1.value = i.toString();
+                opt1.textContent = unit.name;
+                fromUnit.appendChild(opt1);
+
+                const opt2 = document.createElement("option");
+                opt2.value = i.toString();
+                opt2.textContent = unit.name;
+                toUnit.appendChild(opt2);
+            });
+            fromUnit.value = "0";
+            toUnit.value = "1";
+        }
+
+        function convertTemperature(
+            value: number,
+            from: string,
+            to: string,
+        ): number {
+            let celsius: number;
+            if (from === "Celsius") celsius = value;
+            else if (from === "Fahrenheit") celsius = ((value - 32) * 5) / 9;
+            else celsius = value - 273.15;
+
+            if (to === "Celsius") return celsius;
+            if (to === "Fahrenheit") return (celsius * 9) / 5 + 32;
+            return celsius + 273.15;
+        }
+
+        function convert() {
+            const value = parseFloat(fromValue.value) || 0;
+            const cat = categories[currentCategory];
+            const fromIdx = parseInt(fromUnit.value);
+            const toIdx = parseInt(toUnit.value);
+            const fromU = cat.units[fromIdx];
+            const toU = cat.units[toIdx];
+
+            let output: number;
+
+            if (cat.special) {
+                output = convertTemperature(value, fromU.name, toU.name);
+            } else {
+                const inBase = value * (fromU.factor || 1);
+                output = inBase / (toU.factor || 1);
+            }
+
+            const formatted =
+                Math.abs(output) < 0.0001 && output !== 0
+                    ? output.toExponential(4)
+                    : output.toLocaleString("en-US", {
+                          maximumFractionDigits: 6,
+                      });
+
+            result.textContent = formatted;
+            resultUnit.textContent = `${value} ${fromU.symbol} = ${formatted} ${toU.symbol}`;
+        }
+
+        catBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                catBtns.forEach((b) => {
+                    b.classList.remove("bg-blue-600", "text-white");
+                    b.classList.add(
+                        "bg-white",
+                        "text-gray-700",
+                        "border",
+                        "border-gray-300",
+                    );
+                });
+                btn.classList.remove(
+                    "bg-white",
+                    "text-gray-700",
+                    "border",
+                    "border-gray-300",
+                );
+                btn.classList.add("bg-blue-600", "text-white");
+                currentCategory = btn.dataset.category!;
+                populateUnits();
+                convert();
+            });
+        });
+
+        fromValue.addEventListener("input", convert);
+        fromUnit.addEventListener("change", convert);
+        toUnit.addEventListener("change", convert);
+
+        swapBtn.addEventListener("click", () => {
+            const temp = fromUnit.value;
+            fromUnit.value = toUnit.value;
+            toUnit.value = temp;
+            convert();
+        });
+
+        populateUnits();
+        convert();
+    </script>
+</Layout>
