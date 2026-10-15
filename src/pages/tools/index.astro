@@ -89,6 +89,20 @@ const tools = [
         href: "/tools/emi-calculator",
         icon: "emi",
     },
+    {
+        name: "Zakat Calculator",
+        description:
+            "Calculate Zakat on gold, silver, cash, savings, and investments.",
+        href: "/tools/zakat-calculator",
+        icon: "zakat",
+    },
+    {
+        name: "Freelancer Tax Calculator",
+        description:
+            "Calculate income tax for Pakistani freelancers (IT export & local).",
+        href: "/tools/freelancer-tax-calculator",
+        icon: "freelancer",
+    },
 ];
 
 const faqs = [
@@ -375,6 +389,46 @@ const faqs = [
                                     <path d="M9 21v-6h6v6" />
                                     <path d="M10 9h.01" />
                                     <path d="M14 9h.01" />
+                                </svg>
+                            )}
+                            {tool.icon === "zakat" && (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#2563eb"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M12 2v20" />
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                                    <circle cx="12" cy="12" r="10" />
+                                </svg>
+                            )}
+                            {tool.icon === "freelancer" && (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#2563eb"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <rect
+                                        x="2"
+                                        y="7"
+                                        width="20"
+                                        height="14"
+                                        rx="2"
+                                        ry="2"
+                                    />
+                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                                 </svg>
                             )}
                         </div>

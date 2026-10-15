@@ -1,0 +1,572 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+    title="Zakat Calculator 2026 — Calculate Zakat on Gold, Silver, Cash & Assets"
+    description="Calculate Zakat on gold, silver, cash, savings, and investments. Free online Zakat calculator with Nisab values based on current gold and silver prices."
+>
+    <div class="max-w-3xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                Zakat Calculator
+            </h1>
+            <p class="text-gray-600 mb-2">
+                Calculate your annual Zakat on cash, gold, silver, savings, and
+                investments.
+            </p>
+            <p class="text-xs text-gray-500">
+                Works entirely in your browser. Your financial data never leaves
+                your device.
+            </p>
+        </header>
+
+        <!-- Nisab Info -->
+        <section class="bg-blue-50 border border-blue-200 p-4 rounded-xl mb-6">
+            <h2 class="font-semibold mb-2">Nisab Threshold</h2>
+            <p class="text-sm text-gray-700 mb-3">
+                Nisab is the minimum amount of wealth upon which Zakat becomes
+                obligatory. Choose the Nisab basis:
+            </p>
+            <div class="flex flex-wrap gap-3">
+                <label
+                    class="flex items-center gap-2 text-sm p-2 bg-white rounded-lg cursor-pointer border border-gray-200"
+                >
+                    <input
+                        type="radio"
+                        name="nisab-type"
+                        value="silver"
+                        checked
+                    />
+                    <span><strong>Silver Nisab:</strong> 612.36g silver</span>
+                </label>
+                <label
+                    class="flex items-center gap-2 text-sm p-2 bg-white rounded-lg cursor-pointer border border-gray-200"
+                >
+                    <input type="radio" name="nisab-type" value="gold" />
+                    <span><strong>Gold Nisab:</strong> 87.48g gold</span>
+                </label>
+            </div>
+        </section>
+
+        <!-- Assets Input -->
+        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+            <h2 class="text-lg font-semibold mb-4">Your Assets</h2>
+
+            <div class="space-y-5">
+                <!-- Cash & Bank -->
+                <div>
+                    <label for="cash" class="block text-sm font-medium mb-2">
+                        Cash in hand & bank accounts (PKR)
+                    </label>
+                    <input
+                        type="number"
+                        id="cash"
+                        value="0"
+                        min="0"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                <!-- Gold -->
+                <div>
+                    <label for="gold" class="block text-sm font-medium mb-2">
+                        Gold (grams)
+                    </label>
+                    <input
+                        type="number"
+                        id="gold"
+                        value="0"
+                        min="0"
+                        step="0.1"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <div class="mt-2">
+                        <label
+                            for="gold-price"
+                            class="block text-xs text-gray-500 mb-1"
+                            >Gold price per gram (PKR)</label
+                        >
+                        <input
+                            type="number"
+                            id="gold-price"
+                            value="22000"
+                            min="0"
+                            class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div
+                        class="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg"
+                    >
+                        <p class="text-xs text-gray-700">
+                            <strong>Tip:</strong> Aaj ki gold price check karne ke
+                            liye visit karein:{" "}
+                            <a
+                                href="https://gold.pk/"
+                                target="_blank"
+                                rel="noopener"
+                                class="text-blue-600 hover:underline font-medium"
+                            >
+                                gold.pk
+                            </a>{" "}
+                            (24K gold per gram).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Silver -->
+                <div>
+                    <label for="silver" class="block text-sm font-medium mb-2">
+                        Silver (grams)
+                    </label>
+                    <input
+                        type="number"
+                        id="silver"
+                        value="0"
+                        min="0"
+                        step="0.1"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <div class="mt-2">
+                        <label
+                            for="silver-price"
+                            class="block text-xs text-gray-500 mb-1"
+                            >Silver price per gram (PKR)</label
+                        >
+                        <input
+                            type="number"
+                            id="silver-price"
+                            value="260"
+                            min="0"
+                            class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div
+                        class="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg"
+                    >
+                        <p class="text-xs text-gray-700">
+                            <strong>Tip:</strong> Aaj ki silver price check karne
+                            ke liye visit karein:{" "}
+                            <a
+                                href="https://forex.pk/bullion.php?base=PKR&curr=XAG&type=grams"
+                                target="_blank"
+                                rel="noopener"
+                                class="text-blue-600 hover:underline font-medium"
+                            >
+                                forex.pk
+                            </a>{" "}
+                            (silver per gram).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Investments -->
+                <div>
+                    <label
+                        for="investments"
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Investments, shares, mutual funds (PKR)
+                    </label>
+                    <input
+                        type="number"
+                        id="investments"
+                        value="0"
+                        min="0"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                <!-- Business Inventory -->
+                <div>
+                    <label
+                        for="business"
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Business inventory / stock value (PKR)
+                    </label>
+                    <input
+                        type="number"
+                        id="business"
+                        value="0"
+                        min="0"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                <!-- Receivables -->
+                <div>
+                    <label
+                        for="receivables"
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Money owed to you (PKR)
+                    </label>
+                    <input
+                        type="number"
+                        id="receivables"
+                        value="0"
+                        min="0"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+            </div>
+
+            <!-- Liabilities -->
+            <h2 class="text-lg font-semibold mt-6 mb-4">
+                Your Liabilities (Deductible Debts)
+            </h2>
+            <div>
+                <label for="debts" class="block text-sm font-medium mb-2">
+                    Debts & immediate liabilities (PKR)
+                </label>
+                <input
+                    type="number"
+                    id="debts"
+                    value="0"
+                    min="0"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+            </div>
+
+            <button
+                id="calculate-btn"
+                class="w-full mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
+            >
+                Calculate Zakat
+            </button>
+        </section>
+
+        <!-- Results -->
+        <section id="results" class="hidden">
+            <div
+                class="bg-green-50 border border-green-200 p-6 rounded-xl mb-6 text-center"
+            >
+                <p class="text-sm text-gray-600 mb-2">Your Zakat (2.5%)</p>
+                <p id="zakat-result" class="text-4xl font-bold text-green-700">
+                    PKR 0
+                </p>
+                <p id="zakat-status" class="text-sm text-gray-600 mt-2">—</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4">Detailed Breakdown</h3>
+                <table class="w-full text-sm">
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="py-2 text-gray-600">Total Cash</td>
+                            <td
+                                id="breakdown-cash"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600">Gold Value</td>
+                            <td
+                                id="breakdown-gold"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600">Silver Value</td>
+                            <td
+                                id="breakdown-silver"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600">Investments</td>
+                            <td
+                                id="breakdown-investments"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600"
+                                >Business Inventory</td
+                            >
+                            <td
+                                id="breakdown-business"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600">Receivables</td>
+                            <td
+                                id="breakdown-receivables"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr class="border-t-2 border-gray-300">
+                            <td class="py-2 font-semibold">Total Assets</td>
+                            <td
+                                id="breakdown-total-assets"
+                                class="py-2 text-right font-semibold">PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600">Less: Debts</td>
+                            <td
+                                id="breakdown-debts"
+                                class="py-2 text-right font-medium text-red-600"
+                                >PKR 0</td
+                            >
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="py-3 font-semibold">Net Wealth</td>
+                            <td
+                                id="breakdown-net"
+                                class="py-3 text-right font-bold text-blue-700"
+                                >PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600">Nisab Threshold</td>
+                            <td
+                                id="breakdown-nisab"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr class="bg-green-50">
+                            <td class="py-3 font-semibold">Zakat Due (2.5%)</td>
+                            <td
+                                id="breakdown-zakat"
+                                class="py-3 text-right font-bold text-green-700 text-lg"
+                                >PKR 0</td
+                            >
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-4">About This Zakat Calculator</h2>
+        <p class="text-gray-700 mb-4">
+            This free Zakat calculator helps Muslims calculate their annual
+            Zakat on cash, gold, silver, savings, investments, business
+            inventory, and receivables. It uses the standard Nisab thresholds
+            based on gold and silver weights.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">What is Zakat?</h3>
+        <p class="text-gray-700 mb-4">
+            Zakat is one of the Five Pillars of Islam. It is an obligatory
+            annual charity of{" "}
+            <strong>2.5%</strong> on a Muslim's qualifying wealth, provided that wealth
+            exceeds the Nisab threshold and has been held for one lunar year (Hawl).
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Nisab Threshold</h3>
+        <p class="text-gray-700 mb-4">
+            Nisab is the minimum amount of wealth upon which Zakat becomes
+            obligatory:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>Silver Nisab:</strong> 612.36 grams of silver (≈ 52.5 tola)
+            </li>
+            <li>
+                <strong>Gold Nisab:</strong> 87.48 grams of gold (≈ 7.5 tola)
+            </li>
+        </ul>
+        <p class="text-gray-700 mt-3">
+            Most scholars recommend using the silver Nisab because it is lower,
+            making Zakat obligatory for more people.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            What Assets Are Zakatable?
+        </h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>Cash in hand and bank accounts</li>
+            <li>Gold and silver (in any form — jewelry, coins, bars)</li>
+            <li>Investments (shares, mutual funds, stocks)</li>
+            <li>Business inventory and stock</li>
+            <li>Money owed to you (receivables)</li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Frequently Asked Questions
+        </h3>
+        <div class="space-y-4 mt-3">
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    What is the rate of Zakat?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Zakat is <strong>2.5%</strong> (one-fortieth) of your net qualifying
+                    wealth.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Should I use gold or silver Nisab?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Most scholars recommend silver Nisab because it is lower,
+                    which means more people qualify. Either is valid — the
+                    choice is yours.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Do I pay Zakat on my house or car?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. Personal-use items like your primary home, personal
+                    vehicle, and household furniture are not Zakatable.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">Is my data safe?</h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. All calculations happen in your browser. Your financial
+                    information is never sent to any server.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    What if I don't know current gold or silver prices?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Enter the current market price per gram. For accurate Zakat,
+                    use today's local gold or silver rate from your city's
+                    sarafa bazaar.
+                </p>
+            </div>
+        </div>
+
+        <p
+            class="text-sm text-gray-500 mt-6 p-3 bg-gray-50 rounded-lg border border-gray-200"
+        >
+            <strong>Disclaimer:</strong> Ye calculator general guidance ke liye hai.
+            Specific fiqh rulings aur personal situations ke liye apne trusted scholar
+            ya mufti se rujoo karein.
+        </p>
+    </section>
+
+    <script>
+        const cashInput = document.getElementById("cash") as HTMLInputElement;
+        const goldInput = document.getElementById("gold") as HTMLInputElement;
+        const goldPriceInput = document.getElementById(
+            "gold-price",
+        ) as HTMLInputElement;
+        const silverInput = document.getElementById(
+            "silver",
+        ) as HTMLInputElement;
+        const silverPriceInput = document.getElementById(
+            "silver-price",
+        ) as HTMLInputElement;
+        const investmentsInput = document.getElementById(
+            "investments",
+        ) as HTMLInputElement;
+        const businessInput = document.getElementById(
+            "business",
+        ) as HTMLInputElement;
+        const receivablesInput = document.getElementById(
+            "receivables",
+        ) as HTMLInputElement;
+        const debtsInput = document.getElementById("debts") as HTMLInputElement;
+        const calculateBtn = document.getElementById("calculate-btn")!;
+        const results = document.getElementById("results")!;
+        const nisabRadios = document.querySelectorAll<HTMLInputElement>(
+            'input[name="nisab-type"]',
+        );
+
+        const SILVER_NISAB_GRAMS = 612.36;
+        const GOLD_NISAB_GRAMS = 87.48;
+
+        function formatPKR(num: number): string {
+            return "PKR " + Math.round(num).toLocaleString("en-US");
+        }
+
+        function getSelectedNisab(): "gold" | "silver" {
+            for (const radio of nisabRadios) {
+                if (radio.checked) return radio.value as "gold" | "silver";
+            }
+            return "silver";
+        }
+
+        function calculate() {
+            const cash = parseFloat(cashInput.value) || 0;
+            const goldGrams = parseFloat(goldInput.value) || 0;
+            const goldPrice = parseFloat(goldPriceInput.value) || 0;
+            const silverGrams = parseFloat(silverInput.value) || 0;
+            const silverPrice = parseFloat(silverPriceInput.value) || 0;
+            const investments = parseFloat(investmentsInput.value) || 0;
+            const business = parseFloat(businessInput.value) || 0;
+            const receivables = parseFloat(receivablesInput.value) || 0;
+            const debts = parseFloat(debtsInput.value) || 0;
+
+            const goldValue = goldGrams * goldPrice;
+            const silverValue = silverGrams * silverPrice;
+
+            const totalAssets =
+                cash +
+                goldValue +
+                silverValue +
+                investments +
+                business +
+                receivables;
+            const netWealth = Math.max(0, totalAssets - debts);
+
+            const nisabType = getSelectedNisab();
+            const nisabThreshold =
+                nisabType === "gold"
+                    ? GOLD_NISAB_GRAMS * goldPrice
+                    : SILVER_NISAB_GRAMS * silverPrice;
+
+            const isZakatable = netWealth >= nisabThreshold;
+            const zakat = isZakatable ? netWealth * 0.025 : 0;
+
+            // Update results
+            document.getElementById("zakat-result")!.textContent =
+                formatPKR(zakat);
+            const statusEl = document.getElementById("zakat-status")!;
+            if (isZakatable) {
+                statusEl.textContent =
+                    "✓ Your net wealth exceeds Nisab — Zakat is obligatory.";
+                statusEl.className = "text-sm text-green-700 mt-2 font-medium";
+            } else {
+                statusEl.textContent =
+                    "ℹ Your net wealth is below Nisab — Zakat is not obligatory.";
+                statusEl.className = "text-sm text-gray-600 mt-2";
+            }
+
+            // Breakdown
+            document.getElementById("breakdown-cash")!.textContent =
+                formatPKR(cash);
+            document.getElementById("breakdown-gold")!.textContent =
+                formatPKR(goldValue);
+            document.getElementById("breakdown-silver")!.textContent =
+                formatPKR(silverValue);
+            document.getElementById("breakdown-investments")!.textContent =
+                formatPKR(investments);
+            document.getElementById("breakdown-business")!.textContent =
+                formatPKR(business);
+            document.getElementById("breakdown-receivables")!.textContent =
+                formatPKR(receivables);
+            document.getElementById("breakdown-total-assets")!.textContent =
+                formatPKR(totalAssets);
+            document.getElementById("breakdown-debts")!.textContent =
+                formatPKR(debts);
+            document.getElementById("breakdown-net")!.textContent =
+                formatPKR(netWealth);
+            document.getElementById("breakdown-nisab")!.textContent =
+                formatPKR(nisabThreshold);
+            document.getElementById("breakdown-zakat")!.textContent =
+                formatPKR(zakat);
+
+            results.classList.remove("hidden");
+            results.scrollIntoView({ behavior: "smooth" });
+        }
+
+        calculateBtn.addEventListener("click", calculate);
+
+        // Auto-calculate on load
+        calculate();
+    </script>
+</Layout>

@@ -1,0 +1,410 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+    title="Freelancer Tax Calculator Pakistan 2026-27 — IT Export Tax"
+    description="Calculate your freelancer tax in Pakistan for Tax Year 2027. Supports IT export income (Section 154A) and local freelance income with FBR slabs."
+>
+    <div class="max-w-3xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                Freelancer Tax Calculator — Pakistan
+            </h1>
+            <p class="text-gray-600 mb-2">
+                Calculate your income tax as a Pakistani freelancer. Supports IT
+                export income (Section 154A) and local freelance income.
+            </p>
+            <p class="text-xs text-gray-500">
+                Last updated: October 15, 2026 · Source: FBR — Finance Act 2026
+            </p>
+        </header>
+
+        <!-- Input Section -->
+        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+            <div class="space-y-5">
+                <!-- Income Type -->
+                <div>
+                    <label class="block text-sm font-medium mb-3"
+                        >Income Type</label
+                    >
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <label
+                            class="flex items-start gap-2 text-sm p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition border border-gray-200"
+                        >
+                            <input
+                                type="radio"
+                                name="income-type"
+                                value="export"
+                                checked
+                                class="mt-1"
+                            />
+                            <div>
+                                <div class="font-medium">
+                                    IT / Export Income
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    Foreign clients (Upwork, Fiverr, direct)
+                                </div>
+                            </div>
+                        </label>
+                        <label
+                            class="flex items-start gap-2 text-sm p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition border border-gray-200"
+                        >
+                            <input
+                                type="radio"
+                                name="income-type"
+                                value="local"
+                                class="mt-1"
+                            />
+                            <div>
+                                <div class="font-medium">
+                                    Local Freelance Income
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    Pakistani clients
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- PSEB Registration -->
+                <div id="pseb-section">
+                    <label
+                        class="flex items-center gap-2 text-sm p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition border border-gray-200"
+                    >
+                        <input
+                            type="checkbox"
+                            id="pseb-registered"
+                            class="rounded"
+                            checked
+                        />
+                        <span
+                            >Registered with PSEB (Pakistan Software Export
+                            Board)</span
+                        >
+                    </label>
+                </div>
+
+                <!-- Annual Income -->
+                <div>
+                    <label
+                        for="annual-income"
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Annual Freelance Income (PKR)
+                    </label>
+                    <input
+                        type="number"
+                        id="annual-income"
+                        value="2400000"
+                        min="0"
+                        step="10000"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                <button
+                    id="calculate-btn"
+                    class="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
+                >
+                    Calculate Tax
+                </button>
+            </div>
+        </section>
+
+        <!-- Results -->
+        <section id="results" class="hidden">
+            <!-- Main Result -->
+            <div
+                class="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-6 text-center"
+            >
+                <p class="text-sm text-gray-600 mb-2">Annual Tax</p>
+                <p id="tax-result" class="text-4xl font-bold text-blue-700">
+                    PKR 0
+                </p>
+                <p id="tax-sub" class="text-sm text-gray-600 mt-2">—</p>
+            </div>
+
+            <!-- Effective Rate -->
+            <div class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+                <h3 class="text-lg font-semibold mb-4">Tax Breakdown</h3>
+                <table class="w-full text-sm">
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="py-2 text-gray-600"
+                                >Gross Annual Income</td
+                            >
+                            <td
+                                id="breakdown-gross"
+                                class="py-2 text-right font-medium">PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600">Tax Rate Applied</td>
+                            <td
+                                id="breakdown-rate"
+                                class="py-2 text-right font-medium">—</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600">Applicable Regime</td
+                            >
+                            <td
+                                id="breakdown-regime"
+                                class="py-2 text-right font-medium">—</td
+                            >
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="py-3 font-semibold">Total Tax Payable</td
+                            >
+                            <td
+                                id="breakdown-tax"
+                                class="py-3 text-right font-bold text-red-600 text-lg"
+                                >PKR 0</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-600"
+                                >Net Income (After Tax)</td
+                            >
+                            <td
+                                id="breakdown-net"
+                                class="py-2 text-right font-bold text-green-600"
+                                >PKR 0</td
+                            >
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tax Saving Tip -->
+            <div
+                id="saving-tip"
+                class="hidden bg-yellow-50 border border-yellow-200 p-4 rounded-xl mb-6"
+            >
+                <h3 class="font-semibold mb-2">💡 Tax Saving Tip</h3>
+                <p id="saving-tip-text" class="text-sm text-gray-700"></p>
+            </div>
+        </section>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-4">
+            About This Freelancer Tax Calculator
+        </h2>
+        <p class="text-gray-700 mb-4">
+            This free calculator helps Pakistani freelancers estimate their
+            income tax for Tax Year 2027 (FY 2026-27). It supports two income
+            types: IT/export income under Section 154A, and local freelance
+            income under the standard business slabs.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Freelancer Tax Rates in Pakistan (2026-27)
+        </h3>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            IT / Export Income (Section 154A)
+        </h4>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li><strong>0.25%</strong> — PSEB-registered freelancers</li>
+            <li><strong>1%</strong> — Non-PSEB-registered freelancers</li>
+            <li>
+                This is a final tax on gross income received through approved
+                banking channels
+            </li>
+        </ul>
+
+        <h4 class="font-semibold mt-4 mb-2">Local Freelance Income</h4>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>Taxed under normal non-salaried slabs (0% to 45%)</li>
+            <li>Business expenses can be deducted before calculating tax</li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Why PSEB Registration Matters
+        </h3>
+        <p class="text-gray-700 mb-4">
+            PSEB (Pakistan Software Export Board) registration reduces your tax
+            rate from 1% to 0.25% on IT export income. On PKR 2,400,000 annual
+            income, that's a difference of PKR 18,000 per year.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Frequently Asked Questions
+        </h3>
+        <div class="space-y-4 mt-3">
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Do I need to register with PSEB?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes, if you want the 0.25% rate on IT export income. Without
+                    PSEB registration, you pay 1%.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Do I need to file a tax return?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. Every freelancer with income above PKR 600,000 must
+                    file an annual return on the FBR IRIS portal to stay on the
+                    Active Taxpayer List (ATL).
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    What counts as "approved banking channels"?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Pakistani bank accounts, Payoneer linked to a local account,
+                    and Wise transfers through Pakistani institutions. Income
+                    left in foreign platform wallets does not qualify.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Is the 0.25% rate still available?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. The 0.25% Final Tax Regime under Section 154A has been
+                    extended through Tax Year 2029.
+                </p>
+            </div>
+        </div>
+
+        <p
+            class="text-sm text-gray-500 mt-6 p-3 bg-gray-50 rounded-lg border border-gray-200"
+        >
+            <strong>Disclaimer:</strong> Ye calculator sirf estimate ke liye hai,
+            tax advice nahi. Actual liability expenses, deductions, aur other income
+            par depend karti hai. Final figures ke liye FBR ya certified tax professional
+            se rujoo karein.
+        </p>
+    </section>
+
+    <script>
+        const incomeTypeRadios = document.querySelectorAll<HTMLInputElement>(
+            'input[name="income-type"]',
+        );
+        const psebSection = document.getElementById("pseb-section")!;
+        const psebCheckbox = document.getElementById(
+            "pseb-registered",
+        ) as HTMLInputElement;
+        const annualIncome = document.getElementById(
+            "annual-income",
+        ) as HTMLInputElement;
+        const calculateBtn = document.getElementById("calculate-btn")!;
+        const results = document.getElementById("results")!;
+
+        function formatPKR(num: number): string {
+            return "PKR " + Math.round(num).toLocaleString("en-US");
+        }
+
+        function getIncomeType(): "export" | "local" {
+            for (const radio of incomeTypeRadios) {
+                if (radio.checked) return radio.value as "export" | "local";
+            }
+            return "export";
+        }
+
+        // Non-salaried slabs (Finance Act 2026)
+        function calculateLocalTax(income: number): {
+            tax: number;
+            rate: string;
+        } {
+            if (income <= 600000) return { tax: 0, rate: "0%" };
+            if (income <= 1200000)
+                return { tax: (income - 600000) * 0.15, rate: "15%" };
+            if (income <= 1600000)
+                return { tax: 90000 + (income - 1200000) * 0.2, rate: "20%" };
+            if (income <= 3200000)
+                return { tax: 170000 + (income - 1600000) * 0.3, rate: "30%" };
+            if (income <= 5600000)
+                return { tax: 650000 + (income - 3200000) * 0.4, rate: "40%" };
+            return { tax: 1610000 + (income - 5600000) * 0.45, rate: "45%" };
+        }
+
+        incomeTypeRadios.forEach((radio) => {
+            radio.addEventListener("change", () => {
+                if (getIncomeType() === "export") {
+                    psebSection.classList.remove("hidden");
+                } else {
+                    psebSection.classList.add("hidden");
+                }
+            });
+        });
+
+        function calculate() {
+            const income = parseFloat(annualIncome.value) || 0;
+            if (income <= 0) {
+                alert("Please enter a valid annual income.");
+                return;
+            }
+
+            const type = getIncomeType();
+            let tax = 0;
+            let rate = "";
+            let regime = "";
+            let savingTip = "";
+
+            if (type === "export") {
+                if (psebCheckbox.checked) {
+                    tax = income * 0.0025;
+                    rate = "0.25%";
+                    regime = "Section 154A (PSEB-registered)";
+                } else {
+                    tax = income * 0.01;
+                    rate = "1%";
+                    regime = "Section 154A (Non-PSEB)";
+                    savingTip =
+                        "Register with PSEB to reduce your tax rate from 1% to 0.25%. On your income, that saves " +
+                        formatPKR(income * 0.0075) +
+                        " per year.";
+                }
+            } else {
+                const local = calculateLocalTax(income);
+                tax = local.tax;
+                rate = local.rate;
+                regime = "Non-Salaried Slabs (Local Income)";
+                if (tax > 0) {
+                    savingTip =
+                        "Keep records of business expenses (software, internet, equipment) to reduce your taxable income.";
+                }
+            }
+
+            document.getElementById("tax-result")!.textContent = formatPKR(tax);
+            document.getElementById("tax-sub")!.textContent =
+                `${rate} effective rate on ${formatPKR(income)}`;
+
+            document.getElementById("breakdown-gross")!.textContent =
+                formatPKR(income);
+            document.getElementById("breakdown-rate")!.textContent = rate;
+            document.getElementById("breakdown-regime")!.textContent = regime;
+            document.getElementById("breakdown-tax")!.textContent =
+                formatPKR(tax);
+            document.getElementById("breakdown-net")!.textContent = formatPKR(
+                income - tax,
+            );
+
+            const tipBox = document.getElementById("saving-tip")!;
+            if (savingTip) {
+                document.getElementById("saving-tip-text")!.textContent =
+                    savingTip;
+                tipBox.classList.remove("hidden");
+            } else {
+                tipBox.classList.add("hidden");
+            }
+
+            results.classList.remove("hidden");
+            results.scrollIntoView({ behavior: "smooth" });
+        }
+
+        calculateBtn.addEventListener("click", calculate);
+        calculate();
+    </script>
+</Layout>
