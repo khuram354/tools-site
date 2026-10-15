@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 const faqs = [
     {
         q: "Who runs ToolsVibe?",
-        a: "ToolsVibe is an independent project built by a small team passionate about fast, private online tools. We are not backed by any large corporation and rely on minimal ads to keep the site running.",
+        a: "ToolsVibe is an independent project built by Khuram Shahzad and a small team of contributors from Pakistan. It is not backed by any large corporation and relies on minimal, non-intrusive ads to keep the site running.",
     },
     {
         q: "Is ToolsVibe really free?",
@@ -23,7 +23,7 @@ const faqs = [
 
 <Layout
     title="About — Free Online Tools by ToolsVibe"
-    description="Learn about ToolsVibe, a free collection of fast, privacy-friendly online tools for writing, development, and everyday tasks."
+    description="Learn about ToolsVibe, a free collection of fast, privacy-friendly online tools for writing, development, finance, and everyday tasks."
 >
     <article class="max-w-3xl mx-auto">
         <header class="mb-10">
@@ -42,23 +42,104 @@ const faqs = [
                 required.
             </p>
             <p>
-                We started ToolsVibe because we were tired of tool websites
-                cluttered with ads, popups, and forced account creation. We
-                wanted something different: clean, fast tools that just work.
+                ToolsVibe was started because tool websites are cluttered with
+                ads, popups, and forced account creation. There had to be
+                something different: clean, fast tools that just work.
             </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">Who Runs ToolsVibe?</h2>
+            <p>
+                ToolsVibe is developed and maintained by <strong
+                    >Khuram Shahzad</strong
+                >, a web developer from Pakistan, along with a small team of
+                contributors. The project started as a personal experiment to
+                build fast, ad-light tools for users in Pakistan and around the
+                world.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Client Work</h3>
+            <p class="mb-3">
+                Alongside ToolsVibe, Khuram Shahzad builds production websites
+                for real businesses. One recent project:
+            </p>
+            <ul class="list-disc pl-6 space-y-2">
+                <li>
+                    <a
+                        href="https://saleemsons.com.pk/"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-blue-600 hover:underline font-medium"
+                    >
+                        Saleem & Sons
+                    </a>{" "}
+                    — a business website for a Pakistani company, built with modern
+                    web technology.
+                </li>
+            </ul>
+            <p class="mt-3">You can connect with the project here:</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+                <li>
+                    <strong>Portfolio:</strong>{" "}
+                    <a
+                        href="https://khuram354.github.io/portfolio-v1/"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-blue-600 hover:underline"
+                    >
+                        khuram354.github.io/portfolio-v1
+                    </a>
+                </li>
+                <li>
+                    <strong>GitHub:</strong>{" "}
+                    <a
+                        href="https://github.com/khuram354"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-blue-600 hover:underline"
+                    >
+                        github.com/khuram354
+                    </a>
+                </li>
+                <li>
+                    <strong>Facebook:</strong>{" "}
+                    <a
+                        href="https://facebook.com/toolsvibe.online"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-blue-600 hover:underline"
+                    >
+                        facebook.com/toolsvibe.online
+                    </a>
+                </li>
+                <li>
+                    <strong>Email:</strong>{" "}
+                    <a
+                        href="https://mail.google.com/mail/?view=cm&to=khurammirza354@gmail.com"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-blue-600 hover:underline"
+                    >
+                        khurammirza354@gmail.com
+                    </a>
+                </li>
+            </ul>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">Our Mission</h2>
             <p>
-                Our goal is simple: build the fastest, most private online tools
+                The goal is simple: build the fastest, most private online tools
                 on the web. No distractions, no data collection, no hidden fees.
                 Just tools that do one thing well — and do it in your browser.
             </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">What We Offer</h2>
             <p>
-                ToolsVibe currently offers eight free tools, with more added
+                ToolsVibe currently offers 15 free tools, with more added
                 regularly:
             </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">
+                Writing & Text Tools
+            </h3>
             <ul class="list-disc pl-6 space-y-2">
                 <li>
                     <a
@@ -69,6 +150,10 @@ const faqs = [
                     </a>{" "}
                     — count words, characters, sentences, and estimate reading time.
                 </li>
+            </ul>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Utility Tools</h3>
+            <ul class="list-disc pl-6 space-y-2">
                 <li>
                     <a
                         href="/tools/qr-generator"
@@ -76,8 +161,48 @@ const faqs = [
                     >
                         QR Code Generator
                     </a>{" "}
-                    — create custom QR codes for any text or URL and download as PNG.
+                    — create custom QR codes for any text or URL.
                 </li>
+                <li>
+                    <a
+                        href="/tools/password-generator"
+                        class="text-blue-600 hover:underline font-medium"
+                    >
+                        Password Generator
+                    </a>{" "}
+                    — create strong random passwords.
+                </li>
+                <li>
+                    <a
+                        href="/tools/unit-converter"
+                        class="text-blue-600 hover:underline font-medium"
+                    >
+                        Unit Converter
+                    </a>{" "}
+                    — length, weight, temperature, area, volume, speed, and time.
+                </li>
+                <li>
+                    <a
+                        href="/tools/age-calculator"
+                        class="text-blue-600 hover:underline font-medium"
+                    >
+                        Age Calculator
+                    </a>{" "}
+                    — exact age in years, months, days, plus next birthday countdown.
+                </li>
+                <li>
+                    <a
+                        href="/tools/percentage-calculator"
+                        class="text-blue-600 hover:underline font-medium"
+                    >
+                        Percentage Calculator
+                    </a>{" "}
+                    — solve percentage problems, discounts, and percentage change.
+                </li>
+            </ul>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Developer Tools</h3>
+            <ul class="list-disc pl-6 space-y-2">
                 <li>
                     <a
                         href="/tools/json-formatter"
@@ -85,8 +210,14 @@ const faqs = [
                     >
                         JSON Formatter
                     </a>{" "}
-                    — format, validate, and beautify JSON data online.
+                    — format, validate, and beautify JSON data.
                 </li>
+            </ul>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">
+                Finance & Tax Tools (Pakistan)
+            </h3>
+            <ul class="list-disc pl-6 space-y-2">
                 <li>
                     <a
                         href="/tools/salary-tax-calculator"
@@ -94,8 +225,39 @@ const faqs = [
                     >
                         Salary Tax Calculator
                     </a>{" "}
-                    — calculate income tax and take-home salary for Pakistan.
+                    — calculate take-home salary and FBR tax for Tax Year 2027.
                 </li>
+                <li>
+                    <a
+                        href="/tools/freelancer-tax-calculator"
+                        class="text-blue-600 hover:underline font-medium"
+                    >
+                        Freelancer Tax Calculator
+                    </a>{" "}
+                    — tax on IT export income and local freelance income.
+                </li>
+                <li>
+                    <a
+                        href="/tools/zakat-calculator"
+                        class="text-blue-600 hover:underline font-medium"
+                    >
+                        Zakat Calculator
+                    </a>{" "}
+                    — calculate Zakat on cash, gold, silver, and investments.
+                </li>
+                <li>
+                    <a
+                        href="/tools/emi-calculator"
+                        class="text-blue-600 hover:underline font-medium"
+                    >
+                        EMI Calculator
+                    </a>{" "}
+                    — monthly loan EMI, total interest, and yearly breakdown.
+                </li>
+            </ul>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Image Tools</h3>
+            <ul class="list-disc pl-6 space-y-2">
                 <li>
                     <a
                         href="/tools/image-compressor"
@@ -103,7 +265,7 @@ const faqs = [
                     >
                         Image Compressor
                     </a>{" "}
-                    — compress JPG, PNG, and WebP images without losing quality.
+                    — reduce JPG, PNG, and WebP file sizes.
                 </li>
                 <li>
                     <a

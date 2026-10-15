@@ -1,5 +1,5 @@
 // Saare blog posts ka central data
-// Naya post add karne ke liye yahan add karo — homepage automatically update hoga
+// Add new posts here — homepage updates automatically
 
 export interface BlogPost {
   title: string;
