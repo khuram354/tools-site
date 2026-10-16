@@ -11,6 +11,30 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: 'How to Resize Images in WordPress (Free Guide 2026)',
+    description:
+      'Learn how to resize images in WordPress without plugins, using the free browser-based tool. Fix blurry images, slow pages, and wrong dimensions.',
+    href: '/blog/resize-images-wordpress',
+    date: 'October 16, 2026',
+    category: 'Image Tools',
+  },
+  {
+    title: 'How to Compress Images for Discord (Free Guide 2026)',
+    description:
+      'Learn how to compress images for Discord to fit the 8MB upload limit. Free browser-based tool, no signup, works on any device.',
+    href: '/blog/compress-images-discord',
+    date: 'October 16, 2026',
+    category: 'Image Tools',
+  },
+  {
+    title: 'How to Bulk Resize Images Online (Free Guide 2026)',
+    description:
+      'Learn how to bulk resize images online for free. Resize multiple photos at once for e-commerce, social media, and websites without losing quality.',
+    href: '/blog/bulk-resize-images',
+    date: 'October 16, 2026',
+    category: 'Image Tools',
+  },
+  {
     title: 'How to Compress Images for Website (2026 Guide)',
     description:
       'Learn how to compress images for your website without losing quality. Includes tools, formats, and best practices for faster page loads.',
