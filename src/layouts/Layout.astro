@@ -43,10 +43,12 @@ const imageURL = new URL(image, Astro.site);
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonicalURL} />
         <meta property="og:image" content={imageURL} />
+        <meta property="og:site_name" content="ToolsVibe" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
+        <meta name="twitter:url" content={canonicalURL} />
         <meta name="twitter:image" content={imageURL} />
 
         <!-- Google Analytics (GA4) - Runs in Web Worker via Partytown -->
