@@ -347,12 +347,82 @@ import Layout from "../../layouts/Layout.astro";
         </div>
     </section>
 
+    <!-- Related Tools & Guides -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-6">Related Tools</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            <a
+                href="/tools/freelancer-tax-calculator"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-semibold mb-1">Freelancer Tax Calculator</h3>
+                <p class="text-sm text-gray-600">
+                    Tax for IT export income and local freelance income.
+                </p>
+            </a>
+            <a
+                href="/tools/zakat-calculator"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-semibold mb-1">Zakat Calculator</h3>
+                <p class="text-sm text-gray-600">
+                    Calculate Zakat on gold, silver, and cash.
+                </p>
+            </a>
+            <a
+                href="/tools/emi-calculator"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-semibold mb-1">EMI Calculator</h3>
+                <p class="text-sm text-gray-600">
+                    Calculate loan EMI and total interest.
+                </p>
+            </a>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-6">Related Guides</h2>
+        <div class="space-y-3">
+            <a
+                href="/blog/salary-tax-calculator-pakistan"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-medium">
+                    Salary Tax Calculator Pakistan 2026-27
+                </h3>
+                <p class="text-sm text-gray-600">
+                    Step-by-step guide to using the calculator.
+                </p>
+            </a>
+            <a
+                href="/blog/salary-tax-pakistan"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-medium">
+                    How to Calculate Salary Tax in Pakistan
+                </h3>
+                <p class="text-sm text-gray-600">
+                    Complete FBR slab guide with examples.
+                </p>
+            </a>
+            <a
+                href="/blog/how-to-save-tax-pakistan"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-medium">
+                    7 Legal Ways to Save Tax in Pakistan
+                </h3>
+                <p class="text-sm text-gray-600">
+                    Reduce your tax bill with FBR-approved credits.
+                </p>
+            </a>
+        </div>
+    </section>
+
     <script>
         import {
             calculateAnnualTax,
             formatPKR,
             EOBI_EMPLOYEE_CONTRIBUTION,
-            salariedSlabs,
         } from "../../data/tax-data/pakistan-salaried";
 
         const salaryInput = document.getElementById(
