@@ -43,10 +43,8 @@ import Layout from "../../layouts/Layout.astro";
                     <line x1="15" y1="15" x2="21" y2="21"></line>
                     <line x1="4" y1="4" x2="9" y2="9"></line>
                 </svg>
-                <p class="font-medium mb-1">Drop your image here</p>
-                <p class="text-sm text-gray-500">
-                    or click to select (JPG, PNG, WebP)
-                </p>
+                <p class="font-medium mb-1">Click or tap to choose an image</p>
+                <p class="text-sm text-gray-500">JPG, PNG, or WebP</p>
                 <input
                     type="file"
                     id="file-input"
@@ -193,9 +191,7 @@ import Layout from "../../layouts/Layout.astro";
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
-            <li>
-                Drop your image into the box above, or click to select a file
-            </li>
+            <li>Click or tap the upload area to choose an image</li>
             <li>
                 Choose the format you want to convert to (JPG, PNG, or WebP)
             </li>
@@ -491,7 +487,8 @@ import Layout from "../../layouts/Layout.astro";
             fileInput.value = "";
             results.classList.add("hidden");
             optionsSection.classList.add("hidden");
-            dropZone.querySelector("p")!.textContent = "Drop your image here";
+            dropZone.querySelector("p")!.textContent =
+                "Click or tap here to choose an image";
         });
     </script>
 

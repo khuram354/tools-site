@@ -43,10 +43,8 @@ import Layout from "../../layouts/Layout.astro";
                     <polyline points="17 8 12 3 7 8"></polyline>
                     <line x1="12" y1="3" x2="12" y2="15"></line>
                 </svg>
-                <p class="font-medium mb-1">Drop your image here</p>
-                <p class="text-sm text-gray-500">
-                    or click to select (JPG, PNG, WebP)
-                </p>
+                <p class="font-medium mb-1">Click or tap to choose an image</p>
+                <p class="text-sm text-gray-500">JPG, PNG, or WebP</p>
                 <input
                     type="file"
                     id="file-input"
@@ -171,9 +169,7 @@ import Layout from "../../layouts/Layout.astro";
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
-            <li>
-                Drop your image into the box above, or click to select a file
-            </li>
+            <li>Click or tap the upload area to choose an image</li>
             <li>Adjust the compression quality using the slider</li>
             <li>Click "Compress Image"</li>
             <li>Compare the original and compressed versions</li>
@@ -440,7 +436,8 @@ import Layout from "../../layouts/Layout.astro";
             results.classList.add("hidden");
             compressBtn.disabled = true;
             compressBtn.textContent = "Compress Image";
-            dropZone.querySelector("p")!.textContent = "Drop your image here";
+            dropZone.querySelector("p")!.textContent =
+                "Click or tap here to choose an image";
         });
     </script>
 

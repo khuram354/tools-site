@@ -42,10 +42,8 @@ import Layout from "../../layouts/Layout.astro";
                     <circle cx="8.5" cy="8.5" r="1.5"></circle>
                     <polyline points="21 15 16 10 5 21"></polyline>
                 </svg>
-                <p class="font-medium mb-1">Drop your image here</p>
-                <p class="text-sm text-gray-500">
-                    or click to select (JPG, PNG, WebP)
-                </p>
+                <p class="font-medium mb-1">Click or tap to choose an image</p>
+                <p class="text-sm text-gray-500">JPG, PNG, or WebP</p>
                 <input
                     type="file"
                     id="file-input"
@@ -238,9 +236,7 @@ import Layout from "../../layouts/Layout.astro";
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
-            <li>
-                Drop your image into the box above, or click to select a file
-            </li>
+            <li>Click or tap the upload area to choose an image</li>
             <li>Enter your desired width and height, or use a quick preset</li>
             <li>Keep "Maintain aspect ratio" checked to avoid distortion</li>
             <li>Click "Resize Image"</li>
@@ -569,7 +565,8 @@ import Layout from "../../layouts/Layout.astro";
             fileInput.value = "";
             results.classList.add("hidden");
             dimensionsSection.classList.add("hidden");
-            dropZone.querySelector("p")!.textContent = "Drop your image here";
+            dropZone.querySelector("p")!.textContent =
+                "Click or tap here to choose an image";
         });
     </script>
 
