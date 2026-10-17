@@ -443,4 +443,60 @@ import Layout from "../../layouts/Layout.astro";
             dropZone.querySelector("p")!.textContent = "Drop your image here";
         });
     </script>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Image Compressor",
+            applicationCategory: "MultimediaApplication",
+            operatingSystem: "Any",
+            description:
+                "Free online image compressor. Compress JPG, PNG, and WebP images without losing quality. 100% client-side, no upload.",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        })}
+    />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Are my images uploaded to a server?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. All compression happens in your browser using JavaScript. Your images never leave your device.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What quality setting should I use?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "For most web images, 70–80% is a good balance between file size and quality. For photos you plan to print, use 90% or higher.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does compression affect image dimensions?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. This tool only reduces file size, not the width or height of the image. If you need to change dimensions, use our Image Resizer tool.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is this tool free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

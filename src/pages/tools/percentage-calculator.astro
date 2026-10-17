@@ -322,4 +322,52 @@ import Layout from "../../layouts/Layout.astro";
         calc3();
         calc4();
     </script>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Percentage Calculator",
+            applicationCategory: "UtilityApplication",
+            operatingSystem: "Any",
+            description:
+                "Free online percentage calculator. Solve X% of Y, percentage change, discounts, and more.",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        })}
+    />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "What's the difference between percentage and percent?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "They mean the same thing. Percent (per cent) literally means per hundred. Percentage is the noun form — e.g. calculate the percentage.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "How do I calculate percentage increase?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Subtract the original value from the new value, divide by the original value, then multiply by 100. Example: 100 to 150 gives (50 divided by 100) times 100 = 50% increase.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is this tool free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

@@ -335,4 +335,31 @@ const faqs = [
                 "Free online tools for everyone — word counter, image compressor, QR code generator, JSON formatter, and Pakistan tax calculators.",
         })}
     />
+
+    <!-- Organization Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "ToolsVibe",
+            url: "https://toolsvibe.online",
+            logo: "https://toolsvibe.online/og-image.png",
+            description:
+                "Free online tools for writing, images, development, and Pakistan tax calculations.",
+            founder: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            sameAs: [
+                "https://github.com/khuram354",
+                "https://facebook.com/toolsvibe.online",
+            ],
+            contactPoint: {
+                "@type": "ContactPoint",
+                email: "khurammirza354@gmail.com",
+                contactType: "customer support",
+            },
+        })}
+    />
 </Layout>

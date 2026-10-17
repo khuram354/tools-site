@@ -286,4 +286,38 @@ import Layout from "../../layouts/Layout.astro";
             },
         })}
     />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Is my JSON data safe?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. All formatting and validation happens in your browser. No data is sent to any server.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What is JSON?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "JSON (JavaScript Object Notation) is a lightweight data format used to exchange data between servers and web applications.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does this tool support large JSON files?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, it can handle large JSON files. Performance depends on your browser and device memory.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

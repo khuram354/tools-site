@@ -278,4 +278,38 @@ import Layout from "../../layouts/Layout.astro";
             },
         })}
     />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "What is error correction level?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Error correction level determines how much damage a QR code can sustain and still be readable. Higher levels (H) make the QR code more robust but denser.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Do QR codes expire?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No, QR codes generated here are static and never expire. They encode your text directly.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is this tool free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, completely free with no limits, no signup, and no watermark.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

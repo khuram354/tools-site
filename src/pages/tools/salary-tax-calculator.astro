@@ -540,4 +540,60 @@ Calculated via: toolsvibe.online`;
         // Auto-calculate on load
         calculate();
     </script>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Salary Tax Calculator",
+            applicationCategory: "FinanceApplication",
+            operatingSystem: "Any",
+            description:
+                "Free salary tax calculator for Pakistan. Calculate monthly take-home salary and FBR income tax for Tax Year 2027 (FY 2026-27).",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
+        })}
+    />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Are these tax slabs accurate for 2026-27?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. These slabs are based on the Finance Act 2026 and apply to salaried individuals for Tax Year 2027 (July 2026 – June 2027).",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does this calculator include the 9% surcharge?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. The 9% surcharge on salaried individuals has been abolished in the Finance Act 2026.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is my salary data stored anywhere?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. All calculations happen in your browser. Your salary information never leaves your device.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is this tool free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, completely free with no signup, no ads clutter, and no limits.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

@@ -494,4 +494,60 @@ import Layout from "../../layouts/Layout.astro";
             dropZone.querySelector("p")!.textContent = "Drop your image here";
         });
     </script>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Image Converter",
+            applicationCategory: "MultimediaApplication",
+            operatingSystem: "Any",
+            description:
+                "Free online image converter. Convert between JPG, PNG, and WebP formats instantly in your browser.",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        })}
+    />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Which format should I use?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Use JPG for photos (smaller file size), PNG for images with transparency or text, and WebP for the best balance of quality and size on modern browsers.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does converting affect image quality?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "JPG and WebP are lossy formats — they discard some data to reduce size. PNG is lossless. Use a high quality setting (90%+) to preserve visual quality.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Are my images uploaded to a server?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. All conversion happens in your browser. Your images never leave your device.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is this tool free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

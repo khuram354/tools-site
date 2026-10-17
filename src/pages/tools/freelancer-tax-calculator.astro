@@ -503,4 +503,60 @@ import Layout from "../../layouts/Layout.astro";
 
         calculate();
     </script>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Freelancer Tax Calculator",
+            applicationCategory: "FinanceApplication",
+            operatingSystem: "Any",
+            description:
+                "Free freelancer tax calculator for Pakistan. Calculate income tax on IT export income (Section 154A) and local freelance income for Tax Year 2027.",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
+        })}
+    />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Do I need to register with PSEB?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, if you want the 0.25% rate on IT export income. Without PSEB registration, you pay 1%.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Do I need to file a tax return?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Every freelancer with income above PKR 600,000 must file an annual return on the FBR IRIS portal to stay on the Active Taxpayer List.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What counts as approved banking channels?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Any Pakistani bank account receiving foreign remittances qualifies. This includes Payoneer, Wise, and direct wire transfers routed through Pakistani institutions.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is the 0.25% rate still available?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. The 0.25% Final Tax Regime under Section 154A has been extended through Tax Year 2029.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

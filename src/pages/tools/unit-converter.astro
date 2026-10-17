@@ -437,4 +437,60 @@ import Layout from "../../layouts/Layout.astro";
         populateUnits();
         convert();
     </script>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Unit Converter",
+            applicationCategory: "UtilityApplication",
+            operatingSystem: "Any",
+            description:
+                "Free online unit converter. Convert length, weight, temperature, area, volume, speed, and time.",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        })}
+    />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Is this unit converter accurate?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. We use internationally recognized conversion factors (e.g. 1 inch = 2.54 cm exactly) for all conversions.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does it work offline?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Once the page loads, all conversions happen in your browser — no internet connection required.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Why do temperature conversions work differently?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Unlike other units, temperature scales have different starting points. Celsius and Fahrenheit require an offset, not just multiplication.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is this tool free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

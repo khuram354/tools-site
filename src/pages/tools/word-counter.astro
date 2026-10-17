@@ -255,4 +255,39 @@ import Layout from "../../layouts/Layout.astro";
             },
         })}
     />
+
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Is my text saved anywhere?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. All counting happens in your browser. Your text never leaves your device.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "How is reading time calculated?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Reading time is estimated at 200 words per minute, which is the average adult reading speed.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is this tool free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, completely free with no limits or signup.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

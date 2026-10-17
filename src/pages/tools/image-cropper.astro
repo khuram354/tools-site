@@ -451,4 +451,60 @@ import Layout from "../../layouts/Layout.astro";
             });
         });
     </script>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Image Cropper",
+            applicationCategory: "MultimediaApplication",
+            operatingSystem: "Any",
+            description:
+                "Free online image cropper. Crop JPG, PNG, and WebP images to any size or aspect ratio.",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        })}
+    />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Are my images uploaded to a server?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. All cropping happens in your browser using JavaScript. Your images never leave your device.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What's the best aspect ratio for Instagram?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Instagram posts use 1:1 (square) or 4:5 (portrait). Stories and Reels use 9:16. Use the presets above to crop to these ratios.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does cropping affect image quality?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. Cropping removes pixels outside the crop area but doesn't change the quality of the pixels that remain.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is this tool free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

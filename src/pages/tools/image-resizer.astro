@@ -572,4 +572,60 @@ import Layout from "../../layouts/Layout.astro";
             dropZone.querySelector("p")!.textContent = "Drop your image here";
         });
     </script>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Image Resizer",
+            applicationCategory: "MultimediaApplication",
+            operatingSystem: "Any",
+            description:
+                "Free online image resizer. Resize JPG, PNG, and WebP images with aspect ratio control.",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        })}
+    />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Are my images uploaded to a server?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. All resizing happens in your browser using JavaScript. Your images never leave your device.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What does Maintain aspect ratio do?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "It keeps the original width-to-height ratio, so your image doesn't look stretched or squished. When you change the width, the height adjusts automatically.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does resizing affect image quality?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Reducing dimensions generally maintains quality. Enlarging an image can make it look blurry, since the tool is stretching existing pixels.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is this tool free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

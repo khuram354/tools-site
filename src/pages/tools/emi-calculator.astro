@@ -480,4 +480,60 @@ import Layout from "../../layouts/Layout.astro";
 
         calculate();
     </script>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "EMI Calculator",
+            applicationCategory: "FinanceApplication",
+            operatingSystem: "Any",
+            description:
+                "Free EMI calculator for Pakistan. Calculate monthly loan EMI, total interest, and yearly breakdown for home, car, and personal loans.",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
+        })}
+    />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "What interest rate should I use?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Use the exact rate quoted by your bank in your loan offer letter. Rates vary significantly based on the bank, loan type, tenure, and your credit profile.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does a longer tenure reduce my EMI?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, a longer tenure reduces your monthly EMI but increases the total interest you pay over the life of the loan.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is this EMI calculator accurate?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "It uses the standard amortized loan formula. Note that Islamic banks (using diminishing musharakah) and flat-rate loans calculate differently. Always confirm the exact EMI with your bank before signing a loan agreement.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is my financial data safe?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. All calculations happen in your browser. Your loan amount, interest rate, and tenure are never sent to any server.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

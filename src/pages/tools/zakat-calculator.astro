@@ -629,4 +629,60 @@ import Layout from "../../layouts/Layout.astro";
 
         calculate();
     </script>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Zakat Calculator",
+            applicationCategory: "FinanceApplication",
+            operatingSystem: "Any",
+            description:
+                "Free online Zakat calculator. Calculate Zakat on gold, silver, cash, savings, and investments using standard Nisab thresholds.",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
+        })}
+    />
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "What is the rate of Zakat?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Zakat is 2.5% (one-fortieth) of your net qualifying wealth.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Should I use gold or silver Nisab?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Most scholars recommend silver Nisab because it is lower, which means more people qualify. Either is valid — the choice is yours.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Do I pay Zakat on my house or car?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. Personal-use items like your primary home, personal vehicle, and household furniture are not Zakatable.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What if I don't know current gold or silver prices?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Enter the current market price per gram. For accurate Zakat, use today's local gold or silver rate from your city's sarafa bazaar.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>
