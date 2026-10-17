@@ -70,15 +70,27 @@ const imageURL = new URL(image, Astro.site);
             <nav
                 class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between"
             >
-                <a href="/" class="text-xl font-bold text-blue-600">ToolsVibe</a
+                <a
+                    href="/"
+                    class="flex items-center gap-2 text-xl font-bold text-blue-600"
                 >
-                <ul class="flex gap-6 text-sm font-medium">
+                    <img
+                        src="/favicon.svg"
+                        alt="ToolsVibe logo"
+                        class="w-8 h-8"
+                    />
+                    <span>ToolsVibe</span>
+                </a>
+                <ul class="flex gap-6 text-sm font-medium list-none">
                     <li><a href="/" class="hover:text-blue-600">Home</a></li>
                     <li>
                         <a href="/tools" class="hover:text-blue-600">Tools</a>
                     </li>
                     <li>
                         <a href="/blog" class="hover:text-blue-600">Blog</a>
+                    </li>
+                    <li>
+                        <a href="/about" class="hover:text-blue-600">About</a>
                     </li>
                 </ul>
             </nav>

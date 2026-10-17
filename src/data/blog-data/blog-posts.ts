@@ -11,6 +11,14 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: 'Salary Tax Calculator Pakistan 2026-27 — Free Online Tool',
+    description:
+      'Free salary tax calculator for Pakistan. Calculate your monthly take-home salary, FBR income tax, and EOBI deductions for Tax Year 2027 (FY 2026-27) instantly.',
+    href: '/blog/salary-tax-calculator-pakistan',
+    date: 'October 17, 2026',
+    category: 'Productivity',
+  },
+  {
     title: 'How to Resize Images in WordPress (Free Guide 2026)',
     description:
       'Learn how to resize images in WordPress without plugins, using the free browser-based tool. Fix blurry images, slow pages, and wrong dimensions.',
