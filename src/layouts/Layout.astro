@@ -67,34 +67,112 @@ const imageURL = new URL(image, Astro.site);
     </head>
     <body class="min-h-screen bg-gray-50 text-gray-900">
         <header class="bg-white shadow-sm sticky top-0 z-50">
-            <nav
-                class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between"
-            >
-                <a
-                    href="/"
-                    class="flex items-center gap-2 text-xl font-bold text-blue-600"
+            <nav class="max-w-6xl mx-auto px-4 py-4">
+                <div class="flex items-center justify-between">
+                    <a
+                        href="/"
+                        class="flex items-center gap-2 text-xl font-bold text-blue-600"
+                    >
+                        <img
+                            src="/favicon.svg"
+                            alt="ToolsVibe logo"
+                            class="w-8 h-8"
+                        />
+                        <span>ToolsVibe</span>
+                    </a>
+
+                    <!-- Desktop Menu -->
+                    <ul
+                        class="hidden md:flex gap-6 text-sm font-medium list-none"
+                    >
+                        <li>
+                            <a href="/" class="hover:text-blue-600">Home</a>
+                        </li>
+                        <li>
+                            <a href="/tools" class="hover:text-blue-600"
+                                >Tools</a>
+                        </li>
+                        <li>
+                            <a href="/blog" class="hover:text-blue-600">Blog</a>
+                        </li>
+                        <li>
+                            <a href="/about" class="hover:text-blue-600"
+                                >About</a>
+                        </li>
+                    </ul>
+
+                    <!-- Mobile Hamburger Button -->
+                    <button
+                        id="menu-toggle"
+                        class="md:hidden p-2 text-gray-700 hover:text-blue-600"
+                        aria-label="Toggle menu"
+                        aria-expanded="false"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu (hidden by default) -->
+                <ul
+                    id="mobile-menu"
+                    class="hidden md:hidden mt-4 space-y-1 text-sm font-medium list-none border-t border-gray-200 pt-3"
                 >
-                    <img
-                        src="/favicon.svg"
-                        alt="ToolsVibe logo"
-                        class="w-8 h-8"
-                    />
-                    <span>ToolsVibe</span>
-                </a>
-                <ul class="flex gap-6 text-sm font-medium list-none">
-                    <li><a href="/" class="hover:text-blue-600">Home</a></li>
                     <li>
-                        <a href="/tools" class="hover:text-blue-600">Tools</a>
+                        <a
+                            href="/"
+                            class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600"
+                            >Home</a>
                     </li>
                     <li>
-                        <a href="/blog" class="hover:text-blue-600">Blog</a>
+                        <a
+                            href="/tools"
+                            class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600"
+                            >Tools</a>
                     </li>
                     <li>
-                        <a href="/about" class="hover:text-blue-600">About</a>
+                        <a
+                            href="/blog"
+                            class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600"
+                            >Blog</a>
+                    </li>
+                    <li>
+                        <a
+                            href="/about"
+                            class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600"
+                            >About</a>
                     </li>
                 </ul>
             </nav>
         </header>
+
+        <script is:inline>
+            document.addEventListener("DOMContentLoaded", function () {
+                var toggle = document.getElementById("menu-toggle");
+                var menu = document.getElementById("mobile-menu");
+                if (toggle && menu) {
+                    toggle.addEventListener("click", function () {
+                        menu.classList.toggle("hidden");
+                        var expanded =
+                            toggle.getAttribute("aria-expanded") === "true";
+                        toggle.setAttribute("aria-expanded", !expanded);
+                    });
+                }
+            });
+        </script>
 
         <main class="max-w-6xl mx-auto px-4 py-8">
             <slot />
