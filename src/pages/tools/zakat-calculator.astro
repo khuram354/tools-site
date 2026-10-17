@@ -449,6 +449,64 @@ import Layout from "../../layouts/Layout.astro";
         </p>
     </section>
 
+    <!-- Related Tools & Guides -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-6">Related Tools</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            <a
+                href="/tools/salary-tax-calculator"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-semibold mb-1">Salary Tax Calculator</h3>
+                <p class="text-sm text-gray-600">
+                    Calculate take-home salary for Pakistan.
+                </p>
+            </a>
+            <a
+                href="/tools/freelancer-tax-calculator"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-semibold mb-1">Freelancer Tax Calculator</h3>
+                <p class="text-sm text-gray-600">
+                    Tax for IT export and local freelance income.
+                </p>
+            </a>
+            <a
+                href="/tools/emi-calculator"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-semibold mb-1">EMI Calculator</h3>
+                <p class="text-sm text-gray-600">
+                    Calculate loan EMI and total interest.
+                </p>
+            </a>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-6">Related Guides</h2>
+        <div class="space-y-3">
+            <a
+                href="/blog/how-to-save-tax-pakistan"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-medium">
+                    7 Legal Ways to Save Tax in Pakistan
+                </h3>
+                <p class="text-sm text-gray-600">
+                    Tax credits and deductions you should know.
+                </p>
+            </a>
+            <a
+                href="/blog/salary-tax-pakistan"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-medium">
+                    How to Calculate Salary Tax in Pakistan
+                </h3>
+                <p class="text-sm text-gray-600">Complete FBR slab guide.</p>
+            </a>
+        </div>
+    </section>
+
     <script>
         const cashInput = document.getElementById("cash") as HTMLInputElement;
         const goldInput = document.getElementById("gold") as HTMLInputElement;
@@ -562,12 +620,13 @@ import Layout from "../../layouts/Layout.astro";
                 formatPKR(zakat);
 
             results.classList.remove("hidden");
-            results.scrollIntoView({ behavior: "smooth" });
         }
 
-        calculateBtn.addEventListener("click", calculate);
+        calculateBtn.addEventListener("click", () => {
+            calculate();
+            results.scrollIntoView({ behavior: "smooth" });
+        });
 
-        // Auto-calculate on load
         calculate();
     </script>
 </Layout>
