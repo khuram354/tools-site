@@ -86,20 +86,56 @@ const imageURL = new URL(image, Astro.site);
                         class="hidden md:flex gap-6 text-sm font-medium list-none"
                     >
                         <li>
-                            <a href="/" class="hover:text-blue-600">Home</a>
-                        </li>
-                        <li>
-                            <a href="/tools" class="hover:text-blue-600"
-                                >Tools</a
+                            <a
+                                href="/"
+                                class:list={[
+                                    "hover:text-blue-600",
+                                    Astro.url.pathname === "/"
+                                        ? "text-blue-600 font-bold"
+                                        : "text-gray-700",
+                                ]}
                             >
+                                Home
+                            </a>
                         </li>
                         <li>
-                            <a href="/blog" class="hover:text-blue-600">Blog</a>
-                        </li>
-                        <li>
-                            <a href="/about" class="hover:text-blue-600"
-                                >About</a
+                            <a
+                                href="/tools/"
+                                class:list={[
+                                    "hover:text-blue-600",
+                                    Astro.url.pathname.startsWith("/tools")
+                                        ? "text-blue-600 font-bold"
+                                        : "text-gray-700",
+                                ]}
                             >
+                                Tools
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/blog/"
+                                class:list={[
+                                    "hover:text-blue-600",
+                                    Astro.url.pathname.startsWith("/blog")
+                                        ? "text-blue-600 font-bold"
+                                        : "text-gray-700",
+                                ]}
+                            >
+                                Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/about/"
+                                class:list={[
+                                    "hover:text-blue-600",
+                                    Astro.url.pathname.startsWith("/about")
+                                        ? "text-blue-600 font-bold"
+                                        : "text-gray-700",
+                                ]}
+                            >
+                                About
+                            </a>
                         </li>
                     </ul>
 
@@ -136,29 +172,45 @@ const imageURL = new URL(image, Astro.site);
                     <li>
                         <a
                             href="/"
-                            class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600"
-                            >Home</a
+                            class:list={[
+                                "block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600",
+                                Astro.url.pathname === "/"
+                                    ? "bg-blue-50 text-blue-600 font-bold"
+                                    : "",
+                            ]}>Home</a
                         >
                     </li>
                     <li>
                         <a
-                            href="/tools"
-                            class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600"
-                            >Tools</a
+                            href="/tools/"
+                            class:list={[
+                                "block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600",
+                                Astro.url.pathname.startsWith("/tools")
+                                    ? "bg-blue-50 text-blue-600 font-bold"
+                                    : "",
+                            ]}>Tools</a
                         >
                     </li>
                     <li>
                         <a
-                            href="/blog"
-                            class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600"
-                            >Blog</a
+                            href="/blog/"
+                            class:list={[
+                                "block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600",
+                                Astro.url.pathname.startsWith("/blog")
+                                    ? "bg-blue-50 text-blue-600 font-bold"
+                                    : "",
+                            ]}>Blog</a
                         >
                     </li>
                     <li>
                         <a
-                            href="/about"
-                            class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600"
-                            >About</a
+                            href="/about/"
+                            class:list={[
+                                "block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600",
+                                Astro.url.pathname.startsWith("/about")
+                                    ? "bg-blue-50 text-blue-600 font-bold"
+                                    : "",
+                            ]}>About</a
                         >
                     </li>
                 </ul>
@@ -189,12 +241,12 @@ const imageURL = new URL(image, Astro.site);
                 <div
                     class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-600 mb-4"
                 >
-                    <a href="/about" class="hover:text-blue-600">About</a>
-                    <a href="/contact" class="hover:text-blue-600">Contact</a>
-                    <a href="/privacy" class="hover:text-blue-600"
+                    <a href="/about/" class="hover:text-blue-600">About</a>
+                    <a href="/contact/" class="hover:text-blue-600">Contact</a>
+                    <a href="/privacy/" class="hover:text-blue-600"
                         >Privacy Policy</a
                     >
-                    <a href="/terms" class="hover:text-blue-600"
+                    <a href="/terms/" class="hover:text-blue-600"
                         >Terms of Service</a
                     >
                 </div>
