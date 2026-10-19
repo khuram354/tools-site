@@ -1,0 +1,24 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Redirect netlify.app subdomain to custom domain
+[[redirects]]
+  from = "https://free-tools-site.netlify.app/*"
+  to = "https://toolsvibe.online/:splat"
+  status = 301
+  force = true
+
+# Force HTTPS
+[[redirects]]
+  from = "http://toolsvibe.online/*"
+  to = "https://toolsvibe.online/:splat"
+  status = 301
+  force = true
+
+# Force HTTPS for www
+[[redirects]]
+  from = "http://www.toolsvibe.online/*"
+  to = "https://toolsvibe.online/:splat"
+  status = 301
+  force = true
