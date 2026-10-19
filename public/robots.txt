@@ -1,4 +1,14 @@
 User-agent: *
 Allow: /
 
+# Block tracking parameters (prevents duplicate content)
+Disallow: /*?*utm_
+Disallow: /*?*ref=
+
+# Block 404 page
+Disallow: /404
+
+# Do NOT block /_astro/ — Google needs CSS/JS to render tools
+Allow: /_astro/
+
 Sitemap: https://toolsvibe.online/sitemap-index.xml
