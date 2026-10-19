@@ -4,7 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 
 <Layout
     title="Salary Tax Calculator Pakistan 2026-27 — Take-Home Pay"
-    description="Calculate your monthly salary tax, take-home pay, and income tax for Tax Year 2027 (FY 2026-27) in Pakistan. Free, fast, and accurate FBR slab-based calculator."
+    description="Calculate your monthly salary tax, take-home pay, and income tax for Tax Year 2027 in Pakistan. Free, accurate FBR slab calculator."
 >
     <div class="max-w-4xl mx-auto">
         <header class="mb-8">
@@ -16,7 +16,7 @@ import Layout from "../../layouts/Layout.astro";
                 Year 2027 (FY 2026-27) slabs.
             </p>
             <p class="text-xs text-gray-500">
-                Last updated: October 14, 2026 · Source:{" "}
+                Last updated: October 20, 2026 · Source:{" "}
                 <a
                     href="https://www.fbr.gov.pk/"
                     target="_blank"
@@ -50,12 +50,9 @@ import Layout from "../../layouts/Layout.astro";
                     />
                 </div>
                 <div>
-                    <label
-                        for="tax-year"
-                        class="block text-sm font-medium mb-2"
+                    <label for="tax-year" class="block text-sm font-medium mb-2"
+                        >Tax Year</label
                     >
-                        Tax Year
-                    </label>
                     <select
                         id="tax-year"
                         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -265,7 +262,7 @@ import Layout from "../../layouts/Layout.astro";
         </section>
     </div>
 
-    <!-- SEO Content -->
+    <!-- SEO Content (800+ words) -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">
             About This Salary Tax Calculator
@@ -273,8 +270,16 @@ import Layout from "../../layouts/Layout.astro";
         <p class="text-gray-700 mb-4">
             This free salary tax calculator helps Pakistani salaried individuals
             calculate their monthly and yearly income tax based on the latest
-            FBR tax slabs for Tax Year 2027 (FY 2026-27). It's accurate, fast,
-            and runs entirely in your browser.
+            FBR tax slabs for Tax Year 2027 (FY 2026-27). It is accurate, fast,
+            and runs entirely in your browser — your salary information never
+            leaves your device.
+        </p>
+        <p class="text-gray-700 mb-4">
+            Every July, when the new tax year begins, the same questions come
+            up: "How much tax will I pay this year?" and "Is my take-home salary
+            going to change?" Most people rely on HR or a colleague to explain
+            it — but it's actually simple once you know the slabs. This guide
+            breaks it down step by step.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
@@ -285,16 +290,170 @@ import Layout from "../../layouts/Layout.astro";
             <li>Click "Calculate Tax" to see your breakdown</li>
         </ol>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            What This Calculator Shows
+        </h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Based on Finance Act 2026 FBR tax slabs</li>
-            <li>Monthly and yearly tax calculation</li>
-            <li>Detailed breakdown of gross, deductions, and net salary</li>
-            <li>EOBI deduction support</li>
-            <li>Copy summary to share on WhatsApp or email</li>
-            <li>100% free, no signup required</li>
             <li>
-                All calculations run in your browser — your data stays private
+                <strong>Monthly tax:</strong> What gets deducted from your salary
+                each month
+            </li>
+            <li>
+                <strong>Yearly tax:</strong> The total FBR income tax on your annual
+                income
+            </li>
+            <li>
+                <strong>Monthly take-home:</strong> Your net salary after tax and
+                EOBI
+            </li>
+            <li>
+                <strong>Yearly take-home:</strong> Total amount you receive in a year
+            </li>
+            <li>
+                <strong>Taxable annual income:</strong> The base on which tax is calculated
+            </li>
+            <li>
+                <strong>Your tax slab:</strong> Which FBR bracket you fall into
+            </li>
+            <li>
+                <strong>Tax saving tips:</strong> FBR-approved ways to reduce your
+                tax
+            </li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            FBR Tax Slabs for Salaried Individuals (Tax Year 2027)
+        </h3>
+        <p class="text-gray-700 mb-4">
+            Here are the official slabs for FY 2026-27, per the Finance Act
+            2026:
+        </p>
+        <div class="overflow-x-auto mt-4">
+            <table class="w-full text-sm border border-gray-200 rounded-lg">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="text-left p-3 font-semibold border-b"
+                            >Annual Taxable Income (PKR)</th
+                        >
+                        <th class="text-left p-3 font-semibold border-b"
+                            >Tax Rate</th
+                        >
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        ><td class="p-3 border-b">Up to 600,000</td><td
+                            class="p-3 border-b"
+                            ><strong>0%</strong> (Tax-Free)</td
+                        ></tr
+                    >
+                    <tr
+                        ><td class="p-3 border-b">600,001 – 1,200,000</td><td
+                            class="p-3 border-b"
+                            >1% of amount exceeding 600,000</td
+                        ></tr
+                    >
+                    <tr
+                        ><td class="p-3 border-b">1,200,001 – 2,200,000</td><td
+                            class="p-3 border-b"
+                            >PKR 6,000 + 11% of amount exceeding 1,200,000</td
+                        ></tr
+                    >
+                    <tr
+                        ><td class="p-3 border-b">2,200,001 – 3,200,000</td><td
+                            class="p-3 border-b"
+                            >PKR 116,000 + 20% of amount exceeding 2,200,000</td
+                        ></tr
+                    >
+                    <tr
+                        ><td class="p-3 border-b">3,200,001 – 4,100,000</td><td
+                            class="p-3 border-b"
+                            >PKR 316,000 + 25% of amount exceeding 3,200,000</td
+                        ></tr
+                    >
+                    <tr
+                        ><td class="p-3 border-b">4,100,001 – 5,600,000</td><td
+                            class="p-3 border-b"
+                            >PKR 541,000 + 29% of amount exceeding 4,100,000</td
+                        ></tr
+                    >
+                    <tr
+                        ><td class="p-3 border-b">5,600,001 – 7,000,000</td><td
+                            class="p-3 border-b"
+                            >PKR 976,000 + 32% of amount exceeding 5,600,000</td
+                        ></tr
+                    >
+                    <tr
+                        ><td class="p-3">Above 7,000,000</td><td class="p-3"
+                            >PKR 1,424,000 + 35% of amount exceeding 7,000,000</td
+                        ></tr
+                    >
+                </tbody>
+            </table>
+        </div>
+        <p class="text-gray-700 mt-4">
+            <strong>Note:</strong> The 9% surcharge on salaried individuals has been
+            abolished for Tax Year 2027. Your tax is simply the slab calculation.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
+        <p class="text-gray-700 mb-4">
+            Using the calculator, here's what happens if your monthly gross
+            salary is PKR 150,000:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li><strong>Annual gross:</strong> PKR 1,800,000</li>
+            <li>
+                <strong>EOBI (if applicable):</strong> PKR 407/month = PKR 4,884/year
+            </li>
+            <li>
+                <strong>Tax slab:</strong> 1,200,001 – 2,200,000 (PKR 6,000 + 11%)
+            </li>
+            <li><strong>Yearly tax:</strong> ~PKR 71,300</li>
+            <li><strong>Monthly tax:</strong> ~PKR 5,942</li>
+            <li><strong>Net take-home:</strong> ~PKR 143,651/month</li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">What Is a Salary Slip?</h3>
+        <p class="text-gray-700 mb-4">
+            A <strong>salary slip</strong> (also called pay slip or payslip) is a
+            document your employer gives you every month showing:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>Basic salary</li>
+            <li>Allowances (house rent, medical, transport)</li>
+            <li>Deductions (income tax, EOBI, provident fund)</li>
+            <li>Net pay (what actually lands in your bank account)</li>
+        </ul>
+        <p class="text-gray-700 mt-4">
+            When you use our calculator, you can cross-check the "income tax"
+            line on your salary slip to make sure your employer is deducting the
+            correct amount.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Common Mistakes to Avoid
+        </h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>Confusing monthly and annual slab:</strong> Your slab is decided
+                by your <em>annual</em> taxable income, not monthly.
+            </li>
+            <li>
+                <strong>Forgetting EOBI:</strong> If your salary is above the EOBI
+                wage limit, EOBI is deducted monthly and reduces your take-home.
+            </li>
+            <li>
+                <strong>Not checking your salary slip:</strong> Employers sometimes
+                miscalculate. Compare your salary slip against our calculator.
+            </li>
+            <li>
+                <strong>Ignoring tax credits:</strong> Investments in VPS, life insurance,
+                and certain donations can reduce your tax. Use our <a
+                    href="/blog/how-to-save-tax-pakistan"
+                    class="text-blue-600 hover:underline font-medium"
+                    >tax saving guide</a
+                > to learn more.
             </li>
         </ul>
 
@@ -331,20 +490,39 @@ import Layout from "../../layouts/Layout.astro";
                 </p>
             </div>
             <div>
+                <h4 class="font-semibold text-gray-900">
+                    Can I calculate tax for a different tax year?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Our calculator currently supports Tax Year 2027 (FY
+                    2026-27). Future years will be added as FBR announces new
+                    slabs.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Does the calculator work on mobile?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. The tool works on any device — laptop, tablet, phone,
+                    or desktop.
+                </p>
+            </div>
+            <div>
                 <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
                 <p class="text-gray-700 mt-1">
                     Yes, completely free with no signup, no ads clutter, and no
                     limits.
                 </p>
             </div>
-            <p
-                class="text-xs text-gray-500 mt-6 p-3 bg-gray-50 rounded-lg border border-gray-200"
-            >
-                <strong>Disclaimer:</strong> This calculator is for estimation only,
-                not tax advice. For final figures, consult FBR or a certified tax
-                professional.
-            </p>
         </div>
+
+        <p
+            class="text-xs text-gray-500 mt-6 p-3 bg-gray-50 rounded-lg border border-gray-200"
+        >
+            <strong>Disclaimer:</strong> This calculator is for estimation only, not
+            tax advice. For final figures, consult FBR or a certified tax professional.
+        </p>
     </section>
 
     <!-- Related Tools & Guides -->
@@ -450,14 +628,13 @@ import Layout from "../../layouts/Layout.astro";
                 ? EOBI_EMPLOYEE_CONTRIBUTION
                 : 0;
             const eobiYearly = eobiMonthly * 12;
-            const taxableIncome = yearlyGross; // EOBI is not income-tax deductible
+            const taxableIncome = yearlyGross;
 
             const { tax, slab } = calculateAnnualTax(taxableIncome);
             const monthlyTax = tax / 12;
             const netMonthly = monthlyGross - monthlyTax - eobiMonthly;
             const netYearly = netMonthly * 12;
 
-            // Update summary cards
             document.getElementById("monthly-tax")!.textContent =
                 formatPKR(monthlyTax);
             document.getElementById("yearly-tax")!.textContent = formatPKR(tax);
@@ -466,7 +643,6 @@ import Layout from "../../layouts/Layout.astro";
             document.getElementById("yearly-net")!.textContent =
                 formatPKR(netYearly);
 
-            // Update breakdown
             document.getElementById("breakdown-gross-monthly")!.textContent =
                 formatPKR(monthlyGross);
             document.getElementById("breakdown-gross-yearly")!.textContent =
@@ -482,13 +658,11 @@ import Layout from "../../layouts/Layout.astro";
             document.getElementById("breakdown-net")!.textContent =
                 formatPKR(netMonthly);
 
-            // Slab info
             if (slab) {
                 document.getElementById("slab-info")!.textContent =
                     slab.description;
             }
 
-            // Show/hide tax tips
             const tips = document.getElementById("tax-tips")!;
             if (tax > 0) {
                 tips.classList.remove("hidden");
@@ -537,7 +711,6 @@ Calculated via: toolsvibe.online`;
             lastCalculation = null;
         });
 
-        // Auto-calculate on load
         calculate();
     </script>
 
