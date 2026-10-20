@@ -82,7 +82,7 @@ import Layout from "../../layouts/Layout.astro";
             </div>
         </div>
     </div>
-
+    <!-- SEO Content (800+ words) -->
     <section class="max-w-3xl mx-auto mt-16 prose prose-gray">
         <h2 class="text-2xl font-bold mb-4">About This QR Code Generator</h2>
         <p class="text-gray-700 mb-4">
@@ -90,6 +90,13 @@ import Layout from "../../layouts/Layout.astro";
             text, URL, phone number, or message. Customize the size and error
             correction level, then download your QR code as a PNG image. No
             signup, no watermark, completely free.
+        </p>
+        <p class="text-gray-700 mb-4">
+            QR codes have become part of daily life — restaurant menus, business
+            cards, product packaging, event tickets, and even Wi-Fi sharing.
+            This tool makes creating one as simple as typing text and clicking a
+            button. Everything runs in your browser, so nothing is uploaded to
+            any server.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
@@ -100,14 +107,151 @@ import Layout from "../../layouts/Layout.astro";
             <li>Click "Download PNG" to save the image to your device.</li>
         </ol>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+        <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Generate QR codes for any text or URL</li>
-            <li>Customizable size (200px to 500px)</li>
-            <li>Four error correction levels (L, M, Q, H)</li>
-            <li>Download as high-quality PNG</li>
-            <li>100% free, no signup required, no watermark</li>
+            <li>
+                <strong>Instant generation:</strong> Type text, click a button, download.
+                No waiting.
+            </li>
+            <li>
+                <strong>No signup:</strong> No account, no email, no verification.
+                Just use it.
+            </li>
+            <li>
+                <strong>No watermark:</strong> The QR code you download is clean —
+                no logos, no branding.
+            </li>
+            <li>
+                <strong>Privacy first:</strong> Everything runs in your browser. Your
+                text never leaves your device.
+            </li>
+            <li>
+                <strong>Free with no limits:</strong> Generate as many QR codes as
+                you want, as often as you want.
+            </li>
         </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">What Can You Encode?</h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>Website URLs:</strong> Link to your site, a product page,
+                or a YouTube video.
+            </li>
+            <li>
+                <strong>Plain text:</strong> A message, coupon code, or instruction.
+            </li>
+            <li>
+                <strong>Phone numbers:</strong> Scanning opens the dialer with the
+                number pre-filled.
+            </li>
+            <li>
+                <strong>Email addresses:</strong> Opens a pre-addressed email draft.
+            </li>
+            <li>
+                <strong>Wi-Fi credentials:</strong> Auto-connect to a network (requires
+                Wi-Fi format).
+            </li>
+            <li>
+                <strong>vCards:</strong> Full contact information saved directly to
+                the phone.
+            </li>
+            <li>
+                <strong>Payment links:</strong> PayPal, Venmo, UPI, and other apps.
+            </li>
+            <li>
+                <strong>Geographic coordinates:</strong> Opens a specific location
+                in Maps.
+            </li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
+
+        <h4 class="font-semibold mt-4 mb-2">1. Restaurant Menus</h4>
+        <p class="text-gray-700 mb-4">
+            Place a QR code on each table so customers can view the menu without
+            handling paper. Updating the menu is as simple as changing the URL —
+            no reprinting needed.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">2. Business Cards</h4>
+        <p class="text-gray-700 mb-4">
+            Add a QR code to your business card that opens your LinkedIn
+            profile, portfolio, or a vCard. Recipients scan once and have your
+            contact info saved instantly.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">3. Product Packaging</h4>
+        <p class="text-gray-700 mb-4">
+            Include a QR code for warranty registration, tutorials, or exclusive
+            content. This turns physical packaging into a digital touchpoint.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">4. Event Ticketing</h4>
+        <p class="text-gray-700 mb-4">
+            QR codes on tickets allow quick scanning at the entrance — no manual
+            name checks, no delays.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">5. Wi-Fi Sharing</h4>
+        <p class="text-gray-700 mb-4">
+            For cafés, hotels, and offices: place a QR code on the wall that
+            connects guests to Wi-Fi automatically. No more passing around
+            passwords.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">6. Marketing Campaigns</h4>
+        <p class="text-gray-700 mb-4">
+            Print QR codes on flyers, posters, and brochures that link to
+            landing pages, discount codes, or app downloads.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Understanding Error Correction Levels
+        </h3>
+        <p class="text-gray-700 mb-4">
+            Error correction level determines how much damage a QR code can
+            sustain and still be readable. Higher levels make the code denser
+            but more robust.
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>Low (L):</strong> 7% of the code can be damaged. Smallest
+                file size, best for clean digital displays.
+            </li>
+            <li>
+                <strong>Medium (M):</strong> 15% damage tolerance. Good default for
+                most uses.
+            </li>
+            <li>
+                <strong>Quartile (Q):</strong> 25% damage tolerance. Good for printed
+                materials that might get scratched.
+            </li>
+            <li>
+                <strong>High (H):</strong> 30% damage tolerance. Best for adding logos
+                or using on rough surfaces.
+            </li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
+        <p class="text-gray-700 mb-4">
+            Here's what happens when you generate a QR code for a URL:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>Input:</strong>
+                <code>https://toolsvibe.online/tools/</code>
+            </li>
+            <li><strong>Size:</strong> 300 × 300 pixels</li>
+            <li><strong>Error correction:</strong> Medium (M)</li>
+            <li>
+                <strong>Output:</strong> A PNG image, roughly 3–5 KB, ready to print
+                or share
+            </li>
+        </ul>
+        <p class="text-gray-700 mt-4 mb-4">
+            When scanned with an iPhone or Android camera, the code opens the
+            URL instantly. No app needed.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
@@ -117,22 +261,54 @@ import Layout from "../../layouts/Layout.astro";
                 <h4 class="font-semibold text-gray-900">
                     What is error correction level?
                 </h4>
-                <p class="text-gray-700">
+                <p class="text-gray-700 mt-1">
                     Error correction level determines how much damage a QR code
                     can sustain and still be readable. Higher levels (H) make
-                    the QR code more robust but denser.
+                    the QR code more robust but denser. For most uses, Medium
+                    (M) is a good balance.
                 </p>
             </div>
             <div>
                 <h4 class="font-semibold text-gray-900">Do QR codes expire?</h4>
-                <p class="text-gray-700">
+                <p class="text-gray-700 mt-1">
                     No, QR codes generated here are static and never expire.
-                    They encode your text directly.
+                    They encode your text directly, so they'll work forever — as
+                    long as the destination URL stays live.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Do I need a special app to scan QR codes?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. Modern iPhones and Android phones scan QR codes with the
+                    default camera app. Just point and tap. Older devices may
+                    need a third-party app.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    What's the maximum data a QR code can store?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Up to 4,296 alphanumeric characters, 7,089 numeric
+                    characters, or 2,953 bytes of binary data — though shorter
+                    data makes for easier scanning.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Why won't my phone scan this QR code?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Common causes: dirty camera lens, low lighting, code too
+                    small, low contrast, or a damaged print. Try cleaning the
+                    lens and moving the phone 10–15 cm back.
                 </p>
             </div>
             <div>
                 <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
-                <p class="text-gray-700">
+                <p class="text-gray-700 mt-1">
                     Yes, completely free with no limits, no signup, and no
                     watermark.
                 </p>
