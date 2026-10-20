@@ -3,19 +3,22 @@ import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout
-    title="Age Calculator — Find Your Exact Age in Years, Months & Days"
-    description="Calculate your exact age in years, months, days, hours, and minutes. Free online age calculator with next birthday countdown."
+    title="Exact Age Calculator — Find Your Age in Years, Days & Hours"
+    description="Free age calculator by ToolsVibe. Find your exact age in years, months, and days, track total hours lived, and view a live countdown to your next birthday."
 >
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold mb-3">Age Calculator</h1>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                Exact Age Calculator
+            </h1>
             <p class="text-gray-600 mb-2">
-                Find your exact age in years, months, days — plus hours,
-                minutes, and your next birthday countdown.
+                Find your exact age down to the years, months, and days—plus
+                your total hours, minutes, and a live upcoming birthday
+                countdown.
             </p>
             <p class="text-xs text-gray-500">
-                Works entirely in your browser. Your date of birth is never sent
-                to a server.
+                🔒 100% Private: Calculations run locally in your browser. Your
+                date of birth is never saved.
             </p>
         </header>
 
@@ -136,14 +139,22 @@ import Layout from "../../layouts/Layout.astro";
             </div>
         </section>
     </div>
-
-    <!-- SEO Content -->
+    <!-- SEO Content (800+ words) -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This Age Calculator</h2>
         <p class="text-gray-700 mb-4">
             This free age calculator tells you your exact age in years, months,
             days, hours, and minutes. It also shows your next birthday
             countdown. Runs entirely in your browser — no data is sent anywhere.
+            Whether you need your exact age for a form, want to know how many
+            days you've lived, or are curious about your next birthday, this
+            tool gives you the answer instantly.
+        </p>
+        <p class="text-gray-700 mb-4">
+            Most age calculators just show your age in years. This one goes
+            further: exact years, months, and days, plus total days, hours, and
+            minutes lived. It's the same calculation method used on official
+            documents and applications.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
@@ -160,15 +171,109 @@ import Layout from "../../layouts/Layout.astro";
             </li>
         </ol>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            What This Calculator Shows
+        </h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Exact age in years, months, and days</li>
-            <li>Total days, hours, and minutes lived</li>
-            <li>Next birthday countdown with day of week</li>
-            <li>Custom calculation date (for historical or future dates)</li>
-            <li>100% client-side — your data never leaves your device</li>
-            <li>No signup, no limits, completely free</li>
+            <li>
+                <strong>Exact age:</strong> Years, months, and days (standard international
+                method)
+            </li>
+            <li>
+                <strong>Total days lived:</strong> Every day since your birth
+            </li>
+            <li><strong>Total hours lived:</strong> Total days × 24</li>
+            <li><strong>Total minutes lived:</strong> Total hours × 60</li>
+            <li>
+                <strong>Next birthday:</strong> How many days until your next birthday,
+                and what day of the week it falls on
+            </li>
+            <li>
+                <strong>Custom calculation date:</strong> Find your age on any date
+                — past, present, or future
+            </li>
         </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
+
+        <h4 class="font-semibold mt-4 mb-2">1. Filling Out Forms</h4>
+        <p class="text-gray-700 mb-4">
+            Many forms — job applications, visa applications, school admissions
+            — require your exact age in years, months, and days. This tool gives
+            you the precise figure to enter.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            2. Checking Eligibility for Age-Limited Services
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Some services have minimum or maximum age requirements. If a form
+            asks "are you at least 18 years old as of [date]?", this calculator
+            lets you confirm with a specific date.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            3. Planning Birthday Celebrations
+        </h4>
+        <p class="text-gray-700 mb-4">
+            The next-birthday countdown shows how many days remain until your
+            birthday, and what day of the week it falls on. Useful for planning
+            parties, booking venues, or coordinating with family.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">4. Curious Statistics</h4>
+        <p class="text-gray-700 mb-4">
+            How many days have you lived? How many hours? How many minutes? The
+            totals are surprisingly large — and useful for personal milestones
+            or health tracking.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            5. Historical or Future Age Calculations
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Want to know how old you were on a specific past date, or how old
+            you'll be on a future date? Change the calculation date and get the
+            exact answer.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            6. Age Verification for Contracts
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Legal documents sometimes require proof of exact age as of a
+            specific date. This tool gives you the precise figure to confirm.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
+        <p class="text-gray-700 mb-4">
+            If your date of birth is <strong>June 15, 1995</strong> and today is <strong
+                >October 20, 2026</strong
+            >, here's what the calculator shows:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li><strong>Exact age:</strong> 31 years, 4 months, 5 days</li>
+            <li><strong>Total days:</strong> ~11,450 days</li>
+            <li><strong>Total hours:</strong> ~274,800 hours</li>
+            <li><strong>Total minutes:</strong> ~16,488,000 minutes</li>
+            <li>
+                <strong>Next birthday:</strong> June 15, 2027 (Tuesday) — about 238
+                days away
+            </li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">How Age Is Calculated</h3>
+        <p class="text-gray-700 mb-4">
+            Age is calculated using the standard international method: full
+            years first, then remaining months, then remaining days. This is the
+            same method used for official documents, legal forms, and government
+            registrations.
+        </p>
+        <p class="text-gray-700 mb-4">
+            Leap years are automatically handled. If you were born on February
+            29, the calculator adjusts so your age is accurate on any
+            calculation date.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
@@ -200,6 +305,26 @@ import Layout from "../../layouts/Layout.astro";
                 <p class="text-gray-700 mt-1">
                     No. All calculations happen in your browser. Your date of
                     birth is never sent to any server or stored anywhere.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Can I calculate my age on a future date?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. Change the "Age at Date" field to any date in the past,
+                    present, or future. The calculator shows your exact age on
+                    that date.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Why is the total days count so large?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Total days counts every day since your birth. For a
+                    30-year-old, that's about 11,000 days — which is a lot of
+                    days when you count them all.
                 </p>
             </div>
             <div>
