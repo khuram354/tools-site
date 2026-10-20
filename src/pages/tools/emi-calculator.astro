@@ -3,19 +3,22 @@ import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout
-    title="EMI Calculator — Loan EMI, Interest & Payment Calculator"
-    description="Calculate loan EMI, total interest, and total payment. Free EMI calculator for home loans, car loans, and personal loans in Pakistan."
+    title="ToolsVibe EMI Calculator Pakistan: Real Time Calculate Loan"
+    description="Free EMI calculator by ToolsVibe.online. Calculate monthly installments, total interest, and repayment schedules for home, car, and personal loans in Pakistan."
 >
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold mb-3">EMI Calculator</h1>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                Online Loan EMI Calculator
+            </h1>
             <p class="text-gray-600 mb-2">
-                Calculate your monthly loan EMI, total interest, and total
-                payment. Works for home loans, car loans, and personal loans.
+                Easily estimate your monthly installments, total interest, and
+                full repayment schedules. Perfect for comparing home, car, and
+                personal bank loans in Pakistan.
             </p>
             <p class="text-xs text-gray-500">
-                Works entirely in your browser. Your financial data never leaves
-                your device.
+                🔒 100% Secure: Calculations run entirely in your browser. Your
+                financial data is never saved.
             </p>
         </header>
 
@@ -219,24 +222,54 @@ import Layout from "../../layouts/Layout.astro";
         </section>
     </div>
 
-    <!-- SEO Content -->
+    <!-- SEO Content (800+ words) -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This EMI Calculator</h2>
         <p class="text-gray-700 mb-4">
             This free EMI calculator helps you estimate your monthly loan
             payment (EMI), total interest, and total amount payable. It works
             for home loans, car loans, personal loans, and any other type of
-            amortized loan.
+            amortized loan. It runs entirely in your browser — your loan details
+            never leave your device.
+        </p>
+        <p class="text-gray-700 mb-4">
+            Whether you're planning to buy a house, finance a car, or take a
+            personal loan, knowing your monthly EMI before you sign anything
+            helps you make smarter financial decisions. This tool gives you a
+            complete breakdown in seconds.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">What is EMI?</h3>
         <p class="text-gray-700 mb-4">
-            EMI stands for Equated Monthly Installment. It's the fixed amount
-            you pay to your lender every month until the loan is fully repaid.
-            Each EMI includes both principal and interest.
+            EMI stands for <strong>Equated Monthly Installment</strong>. It's
+            the fixed amount you pay to your lender every month until the loan
+            is fully repaid. Each EMI includes both principal (the amount you
+            borrowed) and interest (the cost of borrowing). Early EMIs are
+            weighted more toward interest, while later ones go more toward
+            principal.
         </p>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">EMI Formula</h3>
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            How to Use This Calculator
+        </h3>
+        <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+            <li>
+                Enter your loan amount in PKR (or use a quick preset like 10
+                Lakh or 50 Lakh)
+            </li>
+            <li>Enter the annual interest rate quoted by your bank</li>
+            <li>Set the loan tenure using the slider (1 to 30 years)</li>
+            <li>
+                Click "Calculate EMI" to see your monthly payment, total
+                interest, and total amount payable
+            </li>
+            <li>
+                Review the yearly breakdown to understand how your balance
+                decreases over time
+            </li>
+        </ol>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">The EMI Formula</h3>
         <p class="text-gray-700 mb-4">
             The amortized EMI formula used by most conventional banks is:
         </p>
@@ -245,13 +278,103 @@ import Layout from "../../layouts/Layout.astro";
         >
             EMI = P × r × (1+r)ⁿ ÷ ((1+r)ⁿ − 1)
         </p>
+        <p class="text-gray-700 mb-4">Where:</p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li><strong>P</strong> = Principal loan amount</li>
+            <li>
+                <strong>r</strong> = Monthly interest rate (annual rate ÷ 12 ÷ 100)
+            </li>
+            <li><strong>n</strong> = Total number of monthly installments</li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
+
+        <h4 class="font-semibold mt-4 mb-2">1. Home Loan Planning</h4>
         <p class="text-gray-700 mb-4">
-            Where:<br />
-            <strong>P</strong> = Principal loan amount<br />
-            <strong>r</strong> = Monthly interest rate (annual rate ÷ 12 ÷ 100)<br
-            />
-            <strong>n</strong> = Total number of monthly installments
+            Before applying for a home loan, calculate the EMI for different
+            loan amounts and tenures. A 20-year loan has a lower monthly EMI but
+            a much higher total interest than a 10-year loan. Use this
+            calculator to find the right balance between affordability and cost.
         </p>
+
+        <h4 class="font-semibold mt-4 mb-2">2. Car Loan Comparison</h4>
+        <p class="text-gray-700 mb-4">
+            Banks offer car loans at different rates and tenures. Enter each
+            offer's terms into this calculator and compare the total interest
+            and monthly payment side by side.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">3. Personal Loan Affordability</h4>
+        <p class="text-gray-700 mb-4">
+            If you're considering a personal loan for a wedding, education, or
+            medical expense, use this tool to check whether the monthly EMI fits
+            your budget. A common guideline: your total monthly EMIs should not
+            exceed 40% of your net income.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">4. Prepayment Planning</h4>
+        <p class="text-gray-700 mb-4">
+            If you plan to make a lump-sum prepayment, understanding your
+            amortization schedule helps you see how much interest you'll save.
+            The yearly breakdown shows exactly how much interest is still ahead
+            of you.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">5. Debt Consolidation Decisions</h4>
+        <p class="text-gray-700 mb-4">
+            If you have multiple loans, use this calculator to see the total
+            monthly burden. It can help you decide whether consolidating into a
+            single loan at a lower rate makes sense.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            6. Comparing Islamic vs Conventional Loans
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Islamic banks (using diminishing musharakah) structure payments
+            differently from conventional amortized loans. While this calculator
+            uses the conventional formula, it's still useful for estimating what
+            the total cost of financing might be — and comparing offers before
+            you commit.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
+        <p class="text-gray-700 mb-4">
+            Here's what happens with a typical home loan:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li><strong>Loan amount:</strong> PKR 2,000,000</li>
+            <li><strong>Interest rate:</strong> 12% per year</li>
+            <li><strong>Tenure:</strong> 5 years (60 months)</li>
+            <li><strong>Monthly EMI:</strong> ~PKR 44,489</li>
+            <li><strong>Total interest:</strong> ~PKR 669,340</li>
+            <li><strong>Total payment:</strong> ~PKR 2,669,340</li>
+        </ul>
+        <p class="text-gray-700 mt-4 mb-4">
+            That's a 33% total cost on top of the principal. If the tenure were
+            10 years instead of 5, the monthly EMI would drop to ~PKR 28,694 —
+            but total interest would rise to ~PKR 1,443,280.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Important Notes</h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>Processing fees:</strong> Most banks charge 1–2% of the loan
+                amount as a one-time processing fee. This is not included in the calculation.
+            </li>
+            <li>
+                <strong>Insurance:</strong> Some banks require loan insurance, which
+                adds to your monthly cost.
+            </li>
+            <li>
+                <strong>Prepayment penalties:</strong> Some loans have early repayment
+                penalties — check the terms.
+            </li>
+            <li>
+                <strong>Rate changes:</strong> Floating-rate loans can change with
+                market conditions. This calculator assumes a fixed rate.
+            </li>
+        </ul>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
@@ -273,7 +396,8 @@ import Layout from "../../layouts/Layout.astro";
                 </h4>
                 <p class="text-gray-700 mt-1">
                     Yes, a longer tenure reduces your monthly EMI but increases
-                    the total interest you pay over the life of the loan.
+                    the total interest you pay over the life of the loan. A
+                    shorter tenure has a higher EMI but saves on total interest.
                 </p>
             </div>
             <div>
@@ -283,10 +407,27 @@ import Layout from "../../layouts/Layout.astro";
                 <p class="text-gray-700 mt-1">
                     It uses the standard amortized loan formula. Note that
                     Islamic banks (using diminishing musharakah) and flat-rate
-                    loans calculate differently, and real figures may vary due
-                    to processing fees, insurance, and other charges. Always
-                    confirm the exact EMI with your bank before signing a loan
-                    agreement.
+                    loans calculate differently. Always confirm the exact EMI
+                    with your bank before signing a loan agreement.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Does this include processing fees or insurance?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. The calculator only covers principal and interest.
+                    Real-world figures may include processing fees (1–2%),
+                    insurance, and other charges.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Can I use this for a car loan?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Yes. The same formula applies to any amortized loan — car
+                    loans, home loans, personal loans, and business loans.
                 </p>
             </div>
             <div>
