@@ -180,13 +180,22 @@ import Layout from "../../layouts/Layout.astro";
         </section>
     </div>
 
-    <!-- SEO Content -->
+    <!-- SEO Content (800+ words) -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This Image Converter</h2>
         <p class="text-gray-700 mb-4">
             This free online image converter lets you change image formats
             between JPG, PNG, and WebP instantly. It runs entirely in your
-            browser — your images never leave your device.
+            browser — your images never leave your device. Whether you need to
+            convert a PNG screenshot to JPG to save space, turn a JPG photo into
+            WebP for a faster website, or extract a transparent PNG from a WebP
+            file, this tool gets it done in seconds.
+        </p>
+        <p class="text-gray-700 mb-4">
+            Most image converters require an upload, a download, and sometimes
+            an account. This one skips all of that. Drop your image, choose the
+            output format, and download the result — no signup, no software, no
+            privacy concerns.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
@@ -200,14 +209,137 @@ import Layout from "../../layouts/Layout.astro";
             <li>Preview the result and download</li>
         </ol>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+        <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Converts between JPG, PNG, and WebP</li>
-            <li>Adjustable quality for lossy formats</li>
-            <li>Before/after preview with file sizes</li>
-            <li>100% client-side — your images never leave your device</li>
-            <li>No signup, no watermarks, completely free</li>
+            <li>
+                <strong>Instant conversion:</strong> Results in under a second, no
+                upload or wait.
+            </li>
+            <li>
+                <strong>All major formats:</strong> JPG, PNG, and WebP — the three
+                formats that matter for the modern web.
+            </li>
+            <li>
+                <strong>Quality control:</strong> Adjust the quality slider for JPG
+                and WebP to balance file size and visual quality.
+            </li>
+            <li>
+                <strong>Before/after preview:</strong> See exactly what you're getting
+                before downloading.
+            </li>
+            <li>
+                <strong>Privacy first:</strong> Everything runs in your browser. No
+                uploads, no tracking.
+            </li>
+            <li>
+                <strong>Free with no limits:</strong> Convert as many images as you
+                want.
+            </li>
         </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Understanding the Three Formats
+        </h3>
+
+        <h4 class="font-semibold mt-4 mb-2">JPG (JPEG)</h4>
+        <p class="text-gray-700 mb-4">
+            The most widely supported image format. JPG uses <strong
+                >lossy compression</strong
+            > — it discards some data to reduce file size. This works well for photos,
+            where small losses aren't noticeable. But it's a poor choice for images
+            with sharp text, logos, or transparency (JPG doesn't support transparency
+            at all — transparent areas become white).
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">PNG</h4>
+        <p class="text-gray-700 mb-4">
+            PNG uses <strong>lossless compression</strong> — no data is discarded.
+            It supports transparency, which makes it perfect for logos, icons, and
+            images with text. The downside: PNG files are often 3–5x larger than JPG
+            files for the same photo. Use PNG when quality and transparency matter
+            more than file size.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">WebP</h4>
+        <p class="text-gray-700 mb-4">
+            WebP is Google's modern image format. It offers <strong
+                >better compression than JPG</strong
+            > (typically 25–35% smaller at the same quality), supports transparency
+            like PNG, and is supported by every modern browser (Chrome, Firefox, Safari,
+            Edge). For web use in 2026, WebP is almost always the best choice.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
+
+        <h4 class="font-semibold mt-4 mb-2">1. Making a Website Faster</h4>
+        <p class="text-gray-700 mb-4">
+            Converting images to WebP is one of the fastest ways to speed up a
+            website. A hero image that's 500 KB as JPG becomes ~350 KB as WebP —
+            with the same visual quality. Across dozens of images, that adds up
+            to seconds of load time saved.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            2. Saving Space on Your Phone or Computer
+        </h4>
+        <p class="text-gray-700 mb-4">
+            PNG screenshots are often 5–10x larger than they need to be.
+            Converting them to JPG reduces file size by 80–90% with almost no
+            visible quality loss (screenshots compress very efficiently as JPG).
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            3. Preparing Images for Social Media
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Different platforms prefer different formats. Instagram and Facebook
+            accept JPG and PNG. Some tools require PNG for transparent logos.
+            Converting to the right format before upload avoids quality loss
+            from the platform's own compression.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            4. Converting Screenshots for Documentation
+        </h4>
+        <p class="text-gray-700 mb-4">
+            If you're writing documentation or a tutorial, screenshots work well
+            as either PNG (crisp, larger) or JPG (smaller, slightly soft text).
+            Convert as needed.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            5. Removing Transparency (JPG Output)
+        </h4>
+        <p class="text-gray-700 mb-4">
+            If you have a PNG with transparency and need a JPG, converting here
+            will fill transparent areas with white — which is what most tools
+            do. This is useful when a platform doesn't accept PNG.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">6. Preparing Images for a CMS</h4>
+        <p class="text-gray-700 mb-4">
+            Some content management systems (WordPress, Shopify) automatically
+            create WebP versions of uploaded images. But if yours doesn't, or if
+            you want to control the quality, converting to WebP before upload
+            gives you more control.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
+        <p class="text-gray-700 mb-4">
+            Here's what happens when you convert a typical PNG screenshot to
+            WebP:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li><strong>Original:</strong> PNG, 1920 × 1080 pixels, 2.4 MB</li>
+            <li><strong>Target format:</strong> WebP at 90% quality</li>
+            <li><strong>New file size:</strong> ~280 KB</li>
+            <li><strong>Size savings:</strong> 88%</li>
+        </ul>
+        <p class="text-gray-700 mt-4 mb-4">
+            That's the difference between an image that takes 3 seconds to load
+            and one that loads instantly — with no visible quality loss on the
+            screenshot's text or UI elements.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
@@ -240,6 +372,26 @@ import Layout from "../../layouts/Layout.astro";
                 <p class="text-gray-700 mt-1">
                     No. All conversion happens in your browser. Your images
                     never leave your device.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Can I convert to a format other than JPG, PNG, or WebP?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    This tool supports the three most important formats for web
+                    use. For other formats like BMP, TIFF, or HEIC, you'll need
+                    a different tool.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    What happens to transparent areas when converting to JPG?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    JPG doesn't support transparency, so transparent areas are
+                    filled with white. If you need to keep transparency, convert
+                    to PNG or WebP instead.
                 </p>
             </div>
             <div>
