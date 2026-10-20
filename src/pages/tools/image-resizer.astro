@@ -225,13 +225,22 @@ import Layout from "../../layouts/Layout.astro";
         </section>
     </div>
 
-    <!-- SEO Content -->
+    <!-- SEO Content (800+ words) -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This Image Resizer</h2>
         <p class="text-gray-700 mb-4">
             This free online image resizer lets you change the dimensions of
             JPG, PNG, and WebP images instantly. It runs entirely in your
-            browser, so your images are never uploaded to any server.
+            browser, so your images are never uploaded to any server. Whether
+            you need to shrink a photo for a website, resize an image for social
+            media, or prepare images for a form with strict dimension
+            requirements, this tool gets it done in seconds.
+        </p>
+        <p class="text-gray-700 mb-4">
+            Most image resizing tools require an upload, a download, and
+            sometimes an account. This one skips all of that. Drop your image,
+            set your dimensions, and download the result — all without leaving
+            the page.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
@@ -243,15 +252,129 @@ import Layout from "../../layouts/Layout.astro";
             <li>Preview the result and download</li>
         </ol>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+        <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Supports JPG, PNG, and WebP formats</li>
-            <li>Maintain aspect ratio option</li>
-            <li>Quick presets (50%, 75%, 1920px, 1280px, 800px)</li>
-            <li>Before/after preview with file sizes</li>
-            <li>100% client-side — your images never leave your device</li>
-            <li>No signup, no watermarks, completely free</li>
+            <li>
+                <strong>Instant resize:</strong> Results in under a second, no queue
+                or wait.
+            </li>
+            <li>
+                <strong>Aspect ratio lock:</strong> Prevent stretched or squished
+                images with one checkbox.
+            </li>
+            <li>
+                <strong>Quick presets:</strong> 50%, 75%, 1920px, 1280px, 800px —
+                one-click sizing for common use cases.
+            </li>
+            <li>
+                <strong>Before/after preview:</strong> See exactly what you're getting
+                before downloading.
+            </li>
+            <li>
+                <strong>Privacy first:</strong> Everything runs in your browser. No
+                uploads, no tracking.
+            </li>
+            <li>
+                <strong>Free with no limits:</strong> Resize as many images as you
+                want.
+            </li>
         </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            1. Preparing Images for a Website
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Large images slow down websites. If your hero image is 4000px wide
+            but displays at 1200px, resize it first. This tool lets you set the
+            exact dimension your site needs — no wasted pixels, no wasted
+            bandwidth.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            2. Meeting Social Media Requirements
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Each platform has its own size: Instagram posts at 1080 × 1080,
+            Stories at 1080 × 1920, Facebook covers at 820 × 312, LinkedIn
+            banners at 1584 × 396. Use the preset buttons or enter custom
+            dimensions to match any platform.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            3. Uploading to Government or Job Portals
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Many forms require specific dimensions — often 200 × 230 pixels for
+            passport photos, or 600 × 600 pixels for job applications. This tool
+            resizes to any exact dimension without any distortion.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            4. Reducing File Size Before Sharing
+        </h4>
+        <p class="text-gray-700 mb-4">
+            While resizing doesn't always reduce file size dramatically, smaller
+            dimensions usually mean smaller files. For a bigger reduction, use
+            the "resize + compress" workflow: resize here, then compress with
+            our Image Compressor.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            5. Preparing Product Photos for E-commerce
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Shopify recommends 2048 × 2048 square images. Amazon requires 1000px
+            minimum on the longest side. WooCommerce works best with 800 × 800.
+            This tool resizes to any dimension that matches your platform's
+            requirements.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            6. Making Thumbnails from Larger Images
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Need a 400 × 400 thumbnail from a 4000 × 3000 photo? The aspect
+            ratio lock prevents the image from being squished. Use the 50%
+            preset for a quick half-size version, or set custom dimensions for
+            exact thumbnails.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
+        <p class="text-gray-700 mb-4">
+            Here's what happens when you resize a typical phone photo:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li><strong>Original:</strong> 4032 × 3024 pixels, 4.2 MB</li>
+            <li>
+                <strong>Target width:</strong> 1080 pixels (Instagram post size)
+            </li>
+            <li>
+                <strong>Auto height:</strong> 810 pixels (aspect ratio maintained)
+            </li>
+            <li><strong>New file size:</strong> ~380 KB</li>
+            <li><strong>Size savings:</strong> 91%</li>
+        </ul>
+        <p class="text-gray-700 mt-4 mb-4">
+            That's the difference between an image that takes 10 seconds to load
+            and one that loads instantly.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            What "Maintain Aspect Ratio" Does
+        </h3>
+        <p class="text-gray-700 mb-4">
+            Aspect ratio is the relationship between width and height. A 1920 ×
+            1080 image has a 16:9 aspect ratio. If you change the width to 1280
+            and keep the ratio locked, the height adjusts to 720 automatically.
+        </p>
+        <p class="text-gray-700 mb-4">
+            Without the lock, you'd have to enter both width and height manually
+            — and if they don't match the original ratio, the image gets
+            stretched or squished. For most uses, keeping the lock on is the
+            right choice.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
@@ -283,7 +406,28 @@ import Layout from "../../layouts/Layout.astro";
                 <p class="text-gray-700 mt-1">
                     Reducing dimensions generally maintains quality. Enlarging
                     an image can make it look blurry, since the tool is
-                    stretching existing pixels.
+                    stretching existing pixels. You can't add detail that isn't
+                    there.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Can I resize multiple images at once?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    This tool resizes one image at a time. For bulk work, open
+                    multiple browser tabs — one per image — and process them in
+                    parallel.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Does resizing change the file format?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. The output format matches the input format (JPG stays
+                    JPG, PNG stays PNG). If you need to convert formats, use our
+                    Image Converter.
                 </p>
             </div>
             <div>
