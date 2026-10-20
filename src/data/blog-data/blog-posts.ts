@@ -11,6 +11,22 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: 'How to Calculate Zakat on Gold (2026 Guide)',
+    description:
+      'Learn how to calculate Zakat on gold. Covers Nisab, carat conversion, current prices, and a free online calculator for Pakistan.',
+    href: '/blog/how-to-calculate-zakat-gold/',
+    date: 'October 20, 2026',
+    category: 'Productivity',
+  },
+  {
+    title: 'How to Resize an Image for Instagram (2026 Guide)',
+    description:
+      'Learn how to resize images for Instagram. Covers post, story, and reel dimensions, safe zones, and a free browser-based tool.',
+    href: '/blog/how-to-resize-image-instagram/',
+    date: 'October 20, 2026',
+    category: 'Image Tools',
+  },
+  {
     title: 'Salary Tax Calculator Pakistan 2026-27 — Free Online Tool',
     description:
       'Free salary tax calculator for Pakistan. Calculate your monthly take-home salary, FBR income tax, and EOBI deductions for Tax Year 2027 (FY 2026-27) instantly.',
