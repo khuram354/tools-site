@@ -63,8 +63,8 @@ import Layout from "../../layouts/Layout.astro";
 
         <div id="status" class="mt-4 text-sm font-medium"></div>
     </div>
-
-    <section class="max-w-3xl mx-auto mt-16 prose prose-gray">
+    <!-- SEO Content (800+ words) -->
+    <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This JSON Formatter</h2>
         <p class="text-gray-700 mb-4">
             This free online JSON formatter and validator helps developers
@@ -73,24 +73,166 @@ import Layout from "../../layouts/Layout.astro";
             quickly. Everything runs in your browser — your data never leaves
             your device.
         </p>
+        <p class="text-gray-700 mb-4">
+            JSON is the standard data format for APIs, config files, and web
+            apps. But raw JSON from a server or log file is often minified — a
+            single long line that's impossible to read. This tool turns that
+            mess into clean, indented, human-readable JSON in one click. It also
+            catches syntax errors with exact positions, so you know exactly
+            where to look.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
-            <li>Paste your JSON into the input box.</li>
-            <li>Click "Format" to beautify it with proper indentation.</li>
-            <li>Click "Minify" to remove all whitespace.</li>
-            <li>Use "Copy" to copy the result, or "Clear" to start over.</li>
+            <li>Paste your JSON into the input box (or type it directly).</li>
+            <li>Click "Format" to beautify it with 2-space indentation.</li>
+            <li>
+                Click "Minify" to remove all whitespace and produce a
+                single-line JSON string.
+            </li>
+            <li>
+                Use "Copy" to copy the result to your clipboard, or "Clear" to
+                start over.
+            </li>
         </ol>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">Features</h3>
+        <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Validate JSON and detect syntax errors</li>
-            <li>Beautify JSON with 2-space indentation</li>
-            <li>Minify JSON into a single line</li>
-            <li>Syntax highlighting and error messages</li>
-            <li>100% free, no signup required</li>
-            <li>Works offline — data never leaves your browser</li>
+            <li>
+                <strong>Instant formatting:</strong> Paste and click — no waiting,
+                no loading.
+            </li>
+            <li>
+                <strong>Error detection:</strong> Invalid JSON shows the exact error
+                message so you can fix it fast.
+            </li>
+            <li>
+                <strong>Privacy first:</strong> Everything runs in your browser. No
+                data is sent to any server.
+            </li>
+            <li>
+                <strong>Free with no limits:</strong> Format as many JSON files as
+                you want, as often as you want.
+            </li>
+            <li>
+                <strong>Works on any device:</strong> Desktop, laptop, tablet, or
+                phone — no app needed.
+            </li>
         </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Common JSON Errors This Tool Catches
+        </h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>Trailing commas:</strong> A comma after the last item breaks
+                JSON. This tool catches it instantly.
+            </li>
+            <li>
+                <strong>Single quotes:</strong> JSON only accepts double quotes. Single
+                quotes cause parsing errors.
+            </li>
+            <li>
+                <strong>Unquoted keys:</strong> Object keys must be in double quotes
+                in JSON.
+            </li>
+            <li>
+                <strong>Missing brackets:</strong> Unclosed objects or arrays produce
+                clear error messages.
+            </li>
+            <li>
+                <strong>Invalid values:</strong>
+                <code>undefined</code>, comments, and other non-JSON values are
+                detected.
+            </li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Real Use Cases</h3>
+
+        <h4 class="font-semibold mt-4 mb-2">1. Debugging API Responses</h4>
+        <p class="text-gray-700 mb-4">
+            When an API returns minified JSON, it's nearly impossible to read.
+            Paste it here, click "Format," and you'll see the full structure —
+            nested objects, arrays, and values — all neatly indented.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">2. Validating Config Files</h4>
+        <p class="text-gray-700 mb-4">
+            A missing comma in a <code>package.json</code> or <code
+                >tsconfig.json</code
+            > file can break your entire build. Paste the file here to verify it's
+            valid before committing.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">
+            3. Preparing Data for an API Request
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Many APIs require minified JSON in POST requests. Use the "Minify"
+            button to compress your JSON into a single line — ready to paste
+            into a request body.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">4. Learning JSON Structure</h4>
+        <p class="text-gray-700 mb-4">
+            If you're new to JSON, formatting real examples is one of the
+            fastest ways to learn. You can see exactly how nested objects and
+            arrays are structured.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">5. Cleaning Up Log Files</h4>
+        <p class="text-gray-700 mb-4">
+            JSON logs are often stored as one line per event. Formatting makes
+            them readable and easier to analyze.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
+        <p class="text-gray-700 mb-4">
+            Here's what happens when you paste this minified JSON:
+        </p>
+        <pre
+            class="bg-gray-100 p-4 rounded-lg text-sm overflow-x-auto mb-4"><code>{`{"name":"Ali","age":25,"skills":["HTML","CSS","JS"]}`}</code></pre>
+        <p class="text-gray-700 mb-4">
+            After clicking "Format," the output becomes:
+        </p>
+        <pre
+            class="bg-gray-100 p-4 rounded-lg text-sm overflow-x-auto mb-4"><code>{`{
+  "name": "Ali",
+  "age": 25,
+  "skills": [
+    "HTML",
+    "CSS",
+    "JS"
+  ]
+}`}</code></pre>
+        <p class="text-gray-700 mb-4">
+            That's the difference between an unreadable line and a clearly
+            structured document. The formatted version is what you'd want to
+            work with in VS Code, an API tool, or a browser console.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Understanding JSON</h3>
+        <p class="text-gray-700 mb-4">
+            JSON (JavaScript Object Notation) is a lightweight text format for
+            storing and exchanging data. It uses two structures:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>Objects:</strong> Key-value pairs wrapped in curly braces,
+                e.g., <code>&#123;"name": "Ali"&#125;</code>.
+            </li>
+            <li>
+                <strong>Arrays:</strong> Ordered lists wrapped in square brackets,
+                e.g., <code>["HTML", "CSS", "JS"]</code>.
+            </li>
+        </ul>
+        <p class="text-gray-700 mt-4 mb-4">
+            JSON supports only six data types: strings, numbers, booleans, null,
+            objects, and arrays. It does <strong>not</strong> support dates, functions,
+            or comments. If you need dates, store them as ISO strings (<code
+                >"2026-10-20"</code
+            >).
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
@@ -100,14 +242,15 @@ import Layout from "../../layouts/Layout.astro";
                 <h4 class="font-semibold text-gray-900">
                     Is my JSON data safe?
                 </h4>
-                <p class="text-gray-700">
+                <p class="text-gray-700 mt-1">
                     Yes. All formatting and validation happens in your browser.
-                    No data is sent to any server.
+                    No data is sent to any server. Your JSON never leaves your
+                    device.
                 </p>
             </div>
             <div>
                 <h4 class="font-semibold text-gray-900">What is JSON?</h4>
-                <p class="text-gray-700">
+                <p class="text-gray-700 mt-1">
                     JSON (JavaScript Object Notation) is a lightweight data
                     format used to exchange data between servers and web
                     applications. It is easy for humans to read and machines to
@@ -118,9 +261,39 @@ import Layout from "../../layouts/Layout.astro";
                 <h4 class="font-semibold text-gray-900">
                     Does this tool support large JSON files?
                 </h4>
-                <p class="text-gray-700">
+                <p class="text-gray-700 mt-1">
                     Yes, it can handle large JSON files. Performance depends on
-                    your browser and device memory.
+                    your browser and device memory. If you're formatting files
+                    over 50 MB, consider using a desktop tool like VS Code or jq
+                    instead.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    Can I use comments in JSON?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    No. Standard JSON has no comment syntax. If you need
+                    comments, use JSONC (used by VS Code) or YAML — but note
+                    that most APIs won't accept either.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">
+                    What's the difference between Format and Minify?
+                </h4>
+                <p class="text-gray-700 mt-1">
+                    Format adds indentation and line breaks to make JSON
+                    human-readable. Minify removes all whitespace to make the
+                    JSON as compact as possible — useful for sending over the
+                    network.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
+                <p class="text-gray-700 mt-1">
+                    Yes, completely free with no signup, no limits, and no
+                    watermarks.
                 </p>
             </div>
         </div>
