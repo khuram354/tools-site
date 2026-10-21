@@ -457,4 +457,84 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "10 Common JSON Errors and How to Fix Them (2026 Guide)",
+            description:
+                "Learn the most common JSON syntax errors developers make and how to fix them fast. Includes real examples and a free online JSON validator.",
+            url: "https://toolsvibe.online/blog/common-json-errors/",
+            datePublished: "2026-10-09",
+            dateModified: "2026-10-09",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/common-json-errors/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Why does my JSON work in JavaScript but fail in an API?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "JavaScript is lenient — it accepts single quotes, trailing commas, and unquoted keys. JSON is strict. Use JSON.stringify() to convert a JavaScript object into valid JSON.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What's the fastest way to find a JSON error?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Paste it into our JSON Formatter. It shows the exact line and character where the syntax breaks.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I use comments in JSON?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. Standard JSON has no comment syntax. Use JSONC if you need comments — but note that most APIs won't accept JSONC.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Why does my JSON have a BOM at the beginning?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Some text editors save files with a Byte Order Mark (BOM) by default. This is invisible but breaks JSON parsing. In VS Code, save as UTF-8 without BOM.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is there a JSON linter for VS Code?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. VS Code has built-in JSON validation, and extensions like JSON Formatter add more features. For quick one-off checks, our online tool is faster.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

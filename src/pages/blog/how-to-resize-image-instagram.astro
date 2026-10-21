@@ -393,4 +393,84 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "How to Resize an Image for Instagram (2026 Guide)",
+            description:
+                "Learn how to resize images for Instagram. Covers post, story, and reel dimensions, safe zones, and a free browser-based tool.",
+            url: "https://toolsvibe.online/blog/how-to-resize-image-instagram/",
+            datePublished: "2026-10-20",
+            dateModified: "2026-10-20",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/how-to-resize-image-instagram/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "What's the best size for Instagram posts in 2026?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "For most feed posts, 1080 × 1350 px (4:5 portrait) is the best choice. It takes up the most screen space and gets the highest engagement.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does Instagram compress images?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Instagram compresses every uploaded image to save bandwidth. Uploading at the correct resolution reduces how much compression is applied.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I upload the same image to feed and story?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, but you need to resize it for each format. Feed posts use 4:5, stories use 9:16. An image optimized for one will look cropped or empty in the other.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Do I need to resize carousel images?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. All images in a carousel must share the same aspect ratio, or Instagram will crop them to match the first image. Resize them all to 1080 × 1350 before uploading.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Are my images uploaded to a server?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Not with our tool. All resizing happens in your browser. Your images never leave your device.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

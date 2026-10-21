@@ -416,4 +416,84 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "How to Calculate Salary Tax in Pakistan (2026-27 Guide)",
+            description:
+                "Learn how to calculate your salary tax in Pakistan for Tax Year 2027 (FY 2026-27). Includes FBR tax slabs, step-by-step calculation, and a free online tax calculator.",
+            url: "https://toolsvibe.online/blog/salary-tax-pakistan/",
+            datePublished: "2026-10-11",
+            dateModified: "2026-10-11",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/salary-tax-pakistan/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Is the 9% surcharge applicable for salaried individuals?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. The 9% surcharge on salaried individuals has been abolished in the Finance Act 2026, effective for Tax Year 2027.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What's the tax-free income limit in Pakistan?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "For Tax Year 2027, the tax-free limit for salaried individuals is PKR 600,000 per year (PKR 50,000 per month).",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "How do I file my income tax return?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "You can file your return online through the FBR's IRIS portal (iris.fbr.gov.pk). It's free but requires registration.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Are bonuses taxed differently?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Bonuses are added to your annual income and taxed at your applicable slab rate. They're not taxed separately.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What if my employer already deducts tax?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Most employers deduct tax monthly and deposit it with FBR. You should still file your annual return to declare income and claim any credits.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

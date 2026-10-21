@@ -438,4 +438,92 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "How to Scan a QR Code on Android (2026 Guide)",
+            description:
+                "Learn how to scan QR codes on Android using Google Lens, the Camera app, or Quick Settings. Includes troubleshooting tips and safety warnings.",
+            url: "https://toolsvibe.online/blog/scan-qr-code-android/",
+            datePublished: "2026-10-08",
+            dateModified: "2026-10-08",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/scan-qr-code-android/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Do I need to install an app to scan QR codes on Android?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. All modern Android phones have built-in QR scanning through Google Lens, the Camera app, or Quick Settings.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Why doesn't my Samsung phone scan QR codes?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Samsung phones use Google Lens by default. If it's not working, check that Google Lens is updated and has camera permissions. You can also enable the QR Scanner tile in Quick Settings.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I scan a QR code from a screenshot on Android?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Open the screenshot in Google Photos, tap the Lens icon, and it will detect the QR code.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What if my phone has no Google Lens?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Some Android phones (especially those without Google Play Services, like Huawei) don't have Lens. In that case, you'll need a third-party QR scanner from the Play Store or your manufacturer's app store.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is it safe to scan QR codes on Android?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Generally yes. But Android is more vulnerable to malicious APK downloads. Always preview the URL before tapping, and never install apps from QR codes unless you trust the source.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Why does my QR code scan open in Chrome instead of an app?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Android opens scanned URLs in your default browser. If you want a specific app to handle it, the QR code needs to use a deep link format — which most basic generators don't support.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

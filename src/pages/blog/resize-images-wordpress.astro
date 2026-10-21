@@ -404,4 +404,84 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "How to Resize Images in WordPress (Free Guide 2026)",
+            description:
+                "Learn how to resize images in WordPress without plugins, using the free browser-based tool. Fix blurry images, slow pages, and wrong dimensions.",
+            url: "https://toolsvibe.online/blog/resize-images-wordpress/",
+            datePublished: "2026-10-16",
+            dateModified: "2026-10-16",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/resize-images-wordpress/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Does WordPress resize images automatically?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, it creates multiple sizes (thumbnail, medium, large). But it keeps the original file, which means visitors may still download the full-size version.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What size should I upload to WordPress?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Never upload anything wider than 1920px. For blog posts, 1200px is usually ideal. For thumbnails, 300–400px is plenty.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What's the best WordPress image format?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "WebP for most images (25–35% smaller than JPG), JPG for photos, PNG only when you need transparency.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I resize images without a plugin?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Resize before uploading using our Image Resizer. It's free, private, and gives you full control.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Are my images uploaded to a server?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. All resizing happens in your browser. Your images never leave your device.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

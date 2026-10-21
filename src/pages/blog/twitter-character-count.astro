@@ -455,4 +455,93 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline:
+                "How to Count Words for Twitter/X Posts (2026 Character Limit Guide)",
+            description:
+                "Learn the exact character limit for Twitter/X posts, how to count characters before posting, and how to avoid the dreaded 'over limit' warning.",
+            url: "https://toolsvibe.online/blog/twitter-character-count/",
+            datePublished: "2026-10-08",
+            dateModified: "2026-10-08",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/twitter-character-count/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "What's the character limit on Twitter/X in 2026?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Standard posts: 280 characters. X Premium: up to 25,000 characters. DMs: 10,000 characters.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Do links count toward the character limit?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, but they count as 23 characters regardless of their actual length. So a 200-character URL still only counts as 23.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Do spaces count as characters?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Every space between words counts as 1 character.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "How many words is 280 characters?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Roughly 40–50 words in English, depending on word length and spaces.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I edit a post after publishing to fix the character count?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, but edits have limits. Better to check the count before posting using our Word Counter.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Do images and videos count as characters?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. Media attachments don't count toward the character limit.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

@@ -423,4 +423,85 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline:
+                "How to Count Words Across All Tabs in Google Docs (2026 Guide)",
+            description:
+                "Google Docs shows word count for one tab only. Learn how to count words across all tabs in Google Docs with three working methods, including a faster online tool.",
+            url: "https://toolsvibe.online/blog/word-count-google-docs-all-tabs/",
+            datePublished: "2026-10-05",
+            dateModified: "2026-10-14",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/word-count-google-docs-all-tabs/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Does Google Docs have a way to count all tabs at once?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. As of 2026, Google Docs does not have a built-in feature to count words across all tabs. You must either combine the tabs or use an external tool.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is there a keyboard shortcut for total word count?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. Ctrl + Shift + C shows the count only for the active tab. There is no shortcut for the combined total.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Will Google add this feature in the future?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Google hasn't announced plans to add cross-tab word counting. Until they do, external tools remain the fastest option.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I count words in a specific tab only?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Click on the tab, then press Ctrl + Shift + C to see that tab's word count. This works for any single tab.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does copying text count the header and footer?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. When you press Ctrl + A, it only selects the main document body — not headers, footers, or footnotes. If those matter for your count, copy them manually.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

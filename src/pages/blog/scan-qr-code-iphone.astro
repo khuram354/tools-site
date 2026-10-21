@@ -428,4 +428,92 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "How to Scan a QR Code on iPhone (2026 Guide)",
+            description:
+                "Learn how to scan QR codes on iPhone using the Camera app, Control Center, or Photos app. Includes troubleshooting tips, safety warnings, and a step-by-step guide for iOS 17 and iOS 18.",
+            url: "https://toolsvibe.online/blog/scan-qr-code-iphone/",
+            datePublished: "2026-10-05",
+            dateModified: "2026-10-08",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/scan-qr-code-iphone/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Do I need to install an app to scan QR codes?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. iPhone cameras have had built-in QR scanning since iOS 11 (2017). All you need is the default Camera app.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Why does the yellow banner disappear before I can tap it?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "The banner disappears when the QR code leaves the camera frame. Keep the camera pointed at the code until you've tapped the banner.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I scan a QR code from a screenshot?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Open the screenshot in Photos, tap and hold on the QR code, and iOS will detect it. This works on iOS 15 and later.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does scanning a QR code cost data?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "The scan itself doesn't use data. But if the QR code opens a website, that site loads using your mobile data or Wi-Fi.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What if my iPhone model is older?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "QR scanning works on iPhone 6s and later running iOS 11+. If your phone is older than that, you'd need a third-party app — but that's extremely rare in 2026.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I scan QR codes with Siri?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. Siri can't scan QR codes. You'll need to use the Camera app, Control Center, or Photos app.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

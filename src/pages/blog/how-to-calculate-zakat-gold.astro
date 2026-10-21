@@ -388,4 +388,92 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "How to Calculate Zakat on Gold (2026 Guide)",
+            description:
+                "Learn how to calculate Zakat on gold. Covers Nisab, carat conversion, current prices, and a free online calculator for Pakistan.",
+            url: "https://toolsvibe.online/blog/how-to-calculate-zakat-gold/",
+            datePublished: "2026-10-20",
+            dateModified: "2026-10-20",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/how-to-calculate-zakat-gold/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "How much gold do I need to pay Zakat?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "The Nisab threshold is 87.48 grams of pure (24K) gold. If your total gold is above this and you've held it for one lunar year, Zakat is due.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Do I calculate Zakat on my daily-wear jewelry?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "According to the Hanafi school, yes. Some other schools exempt daily-wear jewelry. Consult your scholar if you're unsure.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What if I have gold in a different carat than 24K?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Convert it to pure gold weight first: pure gold weight = total grams × (carat ÷ 24). Then apply the Zakat rate.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Do I use the price I paid or the current price?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Zakat is calculated on the current market value of your gold, not the original purchase price.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is Zakat on gold paid annually?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Zakat is due once per lunar year (Hawl) on gold you've held that entire year.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I use your calculator to do this?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Our free Zakat Calculator handles all of this — carat conversion, Nisab checks, and Zakat calculation — in one place.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

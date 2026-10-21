@@ -424,4 +424,93 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline:
+                "Salary Tax Calculator Pakistan 2026-27 — Free Online Tool",
+            description:
+                "Free salary tax calculator for Pakistan. Calculate your monthly take-home salary, FBR income tax, and EOBI deductions for Tax Year 2027 (FY 2026-27) instantly.",
+            url: "https://toolsvibe.online/blog/salary-tax-calculator-pakistan/",
+            datePublished: "2026-10-17",
+            dateModified: "2026-10-17",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/salary-tax-calculator-pakistan/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "What is the tax-free income limit in Pakistan?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "For Tax Year 2027, the tax-free limit for salaried individuals is PKR 600,000 per year (PKR 50,000 per month).",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Are these tax slabs accurate for 2026-27?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. These slabs are based on the Finance Act 2026 and apply to salaried individuals for Tax Year 2027 (July 2026 – June 2027).",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does the calculator include the 9% surcharge?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. The 9% surcharge has been abolished for salaried individuals in the Finance Act 2026.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is my salary data stored anywhere?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. All calculations happen in your browser. Your salary information never leaves your device.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I calculate tax for a different tax year?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Our calculator currently supports Tax Year 2027 (FY 2026-27). Future years will be added as FBR announces new slabs.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does the calculator work on mobile?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. The tool works on any device — laptop, tablet, phone, or desktop.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

@@ -407,4 +407,84 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "How to Bulk Resize Images Online (Free Guide 2026)",
+            description:
+                "Learn how to bulk resize images online for free. Resize multiple photos at once for e-commerce, social media, and websites without losing quality.",
+            url: "https://toolsvibe.online/blog/bulk-resize-images/",
+            datePublished: "2026-10-16",
+            dateModified: "2026-10-16",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/bulk-resize-images/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Can I really resize images for free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Our Image Resizer is completely free with no signup, no watermark, and no limits.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Are my images uploaded to a server?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. All resizing happens in your browser. Your images never leave your device.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "How many images can I resize at once?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "The tool works on one image at a time. For bulk work, open multiple browser tabs — one per image — and work through them in parallel.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does resizing reduce image quality?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Reducing dimensions maintains quality. Enlarging beyond the original size makes images blurry because the tool is stretching existing pixels.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What's the best format after resizing?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "For photos, use JPG. For images with transparency or sharp text, use PNG. For the best file size in modern browsers, use WebP — our Image Converter can handle the format change.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

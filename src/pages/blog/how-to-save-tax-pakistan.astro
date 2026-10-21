@@ -487,4 +487,84 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "How to Save Tax in Pakistan (2026-27): 7 Legal Ways",
+            description:
+                "Discover 7 legal ways to save income tax in Pakistan for Tax Year 2027. Includes VPS, life insurance, donations, and other FBR-approved tax credits.",
+            url: "https://toolsvibe.online/blog/how-to-save-tax-pakistan/",
+            datePublished: "2026-10-14",
+            dateModified: "2026-10-14",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/how-to-save-tax-pakistan/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Can I claim multiple tax credits in one year?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, you can claim multiple tax credits. For example, you can claim a VPS credit and a donation credit in the same year. However, for investment in shares and life insurance, you must choose one — not both.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What is the deadline for making tax-saving investments?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "The tax year in Pakistan runs from July 1 to June 30. All investments must be made within the tax year to qualify for that year's credit.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I carry forward unused tax credits?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. Any tax credit that cannot be utilized in a given year cannot be refunded, carried forward, or carried back.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Are these tax savings legal?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, absolutely. These are all provisions specifically written into the Income Tax Ordinance 2001 by the government to encourage saving, investment, and charitable giving.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What happens if I withdraw from VPS early?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Early withdrawal from VPS triggers a tax penalty equal to your average tax rate over the preceding three years. VPS is designed for retirement, not short-term gains.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

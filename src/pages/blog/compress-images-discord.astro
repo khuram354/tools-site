@@ -382,4 +382,84 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "How to Compress Images for Discord (Free Guide 2026)",
+            description:
+                "Learn how to compress images for Discord to fit the 8MB upload limit. Free browser-based tool, no signup, works on any device.",
+            url: "https://toolsvibe.online/blog/compress-images-discord/",
+            datePublished: "2026-10-16",
+            dateModified: "2026-10-16",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/compress-images-discord/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "What's the maximum image size Discord allows?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "8 MB for free users, 50 MB for Nitro Basic, and 500 MB for full Nitro. The free tier limit is the one most users hit.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Will compressing make my image look worse?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "At 70–80% quality, most people can't see the difference. Below 60%, artifacts start becoming visible.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I compress images on my phone?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Our Image Compressor works on any mobile browser — iPhone, Android, anything.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Are my images uploaded to a server?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. All compression happens in your browser. Your images never leave your device.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is this tool free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

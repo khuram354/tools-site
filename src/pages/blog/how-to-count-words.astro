@@ -408,4 +408,76 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "How to Count Words Accurately: A Complete 2026 Guide",
+            description:
+                "Learn how to count words accurately for essays, blogs, and social media. Includes manual methods, tool recommendations, and my personal workflow for hitting word targets.",
+            url: "https://toolsvibe.online/blog/how-to-count-words/",
+            datePublished: "2026-10-02",
+            dateModified: "2026-10-14",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/how-to-count-words/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Does Google Docs count words in the header and footer?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. Google Docs only counts words in the main document body, not in headers, footers, or comments.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is 1,000 words enough for a blog post?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "For SEO, 1,000–2,000 words is ideal for most topics. But quality matters more than length — a 900-word post that fully answers a question beats a padded 1,500-word post.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Why do different tools show different word counts?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Tools treat hyphens, symbols, and numbers differently. For example, state-of-the-art is 1 word in some tools and 4 in others. Pick one tool and use it consistently.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What's the fastest way to count words on mobile?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Copy your text and paste it into our Word Counter. It works on any mobile browser and updates counts in real time.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

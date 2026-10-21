@@ -224,6 +224,56 @@ const faqs = [
             url: "https://toolsvibe.online/blog/",
             description:
                 "Guides, tips, and tutorials about online tools, productivity, word counting, QR codes, JSON, and more.",
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "How often do you publish new articles?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "We publish new guides and tutorials every week. Topics cover our tools, productivity tips, and developer guides.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I suggest a topic for a future article?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. We welcome suggestions. Visit our contact page and let us know what you would like to read about.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Are your guides beginner-friendly?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Most of our guides are written for beginners, with step-by-step instructions. Developer-focused articles assume basic technical knowledge.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Do you accept guest posts?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "We are not accepting guest posts at the moment, but we may open this up in the future.",
+                    },
+                },
+            ],
         })}
     />
 </Layout>

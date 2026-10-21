@@ -379,4 +379,84 @@ import SocialShare from "../../components/SocialShare.astro";
             </a>
         </footer>
     </article>
+    <!-- BlogPosting Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: "How to Compress Images for Website (2026 Guide)",
+            description:
+                "Learn how to compress images for your website without losing quality. Includes tools, formats, and best practices for faster page loads and better SEO.",
+            url: "https://toolsvibe.online/blog/compress-images-for-website/",
+            datePublished: "2026-10-15",
+            dateModified: "2026-10-15",
+            author: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://toolsvibe.online/og-image.png",
+                },
+            },
+            mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://toolsvibe.online/blog/compress-images-for-website/",
+            },
+        })}
+    />
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Are my images uploaded to a server?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Not with our tool. All compression happens in your browser using JavaScript. Your images never leave your device.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What quality setting should I use?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "70–80% is the sweet spot for most images. Go higher (85–90%) for images with text or fine detail, and lower (60–70%) for large background photos.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Does compression affect image dimensions?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "No. Compression reduces file size, not width or height. To change dimensions, use our Image Resizer.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "What's the best format for website images in 2026?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "WebP for most images (best balance), JPG for photos where WebP isn't supported, and PNG only for transparency or simple graphics.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is image compression free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Our Image Compressor is completely free with no signup, no limits, and no watermarks.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>
