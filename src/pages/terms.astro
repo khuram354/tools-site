@@ -132,4 +132,22 @@ const lastUpdated = "October 16, 2026";
             </p>
         </section>
     </article>
+    <!--- Structured Data for SEO --->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Terms of Service — ToolsVibe",
+            url: "https://toolsvibe.online/terms/",
+            description:
+                "Read the ToolsVibe terms of service for using our free online tools, including calculator disclaimers and usage rules.",
+            isPartOf: {
+                "@type": "WebSite",
+                name: "ToolsVibe",
+                url: "https://toolsvibe.online/",
+            },
+            dateModified: "2026-10-21",
+        })}
+    />
 </Layout>

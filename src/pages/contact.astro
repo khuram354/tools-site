@@ -178,4 +178,63 @@ const faqs = [
             </p>
         </section>
     </article>
+    <!-- Structured Data for SEO -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            name: "Contact — ToolsVibe",
+            url: "https://toolsvibe.online/contact/",
+            description:
+                "Contact ToolsVibe for feedback, bug reports, tool suggestions, or business inquiries. We respond within 1-2 business days.",
+            isPartOf: {
+                "@type": "WebSite",
+                name: "ToolsVibe",
+                url: "https://toolsvibe.online/",
+            },
+        })}
+    />
+    <!-- Structured Data for FAQ -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "How quickly will I get a response?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "We typically respond within 1–2 business days. For urgent bug reports, please mention it in the subject.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I request a new tool?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. We welcome tool suggestions. Use the form above or email us directly and describe what you need.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Do you offer technical support?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "We offer basic support for our tools. For complex technical issues, please include your browser and device details.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is my contact information safe?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. We only use your email to respond to your message. We never share or sell contact information.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

@@ -365,4 +365,76 @@ const faqs = [
             </div>
         </section>
     </article>
+    <!-- Structured Data for SEO -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            name: "About — ToolsVibe",
+            url: "https://toolsvibe.online/about/",
+            description:
+                "Learn about ToolsVibe, a free collection of fast, privacy-friendly online tools for writing, development, finance, and everyday tasks.",
+            isPartOf: {
+                "@type": "WebSite",
+                name: "ToolsVibe",
+                url: "https://toolsvibe.online/",
+            },
+            mainEntity: {
+                "@type": "Organization",
+                name: "ToolsVibe",
+                url: "https://toolsvibe.online/",
+                founder: {
+                    "@type": "Person",
+                    name: "Khuram Shahzad",
+                },
+                sameAs: [
+                    "https://github.com/khuram354",
+                    "https://facebook.com/toolsvibe.online",
+                ],
+            },
+        })}
+    />
+    <!-- Structured Data for FAQ -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Who runs ToolsVibe?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "ToolsVibe is an independent project built by Khuram Shahzad and a small team of contributors from Pakistan. It is not backed by any large corporation and relies on minimal, non-intrusive ads to keep the site running.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Is ToolsVibe really free?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Every tool on ToolsVibe is free to use with no hidden charges, no premium tiers, and no forced signups. We fund the site through minimal, non-intrusive advertising.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "How do you protect my privacy?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "All tools run entirely in your browser. Your text, files, and data never leave your device. We do not store, sell, or share any user data.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Can I use ToolsVibe tools for commercial work?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Our tools are free for personal and commercial use. Students, writers, developers, and businesses all use ToolsVibe regularly.",
+                    },
+                },
+            ],
+        })}
+    />
 </Layout>

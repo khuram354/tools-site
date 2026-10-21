@@ -228,4 +228,22 @@ const lastUpdated = "October 12, 2026";
             </p>
         </section>
     </article>
+    <!-- Structured Data for SEO -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Privacy Policy — ToolsVibe",
+            url: "https://toolsvibe.online/privacy/",
+            description:
+                "Read the ToolsVibe privacy policy to learn how we handle data, cookies, and advertising.",
+            isPartOf: {
+                "@type": "WebSite",
+                name: "ToolsVibe",
+                url: "https://toolsvibe.online/",
+            },
+            dateModified: "2026-10-21",
+        })}
+    />
 </Layout>

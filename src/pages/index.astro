@@ -104,7 +104,7 @@ const faqs = [
         </div>
     </section>
 
-    <!-- Featured Tools (Top 3) -->
+    <!-- Featured Tools -->
     <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
         {
             tools.map((tool) => (
@@ -175,7 +175,7 @@ const faqs = [
         }
     </section>
 
-    <!-- Tool Categories (Global First, Pakistan Last) -->
+    <!-- Tool Categories -->
     <section class="mt-16 max-w-5xl mx-auto px-4">
         <h2 class="text-center text-lg font-semibold text-gray-700 mb-6">
             Explore All 15 Tools by Category
@@ -185,17 +185,21 @@ const faqs = [
                 href="/tools/#writing"
                 class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
             >
-                <div class="text-2xl mb-2">📝</div>
-                <div class="text-sm font-medium">Writing</div>
-                <div class="text-xs text-gray-500 mt-1">Word Counter</div>
+                <div class="text-2xl mb-2">📝</div><div
+                    class="text-sm font-medium"
+                >
+                    Writing
+                </div><div class="text-xs text-gray-500 mt-1">Word Counter</div>
             </a>
             <a
                 href="/tools/#image"
                 class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
             >
-                <div class="text-2xl mb-2">🖼️</div>
-                <div class="text-sm font-medium">Image Tools</div>
-                <div class="text-xs text-gray-500 mt-1">
+                <div class="text-2xl mb-2">🖼️</div><div
+                    class="text-sm font-medium"
+                >
+                    Image Tools
+                </div><div class="text-xs text-gray-500 mt-1">
                     Compress, Resize, Crop
                 </div>
             </a>
@@ -203,33 +207,47 @@ const faqs = [
                 href="/tools/#utility"
                 class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
             >
-                <div class="text-2xl mb-2">🛠️</div>
-                <div class="text-sm font-medium">Utilities</div>
-                <div class="text-xs text-gray-500 mt-1">QR, Password, Unit</div>
+                <div class="text-2xl mb-2">🛠️</div><div
+                    class="text-sm font-medium"
+                >
+                    Utilities
+                </div><div class="text-xs text-gray-500 mt-1">
+                    QR, Password, Unit
+                </div>
             </a>
             <a
                 href="/tools/#developer"
                 class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
             >
-                <div class="text-2xl mb-2">💻</div>
-                <div class="text-sm font-medium">Developer</div>
-                <div class="text-xs text-gray-500 mt-1">JSON Formatter</div>
+                <div class="text-2xl mb-2">💻</div><div
+                    class="text-sm font-medium"
+                >
+                    Developer
+                </div><div class="text-xs text-gray-500 mt-1">
+                    JSON Formatter
+                </div>
             </a>
             <a
                 href="/tools/#finance"
                 class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
             >
-                <div class="text-2xl mb-2">💰</div>
-                <div class="text-sm font-medium">Finance</div>
-                <div class="text-xs text-gray-500 mt-1">Percentage</div>
+                <div class="text-2xl mb-2">💰</div><div
+                    class="text-sm font-medium"
+                >
+                    Finance
+                </div><div class="text-xs text-gray-500 mt-1">Percentage</div>
             </a>
             <a
                 href="/tools/#pakistan-tax"
                 class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
             >
-                <div class="text-2xl mb-2">🇵🇰</div>
-                <div class="text-sm font-medium">Pakistan Tax</div>
-                <div class="text-xs text-gray-500 mt-1">Salary, Zakat, EMI</div>
+                <div class="text-2xl mb-2">🇵🇰</div><div
+                    class="text-sm font-medium"
+                >
+                    Pakistan Tax
+                </div><div class="text-xs text-gray-500 mt-1">
+                    Salary, Zakat, EMI
+                </div>
             </a>
         </div>
     </section>
@@ -255,7 +273,7 @@ const faqs = [
         </div>
     </section>
 
-    <!-- Why ToolsVibe (Long-form) -->
+    <!-- Why ToolsVibe -->
     <section class="mt-20 max-w-3xl mx-auto">
         <h2 class="text-2xl font-bold mb-4">Why ToolsVibe?</h2>
         <p class="text-gray-700 mb-4">
@@ -330,7 +348,7 @@ const faqs = [
             "@context": "https://schema.org",
             "@type": "WebSite",
             name: "ToolsVibe",
-            url: "https://toolsvibe.online",
+            url: "https://toolsvibe.online/",
             description:
                 "Free online tools for everyone — word counter, image compressor, QR code generator, JSON formatter, and Pakistan tax calculators.",
         })}
@@ -343,7 +361,7 @@ const faqs = [
             "@context": "https://schema.org",
             "@type": "Organization",
             name: "ToolsVibe",
-            url: "https://toolsvibe.online",
+            url: "https://toolsvibe.online/",
             logo: "https://toolsvibe.online/og-image.png",
             description:
                 "Free online tools for writing, images, development, and Pakistan tax calculations.",
@@ -360,6 +378,23 @@ const faqs = [
                 email: "khurammirza354@gmail.com",
                 contactType: "customer support",
             },
+        })}
+    />
+
+    <!-- FAQPage Schema -->
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((faq) => ({
+                "@type": "Question",
+                name: faq.q,
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: faq.a,
+                },
+            })),
         })}
     />
 </Layout>
