@@ -60,6 +60,16 @@ const imageURL = new URL(image, Astro.site);
             gtag("js", new Date());
             gtag("config", "G-8YVT8WPSLF");
         </script>
+        <script is:inline>
+            (function () {
+                if (
+                    !window.location.pathname.endsWith("/") &&
+                    !window.location.pathname.includes(".")
+                ) {
+                    window.location.href = window.location.pathname + "/";
+                }
+            })();
+        </script>
         <script
             type="text/partytown"
             src="https://www.googletagmanager.com/gtag/js?id=G-8YVT8WPSLF"
