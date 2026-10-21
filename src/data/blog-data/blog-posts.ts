@@ -11,6 +11,14 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+  title: 'QR Code Generator: Free, Custom & Bulk Options (2026)',
+  description:
+    'Use a free QR code generator to make codes for links, text and WiFi. Add a logo, go bulk or offline, and avoid scanning mistakes. Step-by-step guide.',
+  href: '/blog/qr-code-generator/',
+  date: 'October 21, 2026',
+  category: 'QR Codes',
+ },
+  {
     title: 'How to Calculate Zakat on Gold (2026 Guide)',
     description:
       'Learn how to calculate Zakat on gold. Covers Nisab, carat conversion, current prices, and a free online calculator for Pakistan.',
