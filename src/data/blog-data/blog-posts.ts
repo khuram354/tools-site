@@ -10,6 +10,14 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
+{
+  title: 'Freelancing Tax in Pakistan 2026-27: Rates, PSEB & Filing',
+  description:
+    'Freelancing tax in Pakistan explained: 0.25% PSEB rate vs 1%, how tax is deducted, PSEB registration, filing steps and a freelancer tax calculator guide.',
+  href: '/blog/freelancing-tax-pakistan/',
+  date: 'October 23, 2026',
+  category: 'Productivity',
+ },
   {
   title: 'QR Code Generator: Free, Custom & Bulk Options (2026)',
   description:
@@ -17,7 +25,7 @@ export const blogPosts: BlogPost[] = [
   href: '/blog/qr-code-generator/',
   date: 'October 21, 2026',
   category: 'QR Codes',
- },
+  },
   {
     title: 'How to Calculate Zakat on Gold (2026 Guide)',
     description:
