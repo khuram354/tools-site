@@ -23,9 +23,6 @@
     "qrcode": "^1.5.4",
     "tailwindcss": "^4.3.3"
   },
-  "allowScripts": {
-    "esbuild": true
-  },
   "devDependencies": {
     "@types/qrcode": "^1.5.6"
   }

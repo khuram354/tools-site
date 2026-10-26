@@ -15,7 +15,9 @@ export default defineConfig({
         plugins: [tailwindcss()],
     },
     integrations: [
-        sitemap(),
+        sitemap({
+            filter: (page) => !page.includes("/404"),
+        }),
         critters(),
         compress({
             CSS: true,
