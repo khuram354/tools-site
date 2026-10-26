@@ -1,6 +1,9 @@
 // Pakistan Salaried Individuals Tax Slabs
 // Tax Year 2027 (FY 2026-27)
 // Source: Finance Act 2026, FBR Pakistan
+//
+// When FBR changes the slabs, edit THIS file only. The calculator and the slab
+// table on the Salary Tax Calculator page both read from it.
 
 export interface TaxSlab {
   min: number;
@@ -12,7 +15,9 @@ export interface TaxSlab {
 
 export const TAX_YEAR = '2026-27';
 export const CURRENCY = 'PKR';
-export const LAST_UPDATED = '2026-10-10';
+// Set this to the date you last re-checked the figures below against FBR.
+// The Salary Tax Calculator page shows it as "Last reviewed".
+export const LAST_UPDATED = '2026-10-25';
 
 export const salariedSlabs: TaxSlab[] = [
   {
@@ -73,9 +78,17 @@ export const salariedSlabs: TaxSlab[] = [
   },
 ];
 
-// Standard deductions (commonly applied)
-export const EOBI_EMPLOYEE_CONTRIBUTION = 407; // PKR per month
-export const EOBI_WAGE_LIMIT = 40700; // PKR per month (minimum wage, effective July 2026)
+// Federal minimum wage from July 2026 (Rs 40,700 per month).
+// Provinces can set a higher figure (for example Sindh: Rs 43,000), and that
+// changes the EOBI amount for employees there.
+export const MINIMUM_WAGE = 40700; // PKR per month
+
+// The employee's EOBI share is 1% of the minimum wage (407 at Rs 40,700).
+export const EOBI_EMPLOYEE_CONTRIBUTION = Math.round(MINIMUM_WAGE * 0.01); // PKR per month
+
+// Old name, kept so any other file that still imports it keeps working.
+// It is the minimum wage, not a salary limit.
+export const EOBI_WAGE_LIMIT = MINIMUM_WAGE;
 
 // Calculate annual income tax based on annual taxable income
 export function calculateAnnualTax(annualIncome: number): {
@@ -83,13 +96,18 @@ export function calculateAnnualTax(annualIncome: number): {
   slab: TaxSlab | null;
   taxableAmountInSlab: number;
 } {
-  for (const slab of salariedSlabs) {
-    const isInSlab =
-      annualIncome >= slab.min &&
-      (slab.max === null || annualIncome <= slab.max);
+  // Nothing to tax (also guards against negative or invalid input)
+  if (!(annualIncome > 0)) {
+    return { tax: 0, slab: salariedSlabs[0], taxableAmountInSlab: 0 };
+  }
 
-    if (isInSlab) {
-      const taxableAmountInSlab = annualIncome - slab.min;
+  for (const slab of salariedSlabs) {
+    // Compare against each slab's upper limit only. This leaves no gaps, so
+    // amounts such as 600,000.50 still land in a slab.
+    if (slab.max === null || annualIncome <= slab.max) {
+      // The slab starts just above the previous limit (min is that limit + 1)
+      const slabFloor = Math.max(slab.min - 1, 0);
+      const taxableAmountInSlab = annualIncome - slabFloor;
       const tax = slab.fixedTax + taxableAmountInSlab * slab.rate;
       return { tax, slab, taxableAmountInSlab };
     }
@@ -98,11 +116,8 @@ export function calculateAnnualTax(annualIncome: number): {
   return { tax: 0, slab: null, taxableAmountInSlab: 0 };
 }
 
-// Helper: Format PKR
+// Helper: Format PKR, e.g. "PKR 1,800,000". Same style as the other calculators,
+// and the same result in every browser (no dependence on the visitor's locale data).
 export function formatPKR(amount: number): string {
-  return new Intl.NumberFormat('en-PK', {
-    style: 'currency',
-    currency: 'PKR',
-    maximumFractionDigits: 0,
-  }).format(amount);
+  return `${CURRENCY} ${Math.round(amount).toLocaleString('en-US')}`;
 }

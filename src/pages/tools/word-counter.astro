@@ -1,18 +1,195 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+// ---------------------------------------------------------------------------
+// Settings shared by the page text and the counter script (the script reads
+// them from the hidden config element below).
+// ---------------------------------------------------------------------------
+const READING_WPM = 200; // words per minute used for the reading time
+const LIMITS = [
+    { name: "X post", limit: 280 },
+    { name: "Instagram caption", limit: 2200 },
+    { name: "LinkedIn post", limit: 3000 },
+    { name: "Meta description", limit: 160 },
+];
+
+// --- counting functions (the page script uses the same logic) ---
+function countWords(text: string): number {
+    const t = text.trim();
+    return t ? t.split(/\s+/).length : 0;
+}
+
+// Counts what a person sees as one character, so an emoji counts as 1
+function countChars(text: string): number {
+    if (!text) return 0;
+    const Segmenter = (Intl as any).Segmenter;
+    if (text.length < 200000 && Segmenter) {
+        let n = 0;
+        for (const _ of new Segmenter().segment(text)) n++;
+        return n;
+    }
+    return Array.from(text).length;
+}
+
+// A sentence ends at . ! or ? that is followed by a space or the end of the
+// text, so "3.14" and "example.com" do not count as sentence ends
+function countSentences(text: string): number {
+    const t = text.trim();
+    if (!t) return 0;
+    const ends = t.match(/[.!?]+["')\]]*(?=\s|$)/g);
+    const count = ends ? ends.length : 0;
+    return /[.!?]["')\]]*$/.test(t) ? count : count + 1;
+}
+
+// Every non-empty line is one paragraph
+function countParagraphs(text: string): number {
+    return text.split(/\r?\n/).filter((l) => l.trim() !== "").length;
+}
+
+function formatDuration(words: number, wpm: number): string {
+    if (words === 0) return "0 sec";
+    const total = Math.max(1, Math.round((words / wpm) * 60));
+    if (total < 60) return `${total} sec`;
+    const m = Math.floor(total / 60);
+    const s = total % 60;
+    return s === 0 ? `${m} min` : `${m} min ${s} sec`;
+}
+
+const fmt = (n: number) => n.toLocaleString("en-US");
+
+// The worked example is counted with the same functions as the tool
+const SAMPLE =
+    "Word counting is one of those small skills that saves real time. Whether you're writing a 2,000-word blog post or a 280-character tweet, getting the count right matters.";
+const sample = {
+    words: countWords(SAMPLE),
+    chars: countChars(SAMPLE),
+    noSpaces: countChars(SAMPLE.replace(/\s/g, "")),
+    sentences: countSentences(SAMPLE),
+    paragraphs: countParagraphs(SAMPLE),
+    reading: formatDuration(countWords(SAMPLE), READING_WPM),
+};
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
+const faqs = [
+    {
+        q: "Is my text saved anywhere?",
+        a: "No. All counting happens in your browser. Your text never leaves your device, and nothing is stored on any server.",
+    },
+    {
+        q: "How is reading time calculated?",
+        a: `Reading time is estimated at ${READING_WPM} words per minute, a conservative average for adults. A 1,000-word article shows as ${formatDuration(1000, READING_WPM)}. Fast readers will finish sooner, and dense technical text takes longer.`,
+    },
+    {
+        q: "How are words counted?",
+        a: "Words are groups of characters separated by spaces or line breaks, so hyphenated words and numbers count as one word. This works for languages written with spaces, including English and Urdu. Languages written without spaces, such as Chinese or Japanese, are not counted correctly.",
+    },
+    {
+        q: "Does this count characters with or without spaces?",
+        a: "Both. The Characters count includes spaces, punctuation, and line breaks, and a separate count shows characters without spaces. An emoji counts as one character.",
+    },
+    {
+        q: "How are sentences counted?",
+        a: 'A sentence ends at a period, exclamation mark, or question mark that is followed by a space or the end of the text. Numbers like 3.14 and web addresses are not counted as sentence ends, but abbreviations such as "Dr." or "e.g." can add extra counts. This is a limitation of any sentence-counting tool.',
+    },
+    {
+        q: "How are paragraphs counted?",
+        a: "Every non-empty line counts as one paragraph, the same way a word processor counts each press of the Enter key. Text with hard line breaks inside a paragraph will show more paragraphs than you expect.",
+    },
+    {
+        q: "Why does my count differ from X (Twitter)?",
+        a: "X counts every link as a fixed length and counts emoji and some other characters as two, so its own counter can differ from the plain character count here. Use the limit checker as a guide and confirm in the app.",
+    },
+    {
+        q: "Can I count words in a specific section only?",
+        a: "Yes. Select and copy just that section, then paste it into the box. The count will reflect only that text.",
+    },
+    {
+        q: "Is this tool free?",
+        a: "Yes. It is free, needs no signup, and has no limits.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Word Counter",
+    url: pageUrl,
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free online word counter. Count words, characters, sentences, and paragraphs, check reading time and character limits.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "Word Counter",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="Word Counter — Free Online Word & Character Counter"
-    description="Free online word counter. Count words, characters, sentences, and paragraphs instantly. Estimate reading time. No signup required."
+    title="Word Counter: Free Online Word & Character Counter"
+    description="Free word counter and character counter. Count words, characters, sentences and paragraphs, check reading time and post limits. Runs in your browser."
 >
     <div class="max-w-3xl mx-auto">
+        <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+            <a href="/" class="hover:underline">Home</a>
+            <span aria-hidden="true">/</span>
+            <a href="/tools/" class="hover:underline">Tools</a>
+            <span aria-hidden="true">/</span>
+            <span>Word Counter</span>
+        </nav>
         <h1 class="text-3xl md:text-4xl font-bold mb-3">Word Counter</h1>
         <p class="text-gray-600 mb-6">
             Paste or type your text below to instantly count words, characters,
-            sentences, and reading time.
+            sentences, paragraphs, and reading time.
         </p>
 
+        <!-- Settings the script reads (same values as the page text) -->
+        <div
+            id="calc-config"
+            data-limits={JSON.stringify(LIMITS)}
+            data-wpm={READING_WPM}
+            hidden
+        >
+        </div>
+
+        <label for="text-input" class="sr-only">Your text</label>
         <textarea
             id="text-input"
             class="w-full h-64 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
@@ -33,7 +210,7 @@ import Layout from "../../layouts/Layout.astro";
             </button>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
             <div
                 class="bg-white p-4 rounded-lg border border-gray-200 text-center"
             >
@@ -54,6 +231,19 @@ import Layout from "../../layouts/Layout.astro";
                 class="bg-white p-4 rounded-lg border border-gray-200 text-center"
             >
                 <div
+                    id="char-nospace-count"
+                    class="text-3xl font-bold text-blue-600"
+                >
+                    0
+                </div>
+                <div class="text-sm text-gray-600 mt-1">
+                    Characters (no spaces)
+                </div>
+            </div>
+            <div
+                class="bg-white p-4 rounded-lg border border-gray-200 text-center"
+            >
+                <div
                     id="sentence-count"
                     class="text-3xl font-bold text-blue-600"
                 >
@@ -64,54 +254,129 @@ import Layout from "../../layouts/Layout.astro";
             <div
                 class="bg-white p-4 rounded-lg border border-gray-200 text-center"
             >
-                <div id="reading-time" class="text-3xl font-bold text-blue-600">
-                    0m
+                <div
+                    id="paragraph-count"
+                    class="text-3xl font-bold text-blue-600"
+                >
+                    0
                 </div>
-                <div class="text-sm text-gray-600 mt-1">Reading Time</div>
+                <div class="text-sm text-gray-600 mt-1">Paragraphs</div>
+            </div>
+            <div
+                class="bg-white p-4 rounded-lg border border-gray-200 text-center"
+            >
+                <div id="reading-time" class="text-2xl font-bold text-blue-600">
+                    0 sec
+                </div>
+                <div class="text-sm text-gray-600 mt-1">
+                    Reading Time ({READING_WPM} wpm)
+                </div>
+            </div>
+        </div>
+
+        <!-- Character limits -->
+        <div class="mt-6 bg-white p-4 rounded-lg border border-gray-200">
+            <p class="text-sm font-medium mb-2">
+                Character limits
+                <span class="font-normal text-gray-500"
+                    >(approximate; platforms count some characters differently)</span
+                >
+            </p>
+            <div id="limits" class="flex flex-wrap gap-2 text-xs">
+                {
+                    LIMITS.map((l) => (
+                        <span
+                            data-limit={l.limit}
+                            class="limit-chip px-3 py-1 rounded-full bg-gray-100 text-gray-700"
+                        >
+                            <span class="font-medium">{l.name}</span> (
+                            {fmt(l.limit)}):
+                            <span class="limit-status">
+                                {fmt(l.limit)} left
+                            </span>
+                        </span>
+                    ))
+                }
             </div>
         </div>
     </div>
-    <!-- SEO Content (800+ words) -->
-    <section class="max-w-3xl mx-auto mt-16 prose prose-gray">
+
+    <!-- SEO Content -->
+    <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This Word Counter</h2>
         <p class="text-gray-700 mb-4">
             This free online word counter instantly counts words, characters,
-            sentences, and estimates reading time. It's perfect for students
-            checking essay limits, bloggers hitting SEO targets, social media
-            managers staying within platform limits, and anyone who needs an
-            accurate count without opening a heavy word processor.
+            sentences, and paragraphs, and estimates reading time. It's useful
+            for students checking essay limits, bloggers planning posts, social
+            media managers staying within platform limits, and anyone who needs
+            an accurate count without opening a heavy word processor.
         </p>
         <p class="text-gray-700 mb-4">
-            Unlike most word counters that require an account or send your text
-            to a server, this tool runs entirely in your browser. Your text
-            never leaves your device. Paste something confidential — a client
-            contract, a personal essay, a private message — and it stays
+            Unlike counters that require an account or send your text to a
+            server, this tool runs entirely in your browser. Your text never
+            leaves your device. Paste something confidential, such as a client
+            contract, a personal essay, or a private message, and it stays
             private.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
             <li>Paste or type your text into the box above.</li>
-            <li>Word, character, and sentence counts update in real time.</li>
+            <li>
+                The counts update in real time. Check the character limits to
+                see how much room you have for a post or description.
+            </li>
             <li>
                 Use the "Copy Text" button to copy your text, or "Clear" to
                 start over.
             </li>
         </ol>
 
+        <h3 class="text-xl font-semibold mt-6 mb-3">What Gets Counted</h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>Words:</strong> Groups of characters separated by spaces or
+                line breaks.
+            </li>
+            <li>
+                <strong>Characters:</strong> Everything in the text, including spaces,
+                punctuation, and line breaks. An emoji counts as one.
+            </li>
+            <li>
+                <strong>Characters (no spaces):</strong> The same count with all spaces
+                and line breaks removed.
+            </li>
+            <li>
+                <strong>Sentences:</strong> Stretches of text ending in a period,
+                exclamation mark, or question mark.
+            </li>
+            <li>
+                <strong>Paragraphs:</strong> Every non-empty line.
+            </li>
+            <li>
+                <strong>Reading time:</strong> Words divided by {READING_WPM} words
+                per minute.
+            </li>
+        </ul>
+
         <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Real-time counting:</strong> Numbers update as you type —
-                no need to click a button.
+                <strong>Real-time counting:</strong> Numbers update as you type, with
+                no button to click.
             </li>
             <li>
-                <strong>Multiple metrics at once:</strong> Words, characters, sentences,
-                and reading time in one view.
+                <strong>Multiple metrics at once:</strong> Words, characters, characters
+                without spaces, sentences, paragraphs, and reading time in one view.
+            </li>
+            <li>
+                <strong>Limit checker:</strong> See at a glance how many characters
+                you have left for an X post, an Instagram caption, a LinkedIn post,
+                or a meta description.
             </li>
             <li>
                 <strong>Privacy first:</strong> Everything runs in your browser. No
-                uploads, no tracking.
+                uploads, no tracking of your text.
             </li>
             <li>
                 <strong>Free with no limits:</strong> Count as many texts as you want,
@@ -119,7 +384,7 @@ import Layout from "../../layouts/Layout.astro";
             </li>
             <li>
                 <strong>Works on any device:</strong> Desktop, laptop, tablet, or
-                phone — no app needed.
+                phone, with no app needed.
             </li>
         </ul>
 
@@ -127,316 +392,319 @@ import Layout from "../../layouts/Layout.astro";
 
         <h4 class="font-semibold mt-4 mb-2">1. Checking Essay Word Limits</h4>
         <p class="text-gray-700 mb-4">
-            Most academic essays have strict word limits — 500, 1,000, 1,500, or
-            5,000 words depending on the level. Paste your draft here and see
-            exactly where you stand. No more submitting a 1,453-word essay when
-            the requirement was 1,500.
+            Most academic essays have a word limit, such as 500, 1,000, or 1,500
+            words. Paste your draft here and see exactly where you stand. Check
+            whether your limit includes headings, footnotes, and the reference
+            list, since this tool counts everything you paste.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">
-            2. Hitting SEO Targets for Blog Posts
-        </h4>
+        <h4 class="font-semibold mt-4 mb-2">2. Planning Blog Posts</h4>
         <p class="text-gray-700 mb-4">
-            SEO-friendly blog posts are typically 1,000–2,000 words. Paste your
-            draft here to check your count before publishing. If you're short,
-            add examples or a FAQ section; if you're long, trim redundant
-            sentences.
+            There is no ideal word count for SEO. What ranks depends on the
+            topic and what searchers want. In-depth guides are often 1,000 to
+            2,000 words, but a short answer can rank too. Use the count to check
+            that your post covers the topic fully, rather than to hit a number.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
             3. Staying Within Social Media Limits
         </h4>
         <p class="text-gray-700 mb-4">
-            Twitter/X has a 280-character limit. Instagram captions cap at 2,200
-            characters. LinkedIn posts perform best under 1,300 characters.
-            Paste your caption here to avoid the dreaded "too long" warning.
+            A standard X (Twitter) post is limited to 280 characters, an
+            Instagram caption to 2,200 characters, and a LinkedIn post to 3,000
+            characters. Paste your caption here to avoid the "too long" warning.
+            Platforms count links and emoji in their own ways, so confirm in the
+            app when you are close to the limit.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">4. Writing Meta Descriptions</h4>
         <p class="text-gray-700 mb-4">
-            Google truncates meta descriptions after about 155 characters. Paste
-            your draft here and check the character count before adding it to
-            your page's `<head>`. </head>
-
-            <h4 class="font-semibold mt-4 mb-2">
-                5. Preparing Product Descriptions
-            </h4>
-            <p class="text-gray-700 mb-4">
-                E-commerce platforms often have character limits for product
-                titles (60–70) and descriptions (150–300). This tool makes it
-                easy to stay within bounds.
-            </p>
-
-            <h4 class="font-semibold mt-4 mb-2">
-                6. Checking Reading Time for Articles
-            </h4>
-            <p class="text-gray-700 mb-4">
-                Reading time estimates help set expectations for readers. A
-                1,000-word article takes about 5 minutes to read at 200 words
-                per minute. This tool shows that automatically.
-            </p>
-
-            <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
-            <p class="text-gray-700 mb-4">
-                Here's what happens when you paste this paragraph:
-            </p>
-            <pre
-                class="bg-gray-100 p-4 rounded-lg text-sm overflow-x-auto mb-4"><code>Word counting is one of those small skills that saves real time. Whether you're writing a 2,000-word blog post or a 280-character tweet, getting the count right matters.</code></pre>
-            <p class="text-gray-700 mb-4">The tool shows:</p>
-            <ul class="list-disc pl-6 text-gray-700 space-y-2">
-                <li><strong>Words:</strong> 29</li>
-                <li><strong>Characters:</strong> 172 (including spaces)</li>
-                <li><strong>Sentences:</strong> 2</li>
-                <li><strong>Reading time:</strong> 1 minute</li>
-            </ul>
-            <p class="text-gray-700 mt-4 mb-4">
-                That's the exact information you need — without opening Word,
-                Google Docs, or any other app.
-            </p>
-
-            <h3 class="text-xl font-semibold mt-6 mb-3">
-                How Reading Time Is Calculated
-            </h3>
-            <p class="text-gray-700 mb-4">
-                This tool uses an average adult reading speed of <strong
-                    >200 words per minute</strong
-                >. That's the standard used by most reading-time calculators,
-                including those on major publishing platforms. Technical or
-                academic content may take longer — closer to 150 WPM — while
-                fiction reads faster at around 250 WPM.
-            </p>
-
-            <h3 class="text-xl font-semibold mt-6 mb-3">
-                Frequently Asked Questions
-            </h3>
-            <div class="space-y-4 mt-3">
-                <div>
-                    <h4 class="font-semibold text-gray-900">
-                        Is my text saved anywhere?
-                    </h4>
-                    <p class="text-gray-700 mt-1">
-                        No. All counting happens in your browser. Your text
-                        never leaves your device, and nothing is stored on any
-                        server.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-gray-900">
-                        How is reading time calculated?
-                    </h4>
-                    <p class="text-gray-700 mt-1">
-                        Reading time is estimated at 200 words per minute, which
-                        is the average adult reading speed. A 1,000-word article
-                        shows as 5 minutes.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-gray-900">
-                        Does this count characters with or without spaces?
-                    </h4>
-                    <p class="text-gray-700 mt-1">
-                        The character count includes spaces, punctuation, and
-                        line breaks — everything that makes up the text length.
-                        This matches how social media platforms and form
-                        validators count characters.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-gray-900">
-                        How are sentences counted?
-                    </h4>
-                    <p class="text-gray-700 mt-1">
-                        Sentences are detected by periods, exclamation marks,
-                        and question marks. Abbreviations like "Dr." may add
-                        extra counts — this is a limitation of any
-                        sentence-counting tool.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-gray-900">
-                        Can I count words in a specific section only?
-                    </h4>
-                    <p class="text-gray-700 mt-1">
-                        Yes. Highlight just the section you want to count, then
-                        paste it into the tool. The count will reflect only that
-                        selection.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-gray-900">
-                        Is this tool free?
-                    </h4>
-                    <p class="text-gray-700 mt-1">
-                        Yes, completely free with no limits or signup. Use it as
-                        often as you need.
-                    </p>
-                </div>
-            </div>
+            Google may cut long meta descriptions short in search results,
+            roughly after 150 to 160 characters on desktop, depending on the
+            width of the letters, and it sometimes rewrites them. Paste your
+            draft here and check the character count before adding it to your
+            page's <code>&lt;head&gt;</code>.
         </p>
 
-        <!-- Related Tools & Guides -->
-        <section class="max-w-3xl mx-auto mt-16">
-            <h2 class="text-2xl font-bold mb-6">Related Tools</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-                <a
-                    href="/tools/json-formatter/"
-                    class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-                >
-                    <h3 class="font-semibold mb-1">JSON Formatter</h3>
-                    <p class="text-sm text-gray-600">
-                        Format and validate JSON data.
-                    </p>
-                </a>
-                <a
-                    href="/tools/qr-generator/"
-                    class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-                >
-                    <h3 class="font-semibold mb-1">QR Code Generator</h3>
-                    <p class="text-sm text-gray-600">
-                        Create custom QR codes for any URL.
-                    </p>
-                </a>
-                <a
-                    href="/tools/password-generator/"
-                    class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-                >
-                    <h3 class="font-semibold mb-1">Password Generator</h3>
-                    <p class="text-sm text-gray-600">
-                        Create strong, random passwords.
-                    </p>
-                </a>
-            </div>
+        <h4 class="font-semibold mt-4 mb-2">
+            5. Preparing Product Descriptions
+        </h4>
+        <p class="text-gray-700 mb-4">
+            E-commerce platforms set their own character limits for product
+            titles and descriptions, and the limits differ from one platform to
+            another. Paste your text here to check it against the limit your
+            platform shows.
+        </p>
 
-            <h2 class="text-2xl font-bold mb-6">Related Guides</h2>
-            <div class="space-y-3">
-                <a
-                    href="/blog/how-to-count-words/"
-                    class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-                >
-                    <h3 class="font-medium">How to Count Words Accurately</h3>
-                    <p class="text-sm text-gray-600">
-                        Complete guide for essays, blogs, and social media.
-                    </p>
-                </a>
-                <a
-                    href="/blog/word-count-google-docs-all-tabs/"
-                    class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-                >
-                    <h3 class="font-medium">
-                        How to Count Words Across All Tabs in Google Docs
-                    </h3>
-                    <p class="text-sm text-gray-600">
-                        Multiple tabs ka total count.
-                    </p>
-                </a>
-                <a
-                    href="/blog/twitter-character-count/"
-                    class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-                >
-                    <h3 class="font-medium">Twitter/X Character Count Guide</h3>
-                    <p class="text-sm text-gray-600">
-                        Stay within the 280-character limit.
-                    </p>
-                </a>
-            </div>
-        </section>
+        <h4 class="font-semibold mt-4 mb-2">
+            6. Checking Reading Time for Articles
+        </h4>
+        <p class="text-gray-700 mb-4">
+            Reading time estimates help set expectations for readers. At {
+                READING_WPM
+            } words per minute, a 1,000-word article takes about {
+                formatDuration(1000, READING_WPM)
+            } to read. This tool shows that automatically.
+        </p>
 
-        <script>
-            const input = document.getElementById(
-                "text-input",
-            ) as HTMLTextAreaElement;
-            const wordCount = document.getElementById("word-count")!;
-            const charCount = document.getElementById("char-count")!;
-            const sentenceCount = document.getElementById("sentence-count")!;
-            const readingTime = document.getElementById("reading-time")!;
+        <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
+        <p class="text-gray-700 mb-4">
+            Here's what the tool shows when you paste this paragraph:
+        </p>
+        <pre
+            class="bg-gray-100 p-4 rounded-lg text-sm overflow-x-auto mb-4 whitespace-pre-wrap"><code>{SAMPLE}</code></pre>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li><strong>Words:</strong> {sample.words}</li>
+            <li>
+                <strong>Characters:</strong>
+                {sample.chars} (including spaces)
+            </li>
+            <li>
+                <strong>Characters (no spaces):</strong>
+                {sample.noSpaces}
+            </li>
+            <li><strong>Sentences:</strong> {sample.sentences}</li>
+            <li><strong>Paragraphs:</strong> {sample.paragraphs}</li>
+            <li><strong>Reading time:</strong> {sample.reading}</li>
+        </ul>
+        <p class="text-gray-700 mt-4 mb-4">
+            That's the information you need without opening Word, Google Docs,
+            or any other app.
+        </p>
 
-            function updateCounts() {
-                const text = input.value;
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            How Reading Time Is Calculated
+        </h3>
+        <p class="text-gray-700 mb-4">
+            This tool divides your word count by <strong
+                >{READING_WPM} words per minute</strong
+            >. Studies put the average adult closer to 240 words per minute for
+            non-fiction, and popular reading-time calculators use figures from
+            about 200 to 265, so {READING_WPM} is a cautious estimate. Technical or
+            academic text can take longer than the estimate, and easy fiction often
+            reads faster.
+        </p>
 
-                const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-                const chars = text.length;
-                const sentences = text.trim()
-                    ? text.split(/[.!?]+/).filter((s) => s.trim().length > 0)
-                          .length
-                    : 0;
-                const minutes = Math.ceil(words / 200);
-
-                wordCount.textContent = words.toString();
-                charCount.textContent = chars.toString();
-                sentenceCount.textContent = sentences.toString();
-                readingTime.textContent = minutes + "m";
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Frequently Asked Questions
+        </h3>
+        <div class="space-y-4 mt-3">
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
             }
-
-            input.addEventListener("input", updateCounts);
-
-            document
-                .getElementById("copy-btn")!
-                .addEventListener("click", () => {
-                    if (input.value) {
-                        navigator.clipboard.writeText(input.value);
-                    }
-                });
-
-            document
-                .getElementById("clear-btn")!
-                .addEventListener("click", () => {
-                    input.value = "";
-                    updateCounts();
-                    input.focus();
-                });
-        </script>
-
-        <script
-            type="application/ld+json"
-            set:html={JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                name: "Word Counter",
-                applicationCategory: "UtilityApplication",
-                operatingSystem: "Any",
-                description:
-                    "Free online word counter. Count words, characters, sentences, and estimate reading time instantly.",
-                offers: {
-                    "@type": "Offer",
-                    price: "0",
-                    priceCurrency: "USD",
-                },
-            })}
-        />
-
-        <!-- FAQPage Schema -->
-        <script
-            type="application/ld+json"
-            set:html={JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                mainEntity: [
-                    {
-                        "@type": "Question",
-                        name: "Is my text saved anywhere?",
-                        acceptedAnswer: {
-                            "@type": "Answer",
-                            text: "No. All counting happens in your browser. Your text never leaves your device.",
-                        },
-                    },
-                    {
-                        "@type": "Question",
-                        name: "How is reading time calculated?",
-                        acceptedAnswer: {
-                            "@type": "Answer",
-                            text: "Reading time is estimated at 200 words per minute, which is the average adult reading speed.",
-                        },
-                    },
-                    {
-                        "@type": "Question",
-                        name: "Is this tool free?",
-                        acceptedAnswer: {
-                            "@type": "Answer",
-                            text: "Yes, completely free with no limits or signup.",
-                        },
-                    },
-                ],
-            })}
-        />
+        </div>
     </section>
+
+    <!-- Related Tools & Guides -->
+    <section class="max-w-3xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-6">Related Tools</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            <a
+                href="/tools/json-formatter/"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-semibold mb-1">JSON Formatter</h3>
+                <p class="text-sm text-gray-600">
+                    Format and validate JSON data.
+                </p>
+            </a>
+            <a
+                href="/tools/qr-generator/"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-semibold mb-1">QR Code Generator</h3>
+                <p class="text-sm text-gray-600">
+                    Create custom QR codes for any URL.
+                </p>
+            </a>
+            <a
+                href="/tools/password-generator/"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-semibold mb-1">Password Generator</h3>
+                <p class="text-sm text-gray-600">
+                    Create strong, random passwords.
+                </p>
+            </a>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-6">Related Guides</h2>
+        <div class="space-y-3">
+            <a
+                href="/blog/how-to-count-words/"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-medium">How to Count Words Accurately</h3>
+                <p class="text-sm text-gray-600">
+                    Complete guide for essays, blogs, and social media.
+                </p>
+            </a>
+            <a
+                href="/blog/word-count-google-docs-all-tabs/"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-medium">
+                    How to Count Words Across All Tabs in Google Docs
+                </h3>
+                <p class="text-sm text-gray-600">
+                    Get the total word count across multiple tabs.
+                </p>
+            </a>
+            <a
+                href="/blog/twitter-character-count/"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-medium">Twitter/X Character Count Guide</h3>
+                <p class="text-sm text-gray-600">
+                    Stay within the 280-character limit.
+                </p>
+            </a>
+        </div>
+    </section>
+
+    <script>
+        interface Limit {
+            name: string;
+            limit: number;
+        }
+
+        const cfg = document.getElementById("calc-config")!;
+        const LIMITS: Limit[] = JSON.parse(cfg.dataset.limits!);
+        const READING_WPM = Number(cfg.dataset.wpm);
+
+        const input = document.getElementById(
+            "text-input",
+        ) as HTMLTextAreaElement;
+        const wordCount = document.getElementById("word-count")!;
+        const charCount = document.getElementById("char-count")!;
+        const charNoSpaceCount = document.getElementById("char-nospace-count")!;
+        const sentenceCount = document.getElementById("sentence-count")!;
+        const paragraphCount = document.getElementById("paragraph-count")!;
+        const readingTime = document.getElementById("reading-time")!;
+        const copyBtn = document.getElementById("copy-btn")!;
+        const clearBtn = document.getElementById("clear-btn")!;
+        const chips = document.querySelectorAll<HTMLElement>(".limit-chip");
+
+        const fmt = (n: number) => n.toLocaleString("en-US");
+
+        // --- same counting logic as the page frontmatter ---
+        function countWords(text: string): number {
+            const t = text.trim();
+            return t ? t.split(/\s+/).length : 0;
+        }
+
+        function countChars(text: string): number {
+            if (!text) return 0;
+            const Segmenter = (Intl as any).Segmenter;
+            if (text.length < 200000 && Segmenter) {
+                let n = 0;
+                for (const _ of new Segmenter().segment(text)) n++;
+                return n;
+            }
+            return Array.from(text).length;
+        }
+
+        function countSentences(text: string): number {
+            const t = text.trim();
+            if (!t) return 0;
+            const ends = t.match(/[.!?]+["')\]]*(?=\s|$)/g);
+            const count = ends ? ends.length : 0;
+            return /[.!?]["')\]]*$/.test(t) ? count : count + 1;
+        }
+
+        function countParagraphs(text: string): number {
+            return text.split(/\r?\n/).filter((l) => l.trim() !== "").length;
+        }
+
+        function formatDuration(words: number, wpm: number): string {
+            if (words === 0) return "0 sec";
+            const total = Math.max(1, Math.round((words / wpm) * 60));
+            if (total < 60) return `${total} sec`;
+            const m = Math.floor(total / 60);
+            const s = total % 60;
+            return s === 0 ? `${m} min` : `${m} min ${s} sec`;
+        }
+
+        function updateLimits(chars: number) {
+            chips.forEach((chip) => {
+                const limit = Number(chip.dataset.limit);
+                const status = chip.querySelector(".limit-status")!;
+                const base = "limit-chip px-3 py-1 rounded-full ";
+                if (chars === 0) {
+                    chip.className = base + "bg-gray-100 text-gray-700";
+                    status.textContent = `${fmt(limit)} left`;
+                } else if (chars <= limit) {
+                    chip.className = base + "bg-green-50 text-green-800";
+                    status.textContent = `${fmt(limit - chars)} left`;
+                } else {
+                    chip.className = base + "bg-red-50 text-red-700";
+                    status.textContent = `${fmt(chars - limit)} over`;
+                }
+            });
+        }
+
+        function updateCounts() {
+            const text = input.value;
+            const words = countWords(text);
+            const chars = countChars(text);
+
+            wordCount.textContent = fmt(words);
+            charCount.textContent = fmt(chars);
+            charNoSpaceCount.textContent = fmt(
+                countChars(text.replace(/\s/g, "")),
+            );
+            sentenceCount.textContent = fmt(countSentences(text));
+            paragraphCount.textContent = fmt(countParagraphs(text));
+            readingTime.textContent = formatDuration(words, READING_WPM);
+            updateLimits(chars);
+        }
+
+        input.addEventListener("input", updateCounts);
+
+        let copyTimer: number | undefined;
+        copyBtn.addEventListener("click", async () => {
+            if (!input.value) return;
+            let ok = true;
+            try {
+                await navigator.clipboard.writeText(input.value);
+            } catch {
+                try {
+                    input.select();
+                    ok = document.execCommand("copy");
+                } catch {
+                    ok = false;
+                }
+            }
+            copyBtn.textContent = ok ? "Copied!" : "Copy failed";
+            window.clearTimeout(copyTimer);
+            copyTimer = window.setTimeout(
+                () => (copyBtn.textContent = "Copy Text"),
+                1500,
+            );
+        });
+
+        clearBtn.addEventListener("click", () => {
+            input.value = "";
+            updateCounts();
+            input.focus();
+        });
+
+        // Count any text the browser restored into the box on load
+        updateCounts();
+    </script>
+
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify(webAppSchema)}
+    />
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify(breadcrumbSchema)}
+    />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

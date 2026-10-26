@@ -1,13 +1,136 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+interface Slab {
+    from: number;
+    upTo: number | null;
+    base: number;
+    rate: number;
+}
+
+// Non-salaried individual slabs, Tax Year 2027 (FY 2026-27).
+// ONE source of truth: this list drives the table on the page AND the
+// calculator below (through the data-slabs attribute). When FBR changes the
+// slabs, edit only this list.
+const slabs: Slab[] = [
+    { from: 0, upTo: 600000, base: 0, rate: 0 },
+    { from: 600000, upTo: 1200000, base: 0, rate: 0.15 },
+    { from: 1200000, upTo: 1600000, base: 90000, rate: 0.2 },
+    { from: 1600000, upTo: 3200000, base: 170000, rate: 0.3 },
+    { from: 3200000, upTo: 5600000, base: 650000, rate: 0.4 },
+    { from: 5600000, upTo: null, base: 1610000, rate: 0.45 },
+];
+
+const fmt = (n: number) => n.toLocaleString("en-US");
+const slabRows = slabs.map((s) => ({
+    range:
+        s.from === 0
+            ? `Up to Rs ${fmt(s.upTo!)}`
+            : s.upTo !== null
+              ? `Rs ${fmt(s.from + 1)} – ${fmt(s.upTo)}`
+              : `Above Rs ${fmt(s.from)}`,
+    tax:
+        s.rate === 0
+            ? "Nil"
+            : s.base > 0
+              ? `Rs ${fmt(s.base)} + ${Math.round(s.rate * 100)}% of the amount over Rs ${fmt(s.from)}`
+              : `${Math.round(s.rate * 100)}% of the amount over Rs ${fmt(s.from)}`,
+}));
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
+const faqs = [
+    {
+        q: "Do I need to register with PSEB?",
+        a: "Only if you want the 0.25% rate on IT export income. Without PSEB registration the 1% rate applies. Registration involves paperwork and may involve fees, so check PSEB for the current requirements.",
+    },
+    {
+        q: "Do I need to file a tax return?",
+        a: "Generally yes. If your taxable income is above PKR 600,000 you need to file an annual return on the FBR IRIS portal, and filing keeps you on the Active Taxpayer List (ATL). Check FBR for any other filing conditions that apply to you.",
+    },
+    {
+        q: "What counts as approved banking channels?",
+        a: "Export proceeds received into a Pakistani bank account as an inward foreign remittance, where your bank deducts the tax at the time the money is received. Ask your bank to confirm how your credits are recorded, and keep the bank credit advices. Income left in foreign wallets or accounts is not withheld at source.",
+    },
+    {
+        q: "Is the 0.25% rate still available?",
+        a: "Yes. The Finance Act 2026 extended the 0.25% rate for PSEB-registered IT and IT-enabled services exporters under Section 154A through Tax Year 2029 (30 June 2029).",
+    },
+    {
+        q: "Can I deduct business expenses from export income?",
+        a: "No. For IT export income the tax withheld under Section 154A is generally a final tax on the amount received, so expenses are not deducted from it. For local freelance income, business expenses can be deducted before calculating tax.",
+    },
+    {
+        q: "Is my data safe?",
+        a: "Yes. All calculations happen in your browser. Your income details are never sent to any server.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Freelancer Tax Calculator Pakistan",
+    url: pageUrl,
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free freelancer tax calculator for Pakistan. Estimate income tax on IT export income (Section 154A) and local freelance income for Tax Year 2027.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "Freelancer Tax Calculator",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="Freelancer Tax Calculator Pakistan 2026-27 — IT Export Tax"
-    description="Calculate your freelancer tax in Pakistan for Tax Year 2027. Supports IT export income (Section 154A) and local freelance income with FBR slabs."
+    title="Freelancer Tax Calculator Pakistan 2026-27: IT Export Tax"
+    description="Free freelancer tax calculator for Pakistan, Tax Year 2027. Estimate tax on IT export income (Section 154A, 0.25% for PSEB) and local freelance income."
 >
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <a href="/tools/" class="hover:underline">Tools</a>
+                <span aria-hidden="true">/</span>
+                <span>Freelancer Tax Calculator</span>
+            </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">
                 Freelancer Tax Calculator Pakistan (Tax Year 2027)
             </h1>
@@ -17,13 +140,21 @@ import Layout from "../../layouts/Layout.astro";
                 freelance and non-salaried business income.
             </p>
             <p class="text-xs text-gray-500">
-                ⚡ Updated for the latest Finance Act 2026 schedules.
-                Calculations are instant and private.
+                ⚡ Updated for the Finance Act 2026 rates. Calculations are
+                instant and private.
             </p>
             <p class="text-xs text-gray-500">
-                Last updated: October 15, 2026 · Source: FBR — Finance Act 2026
+                Last reviewed: October 25, 2026 · Source: Finance Act 2026 (<a
+                    href="https://www.fbr.gov.pk/"
+                    target="_blank"
+                    rel="noopener"
+                    class="underline">FBR</a
+                >)
             </p>
         </header>
+
+        <!-- Slab data for the calculator script (same list as the table below) -->
+        <div id="calc-config" data-slabs={JSON.stringify(slabs)} hidden></div>
 
         <!-- Input Section -->
         <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
@@ -95,6 +226,7 @@ import Layout from "../../layouts/Layout.astro";
                 <!-- Annual Income -->
                 <div>
                     <label
+                        id="income-label"
                         for="annual-income"
                         class="block text-sm font-medium mb-2"
                     >
@@ -110,6 +242,9 @@ import Layout from "../../layouts/Layout.astro";
                     />
                 </div>
 
+                <p id="error" role="alert" class="hidden text-sm text-red-600">
+                </p>
+
                 <button
                     id="calculate-btn"
                     class="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
@@ -120,7 +255,7 @@ import Layout from "../../layouts/Layout.astro";
         </section>
 
         <!-- Results -->
-        <section id="results" class="hidden">
+        <section id="results" class="hidden" aria-live="polite">
             <!-- Main Result -->
             <div
                 class="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-6 text-center"
@@ -130,11 +265,15 @@ import Layout from "../../layouts/Layout.astro";
                     PKR 0
                 </p>
                 <p id="tax-sub" class="text-sm text-gray-600 mt-2">—</p>
+                <p class="text-xs text-gray-500 mt-3">
+                    Estimate only. Confirm your final figures with FBR or a tax
+                    professional.
+                </p>
             </div>
 
             <!-- Effective Rate -->
             <div class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
-                <h3 class="text-lg font-semibold mb-4">Tax Breakdown</h3>
+                <h2 class="text-lg font-semibold mb-4">Tax Breakdown</h2>
                 <table class="w-full text-sm">
                     <tbody class="divide-y divide-gray-100">
                         <tr>
@@ -184,6 +323,20 @@ import Layout from "../../layouts/Layout.astro";
                 </table>
             </div>
 
+            <!-- Surcharge note -->
+            <div
+                id="income-note"
+                class="hidden bg-orange-50 border border-orange-200 p-4 rounded-xl mb-6"
+            >
+                <h3 class="font-semibold mb-2">⚠️ Surcharge may apply</h3>
+                <p class="text-sm text-gray-700">
+                    Your income is above Rs 10 million. A Section 4AB surcharge
+                    may apply on top of this tax and is not included in this
+                    estimate. Check the current rate with FBR or a tax
+                    professional.
+                </p>
+            </div>
+
             <!-- Tax Saving Tip -->
             <div
                 id="saving-tip"
@@ -195,7 +348,7 @@ import Layout from "../../layouts/Layout.astro";
         </section>
     </div>
 
-    <!-- SEO Content (800+ words) -->
+    <!-- SEO Content -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">
             About This Freelancer Tax Calculator
@@ -204,16 +357,15 @@ import Layout from "../../layouts/Layout.astro";
             This free calculator helps Pakistani freelancers estimate their
             income tax for Tax Year 2027 (FY 2026-27). It supports two income
             types: IT/export income under Section 154A, and local freelance
-            income under the standard business slabs. Everything runs in your
-            browser — your income details never leave your device.
+            income under the standard non-salaried slabs. Everything runs in
+            your browser, so your income details never leave your device.
         </p>
         <p class="text-gray-700 mb-4">
-            Pakistan has become one of the largest freelancing markets in the
-            world, with hundreds of thousands of freelancers earning through
-            Upwork, Fiverr, and direct foreign clients. But tax rules for
-            freelancers are different from salaried employees — and many
-            freelancers don't know what they owe until filing season. This tool
-            makes it clear.
+            Pakistan has a large and growing freelancing community, with many
+            people earning through Upwork, Fiverr, and direct foreign clients.
+            But the tax rules for freelancers differ from those for salaried
+            employees, and many freelancers don't know what they owe until
+            filing season. This tool makes it clearer.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
@@ -224,19 +376,59 @@ import Layout from "../../layouts/Layout.astro";
             IT / Export Income (Section 154A)
         </h4>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li><strong>0.25%</strong> — PSEB-registered freelancers</li>
-            <li><strong>1%</strong> — Non-PSEB-registered freelancers</li>
             <li>
-                This is a final tax on gross income received through approved
-                banking channels
+                <strong>0.25%</strong> — IT and IT-enabled services exporters registered
+                with PSEB
+            </li>
+            <li>
+                <strong>1%</strong> — exporters not registered with PSEB (other service
+                exports are also taxed at 1%)
+            </li>
+            <li>
+                Your bank deducts this tax when export proceeds are received,
+                and it is generally treated as a final tax
             </li>
         </ul>
 
         <h4 class="font-semibold mt-4 mb-2">Local Freelance Income</h4>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Taxed under normal non-salaried slabs (0% to 45%)</li>
+            <li>
+                Taxed under the normal non-salaried slabs (0% to 45%), shown in
+                the table below
+            </li>
             <li>Business expenses can be deducted before calculating tax</li>
         </ul>
+
+        <h4 class="font-semibold mt-6 mb-2">
+            Non-Salaried Slabs for Local Freelance Income (Tax Year 2027)
+        </h4>
+        <div class="overflow-x-auto mb-4">
+            <table class="w-full text-sm border border-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="text-left p-2 font-semibold"
+                            >Taxable income (PKR)</th
+                        >
+                        <th class="text-left p-2 font-semibold">Tax</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    {
+                        slabRows.map((r) => (
+                            <tr>
+                                <td class="p-2">{r.range}</td>
+                                <td class="p-2">{r.tax}</td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </div>
+        <p class="text-sm text-gray-600 mb-4">
+            Slab rates apply to taxable income after allowable expenses. A
+            surcharge may apply above Rs 10 million, so check FBR for the
+            current rule.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             How to Use This Calculator
@@ -244,10 +436,13 @@ import Layout from "../../layouts/Layout.astro";
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
             <li>Choose your income type: IT/Export or Local Freelance</li>
             <li>If IT/Export, indicate whether you're registered with PSEB</li>
-            <li>Enter your annual freelance income in PKR</li>
             <li>
-                Click "Calculate Tax" to see your annual tax, effective rate,
-                and net income
+                Enter your annual income in PKR (for local income, enter your
+                taxable income after business expenses)
+            </li>
+            <li>
+                See your annual tax, effective rate, and net income. The results
+                update as you type.
             </li>
         </ol>
 
@@ -255,24 +450,34 @@ import Layout from "../../layouts/Layout.astro";
             Why PSEB Registration Matters
         </h3>
         <p class="text-gray-700 mb-4">
-            PSEB (Pakistan Software Export Board) registration reduces your tax
-            rate from 1% to 0.25% on IT export income — a 75% reduction. On PKR
-            2,400,000 annual income, that's a difference of PKR 18,000 per year.
-            On PKR 10,000,000, the difference is PKR 75,000.
+            PSEB (Pakistan Software Export Board) registration reduces the rate
+            on IT export income from 1% to 0.25%, a 75% reduction. On PKR
+            2,400,000 of annual income, that is a difference of PKR 18,000 per
+            year. On PKR 10,000,000, the difference is PKR 75,000. Registration
+            involves paperwork and may involve fees, so check PSEB for the
+            current requirements.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
-            The 80% Remittance Requirement
+            How Tax Is Collected on Export Income
         </h3>
         <p class="text-gray-700 mb-4">
-            For IT export income to qualify for the reduced 0.25% rate, FBR
-            requires that <strong>at least 80% of your export proceeds</strong> are
-            received through approved banking channels in Pakistan. Income kept in
-            foreign wallets or received through informal channels does not qualify.
+            Under Section 154A, your bank deducts the tax when your export
+            proceeds are received in Pakistan through banking channels. Income
+            kept in foreign wallets or accounts, or received through informal
+            channels, is not withheld at source, and how it is taxed is a
+            question for FBR or a tax professional.
         </p>
         <p class="text-gray-700 mb-4">
-            Keep records of all bank credits, PSEB registration certificate, and
-            your client contracts for at least 6 years.
+            Some exporter reliefs, such as the Section 65F tax credit, have
+            their own conditions, including a requirement that 80% of export
+            proceeds are brought into Pakistan through normal banking channels.
+            They are time-limited and are not part of this calculator, so check
+            FBR to see whether they apply to you.
+        </p>
+        <p class="text-gray-700 mb-4">
+            Keep your bank credit advices, PSEB registration certificate, and
+            client contracts for at least six years.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
@@ -281,24 +486,24 @@ import Layout from "../../layouts/Layout.astro";
         <p class="text-gray-700 mb-4">
             If you're a software developer, designer, writer, or digital
             marketer earning from foreign clients, your income is taxed under
-            Section 154A. This calculator shows your final tax at 0.25%
-            (PSEB-registered) or 1% (non-registered).
+            Section 154A. This calculator shows the tax at 0.25%
+            (PSEB-registered) or 1% (not registered).
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">2. Checking if PSEB is Worth It</h4>
         <p class="text-gray-700 mb-4">
-            PSEB registration has a fee and paperwork. If your annual income is
-            PKR 2,400,000, PSEB saves you PKR 18,000 per year — worth the
-            effort. If it's PKR 500,000, the savings are PKR 3,750 — might not
-            be worth the hassle. This tool helps you decide.
+            PSEB registration takes paperwork and may involve fees. If your
+            annual income is PKR 2,400,000, PSEB saves you PKR 18,000 per year.
+            If it's PKR 500,000, the savings are PKR 3,750. Compare the savings
+            with the cost and effort of registering.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">3. Local Freelance Tax Planning</h4>
         <p class="text-gray-700 mb-4">
             If you work with Pakistani clients, your income falls under the
             non-salaried slabs. This means higher rates (up to 45%) but allows
-            deducting business expenses. The calculator shows your tax under
-            these slabs.
+            deducting business expenses. Enter your taxable income after
+            expenses to see your tax under these slabs.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">4. Filing Season Preparation</h4>
@@ -312,107 +517,60 @@ import Layout from "../../layouts/Layout.astro";
             5. Comparing Export vs Local Work
         </h4>
         <p class="text-gray-700 mb-4">
-            If you have the option to work with foreign clients (export) or
-            local clients, the tax difference is significant — 0.25% vs up to
-            45%. This calculator helps you see the tax impact of each choice.
+            If you can work with foreign clients (export) or local clients, the
+            tax difference is large: 0.25% on export income versus slab rates of
+            up to 45% on local income. This calculator helps you see the tax
+            impact of each choice.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
             6. Staying on the Active Taxpayer List (ATL)
         </h4>
         <p class="text-gray-700 mb-4">
-            Filing your return is required to stay on the ATL. Non-filers face
+            Filing your return helps you stay on the ATL. Non-filers may face
             higher withholding taxes on banking transactions, vehicle
             registration, and property purchases. This calculator helps you
             understand your tax burden before filing.
         </p>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
+        <h3 class="text-xl font-semibold mt-6 mb-3">Worked Examples</h3>
         <p class="text-gray-700 mb-4">
-            Here's what happens for a typical IT freelancer:
+            <strong>IT export income, PSEB-registered:</strong>
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li><strong>Annual income:</strong> PKR 2,400,000</li>
-            <li><strong>PSEB-registered:</strong> Yes</li>
             <li><strong>Tax rate:</strong> 0.25%</li>
             <li><strong>Annual tax:</strong> PKR 6,000</li>
             <li><strong>Monthly equivalent:</strong> PKR 500</li>
             <li><strong>Net income (after tax):</strong> PKR 2,394,000</li>
         </ul>
         <p class="text-gray-700 mt-4 mb-4">
-            That's a 0.25% effective rate — one of the lowest tax rates
-            available to any income category in Pakistan.
+            <strong>Local freelance income:</strong> the same PKR 2,400,000 of taxable
+            income falls in the 30% slab. Tax is PKR 170,000 plus 30% of the amount
+            over PKR 1,600,000, which comes to PKR 410,000, an effective rate of about
+            17.1%.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Do I need to register with PSEB?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes, if you want the 0.25% rate on IT export income. Without
-                    PSEB registration, you pay 1%. Registration is free but
-                    requires documentation.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Do I need to file a tax return?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes. Every freelancer with income above PKR 600,000 must
-                    file an annual return on the FBR IRIS portal to stay on the
-                    Active Taxpayer List (ATL).
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What counts as "approved banking channels"?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Any Pakistani bank account receiving foreign remittances
-                    qualifies. This includes Payoneer, Wise, and direct wire
-                    transfers routed through Pakistani institutions. Income left
-                    in foreign platform wallets does not qualify.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Is the 0.25% rate still available?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes. The 0.25% Final Tax Regime under Section 154A has been
-                    extended through Tax Year 2029.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Can I deduct business expenses from export income?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. The 0.25% rate is a final tax on gross income — no
-                    deductions are allowed. For local freelance income, however,
-                    business expenses can be deducted.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">Is my data safe?</h4>
-                <p class="text-gray-700 mt-1">
-                    Yes. All calculations happen in your browser. Your income
-                    details are never sent to any server.
-                </p>
-            </div>
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
+            }
         </div>
 
         <p
             class="text-sm text-gray-500 mt-6 p-3 bg-gray-50 rounded-lg border border-gray-200"
         >
             <strong>Disclaimer:</strong> This calculator is for estimation only, not
-            tax advice. Actual liability depends on expenses, deductions, and other
-            income. For final figures, consult FBR or a certified tax professional.
+            tax advice. Actual liability depends on expenses, deductions, surcharges,
+            and other income. For final figures, consult FBR or a certified tax professional.
         </p>
     </section>
 
@@ -452,14 +610,12 @@ import Layout from "../../layouts/Layout.astro";
         <h2 class="text-2xl font-bold mb-6">Related Guides</h2>
         <div class="space-y-3">
             <a
-                href="/blog/salary-tax-pakistan/"
+                href="/blog/freelancing-tax-pakistan/"
                 class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
             >
-                <h3 class="font-medium">
-                    How to Calculate Salary Tax in Pakistan
-                </h3>
+                <h3 class="font-medium">Freelancing Tax in Pakistan</h3>
                 <p class="text-sm text-gray-600">
-                    Complete FBR slab guide with examples.
+                    How IT export and local freelance income are taxed.
                 </p>
             </a>
             <a
@@ -474,20 +630,27 @@ import Layout from "../../layouts/Layout.astro";
                 </p>
             </a>
             <a
-                href="/blog/salary-tax-calculator-pakistan/"
+                href="/blog/salary-tax-pakistan/"
                 class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
             >
                 <h3 class="font-medium">
-                    Salary Tax Calculator Pakistan 2026-27
+                    How to Calculate Salary Tax in Pakistan
                 </h3>
                 <p class="text-sm text-gray-600">
-                    Step-by-step guide to using the calculator.
+                    Complete FBR slab guide with examples.
                 </p>
             </a>
         </div>
     </section>
 
     <script>
+        interface Slab {
+            from: number;
+            upTo: number | null;
+            base: number;
+            rate: number;
+        }
+
         const incomeTypeRadios = document.querySelectorAll<HTMLInputElement>(
             'input[name="income-type"]',
         );
@@ -498,8 +661,18 @@ import Layout from "../../layouts/Layout.astro";
         const annualIncome = document.getElementById(
             "annual-income",
         ) as HTMLInputElement;
+        const incomeLabel = document.getElementById("income-label")!;
         const calculateBtn = document.getElementById("calculate-btn")!;
         const results = document.getElementById("results")!;
+        const errorBox = document.getElementById("error")!;
+        const incomeNote = document.getElementById("income-note")!;
+
+        // Slabs come from the same list that builds the table on the page.
+        const slabs: Slab[] = JSON.parse(
+            document.getElementById("calc-config")!.dataset.slabs!,
+        );
+
+        const SURCHARGE_THRESHOLD = 10_000_000;
 
         function formatPKR(num: number): string {
             return "PKR " + Math.round(num).toLocaleString("en-US");
@@ -512,43 +685,48 @@ import Layout from "../../layouts/Layout.astro";
             return "export";
         }
 
-        // Non-salaried slabs (Finance Act 2026)
         function calculateLocalTax(income: number): {
             tax: number;
-            rate: string;
+            slabRate: number;
         } {
-            if (income <= 600000) return { tax: 0, rate: "0%" };
-            if (income <= 1200000)
-                return { tax: (income - 600000) * 0.15, rate: "15%" };
-            if (income <= 1600000)
-                return { tax: 90000 + (income - 1200000) * 0.2, rate: "20%" };
-            if (income <= 3200000)
-                return { tax: 170000 + (income - 1600000) * 0.3, rate: "30%" };
-            if (income <= 5600000)
-                return { tax: 650000 + (income - 3200000) * 0.4, rate: "40%" };
-            return { tax: 1610000 + (income - 5600000) * 0.45, rate: "45%" };
+            for (const s of slabs) {
+                if (s.upTo === null || income <= s.upTo) {
+                    return {
+                        tax: s.base + (income - s.from) * s.rate,
+                        slabRate: s.rate,
+                    };
+                }
+            }
+            return { tax: 0, slabRate: 0 };
         }
 
-        incomeTypeRadios.forEach((radio) => {
-            radio.addEventListener("change", () => {
-                if (getIncomeType() === "export") {
-                    psebSection.classList.remove("hidden");
-                } else {
-                    psebSection.classList.add("hidden");
-                }
-            });
-        });
+        function updateTypeUI() {
+            const isExport = getIncomeType() === "export";
+            psebSection.classList.toggle("hidden", !isExport);
+            incomeLabel.textContent = isExport
+                ? "Annual Freelance Income (PKR)"
+                : "Annual Taxable Income after Business Expenses (PKR)";
+        }
 
-        function calculate() {
-            const income = parseFloat(annualIncome.value) || 0;
-            if (income <= 0) {
-                alert("Please enter a valid annual income.");
-                return;
+        // Returns true when the input was valid and the results were updated.
+        // With showErrors = false (live typing) invalid input is ignored and
+        // the previous results stay on screen.
+        function calculate(showErrors: boolean): boolean {
+            const income = parseFloat(annualIncome.value);
+            if (!(income > 0)) {
+                if (showErrors) {
+                    errorBox.textContent =
+                        "Please enter a valid annual income.";
+                    errorBox.classList.remove("hidden");
+                }
+                return false;
             }
+            errorBox.classList.add("hidden");
 
             const type = getIncomeType();
             let tax = 0;
             let rate = "";
+            let effective = "";
             let regime = "";
             let savingTip = "";
 
@@ -566,10 +744,14 @@ import Layout from "../../layouts/Layout.astro";
                         formatPKR(income * 0.0075) +
                         " per year.";
                 }
+                effective = rate;
             } else {
                 const local = calculateLocalTax(income);
                 tax = local.tax;
-                rate = local.rate;
+                const slabPct = Math.round(local.slabRate * 100) + "%";
+                const effPct = ((tax / income) * 100).toFixed(1) + "%";
+                rate = tax > 0 ? `${slabPct} slab, ${effPct} effective` : "0%";
+                effective = tax > 0 ? effPct : "0%";
                 regime = "Non-Salaried Slabs (Local Income)";
                 if (tax > 0) {
                     savingTip =
@@ -579,7 +761,7 @@ import Layout from "../../layouts/Layout.astro";
 
             document.getElementById("tax-result")!.textContent = formatPKR(tax);
             document.getElementById("tax-sub")!.textContent =
-                `${rate} effective rate on ${formatPKR(income)}`;
+                `${effective} effective rate on ${formatPKR(income)}`;
 
             document.getElementById("breakdown-gross")!.textContent =
                 formatPKR(income);
@@ -589,6 +771,11 @@ import Layout from "../../layouts/Layout.astro";
                 formatPKR(tax);
             document.getElementById("breakdown-net")!.textContent = formatPKR(
                 income - tax,
+            );
+
+            incomeNote.classList.toggle(
+                "hidden",
+                !(type === "local" && income > SURCHARGE_THRESHOLD),
             );
 
             const tipBox = document.getElementById("saving-tip")!;
@@ -601,69 +788,35 @@ import Layout from "../../layouts/Layout.astro";
             }
 
             results.classList.remove("hidden");
+            return true;
         }
 
+        incomeTypeRadios.forEach((radio) => {
+            radio.addEventListener("change", () => {
+                updateTypeUI();
+                calculate(false);
+            });
+        });
+        psebCheckbox.addEventListener("change", () => calculate(false));
+        annualIncome.addEventListener("input", () => calculate(false));
+
         calculateBtn.addEventListener("click", () => {
-            calculate();
-            results.scrollIntoView({ behavior: "smooth" });
+            if (calculate(true)) {
+                results.scrollIntoView({ behavior: "smooth" });
+            }
         });
 
-        calculate();
+        updateTypeUI();
+        calculate(false);
     </script>
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Freelancer Tax Calculator",
-            applicationCategory: "FinanceApplication",
-            operatingSystem: "Any",
-            description:
-                "Free freelancer tax calculator for Pakistan. Calculate income tax on IT export income (Section 154A) and local freelance income for Tax Year 2027.",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
-        })}
+        set:html={JSON.stringify(webAppSchema)}
     />
-
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "Do I need to register with PSEB?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes, if you want the 0.25% rate on IT export income. Without PSEB registration, you pay 1%.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Do I need to file a tax return?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes. Every freelancer with income above PKR 600,000 must file an annual return on the FBR IRIS portal to stay on the Active Taxpayer List.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "What counts as approved banking channels?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Any Pakistani bank account receiving foreign remittances qualifies. This includes Payoneer, Wise, and direct wire transfers routed through Pakistani institutions.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is the 0.25% rate still available?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes. The 0.25% Final Tax Regime under Section 154A has been extended through Tax Year 2029.",
-                    },
-                },
-            ],
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

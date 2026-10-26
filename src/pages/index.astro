@@ -1,30 +1,40 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getLatestPosts } from "../data/blog-data/blog-posts";
+import { toolCategories, allTools } from "../data/tools";
 
-const tools = [
-    {
-        name: "Word Counter",
-        description:
-            "Count words, characters, sentences, and reading time instantly.",
-        href: "/tools/word-counter/",
-        icon: "word",
-    },
-    {
-        name: "Image Compressor",
-        description:
-            "Compress JPG, PNG, and WebP images without losing quality.",
-        href: "/tools/image-compressor/",
-        icon: "image-compress",
-    },
-    {
-        name: "QR Code Generator",
-        description:
-            "Create custom QR codes for any text or URL. Download as PNG.",
-        href: "/tools/qr-generator/",
-        icon: "qr",
-    },
+// Icons for the cards on this page (same drawings as the /tools/ page).
+const iconMarkup: Record<string, string> = {
+    word: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />`,
+    "image-compress": `<polyline points="4 14 10 14 10 20" /><polyline points="20 10 14 10 14 4" /><line x1="14" y1="10" x2="21" y2="3" /><line x1="3" y1="21" x2="10" y2="14" />`,
+    qr: `<rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />`,
+    tax: `<line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />`,
+    freelancer: `<rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />`,
+    zakat: `<path d="M12 2v20" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /><circle cx="12" cy="12" r="10" />`,
+    emi: `<path d="M3 21h18" /><path d="M5 21V7l7-4 7 4v14" /><path d="M9 21v-6h6v6" /><path d="M10 9h.01" /><path d="M14 9h.01" />`,
+};
+
+const categoryEmoji: Record<string, string> = {
+    "pakistan-tax": "🇵🇰",
+    finance: "💰",
+    image: "🖼️",
+    utility: "🛠️",
+    developer: "💻",
+    writing: "📝",
+};
+
+// Both lists come from src/data/tools.ts, so a new tool only needs adding there.
+const pakistanTools =
+    toolCategories.find((c) => c.id === "pakistan-tax")?.tools ?? [];
+
+const popularHrefs = [
+    "/tools/word-counter/",
+    "/tools/image-compressor/",
+    "/tools/qr-generator/",
 ];
+const popularTools = popularHrefs.flatMap((href) =>
+    allTools.filter((t) => t.href === href),
+);
 
 const features = [
     { title: "100% Free", description: "No hidden fees, no premium plans." },
@@ -47,11 +57,11 @@ const recentPosts = getLatestPosts(3);
 const faqs = [
     {
         q: "What is ToolsVibe?",
-        a: "ToolsVibe is a free online tools platform with 15 tools for writing, images, development, utilities, and Pakistan-specific tax calculations. All tools run in your browser.",
+        a: `ToolsVibe is a free online tools platform with ${allTools.length} tools for writing, images, development, utilities, and Pakistan-specific tax calculations. All tools run in your browser.`,
     },
     {
         q: "Is my data safe?",
-        a: "Yes. All tools run entirely in your browser. Your text, images, and inputs never leave your device. We do not store or sell user data.",
+        a: "Yes. All tools run in your browser, so your text, images, and inputs never leave your device. We use basic analytics (Google Analytics) to understand how the site is used, and we do not sell personal data.",
     },
     {
         q: "Do I need to create an account?",
@@ -59,14 +69,14 @@ const faqs = [
     },
     {
         q: "What Pakistan-specific tools are available?",
-        a: "We offer Salary Tax Calculator, Freelancer Tax Calculator, Zakat Calculator, and EMI Calculator — all built for Pakistan with current FBR slabs and Nisab thresholds.",
+        a: "We offer Salary Tax Calculator, Freelancer Tax Calculator, Zakat Calculator, and EMI Calculator — all built for Pakistan with current FBR slabs and Nisab thresholds. Results are estimates for planning, so confirm important figures with FBR or a tax professional.",
     },
 ];
 ---
 
 <Layout
-    title="Free Online Tools: Word Counter, Image Tools & Calculators"
-    description="Free online tools for everyone — word counter, image compressor, QR code generator, JSON formatter, and Pakistan tax calculators. No signup!"
+    title="ToolsVibe: Free Online Tools & Pakistan Tax Calculators"
+    description="Free online tools — word counter, image compressor, QR generator — plus Pakistan salary tax, freelancer tax, Zakat and EMI calculators. No signup."
 >
     <!-- Hero Section -->
     <section class="text-center py-16">
@@ -87,10 +97,10 @@ const faqs = [
                 Browse All Tools
             </a>
             <a
-                href="/tools/word-counter/"
+                href="#pakistan-tax-calculators"
                 class="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 font-medium transition"
             >
-                Try Word Counter
+                Pakistan Tax Calculators
             </a>
         </div>
         <div
@@ -104,151 +114,151 @@ const faqs = [
         </div>
     </section>
 
-    <!-- Featured Tools -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-        {
-            tools.map((tool) => (
-                <a
-                    href={tool.href}
-                    class="block p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-                >
-                    <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
-                        {tool.icon === "word" && (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="#2563eb"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                <polyline points="14 2 14 8 20 8" />
-                                <line x1="16" y1="13" x2="8" y2="13" />
-                                <line x1="16" y1="17" x2="8" y2="17" />
-                            </svg>
-                        )}
-                        {tool.icon === "image-compress" && (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="#2563eb"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <polyline points="4 14 10 14 10 20" />
-                                <polyline points="20 10 14 10 14 4" />
-                                <line x1="14" y1="10" x2="21" y2="3" />
-                                <line x1="3" y1="21" x2="10" y2="14" />
-                            </svg>
-                        )}
-                        {tool.icon === "qr" && (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="#2563eb"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <rect x="3" y="3" width="7" height="7" />
-                                <rect x="14" y="3" width="7" height="7" />
-                                <rect x="3" y="14" width="7" height="7" />
-                                <rect x="14" y="14" width="7" height="7" />
-                            </svg>
-                        )}
-                    </div>
-                    <h2 class="text-xl font-semibold mb-2">{tool.name}</h2>
-                    <p class="text-gray-600 text-sm">{tool.description}</p>
-                </a>
-            ))
-        }
-    </section>
+    <!-- Pakistan Tax & Zakat -->
+    {
+        pakistanTools.length > 0 && (
+            <section id="pakistan-tax-calculators" class="mt-4 scroll-mt-24">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-3">
+                        Pakistan Tax &amp; Zakat Calculators
+                    </h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">
+                        Built for users in Pakistan: work out salary tax,
+                        freelancer tax, Zakat, and loan EMIs. Results are
+                        estimates for planning, so confirm important figures
+                        with FBR or a tax professional.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {pakistanTools.map((tool) => (
+                        <a
+                            href={tool.href}
+                            class="block p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+                        >
+                            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#2563eb"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                    set:html={iconMarkup[tool.icon] ?? ""}
+                                />
+                            </div>
+                            <h3 class="text-lg font-semibold mb-2">
+                                {tool.name}
+                            </h3>
+                            <p class="text-gray-600 text-sm">
+                                {tool.description}
+                            </p>
+                        </a>
+                    ))}
+                </div>
+                <p class="text-center text-sm text-gray-600 mt-6">
+                    New to this? Read our guides to
+                    <a
+                        href="/blog/freelancing-tax-pakistan/"
+                        class="text-blue-600 hover:underline"
+                    >
+                        freelancing tax in Pakistan
+                    </a>
+                    and
+                    <a
+                        href="/blog/how-to-calculate-zakat-gold/"
+                        class="text-blue-600 hover:underline"
+                    >
+                        calculating Zakat on gold
+                    </a>
+                    .
+                </p>
+            </section>
+        )
+    }
 
-    <!-- Tool Categories -->
-    <section class="mt-16 max-w-5xl mx-auto px-4">
-        <h2 class="text-center text-lg font-semibold text-gray-700 mb-6">
-            Explore All 15 Tools by Category
+    <!-- Popular Tools -->
+    {
+        popularTools.length > 0 && (
+            <section class="mt-20">
+                <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">
+                    Popular Free Tools
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {popularTools.map((tool) => (
+                        <a
+                            href={tool.href}
+                            class="block p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+                        >
+                            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#2563eb"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                    set:html={iconMarkup[tool.icon] ?? ""}
+                                />
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">
+                                {tool.name}
+                            </h3>
+                            <p class="text-gray-600 text-sm">
+                                {tool.description}
+                            </p>
+                        </a>
+                    ))}
+                </div>
+            </section>
+        )
+    }
+
+    <!-- All Tools by Category (direct links to every tool) -->
+    <section class="mt-20 max-w-5xl mx-auto px-4">
+        <h2 class="text-center text-2xl md:text-3xl font-bold mb-3">
+            All {allTools.length} Free Tools
         </h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-            <a
-                href="/tools/#writing"
-                class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
-            >
-                <div class="text-2xl mb-2">📝</div><div
-                    class="text-sm font-medium"
-                >
-                    Writing
-                </div><div class="text-xs text-gray-500 mt-1">Word Counter</div>
-            </a>
-            <a
-                href="/tools/#image"
-                class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
-            >
-                <div class="text-2xl mb-2">🖼️</div><div
-                    class="text-sm font-medium"
-                >
-                    Image Tools
-                </div><div class="text-xs text-gray-500 mt-1">
-                    Compress, Resize, Crop
-                </div>
-            </a>
-            <a
-                href="/tools/#utility"
-                class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
-            >
-                <div class="text-2xl mb-2">🛠️</div><div
-                    class="text-sm font-medium"
-                >
-                    Utilities
-                </div><div class="text-xs text-gray-500 mt-1">
-                    QR, Password, Unit
-                </div>
-            </a>
-            <a
-                href="/tools/#developer"
-                class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
-            >
-                <div class="text-2xl mb-2">💻</div><div
-                    class="text-sm font-medium"
-                >
-                    Developer
-                </div><div class="text-xs text-gray-500 mt-1">
-                    JSON Formatter
-                </div>
-            </a>
-            <a
-                href="/tools/#finance"
-                class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
-            >
-                <div class="text-2xl mb-2">💰</div><div
-                    class="text-sm font-medium"
-                >
-                    Finance
-                </div><div class="text-xs text-gray-500 mt-1">Percentage</div>
-            </a>
-            <a
-                href="/tools/#pakistan-tax"
-                class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition text-center"
-            >
-                <div class="text-2xl mb-2">🇵🇰</div><div
-                    class="text-sm font-medium"
-                >
-                    Pakistan Tax
-                </div><div class="text-xs text-gray-500 mt-1">
-                    Salary, Zakat, EMI
-                </div>
-            </a>
+        <p class="text-gray-600 text-center mb-8">
+            Pick a category or jump straight to a tool.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {
+                toolCategories.map((category) => (
+                    <div class="p-5 bg-white rounded-xl border border-gray-200">
+                        <h3 class="font-semibold mb-3">
+                            <a
+                                href={`/tools/#${category.id}`}
+                                class="hover:text-blue-600"
+                            >
+                                <span class="mr-2" aria-hidden="true">
+                                    {categoryEmoji[category.id] ?? "🧰"}
+                                </span>
+                                {category.name}
+                            </a>
+                        </h3>
+                        <ul class="space-y-1.5 text-sm list-none">
+                            {category.tools.map((tool) => (
+                                <li>
+                                    <a
+                                        href={tool.href}
+                                        class="text-blue-600 hover:underline"
+                                    >
+                                        {tool.name}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))
+            }
         </div>
     </section>
 
@@ -273,9 +283,9 @@ const faqs = [
         </div>
     </section>
 
-    <!-- Why ToolsVibe -->
+    <!-- About ToolsVibe -->
     <section class="mt-20 max-w-3xl mx-auto">
-        <h2 class="text-2xl font-bold mb-4">Why ToolsVibe?</h2>
+        <h2 class="text-2xl font-bold mb-4">About ToolsVibe</h2>
         <p class="text-gray-700 mb-4">
             Most online tool websites are cluttered with ads, popups, and forced
             signups. ToolsVibe is different. We built a clean, fast, and
@@ -286,7 +296,8 @@ const faqs = [
             Our tools are used by students, writers, developers, and small
             business owners around the world — plus a dedicated set of
             Pakistan-specific tax and Zakat calculators for users in Pakistan.
-            No accounts, no uploads, no data collection — just tools that work.
+            No accounts, no uploads, and your inputs are never collected — just
+            tools that work.
         </p>
     </section>
 
@@ -341,45 +352,10 @@ const faqs = [
         </div>
     </section>
 
-    <!-- WebSite Schema -->
-    <script
-        type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "ToolsVibe",
-            url: "https://toolsvibe.online/",
-            description:
-                "Free online tools for everyone — word counter, image compressor, QR code generator, JSON formatter, and Pakistan tax calculators.",
-        })}
-    />
-
-    <!-- Organization Schema -->
-    <script
-        type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "ToolsVibe",
-            url: "https://toolsvibe.online/",
-            logo: "https://toolsvibe.online/og-image.png",
-            description:
-                "Free online tools for writing, images, development, and Pakistan tax calculations.",
-            founder: {
-                "@type": "Person",
-                name: "Khuram Shahzad",
-            },
-            sameAs: [
-                "https://github.com/khuram354",
-                "https://facebook.com/toolsvibe.online",
-            ],
-            contactPoint: {
-                "@type": "ContactPoint",
-                email: "khurammirza354@gmail.com",
-                contactType: "customer support",
-            },
-        })}
-    />
+    <!--
+        WebSite and Organization schema come from Layout.astro
+        (homepage only), so they are not repeated here.
+    -->
 
     <!-- FAQPage Schema -->
     <script

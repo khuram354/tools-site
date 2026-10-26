@@ -1,29 +1,155 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
+const faqs = [
+    {
+        q: "What is error correction level?",
+        a: "Error correction level determines how much damage a QR code can sustain and still be readable. Higher levels (H) make the QR code more robust but denser. For most uses, Medium (M) is a good balance.",
+    },
+    {
+        q: "Do QR codes expire?",
+        a: "No. The QR codes generated here are static and never expire. They contain your text directly, so they work for as long as the destination (for example, your web page) stays live.",
+    },
+    {
+        q: "What's the difference between static and dynamic QR codes?",
+        a: "A static QR code, like the ones made here, contains your data directly. A dynamic QR code contains a short link to the provider's server, which then redirects to your page. Dynamic codes let you change the destination and count scans, but they can stop working if the provider's service ends or your subscription lapses. A static code cannot be edited after you print it.",
+    },
+    {
+        q: "Do I need a special app to scan QR codes?",
+        a: "No. Modern iPhones and Android phones scan QR codes with the default camera app. Just point and tap. Older devices may need a third-party app.",
+    },
+    {
+        q: "What's the maximum data a QR code can store?",
+        a: "At the lowest error correction level, a QR code can hold up to 4,296 alphanumeric characters, 7,089 numeric characters, or 2,953 bytes of binary data. Higher error correction levels hold less, and shorter data makes the code easier to scan.",
+    },
+    {
+        q: "Why won't my phone scan this QR code?",
+        a: "Common causes: dirty camera lens, low lighting, code too small, low contrast, or a damaged print. Try cleaning the lens and moving the phone 10–15 cm back. Always test the code with your phone before you print it.",
+    },
+    {
+        q: "Should I download PNG or SVG?",
+        a: "Use PNG for screens, documents, and social media. Use SVG for print, such as posters, menus, and business cards, because it stays sharp at any size.",
+    },
+    {
+        q: "Are QR codes safe to scan?",
+        a: "A QR code is just a way to carry text or a link, so the risk is in where it sends you. Check the address your phone shows before you open it, and be careful with codes on stickers or messages from people you do not know. This tool does not track or store the codes you make.",
+    },
+    {
+        q: "Is this tool free?",
+        a: "Yes. It is free, needs no signup, adds no watermark, and has no limits.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "QR Code Generator",
+    url: pageUrl,
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free online QR code generator. Create QR codes for links, text, Wi-Fi, phone numbers and email, and download them as PNG or SVG.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "QR Code Generator",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="QR Code Generator — Free Online QR Code Maker"
-    description="Generate free QR codes online. Enter any text or URL, customize size, and download as PNG. No signup required."
+    title="Free QR Code Generator: Create & Download PNG or SVG"
+    description="Create a free QR code for any link, text, Wi-Fi, phone or email. Download as PNG or SVG. No signup, no watermark, runs in your browser."
 >
     <div class="max-w-3xl mx-auto">
+        <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+            <a href="/" class="hover:underline">Home</a>
+            <span aria-hidden="true">/</span>
+            <a href="/tools/" class="hover:underline">Tools</a>
+            <span aria-hidden="true">/</span>
+            <span>QR Code Generator</span>
+        </nav>
         <h1 class="text-3xl md:text-4xl font-bold mb-3">QR Code Generator</h1>
         <p class="text-gray-600 mb-6">
-            Enter any text or URL below and generate a QR code instantly.
-            Download it as a PNG image.
+            Enter any text or URL below and the QR code appears instantly.
+            Download it as a PNG or SVG image.
         </p>
 
         <div class="bg-white p-6 rounded-lg border border-gray-200">
             <label for="qr-input" class="block text-sm font-medium mb-2"
                 >Text or URL</label
             >
-            <input
+            <textarea
                 id="qr-input"
-                type="text"
-                value="https://example.com"
-                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter text or URL..."
-            />
+                rows="3"
+                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                placeholder="Enter text or URL...">https://example.com</textarea
+            >
+
+            <div class="flex flex-wrap items-center gap-2 mt-2 text-xs">
+                <span class="text-gray-500">Quick fill:</span>
+                <button
+                    type="button"
+                    data-template="WIFI:T:WPA;S:YourNetworkName;P:YourPassword;;"
+                    class="template-btn px-3 py-1 bg-gray-100 rounded-full hover:bg-gray-200 transition"
+                    >Wi-Fi</button
+                >
+                <button
+                    type="button"
+                    data-template="tel:+920000000000"
+                    class="template-btn px-3 py-1 bg-gray-100 rounded-full hover:bg-gray-200 transition"
+                    >Phone</button
+                >
+                <button
+                    type="button"
+                    data-template="mailto:name@example.com?subject=Hello"
+                    class="template-btn px-3 py-1 bg-gray-100 rounded-full hover:bg-gray-200 transition"
+                    >Email</button
+                >
+                <button
+                    type="button"
+                    data-template="geo:31.5204,74.3587"
+                    class="template-btn px-3 py-1 bg-gray-100 rounded-full hover:bg-gray-200 transition"
+                    >Location</button
+                >
+            </div>
 
             <div class="grid grid-cols-2 gap-4 mt-4">
                 <div>
@@ -38,6 +164,8 @@ import Layout from "../../layouts/Layout.astro";
                         <option value="300" selected>300 x 300</option>
                         <option value="400">400 x 400</option>
                         <option value="500">500 x 500</option>
+                        <option value="800">800 x 800</option>
+                        <option value="1000">1000 x 1000</option>
                     </select>
                 </div>
                 <div>
@@ -56,7 +184,10 @@ import Layout from "../../layouts/Layout.astro";
                 </div>
             </div>
 
-            <div class="flex gap-3 mt-4">
+            <p id="error" role="alert" class="hidden mt-4 text-sm text-red-600">
+            </p>
+
+            <div class="flex flex-wrap gap-3 mt-4">
                 <button
                     id="generate-btn"
                     class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
@@ -65,119 +196,188 @@ import Layout from "../../layouts/Layout.astro";
                 </button>
                 <button
                     id="download-btn"
-                    class="px-5 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 text-sm font-medium"
+                    class="px-5 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 text-sm font-medium disabled:opacity-50"
                     disabled
                 >
                     Download PNG
                 </button>
+                <button
+                    id="download-svg-btn"
+                    class="px-5 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 text-sm font-medium disabled:opacity-50"
+                    disabled
+                >
+                    Download SVG
+                </button>
             </div>
         </div>
 
-        <div class="mt-8 flex justify-center">
+        <div class="mt-8 flex flex-col items-center">
             <div
                 id="qr-output"
                 class="bg-white p-4 rounded-lg border border-gray-200 hidden"
             >
                 <img id="qr-image" alt="Generated QR Code" class="max-w-full" />
             </div>
+            <p id="test-note" class="hidden mt-3 text-xs text-gray-500">
+                Test the code with your phone camera before you print or share
+                it.
+            </p>
         </div>
     </div>
-    <!-- SEO Content (800+ words) -->
-    <section class="max-w-3xl mx-auto mt-16 prose prose-gray">
+
+    <!-- SEO Content -->
+    <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This QR Code Generator</h2>
         <p class="text-gray-700 mb-4">
             This free online QR code generator lets you create QR codes for any
-            text, URL, phone number, or message. Customize the size and error
-            correction level, then download your QR code as a PNG image. No
-            signup, no watermark, completely free.
+            text, web link, phone number, email, or Wi-Fi network. Choose the
+            size and error correction level, then download your QR code as a PNG
+            or SVG image. No signup, no watermark, completely free.
         </p>
         <p class="text-gray-700 mb-4">
-            QR codes have become part of daily life — restaurant menus, business
-            cards, product packaging, event tickets, and even Wi-Fi sharing.
-            This tool makes creating one as simple as typing text and clicking a
-            button. Everything runs in your browser, so nothing is uploaded to
-            any server.
+            QR codes have become part of daily life: restaurant menus, business
+            cards, product packaging, event posters, and Wi-Fi sharing. This
+            tool makes creating one as simple as typing text. Everything runs in
+            your browser, so nothing is uploaded to any server.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
             <li>Enter the text or URL you want to encode.</li>
-            <li>Choose the size (in pixels) and error correction level.</li>
-            <li>Click "Generate QR Code" to create your QR code.</li>
-            <li>Click "Download PNG" to save the image to your device.</li>
+            <li>
+                The QR code appears right away and updates as you type. Choose
+                the size and error correction level if you want something
+                different.
+            </li>
+            <li>
+                Click "Download PNG" for screens and documents, or "Download
+                SVG" for print.
+            </li>
+            <li>Scan it with your phone to check it before you use it.</li>
         </ol>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Instant generation:</strong> Type text, click a button, download.
-                No waiting.
+                <strong>Instant generation:</strong> The code updates as you type.
             </li>
             <li>
                 <strong>No signup:</strong> No account, no email, no verification.
                 Just use it.
             </li>
             <li>
-                <strong>No watermark:</strong> The QR code you download is clean —
-                no logos, no branding.
+                <strong>No watermark:</strong> The QR code you download is clean,
+                with no logos or branding.
+            </li>
+            <li>
+                <strong>PNG and SVG:</strong> Use PNG for screens and SVG for sharp
+                printing at any size.
             </li>
             <li>
                 <strong>Privacy first:</strong> Everything runs in your browser. Your
                 text never leaves your device.
             </li>
             <li>
-                <strong>Free with no limits:</strong> Generate as many QR codes as
-                you want, as often as you want.
+                <strong>Static codes that don't expire:</strong> The data is inside
+                the code itself, so there is no subscription to lapse.
             </li>
         </ul>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">What Can You Encode?</h3>
-        <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li>
-                <strong>Website URLs:</strong> Link to your site, a product page,
-                or a YouTube video.
-            </li>
-            <li>
-                <strong>Plain text:</strong> A message, coupon code, or instruction.
-            </li>
-            <li>
-                <strong>Phone numbers:</strong> Scanning opens the dialer with the
-                number pre-filled.
-            </li>
-            <li>
-                <strong>Email addresses:</strong> Opens a pre-addressed email draft.
-            </li>
-            <li>
-                <strong>Wi-Fi credentials:</strong> Auto-connect to a network (requires
-                Wi-Fi format).
-            </li>
-            <li>
-                <strong>vCards:</strong> Full contact information saved directly to
-                the phone.
-            </li>
-            <li>
-                <strong>Payment links:</strong> PayPal, Venmo, UPI, and other apps.
-            </li>
-            <li>
-                <strong>Geographic coordinates:</strong> Opens a specific location
-                in Maps.
-            </li>
-        </ul>
+        <p class="text-gray-700 mb-4">
+            A QR code holds plain text. Phones recognize special formats and
+            offer the right action, so type the content in the format below (the
+            "Quick fill" buttons insert these examples).
+        </p>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm border border-gray-200 rounded-lg">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="text-left p-3 font-semibold border-b"
+                            >Content</th
+                        >
+                        <th class="text-left p-3 font-semibold border-b"
+                            >What to type</th
+                        >
+                        <th class="text-left p-3 font-semibold border-b"
+                            >When scanned</th
+                        >
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-3 border-b">Website</td>
+                        <td class="p-3 border-b"
+                            ><code>https://example.com</code></td
+                        >
+                        <td class="p-3 border-b">Opens the page</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 border-b">Phone number</td>
+                        <td class="p-3 border-b"
+                            ><code>tel:+920000000000</code></td
+                        >
+                        <td class="p-3 border-b">Opens the dialer</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 border-b">Email</td>
+                        <td class="p-3 border-b"
+                            ><code>mailto:name@example.com?subject=Hello</code
+                            ></td
+                        >
+                        <td class="p-3 border-b"
+                            >Opens a pre-addressed email draft</td
+                        >
+                    </tr>
+                    <tr>
+                        <td class="p-3 border-b">Wi-Fi network</td>
+                        <td class="p-3 border-b"
+                            ><code>WIFI:T:WPA;S:NetworkName;P:Password;;</code
+                            ></td
+                        >
+                        <td class="p-3 border-b">Offers to join the network</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 border-b">Location</td>
+                        <td class="p-3 border-b"
+                            ><code>geo:31.5204,74.3587</code></td
+                        >
+                        <td class="p-3 border-b"
+                            >Opens the spot in a maps app</td
+                        >
+                    </tr>
+                    <tr>
+                        <td class="p-3">Plain text</td>
+                        <td class="p-3">Any message or code</td>
+                        <td class="p-3">Shows the text</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-gray-700 mt-3 mb-4">
+            For a Wi-Fi code, put a backslash before any <code>\</code>,
+            <code>;</code>, <code>,</code>, <code>:</code> or <code>"</code> inside
+            the network name or password. You can also paste a multi-line contact
+            card (vCard, starting with <code>BEGIN:VCARD</code>) into the box.
+            Payment links work too, as long as you paste the full link from your
+            payment app or bank.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
 
         <h4 class="font-semibold mt-4 mb-2">1. Restaurant Menus</h4>
         <p class="text-gray-700 mb-4">
             Place a QR code on each table so customers can view the menu without
-            handling paper. Updating the menu is as simple as changing the URL —
-            no reprinting needed.
+            handling paper. Point the code at a menu page you control. You can
+            then update the menu without reprinting, as long as the page's
+            address stays the same.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">2. Business Cards</h4>
         <p class="text-gray-700 mb-4">
             Add a QR code to your business card that opens your LinkedIn
-            profile, portfolio, or a vCard. Recipients scan once and have your
-            contact info saved instantly.
+            profile, portfolio, or a vCard. Recipients scan once and can save
+            your contact details.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">3. Product Packaging</h4>
@@ -186,23 +386,26 @@ import Layout from "../../layouts/Layout.astro";
             content. This turns physical packaging into a digital touchpoint.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">4. Event Ticketing</h4>
+        <h4 class="font-semibold mt-4 mb-2">4. Event Information</h4>
         <p class="text-gray-700 mb-4">
-            QR codes on tickets allow quick scanning at the entrance — no manual
-            name checks, no delays.
+            Put a QR code on posters and invitations that links to the schedule,
+            location, or registration page. Note that this tool only creates the
+            code: checking individual tickets at the door needs a ticketing
+            system that gives each ticket its own unique code.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">5. Wi-Fi Sharing</h4>
         <p class="text-gray-700 mb-4">
             For cafés, hotels, and offices: place a QR code on the wall that
-            connects guests to Wi-Fi automatically. No more passing around
-            passwords.
+            lets guests join the Wi-Fi without typing a password. Use the
+            "Wi-Fi" quick fill and replace the network name and password.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">6. Marketing Campaigns</h4>
         <p class="text-gray-700 mb-4">
             Print QR codes on flyers, posters, and brochures that link to
-            landing pages, discount codes, or app downloads.
+            landing pages, discount codes, or app downloads. Download the SVG
+            version so the code stays sharp at any print size.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
@@ -215,22 +418,30 @@ import Layout from "../../layouts/Layout.astro";
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Low (L):</strong> 7% of the code can be damaged. Smallest
-                file size, best for clean digital displays.
+                <strong>Low (L):</strong> About 7% of the code can be damaged. The
+                least dense code, best for clean digital displays.
             </li>
             <li>
-                <strong>Medium (M):</strong> 15% damage tolerance. Good default for
-                most uses.
+                <strong>Medium (M):</strong> About 15% damage tolerance. A good default
+                for most uses.
             </li>
             <li>
-                <strong>Quartile (Q):</strong> 25% damage tolerance. Good for printed
-                materials that might get scratched.
+                <strong>Quartile (Q):</strong> About 25% damage tolerance. Good for
+                printed materials that might get scratched.
             </li>
             <li>
-                <strong>High (H):</strong> 30% damage tolerance. Best for adding logos
-                or using on rough surfaces.
+                <strong>High (H):</strong> About 30% damage tolerance. Best if you
+                plan to place a logo over the code or use it on rough surfaces.
             </li>
         </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">PNG or SVG?</h3>
+        <p class="text-gray-700 mb-4">
+            PNG is a regular image that suits websites, documents, and social
+            posts. SVG is a vector file: it can be scaled to any size, from a
+            business card to a billboard, without getting blurry, which makes it
+            the better choice for print.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
         <p class="text-gray-700 mb-4">
@@ -244,75 +455,26 @@ import Layout from "../../layouts/Layout.astro";
             <li><strong>Size:</strong> 300 × 300 pixels</li>
             <li><strong>Error correction:</strong> Medium (M)</li>
             <li>
-                <strong>Output:</strong> A PNG image, roughly 3–5 KB, ready to print
-                or share
+                <strong>Output:</strong> A QR code ready to download as PNG or SVG
             </li>
         </ul>
         <p class="text-gray-700 mt-4 mb-4">
             When scanned with an iPhone or Android camera, the code opens the
-            URL instantly. No app needed.
+            URL. No app needed.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What is error correction level?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Error correction level determines how much damage a QR code
-                    can sustain and still be readable. Higher levels (H) make
-                    the QR code more robust but denser. For most uses, Medium
-                    (M) is a good balance.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">Do QR codes expire?</h4>
-                <p class="text-gray-700 mt-1">
-                    No, QR codes generated here are static and never expire.
-                    They encode your text directly, so they'll work forever — as
-                    long as the destination URL stays live.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Do I need a special app to scan QR codes?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. Modern iPhones and Android phones scan QR codes with the
-                    default camera app. Just point and tap. Older devices may
-                    need a third-party app.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What's the maximum data a QR code can store?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Up to 4,296 alphanumeric characters, 7,089 numeric
-                    characters, or 2,953 bytes of binary data — though shorter
-                    data makes for easier scanning.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Why won't my phone scan this QR code?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Common causes: dirty camera lens, low lighting, code too
-                    small, low contrast, or a damaged print. Try cleaning the
-                    lens and moving the phone 10–15 cm back.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
-                <p class="text-gray-700 mt-1">
-                    Yes, completely free with no limits, no signup, and no
-                    watermark.
-                </p>
-            </div>
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
+            }
         </div>
     </section>
 
@@ -384,7 +546,9 @@ import Layout from "../../layouts/Layout.astro";
     <script>
         import QRCode from "qrcode";
 
-        const input = document.getElementById("qr-input") as HTMLInputElement;
+        const input = document.getElementById(
+            "qr-input",
+        ) as HTMLTextAreaElement;
         const sizeSelect = document.getElementById(
             "qr-size",
         ) as HTMLSelectElement;
@@ -395,97 +559,138 @@ import Layout from "../../layouts/Layout.astro";
         const downloadBtn = document.getElementById(
             "download-btn",
         ) as HTMLButtonElement;
+        const downloadSvgBtn = document.getElementById(
+            "download-svg-btn",
+        ) as HTMLButtonElement;
         const output = document.getElementById("qr-output")!;
         const qrImage = document.getElementById("qr-image") as HTMLImageElement;
+        const errorBox = document.getElementById("error")!;
+        const testNote = document.getElementById("test-note")!;
+        const templateBtns =
+            document.querySelectorAll<HTMLButtonElement>(".template-btn");
+
+        let runId = 0;
+
+        function showError(message: string) {
+            errorBox.textContent = message;
+            errorBox.classList.remove("hidden");
+        }
+
+        function clearOutput() {
+            output.classList.add("hidden");
+            testNote.classList.add("hidden");
+            downloadBtn.disabled = true;
+            downloadSvgBtn.disabled = true;
+        }
+
+        function currentOptions() {
+            return {
+                margin: 4, // the quiet zone the QR standard asks for
+                errorCorrectionLevel: levelSelect.value as
+                    "L" | "M" | "Q" | "H",
+            };
+        }
 
         async function generateQR() {
             const text = input.value.trim();
+            const myRun = ++runId;
+            errorBox.classList.add("hidden");
+
             if (!text) {
-                alert("Please enter some text or URL.");
+                clearOutput();
                 return;
             }
 
-            const size = parseInt(sizeSelect.value);
-            const level = levelSelect.value as "L" | "M" | "Q" | "H";
-
             try {
                 const dataUrl = await QRCode.toDataURL(text, {
-                    width: size,
-                    margin: 2,
-                    errorCorrectionLevel: level,
+                    ...currentOptions(),
+                    width: parseInt(sizeSelect.value, 10),
                 });
+                if (myRun !== runId) return; // a newer run has started
                 qrImage.src = dataUrl;
+                qrImage.alt =
+                    "QR code for " +
+                    (text.length > 60 ? text.slice(0, 60) + "…" : text);
                 output.classList.remove("hidden");
+                testNote.classList.remove("hidden");
                 downloadBtn.disabled = false;
+                downloadSvgBtn.disabled = false;
             } catch (err) {
-                alert("Failed to generate QR code. Please try again.");
+                if (myRun !== runId) return;
+                clearOutput();
+                const message = (err as Error).message || "";
+                if (/too big|too much|amount of data/i.test(message)) {
+                    showError(
+                        "That is too much data for a QR code at this error correction level. Shorten the text or choose a lower level.",
+                    );
+                } else {
+                    showError(
+                        "Could not generate the QR code. Please try again.",
+                    );
+                }
             }
         }
 
-        generateBtn.addEventListener("click", generateQR);
+        function saveFile(href: string, filename: string) {
+            const link = document.createElement("a");
+            link.href = href;
+            link.download = filename;
+            link.click();
+        }
 
         downloadBtn.addEventListener("click", () => {
             if (!qrImage.src) return;
-            const link = document.createElement("a");
-            link.href = qrImage.src;
-            link.download = "qrcode.png";
-            link.click();
+            saveFile(qrImage.src, "qrcode.png");
         });
 
-        input.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") generateQR();
+        downloadSvgBtn.addEventListener("click", async () => {
+            const text = input.value.trim();
+            if (!text) return;
+            try {
+                const svg = await QRCode.toString(text, {
+                    ...currentOptions(),
+                    type: "svg",
+                    width: parseInt(sizeSelect.value, 10),
+                });
+                const url = URL.createObjectURL(
+                    new Blob([svg], { type: "image/svg+xml" }),
+                );
+                saveFile(url, "qrcode.svg");
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            } catch {
+                showError("Could not create the SVG file. Please try again.");
+            }
         });
+
+        // Update the code as the person types (short delay while typing)
+        let typingTimer: number | undefined;
+        input.addEventListener("input", () => {
+            window.clearTimeout(typingTimer);
+            typingTimer = window.setTimeout(generateQR, 250);
+        });
+        sizeSelect.addEventListener("change", generateQR);
+        levelSelect.addEventListener("change", generateQR);
+        generateBtn.addEventListener("click", generateQR);
+
+        templateBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                input.value = btn.dataset.template || "";
+                input.focus();
+                generateQR();
+            });
+        });
+
+        // Show a first QR code on load
+        generateQR();
     </script>
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "QR Code Generator",
-            applicationCategory: "UtilityApplication",
-            operatingSystem: "Any",
-            description:
-                "Free online QR code generator. Create custom QR codes for any text or URL and download as PNG.",
-            offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "USD",
-            },
-        })}
+        set:html={JSON.stringify(webAppSchema)}
     />
-
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "What is error correction level?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Error correction level determines how much damage a QR code can sustain and still be readable. Higher levels (H) make the QR code more robust but denser.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Do QR codes expire?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "No, QR codes generated here are static and never expire. They encode your text directly.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is this tool free?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes, completely free with no limits, no signup, and no watermark.",
-                    },
-                },
-            ],
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

@@ -1,20 +1,107 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+// One source of truth: rendered on the page AND used for FAQ schema,
+// so the visible text and the structured data can never drift apart.
+const faqs = [
+    {
+        q: "How is age calculated?",
+        a: "Age is calculated by counting full years first, then the remaining full months, then the remaining days. The calculator compares your date of birth with the date you choose (today by default).",
+    },
+    {
+        q: "How is a February 29 birthday handled?",
+        a: "In years that are not leap years, a February 29 birthday is counted on February 28. Some jurisdictions use March 1 instead, so check the rule that applies to your form or document.",
+    },
+    {
+        q: "Is my date of birth saved?",
+        a: "No. The calculation runs in your browser, and the dates you enter are not sent to any server or stored.",
+    },
+    {
+        q: "Can I calculate my age on a past or future date?",
+        a: "Yes. Change the 'Age at Date' field to any date. This is useful when a form asks for your age as of a closing date or cut-off date.",
+    },
+    {
+        q: "How many days old am I?",
+        a: "Enter your date of birth and read the Total Days box. It counts every full day between your birth date and the date you choose. Total hours and minutes are that number multiplied by 24 and 60.",
+    },
+    {
+        q: "Is this tool free?",
+        a: "Yes. It is free, needs no signup, and has no limits.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Exact Age Calculator",
+    url: pageUrl,
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free online age calculator. Find your exact age in years, months, and days, plus total days, hours, and minutes lived and your next birthday countdown.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "Age Calculator",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="Exact Age Calculator — Find Your Age in Years, Days & Hours"
-    description="Free age calculator by ToolsVibe. Find your exact age in years, months, and days, track total hours lived, and view a live countdown to your next birthday."
+    title="Age Calculator: Exact Age in Years, Months & Days"
+    description="Free age calculator: enter your date of birth to get your exact age in years, months and days, total days lived, and days until your next birthday."
 >
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <a href="/tools/" class="hover:underline">Tools</a>
+                <span aria-hidden="true">/</span>
+                <span>Age Calculator</span>
+            </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">
                 Exact Age Calculator
             </h1>
             <p class="text-gray-600 mb-2">
-                Find your exact age down to the years, months, and days—plus
-                your total hours, minutes, and a live upcoming birthday
-                countdown.
+                Find your exact age in years, months, and days, plus your total
+                days, hours, and minutes lived and a countdown to your next
+                birthday.
             </p>
             <p class="text-xs text-gray-500">
                 🔒 100% Private: Calculations run locally in your browser. Your
@@ -49,6 +136,9 @@ import Layout from "../../layouts/Layout.astro";
                 </div>
             </div>
 
+            <p id="error" role="alert" class="hidden mt-4 text-sm text-red-600">
+            </p>
+
             <button
                 id="calculate-btn"
                 class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
@@ -58,7 +148,7 @@ import Layout from "../../layouts/Layout.astro";
         </section>
 
         <!-- Results -->
-        <section id="results" class="hidden">
+        <section id="results" class="hidden" aria-live="polite">
             <!-- Main Result -->
             <div
                 class="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-6 text-center"
@@ -139,35 +229,34 @@ import Layout from "../../layouts/Layout.astro";
             </div>
         </section>
     </div>
-    <!-- SEO Content (800+ words) -->
+
+    <!-- SEO Content -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This Age Calculator</h2>
         <p class="text-gray-700 mb-4">
             This free age calculator tells you your exact age in years, months,
-            days, hours, and minutes. It also shows your next birthday
-            countdown. Runs entirely in your browser — no data is sent anywhere.
-            Whether you need your exact age for a form, want to know how many
-            days you've lived, or are curious about your next birthday, this
-            tool gives you the answer instantly.
+            and days, plus the total days, hours, and minutes you have lived. It
+            also shows how many days remain until your next birthday and which
+            day of the week it falls on. Everything runs in your browser, so no
+            data is sent anywhere.
         </p>
         <p class="text-gray-700 mb-4">
-            Most age calculators just show your age in years. This one goes
-            further: exact years, months, and days, plus total days, hours, and
-            minutes lived. It's the same calculation method used on official
-            documents and applications.
+            Most age calculators only show your age in years. This one gives you
+            the full breakdown, and you can change the calculation date to find
+            your age on any past or future date.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
             <li>Enter your date of birth</li>
             <li>
-                (Optional) Change the calculation date — useful for finding your
-                age on a specific date
+                (Optional) Change the "Age at Date" field to find your age on a
+                specific date
             </li>
             <li>Click "Calculate Age"</li>
             <li>
                 See your exact age, total days, hours, minutes, and next
-                birthday countdown
+                birthday
             </li>
         </ol>
 
@@ -176,164 +265,102 @@ import Layout from "../../layouts/Layout.astro";
         </h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Exact age:</strong> Years, months, and days (standard international
-                method)
+                <strong>Exact age:</strong> Full years, then months, then days
             </li>
             <li>
-                <strong>Total days lived:</strong> Every day since your birth
+                <strong>Total days lived:</strong> Every full day since your birth
             </li>
             <li><strong>Total hours lived:</strong> Total days × 24</li>
             <li><strong>Total minutes lived:</strong> Total hours × 60</li>
             <li>
-                <strong>Next birthday:</strong> How many days until your next birthday,
-                and what day of the week it falls on
+                <strong>Next birthday:</strong> Days remaining, and the day of the
+                week it falls on
             </li>
             <li>
-                <strong>Custom calculation date:</strong> Find your age on any date
-                — past, present, or future
+                <strong>Custom calculation date:</strong> Your age on any date, past
+                or future
             </li>
         </ul>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
 
-        <h4 class="font-semibold mt-4 mb-2">1. Filling Out Forms</h4>
-        <p class="text-gray-700 mb-4">
-            Many forms — job applications, visa applications, school admissions
-            — require your exact age in years, months, and days. This tool gives
-            you the precise figure to enter.
-        </p>
-
         <h4 class="font-semibold mt-4 mb-2">
-            2. Checking Eligibility for Age-Limited Services
+            1. Forms and Applications With an Age Cut-Off
         </h4>
         <p class="text-gray-700 mb-4">
-            Some services have minimum or maximum age requirements. If a form
-            asks "are you at least 18 years old as of [date]?", this calculator
-            lets you confirm with a specific date.
+            Job applications, school admissions, and exams often ask for your
+            age in years, months, and days as of a closing date. Set "Age at
+            Date" to that date to get the figure to enter. Always follow the
+            rule stated by the organization, since each one defines its own
+            cut-off.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
-            3. Planning Birthday Celebrations
+            2. Planning Birthday Celebrations
         </h4>
         <p class="text-gray-700 mb-4">
-            The next-birthday countdown shows how many days remain until your
-            birthday, and what day of the week it falls on. Useful for planning
-            parties, booking venues, or coordinating with family.
+            The countdown shows how many days remain until your birthday and
+            what day of the week it falls on. Useful for planning parties,
+            booking venues, or coordinating with family.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">4. Curious Statistics</h4>
+        <h4 class="font-semibold mt-4 mb-2">3. Curious Statistics</h4>
         <p class="text-gray-700 mb-4">
-            How many days have you lived? How many hours? How many minutes? The
-            totals are surprisingly large — and useful for personal milestones
-            or health tracking.
+            How many days have you lived? How many hours? The totals are
+            surprisingly large and make fun personal milestones.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
-            5. Historical or Future Age Calculations
+            4. Past or Future Age Calculations
         </h4>
         <p class="text-gray-700 mb-4">
             Want to know how old you were on a specific past date, or how old
-            you'll be on a future date? Change the calculation date and get the
-            exact answer.
-        </p>
-
-        <h4 class="font-semibold mt-4 mb-2">
-            6. Age Verification for Contracts
-        </h4>
-        <p class="text-gray-700 mb-4">
-            Legal documents sometimes require proof of exact age as of a
-            specific date. This tool gives you the precise figure to confirm.
+            you will be on a future date? Change the calculation date and get
+            the exact answer.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
         <p class="text-gray-700 mb-4">
-            If your date of birth is <strong>June 15, 1995</strong> and today is <strong
-                >October 20, 2026</strong
-            >, here's what the calculator shows:
+            If your date of birth is <strong>June 15, 1995</strong> and the calculation
+            date is <strong>October 20, 2026</strong>, the calculator shows:
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li><strong>Exact age:</strong> 31 years, 4 months, 5 days</li>
-            <li><strong>Total days:</strong> ~11,450 days</li>
-            <li><strong>Total hours:</strong> ~274,800 hours</li>
-            <li><strong>Total minutes:</strong> ~16,488,000 minutes</li>
+            <li><strong>Total days:</strong> 11,450 days</li>
+            <li><strong>Total hours:</strong> 274,800 hours</li>
+            <li><strong>Total minutes:</strong> 16,488,000 minutes</li>
             <li>
-                <strong>Next birthday:</strong> June 15, 2027 (Tuesday) — about 238
-                days away
+                <strong>Next birthday:</strong> June 15, 2027 (Tuesday), 238 days
+                after the calculation date
             </li>
         </ul>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How Age Is Calculated</h3>
         <p class="text-gray-700 mb-4">
-            Age is calculated using the standard international method: full
-            years first, then remaining months, then remaining days. This is the
-            same method used for official documents, legal forms, and government
-            registrations.
+            The calculator counts full years first, then the remaining full
+            months, then the remaining days. Leap years are included in the day
+            counts.
         </p>
         <p class="text-gray-700 mb-4">
-            Leap years are automatically handled. If you were born on February
-            29, the calculator adjusts so your age is accurate on any
-            calculation date.
+            If you were born on February 29, your birthday is counted on
+            February 28 in years that are not leap years. Some jurisdictions use
+            March 1 instead, so check the rule for your document if the exact
+            date matters. This tool is for general information and is not legal
+            advice.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    How is age calculated?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Age is calculated using the standard international method:
-                    full years first, then remaining months, then remaining
-                    days. This is the same method used for official documents.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does this account for leap years?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes. Leap years are automatically handled, so your age will
-                    be accurate even if you were born on February 29.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Is my date of birth saved?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. All calculations happen in your browser. Your date of
-                    birth is never sent to any server or stored anywhere.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Can I calculate my age on a future date?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes. Change the "Age at Date" field to any date in the past,
-                    present, or future. The calculator shows your exact age on
-                    that date.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Why is the total days count so large?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Total days counts every day since your birth. For a
-                    30-year-old, that's about 11,000 days — which is a lot of
-                    days when you count them all.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
-                <p class="text-gray-700 mt-1">
-                    Yes, completely free with no signup, no limits, and no
-                    watermarks.
-                </p>
-            </div>
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
+            }
         </div>
     </section>
 
@@ -378,50 +405,98 @@ import Layout from "../../layouts/Layout.astro";
         ) as HTMLInputElement;
         const calculateBtn = document.getElementById("calculate-btn")!;
         const results = document.getElementById("results")!;
+        const errorBox = document.getElementById("error")!;
+
+        const MS_PER_DAY = 86_400_000;
+
+        // "YYYY-MM-DD" -> LOCAL date. (new Date("YYYY-MM-DD") is parsed as UTC
+        // and can land on the previous day for visitors west of UTC.)
+        function parseLocalDate(value: string): Date {
+            const [y, m, d] = value.split("-").map(Number);
+            return new Date(y, m - 1, d);
+        }
+
+        function toInputValue(date: Date): string {
+            const pad = (n: number) => String(n).padStart(2, "0");
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+        }
+
+        // Whole calendar days between two dates, unaffected by daylight saving.
+        function daysBetween(from: Date, to: Date): number {
+            const a = Date.UTC(
+                from.getFullYear(),
+                from.getMonth(),
+                from.getDate(),
+            );
+            const b = Date.UTC(to.getFullYear(), to.getMonth(), to.getDate());
+            return Math.round((b - a) / MS_PER_DAY);
+        }
+
+        // Same day-of-month `months` later, clamped to the last day of that
+        // month (Jan 31 + 1 month = Feb 28/29; Feb 29 + 1 year = Feb 28).
+        function addMonths(date: Date, months: number): Date {
+            const first = new Date(
+                date.getFullYear(),
+                date.getMonth() + months,
+                1,
+            );
+            const lastDay = new Date(
+                first.getFullYear(),
+                first.getMonth() + 1,
+                0,
+            ).getDate();
+            return new Date(
+                first.getFullYear(),
+                first.getMonth(),
+                Math.min(date.getDate(), lastDay),
+            );
+        }
+
+        function showError(message: string) {
+            errorBox.textContent = message;
+            errorBox.classList.remove("hidden");
+            results.classList.add("hidden");
+        }
 
         const today = new Date();
-        calcDateInput.value = today.toISOString().split("T")[0];
+        calcDateInput.value = toInputValue(today);
+        dobInput.max = toInputValue(today);
 
         function calculateAge() {
+            errorBox.classList.add("hidden");
+
             if (!dobInput.value) {
-                alert("Please enter your date of birth.");
+                showError("Please enter your date of birth.");
                 return;
             }
 
-            const dob = new Date(dobInput.value);
+            const dob = parseLocalDate(dobInput.value);
             const calcDate = calcDateInput.value
-                ? new Date(calcDateInput.value)
-                : new Date();
+                ? parseLocalDate(calcDateInput.value)
+                : parseLocalDate(toInputValue(new Date()));
 
             if (dob > calcDate) {
-                alert("Date of birth cannot be after the calculation date.");
+                showError(
+                    "Date of birth cannot be after the calculation date.",
+                );
                 return;
             }
 
             // Exact years, months, days
-            let years = calcDate.getFullYear() - dob.getFullYear();
-            let months = calcDate.getMonth() - dob.getMonth();
-            let days = calcDate.getDate() - dob.getDate();
-
-            if (days < 0) {
-                months--;
-                const prevMonth = new Date(
-                    calcDate.getFullYear(),
-                    calcDate.getMonth(),
-                    0,
-                );
-                days += prevMonth.getDate();
+            let totalMonths =
+                (calcDate.getFullYear() - dob.getFullYear()) * 12 +
+                (calcDate.getMonth() - dob.getMonth());
+            let anchor = addMonths(dob, totalMonths);
+            if (anchor > calcDate) {
+                totalMonths--;
+                anchor = addMonths(dob, totalMonths);
             }
-            if (months < 0) {
-                years--;
-                months += 12;
-            }
+            const years = Math.floor(totalMonths / 12);
+            const months = totalMonths % 12;
+            const days = daysBetween(anchor, calcDate);
 
             // Total days/hours/minutes
-            const msPerDay = 1000 * 60 * 60 * 24;
-            const totalDays = Math.floor(
-                (calcDate.getTime() - dob.getTime()) / msPerDay,
-            );
+            const totalDays = daysBetween(dob, calcDate);
             const totalHours = totalDays * 24;
             const totalMinutes = totalHours * 60;
 
@@ -441,18 +516,18 @@ import Layout from "../../layouts/Layout.astro";
             document.getElementById("total-minutes")!.textContent =
                 totalMinutes.toLocaleString();
 
-            // Next birthday
-            const nextBday = new Date(
-                calcDate.getFullYear(),
-                dob.getMonth(),
-                dob.getDate(),
+            // Next birthday (on or after the calculation date)
+            let nextBday = addMonths(
+                dob,
+                (calcDate.getFullYear() - dob.getFullYear()) * 12,
             );
             if (nextBday < calcDate) {
-                nextBday.setFullYear(calcDate.getFullYear() + 1);
+                nextBday = addMonths(
+                    dob,
+                    (calcDate.getFullYear() + 1 - dob.getFullYear()) * 12,
+                );
             }
-            const daysUntil = Math.ceil(
-                (nextBday.getTime() - calcDate.getTime()) / msPerDay,
-            );
+            const daysUntil = daysBetween(calcDate, nextBday);
             const dayName = nextBday.toLocaleDateString("en-US", {
                 weekday: "long",
             });
@@ -478,57 +553,11 @@ import Layout from "../../layouts/Layout.astro";
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Age Calculator",
-            applicationCategory: "UtilityApplication",
-            operatingSystem: "Any",
-            description:
-                "Free online age calculator. Find your exact age in years, months, days, hours, and minutes, plus next birthday countdown.",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        })}
+        set:html={JSON.stringify(webAppSchema)}
     />
-
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "How is age calculated?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Age is calculated using the standard international method: full years first, then remaining months, then remaining days.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Does this account for leap years?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes. Leap years are automatically handled, so your age will be accurate even if you were born on February 29.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is my date of birth saved?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "No. All calculations happen in your browser. Your date of birth is never sent to any server or stored anywhere.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is this tool free?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
-                    },
-                },
-            ],
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

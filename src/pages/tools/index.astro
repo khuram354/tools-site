@@ -1,186 +1,103 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { toolCategories, allTools } from "../../data/tools";
 
-const toolCategories = [
-    {
-        id: "pakistan-tax",
-        name: "Pakistan Tax & Finance",
-        description:
-            "Calculators for Pakistan income tax, Zakat, loans, and freelancer taxes.",
-        tools: [
-            {
-                name: "Salary Tax Calculator",
-                description:
-                    "Calculate income tax and take-home salary for Pakistan (FY 2026-27).",
-                href: "/tools/salary-tax-calculator/",
-                icon: "tax",
-            },
-            {
-                name: "Freelancer Tax Calculator",
-                description:
-                    "Calculate income tax for Pakistani freelancers (IT export & local).",
-                href: "/tools/freelancer-tax-calculator/",
-                icon: "freelancer",
-            },
-            {
-                name: "Zakat Calculator",
-                description:
-                    "Calculate Zakat on gold, silver, cash, savings, and investments.",
-                href: "/tools/zakat-calculator/",
-                icon: "zakat",
-            },
-            {
-                name: "EMI Calculator",
-                description:
-                    "Calculate loan EMI, total interest, and total payment for Pakistan.",
-                href: "/tools/emi-calculator/",
-                icon: "emi",
-            },
-        ],
-    },
-    {
-        id: "finance",
-        name: "Finance & Math",
-        description: "Everyday financial and percentage calculations.",
-        tools: [
-            {
-                name: "Percentage Calculator",
-                description:
-                    "Solve X% of Y, percentage change, discounts, and more.",
-                href: "/tools/percentage-calculator/",
-                icon: "percentage",
-            },
-        ],
-    },
-    {
-        id: "image",
-        name: "Image Tools",
-        description:
-            "Compress, resize, crop, and convert images in your browser.",
-        tools: [
-            {
-                name: "Image Compressor",
-                description:
-                    "Compress JPG, PNG, and WebP images to reduce file size.",
-                href: "/tools/image-compressor/",
-                icon: "image-compress",
-            },
-            {
-                name: "Image Resizer",
-                description:
-                    "Resize images to any dimension with aspect ratio control.",
-                href: "/tools/image-resizer/",
-                icon: "image-resize",
-            },
-            {
-                name: "Image Cropper",
-                description: "Crop images to any size or aspect ratio.",
-                href: "/tools/image-cropper/",
-                icon: "image-crop",
-            },
-            {
-                name: "Image Converter",
-                description: "Convert between JPG, PNG, and WebP formats.",
-                href: "/tools/image-converter/",
-                icon: "image-convert",
-            },
-        ],
-    },
-    {
-        id: "utility",
-        name: "Utility Tools",
-        description: "Generators and everyday utilities that just work.",
-        tools: [
-            {
-                name: "QR Code Generator",
-                description:
-                    "Create custom QR codes for any text or URL. Download as PNG, free.",
-                href: "/tools/qr-generator/",
-                icon: "qr",
-            },
-            {
-                name: "Password Generator",
-                description:
-                    "Generate strong, random passwords with custom length and character types.",
-                href: "/tools/password-generator/",
-                icon: "password",
-            },
-            {
-                name: "Unit Converter",
-                description:
-                    "Convert length, weight, temperature, area, volume, speed, and time.",
-                href: "/tools/unit-converter/",
-                icon: "unit",
-            },
-            {
-                name: "Age Calculator",
-                description:
-                    "Find your exact age in years, months, days, plus next birthday countdown.",
-                href: "/tools/age-calculator/",
-                icon: "age",
-            },
-        ],
-    },
-    {
-        id: "developer",
-        name: "Developer Tools",
-        description: "For developers working with APIs, JSON, and code.",
-        tools: [
-            {
-                name: "JSON Formatter",
-                description:
-                    "Format, validate, and beautify JSON data online. Detect syntax errors.",
-                href: "/tools/json-formatter/",
-                icon: "json",
-            },
-        ],
-    },
-    {
-        id: "writing",
-        name: "Writing & Text Tools",
-        description: "Count words, characters, and estimate reading time.",
-        tools: [
-            {
-                name: "Word Counter",
-                description:
-                    "Count words, characters, sentences, and estimate reading time instantly.",
-                href: "/tools/word-counter/",
-                icon: "word",
-            },
-        ],
-    },
-];
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+const title = "All Tools: Pakistan Tax Calculators, Image Tools & More";
+const description = `Browse all ${allTools.length} free tools: Pakistan salary tax, freelancer tax, Zakat and EMI calculators, image tools, QR generator and more. No signup.`;
+
+// Inner SVG markup for each icon, drawn once. The outer <svg> (size, color,
+// stroke) is set in the template below.
+const iconMarkup: Record<string, string> = {
+    word: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />`,
+    qr: `<rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />`,
+    json: `<polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />`,
+    tax: `<line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />`,
+    "image-compress": `<polyline points="4 14 10 14 10 20" /><polyline points="20 10 14 10 14 4" /><line x1="14" y1="10" x2="21" y2="3" /><line x1="3" y1="21" x2="10" y2="14" />`,
+    "image-resize": `<rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="9" y1="9" x2="15" y2="15" /><polyline points="15 9 15 15 9 15" />`,
+    "image-crop": `<path d="M6.13 1L6 16a2 2 0 0 0 2 2h15" /><path d="M1 6.13L16 6a2 2 0 0 1 2 2v15" />`,
+    "image-convert": `<polyline points="16 3 21 3 21 8" /><line x1="4" y1="20" x2="21" y2="3" /><polyline points="21 16 21 21 16 21" /><line x1="15" y1="15" x2="21" y2="21" /><line x1="4" y1="4" x2="9" y2="9" />`,
+    password: `<rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />`,
+    unit: `<polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />`,
+    age: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />`,
+    percentage: `<line x1="19" y1="5" x2="5" y2="19" /><circle cx="6.5" cy="6.5" r="2.5" /><circle cx="17.5" cy="17.5" r="2.5" />`,
+    emi: `<path d="M3 21h18" /><path d="M5 21V7l7-4 7 4v14" /><path d="M9 21v-6h6v6" /><path d="M10 9h.01" /><path d="M14 9h.01" />`,
+    zakat: `<path d="M12 2v20" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /><circle cx="12" cy="12" r="10" />`,
+    freelancer: `<rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />`,
+};
 
 const faqs = [
     {
         q: "How many tools are available on ToolsVibe?",
-        a: "We currently offer 15 free tools across categories including Pakistan Tax, Finance, Image, Utility, Developer, and Writing. We add new tools regularly.",
+        a: `We currently offer ${allTools.length} free tools across Pakistan Tax, Finance, Image, Utility, Developer, and Writing categories. We add new tools regularly.`,
     },
     {
         q: "Are these tools suitable for professional use?",
-        a: "Yes. Our tools are used by students, writers, developers, and businesses worldwide. They are accurate, fast, and reliable for both personal and professional tasks.",
+        a: "Many people use them for study, work, and small business tasks. For tax filing, Zakat rulings, or other formal decisions, treat the results as estimates and confirm them with an official source, a tax advisor, or a qualified scholar.",
     },
     {
         q: "Do the tools work offline?",
-        a: "Once a tool page is loaded in your browser, it works without an internet connection because all processing happens locally on your device.",
+        a: "Once a tool page has finished loading, the work happens on your device, so it usually keeps working even if your connection drops.",
     },
     {
         q: "Can I request a new tool?",
         a: "Absolutely. We love suggestions. Visit our contact page and tell us what tool you would like to see next.",
     },
 ];
+
+const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "All Tools — Free Online Tools",
+    url: pageUrl,
+    description,
+    mainEntity: {
+        "@type": "ItemList",
+        numberOfItems: allTools.length,
+        itemListElement: allTools.map((tool, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: tool.name,
+            url: new URL(tool.href, "https://toolsvibe.online").href,
+        })),
+    },
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
-<Layout
-    title="Free Online Tools: Word Counter, QR Code, JSON & More"
-    description="Browse all free online tools from ToolsVibe. Word counter, QR code generator, JSON formatter, and more. No signup required."
->
+<Layout title={title} description={description}>
     <div class="max-w-6xl mx-auto">
         <header class="mb-12 text-center">
-            <h1 class="text-3xl md:text-4xl font-bold mb-3">All Tools</h1>
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <span>Tools</span>
+            </nav>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                All Free Online Tools
+            </h1>
             <p class="text-gray-600 max-w-2xl mx-auto">
-                Free, fast, privacy-friendly tools that run entirely in your
-                browser. No signup, no uploads, no data collection.
+                Free, fast, privacy-friendly tools that run in your browser. No
+                signup, no uploads, and your inputs are never collected.
             </p>
         </header>
 
@@ -204,369 +121,19 @@ const faqs = [
                                 class="block p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
                             >
                                 <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
-                                    {tool.icon === "word" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                            <line
-                                                x1="16"
-                                                y1="13"
-                                                x2="8"
-                                                y2="13"
-                                            />
-                                            <line
-                                                x1="16"
-                                                y1="17"
-                                                x2="8"
-                                                y2="17"
-                                            />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "qr" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <rect
-                                                x="3"
-                                                y="3"
-                                                width="7"
-                                                height="7"
-                                            />
-                                            <rect
-                                                x="14"
-                                                y="3"
-                                                width="7"
-                                                height="7"
-                                            />
-                                            <rect
-                                                x="3"
-                                                y="14"
-                                                width="7"
-                                                height="7"
-                                            />
-                                            <rect
-                                                x="14"
-                                                y="14"
-                                                width="7"
-                                                height="7"
-                                            />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "json" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <polyline points="16 18 22 12 16 6" />
-                                            <polyline points="8 6 2 12 8 18" />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "tax" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <line
-                                                x1="12"
-                                                y1="1"
-                                                x2="12"
-                                                y2="23"
-                                            />
-                                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "image-compress" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <polyline points="4 14 10 14 10 20" />
-                                            <polyline points="20 10 14 10 14 4" />
-                                            <line
-                                                x1="14"
-                                                y1="10"
-                                                x2="21"
-                                                y2="3"
-                                            />
-                                            <line
-                                                x1="3"
-                                                y1="21"
-                                                x2="10"
-                                                y2="14"
-                                            />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "image-resize" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <rect
-                                                x="3"
-                                                y="3"
-                                                width="18"
-                                                height="18"
-                                                rx="2"
-                                                ry="2"
-                                            />
-                                            <line
-                                                x1="9"
-                                                y1="9"
-                                                x2="15"
-                                                y2="15"
-                                            />
-                                            <polyline points="15 9 15 15 9 15" />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "image-crop" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path d="M6.13 1L6 16a2 2 0 0 0 2 2h15" />
-                                            <path d="M1 6.13L16 6a2 2 0 0 1 2 2v15" />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "image-convert" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <polyline points="16 3 21 3 21 8" />
-                                            <line
-                                                x1="4"
-                                                y1="20"
-                                                x2="21"
-                                                y2="3"
-                                            />
-                                            <polyline points="21 16 21 21 16 21" />
-                                            <line
-                                                x1="15"
-                                                y1="15"
-                                                x2="21"
-                                                y2="21"
-                                            />
-                                            <line x1="4" y1="4" x2="9" y2="9" />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "password" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <rect
-                                                x="3"
-                                                y="11"
-                                                width="18"
-                                                height="11"
-                                                rx="2"
-                                                ry="2"
-                                            />
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "unit" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "age" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <rect
-                                                x="3"
-                                                y="4"
-                                                width="18"
-                                                height="18"
-                                                rx="2"
-                                                ry="2"
-                                            />
-                                            <line
-                                                x1="16"
-                                                y1="2"
-                                                x2="16"
-                                                y2="6"
-                                            />
-                                            <line x1="8" y1="2" x2="8" y2="6" />
-                                            <line
-                                                x1="3"
-                                                y1="10"
-                                                x2="21"
-                                                y2="10"
-                                            />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "percentage" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <line
-                                                x1="19"
-                                                y1="5"
-                                                x2="5"
-                                                y2="19"
-                                            />
-                                            <circle cx="6.5" cy="6.5" r="2.5" />
-                                            <circle
-                                                cx="17.5"
-                                                cy="17.5"
-                                                r="2.5"
-                                            />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "emi" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path d="M3 21h18" />
-                                            <path d="M5 21V7l7-4 7 4v14" />
-                                            <path d="M9 21v-6h6v6" />
-                                            <path d="M10 9h.01" />
-                                            <path d="M14 9h.01" />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "zakat" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path d="M12 2v20" />
-                                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                                            <circle cx="12" cy="12" r="10" />
-                                        </svg>
-                                    )}
-                                    {tool.icon === "freelancer" && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="#2563eb"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <rect
-                                                x="2"
-                                                y="7"
-                                                width="20"
-                                                height="14"
-                                                rx="2"
-                                                ry="2"
-                                            />
-                                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                                        </svg>
-                                    )}
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#2563eb"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                        set:html={iconMarkup[tool.icon] ?? ""}
+                                    />
                                 </div>
                                 <h3 class="text-xl font-semibold mb-2">
                                     {tool.name}
@@ -626,7 +193,19 @@ const faqs = [
                     class="text-blue-600 hover:underline font-medium"
                     >EMI Calculator</a
                 > are built specifically for users in Pakistan. They use the latest
-                FBR slabs, EOBI rates, and Nisab thresholds.
+                FBR slabs, EOBI rates, and Nisab thresholds. Results are estimates
+                for planning, so confirm important figures with FBR or a tax professional.
+            </p>
+            <p class="text-gray-700 mb-4">
+                New to freelancer taxes or Zakat? Read our guides to <a
+                    href="/blog/freelancing-tax-pakistan/"
+                    class="text-blue-600 hover:underline"
+                    >freelancing tax in Pakistan</a
+                > and <a
+                    href="/blog/how-to-calculate-zakat-gold/"
+                    class="text-blue-600 hover:underline"
+                    >calculating Zakat on gold</a
+                >.
             </p>
 
             <h3 class="text-xl font-semibold mt-8 mb-3">Image Tools</h3>
@@ -704,13 +283,10 @@ const faqs = [
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            name: "All Tools — Free Online Tools",
-            url: "https://toolsvibe.online/tools/",
-            description:
-                "Browse all free online tools from ToolsVibe — Pakistan tax calculators, image tools, QR code generator, JSON formatter, and more.",
-        })}
+        set:html={JSON.stringify(collectionSchema)}
+    />
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
 </Layout>

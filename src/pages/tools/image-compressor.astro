@@ -1,19 +1,134 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+// Settings shared by the page text and the compressor script
+const MAX_MB = 20; // largest file the tool accepts
+const TARGETS = [
+    { kb: 20, label: "20 KB" },
+    { kb: 50, label: "50 KB" },
+    { kb: 100, label: "100 KB" },
+    { kb: 200, label: "200 KB" },
+    { kb: 500, label: "500 KB" },
+    { kb: 1024, label: "1 MB" },
+];
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
+const faqs = [
+    {
+        q: "Are my images uploaded to a server?",
+        a: "No. All compression happens in your browser using JavaScript. Your images never leave your device.",
+    },
+    {
+        q: "What quality setting should I use?",
+        a: "For most web images, 70–80% is a good balance between file size and quality. For photos you plan to print, use 90% or higher.",
+    },
+    {
+        q: "How do I compress an image to 50 KB, 20 KB, or 100 KB?",
+        a: 'Choose "To a target size", pick the size you need, and click Compress Image. The tool lowers the quality, and scales the image down if it has to, until the file fits. If it cannot reach the size, it tells you. In that case try a larger target, choose WebP, or shrink the image with the Image Resizer first. Always check the exact format and size your form asks for.',
+    },
+    {
+        q: "Does compression affect image dimensions?",
+        a: "In quality mode the width and height stay the same. In target-size mode the image may be scaled down if lowering the quality alone cannot reach the size. The result panel shows the dimensions before and after.",
+    },
+    {
+        q: "Why did my PNG barely shrink?",
+        a: "PNG is a lossless format, so the quality slider does not make a PNG smaller. Convert it to WebP with the format option, or use a target size, which can also scale the image down. Photos usually belong in JPG or WebP rather than PNG.",
+    },
+    {
+        q: "Does compression reduce image quality?",
+        a: "Yes, a little, because JPG and WebP compression discards detail. At 70% or higher most people can't see a difference. Below 60%, artifacts such as blurry patches and banding start to show. Always work from the original file, because compressing an already compressed image loses more quality each time.",
+    },
+    {
+        q: "Can I compress multiple images at once?",
+        a: "This tool compresses one image at a time. For bulk work, open multiple browser tabs and process images in parallel.",
+    },
+    {
+        q: "Does it remove location (GPS) data from photos?",
+        a: "The compressed image is re-encoded in your browser, which normally drops metadata such as GPS location and camera details. If this matters to you, check the downloaded file before you share it.",
+    },
+    {
+        q: "Does it support HEIC or GIF images?",
+        a: "No. It supports JPG, PNG, and WebP only. iPhone photos in HEIC format need to be saved or shared as JPG first, for example by setting Settings > Camera > Formats > Most Compatible.",
+    },
+    {
+        q: "Is this tool free?",
+        a: "Yes. It is free, needs no signup, and has no limits.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Image Compressor",
+    url: pageUrl,
+    applicationCategory: "MultimediaApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free online image compressor. Reduce JPG, PNG, and WebP file size by quality or to a target size, entirely in your browser with no upload.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "Image Compressor",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="Image Compressor — Compress JPG, PNG & WebP Online Free"
-    description="Compress JPG, PNG, and WebP images online for free. Reduce image file size without losing quality. No signup, no upload to server."
+    title="Image Compressor: Compress JPG, PNG & WebP Online"
+    description="Free image compressor. Reduce JPG, PNG and WebP size by quality or to a target like 20KB, 50KB or 100KB. Runs in your browser, no upload."
 >
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <a href="/tools/" class="hover:underline">Tools</a>
+                <span aria-hidden="true">/</span>
+                <span>Image Compressor</span>
+            </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">
                 Image Compressor
             </h1>
             <p class="text-gray-600 mb-2">
-                Compress JPG, PNG, and WebP images right in your browser. No
-                upload, no signup, 100% private.
+                Compress JPG, PNG, and WebP images right in your browser, by
+                quality or down to a target size like 50 KB. No upload, no
+                signup.
             </p>
             <p class="text-xs text-gray-500">
                 Works entirely in your browser. Your images never leave your
@@ -21,10 +136,15 @@ import Layout from "../../layouts/Layout.astro";
             </p>
         </header>
 
+        <div id="calc-config" data-max-mb={MAX_MB} hidden></div>
+
         <!-- Upload Section -->
         <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
             <div
                 id="drop-zone"
+                role="button"
+                tabindex="0"
+                aria-label="Choose an image to compress"
                 class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition cursor-pointer"
             >
                 <svg
@@ -38,13 +158,18 @@ import Layout from "../../layouts/Layout.astro";
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     class="mx-auto mb-3"
+                    aria-hidden="true"
                 >
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="17 8 12 3 7 8"></polyline>
                     <line x1="12" y1="3" x2="12" y2="15"></line>
                 </svg>
-                <p class="font-medium mb-1">Click or tap to choose an image</p>
-                <p class="text-sm text-gray-500">JPG, PNG, or WebP</p>
+                <p id="drop-text" class="font-medium mb-1">
+                    Click, tap, or drop an image here
+                </p>
+                <p id="drop-hint" class="text-sm text-gray-500">
+                    JPG, PNG, or WebP, up to {MAX_MB} MB
+                </p>
                 <input
                     type="file"
                     id="file-input"
@@ -53,7 +178,33 @@ import Layout from "../../layouts/Layout.astro";
                 />
             </div>
 
-            <div class="mt-4">
+            <!-- Mode -->
+            <fieldset class="mt-4">
+                <legend class="block text-sm font-medium mb-2">
+                    How do you want to compress?
+                </legend>
+                <div class="flex flex-wrap gap-3">
+                    <label
+                        class="flex items-center gap-2 text-sm p-3 bg-gray-50 rounded-lg cursor-pointer border border-gray-200"
+                    >
+                        <input
+                            type="radio"
+                            name="mode"
+                            value="quality"
+                            checked
+                        />
+                        <span>By quality</span>
+                    </label>
+                    <label
+                        class="flex items-center gap-2 text-sm p-3 bg-gray-50 rounded-lg cursor-pointer border border-gray-200"
+                    >
+                        <input type="radio" name="mode" value="target" />
+                        <span>To a target size</span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <div id="quality-box" class="mt-4">
                 <label for="quality" class="block text-sm font-medium mb-2">
                     Compression Quality: <span id="quality-value">70</span>%
                 </label>
@@ -71,6 +222,61 @@ import Layout from "../../layouts/Layout.astro";
                 </div>
             </div>
 
+            <div id="target-box" class="hidden mt-4">
+                <label for="target" class="block text-sm font-medium mb-2"
+                    >Make the file no larger than</label
+                >
+                <select
+                    id="target"
+                    class="w-full md:w-auto p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    {
+                        TARGETS.map((t) => (
+                            <option value={t.kb} selected={t.kb === 100}>
+                                {t.label}
+                            </option>
+                        ))
+                    }
+                </select>
+                <p class="text-xs text-gray-500 mt-1">
+                    The tool lowers the quality and, if needed, scales the image
+                    down until it fits.
+                </p>
+            </div>
+
+            <div class="mt-4">
+                <label for="format" class="block text-sm font-medium mb-2"
+                    >Output format</label
+                >
+                <select
+                    id="format"
+                    class="w-full md:w-auto p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    <option value="same" selected>Keep original format</option>
+                    <option value="webp"
+                        >Convert to WebP (usually smaller)</option
+                    >
+                </select>
+                <p class="text-xs text-gray-500 mt-1">
+                    Need a JPG? Use the <a
+                        href="/tools/image-converter/"
+                        class="text-blue-600 hover:underline">Image Converter</a
+                    >.
+                </p>
+            </div>
+
+            <p
+                id="png-note"
+                class="hidden mt-4 text-sm text-yellow-800 bg-yellow-50 border border-yellow-200 p-3 rounded-lg"
+            >
+                PNG is a lossless format, so the quality slider does not change
+                a PNG. For a much smaller file, choose WebP above or use a
+                target size.
+            </p>
+
+            <p id="error" role="alert" class="hidden mt-4 text-sm text-red-600">
+            </p>
+
             <button
                 id="compress-btn"
                 class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
@@ -81,9 +287,15 @@ import Layout from "../../layouts/Layout.astro";
         </section>
 
         <!-- Results -->
-        <section id="results" class="hidden">
+        <section id="results" class="hidden" aria-live="polite">
             <div class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
                 <h2 class="text-xl font-semibold mb-4">Compression Result</h2>
+
+                <p
+                    id="result-message"
+                    class="hidden mb-4 text-sm p-3 rounded-lg border"
+                >
+                </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div class="bg-gray-50 p-4 rounded-lg text-center">
@@ -118,6 +330,12 @@ import Layout from "../../layouts/Layout.astro";
                         </div>
                     </div>
                 </div>
+
+                <p class="text-sm text-gray-600 mb-4">
+                    Dimensions: <span id="dimensions" class="font-medium"
+                        >—</span
+                    >
+                </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -157,48 +375,59 @@ import Layout from "../../layouts/Layout.astro";
         </section>
     </div>
 
-    <!-- SEO Content (800+ words) -->
+    <!-- SEO Content -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This Image Compressor</h2>
         <p class="text-gray-700 mb-4">
             This free online image compressor lets you reduce the file size of
-            JPG, PNG, and WebP images without any visible loss in quality.
-            Whether you're preparing photos for a website, sending images over
-            WhatsApp, or uploading files to a form with strict size limits, this
-            tool gets the job done in seconds — right in your browser, with no
-            upload and no signup.
+            JPG, PNG, and WebP images, with little visible loss in quality at
+            sensible settings. Whether you're preparing photos for a website,
+            sending images over WhatsApp, or uploading a picture to a form with
+            a strict size limit, this tool gets the job done in seconds, right
+            in your browser, with no upload and no signup.
         </p>
         <p class="text-gray-700 mb-4">
             Most image compression tools upload your files to a server, process
             them, and send them back. This tool works differently. Everything
             happens on your device using JavaScript. That means your images
-            never leave your computer or phone — a big advantage for anyone
+            never leave your computer or phone, a big advantage for anyone
             handling private photos, client work, or sensitive documents.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
             <li>
-                Click or tap the upload area to choose an image from your device
+                Click or tap the upload area, or drop an image on it, to choose
+                a file from your device
             </li>
             <li>
-                Adjust the compression quality using the slider (70% is a good
-                starting point)
+                Choose how to compress: by quality (70% is a good starting
+                point), or to a target size such as 50 KB or 100 KB
+            </li>
+            <li>
+                Optionally convert to WebP, which is usually smaller than JPG or
+                PNG
             </li>
             <li>Click "Compress Image"</li>
-            <li>Compare the original and compressed versions side by side</li>
-            <li>Download the compressed image to your device</li>
+            <li>
+                Compare the original and compressed versions side by side, then
+                download the result
+            </li>
         </ol>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
                 <strong>Privacy first:</strong> Your images never leave your browser.
-                No server, no storage, no tracking.
+                No server, no storage, no tracking of your files.
+            </li>
+            <li>
+                <strong>Target sizes:</strong> Compress to 20 KB, 50 KB, 100 KB, and
+                more for forms with upload limits.
             </li>
             <li>
                 <strong>No signup:</strong> Open the tool, compress an image, download
-                it. That's it.
+                it.
             </li>
             <li>
                 <strong>Free with no limits:</strong> Compress as many images as you
@@ -206,13 +435,47 @@ import Layout from "../../layouts/Layout.astro";
             </li>
             <li>
                 <strong>Works on any device:</strong> Desktop, laptop, tablet, or
-                phone — no app needed.
+                phone, with no app needed.
             </li>
             <li>
-                <strong>Adjustable quality:</strong> You control the trade-off between
-                file size and image quality.
+                <strong>Honest results:</strong> The tool shows the exact sizes and
+                dimensions before and after, and tells you if it could not make the
+                file smaller.
             </li>
         </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            Compress an Image to 20 KB, 50 KB, or 100 KB
+        </h3>
+        <p class="text-gray-700 mb-4">
+            Many portals, job applications, and admission forms limit the size
+            of a photo or document image, often to 100 KB, 50 KB, or even 20 KB.
+            To meet such a limit:
+        </p>
+        <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+            <li>
+                Choose "To a target size" and pick the size the form asks for.
+            </li>
+            <li>Click "Compress Image" and check the result panel.</li>
+            <li>
+                If the tool says it could not reach the size, try a larger
+                target, switch the format to WebP if the form accepts it, or
+                shrink the image first with the <a
+                    href="/tools/image-resizer/"
+                    class="text-blue-600 hover:underline font-medium"
+                    >Image Resizer</a
+                >.
+            </li>
+            <li>
+                Check that the image format (JPG, PNG) and the dimensions still
+                match what the form requires.
+            </li>
+        </ol>
+        <p class="text-gray-700 mt-3 mb-4">
+            Very small targets such as 20 KB usually mean the picture has to be
+            scaled down as well, because quality alone cannot shrink a large
+            photo that far.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Real Use Cases</h3>
 
@@ -220,41 +483,39 @@ import Layout from "../../layouts/Layout.astro";
             1. Preparing Images for a Website
         </h4>
         <p class="text-gray-700 mb-4">
-            Large images are the number one reason websites load slowly. A
-            single uncompressed hero image can add 2–3 seconds to your page load
-            time. Compressing images before uploading them to WordPress,
-            Shopify, or a custom site is one of the easiest SEO wins available.
-            Google uses page speed as a ranking factor, and faster pages also
-            keep visitors around longer.
+            Large images are one of the most common reasons websites load
+            slowly. Compressing images before uploading them to WordPress,
+            Shopify, or a custom site is one of the easiest speed wins
+            available. Page speed is one of the signals search engines look at,
+            and faster pages also keep visitors around longer.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
-            2. Meeting Upload Limits on Government Forms
+            2. Meeting Upload Limits on Forms
         </h4>
         <p class="text-gray-700 mb-4">
-            Many government portals, job applications, and university admission
-            forms have strict image size limits — often 100 KB, 50 KB, or even
-            20 KB. This tool lets you compress an image down to those limits
-            without opening Photoshop or any desktop software.
+            Government portals, job applications, and university admission forms
+            often set strict image size limits. Use the target size mode to fit
+            them without desktop software.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
             3. Sending Photos on WhatsApp, Discord, or Email
         </h4>
         <p class="text-gray-700 mb-4">
-            Modern phone photos are often 5–10 MB, which makes them slow to send
-            and sometimes too large for chat apps or email attachments.
-            Compressing them first keeps them shareable without losing visible
-            quality.
+            Modern phone photos are often several megabytes, which makes them
+            slow to send and sometimes too large for chat apps or email
+            attachments. Compressing them first keeps them shareable.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
             4. Reducing Storage on Your Device
         </h4>
         <p class="text-gray-700 mb-4">
-            If your phone is running out of space, compressing your photo
-            library can free up gigabytes. Each photo typically shrinks by
-            60–90% with this tool.
+            If your phone is running out of space, compressing photos you want
+            to keep can free up room. How much you save depends on the photo and
+            the quality you choose, and the tool shows the exact saving for each
+            image.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
@@ -262,41 +523,45 @@ import Layout from "../../layouts/Layout.astro";
         </h4>
         <p class="text-gray-700 mb-4">
             If you run a small online store, compressing product images speeds
-            up category pages and product detail pages — both of which affect
-            conversion rates.
+            up category pages and product detail pages, both of which affect how
+            quickly shoppers can browse.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
         <p class="text-gray-700 mb-4">
-            Here's what happens when you compress a typical phone photo at 70%
-            quality:
+            Say a college portal accepts photos up to 100 KB and your phone
+            photo is several megabytes:
         </p>
-        <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Original file: 4.2 MB (JPG, 4032 × 3024 pixels)</li>
-            <li>Compressed file: 380 KB (same dimensions)</li>
-            <li>File size reduction: 91%</li>
-            <li>Visible quality difference: none at normal viewing size</li>
-        </ul>
-        <p class="text-gray-700 mt-4">
-            That's the difference between a 10-second upload and a 2-second one
-            — without any quality loss that a normal viewer would notice.
+        <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+            <li>Drop the photo on the upload area.</li>
+            <li>Choose "To a target size" and select 100 KB.</li>
+            <li>Click "Compress Image".</li>
+            <li>
+                Read the result: the original size, the new size, the percentage
+                saved, and the dimensions before and after.
+            </li>
+            <li>Download the file and upload it to the portal.</li>
+        </ol>
+        <p class="text-gray-700 mt-4 mb-4">
+            The exact numbers depend on your photo, which is why the tool shows
+            them for every image instead of promising a fixed saving.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Understanding Compression Quality
         </h3>
         <p class="text-gray-700 mb-4">
-            The quality slider runs from 10% to 100%. Here's what each range
-            does:
+            In quality mode the slider runs from 10% to 100%. As a rough guide
+            for photos:
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>90–100%:</strong> Almost no visible difference. Good for print
-                or high-resolution display.
+                <strong>90–100%:</strong> Almost no visible difference, with larger
+                files. Good for print or high-resolution display.
             </li>
             <li>
-                <strong>70–85%:</strong> The sweet spot for web use. Small files,
-                clean visuals.
+                <strong>70–85%:</strong> Usually the sweet spot for web use. Small
+                files and clean visuals.
             </li>
             <li>
                 <strong>50–70%:</strong> Smaller files, with slight artifacts visible
@@ -304,28 +569,30 @@ import Layout from "../../layouts/Layout.astro";
             </li>
             <li>
                 <strong>Below 50%:</strong> Visible quality loss. Use only when file
-                size is more important than quality.
+                size matters more than quality.
             </li>
         </ul>
         <p class="text-gray-700 mt-4">
-            For most photos, 70–80% is the best balance. Start there and adjust
-            based on how the result looks.
+            For most photos, 70–80% is a good balance. Start there and adjust
+            based on how the result looks. The quality slider applies to JPG and
+            WebP.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Supported Formats</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>JPG / JPEG:</strong> Best for photos. Already uses lossy compression,
-                so additional compression reduces size further.
+                <strong>JPG / JPEG:</strong> Best for photos. It is already a lossy
+                format, so compressing again at a lower quality makes it smaller but
+                loses a little more detail each time.
             </li>
             <li>
                 <strong>PNG:</strong> Best for images with transparency or sharp text.
-                Compression here targets metadata and repeated colors rather than
-                visual data.
+                PNG is lossless, so the quality slider has no effect on it. To shrink
+                a PNG, convert it to WebP or use a target size.
             </li>
             <li>
-                <strong>WebP:</strong> Modern format with better compression than
-                JPG. Ideal for web use on any browser from 2020 onwards.
+                <strong>WebP:</strong> A modern format that is usually smaller than
+                JPG at the same quality, and supported by all current major browsers.
             </li>
         </ul>
 
@@ -333,66 +600,14 @@ import Layout from "../../layouts/Layout.astro";
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Are my images uploaded to a server?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. All compression happens in your browser using
-                    JavaScript. Your images never leave your device.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What quality setting should I use?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    For most web images, 70–80% is a good balance between file
-                    size and quality. For photos you plan to print, use 90% or
-                    higher.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does compression affect image dimensions?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. This tool only reduces file size, not the width or
-                    height of the image. If you need to change dimensions, use
-                    our <a
-                        href="/tools/image-resizer/"
-                        class="text-blue-600 hover:underline font-medium"
-                        >Image Resizer</a
-                    > tool.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Can I compress multiple images at once?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    This tool compresses one image at a time. For bulk work,
-                    open multiple browser tabs and process images in parallel.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does compression reduce image quality?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    At 70%+ quality, most people can't see a difference. Below
-                    60%, artifacts (blurry patches, banding) start becoming
-                    visible. Always work from the original file to avoid
-                    re-compression losses.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
-                <p class="text-gray-700 mt-1">
-                    Yes, completely free with no signup, no limits, and no
-                    watermarks.
-                </p>
-            </div>
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
+            }
         </div>
     </section>
 
@@ -464,40 +679,157 @@ import Layout from "../../layouts/Layout.astro";
     <script>
         import imageCompression from "browser-image-compression";
 
+        const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+        const EXTENSIONS: Record<string, string> = {
+            "image/jpeg": "jpg",
+            "image/png": "png",
+            "image/webp": "webp",
+        };
+
+        const MAX_MB = Number(
+            document.getElementById("calc-config")!.dataset.maxMb,
+        );
+
         const dropZone = document.getElementById("drop-zone") as HTMLDivElement;
+        const dropText = document.getElementById("drop-text")!;
+        const dropHint = document.getElementById("drop-hint")!;
         const fileInput = document.getElementById(
             "file-input",
         ) as HTMLInputElement;
+        const modeRadios =
+            document.querySelectorAll<HTMLInputElement>('input[name="mode"]');
+        const qualityBox = document.getElementById("quality-box")!;
+        const targetBox = document.getElementById("target-box")!;
         const qualitySlider = document.getElementById(
             "quality",
         ) as HTMLInputElement;
         const qualityValue = document.getElementById("quality-value")!;
+        const targetSelect = document.getElementById(
+            "target",
+        ) as HTMLSelectElement;
+        const formatSelect = document.getElementById(
+            "format",
+        ) as HTMLSelectElement;
+        const pngNote = document.getElementById("png-note")!;
+        const errorBox = document.getElementById("error")!;
         const compressBtn = document.getElementById(
             "compress-btn",
         ) as HTMLButtonElement;
         const results = document.getElementById("results")!;
+        const resultMessage = document.getElementById("result-message")!;
         const downloadBtn = document.getElementById(
             "download-btn",
         ) as HTMLAnchorElement;
         const resetBtn = document.getElementById("reset-btn")!;
+        const previewOriginal = document.getElementById(
+            "preview-original",
+        ) as HTMLImageElement;
+        const previewCompressed = document.getElementById(
+            "preview-compressed",
+        ) as HTMLImageElement;
 
         let selectedFile: File | null = null;
+        let objectUrls: string[] = [];
+
+        function getMode(): "quality" | "target" {
+            for (const r of modeRadios)
+                if (r.checked) return r.value as "quality" | "target";
+            return "quality";
+        }
+
+        function showError(message: string) {
+            errorBox.textContent = message;
+            errorBox.classList.remove("hidden");
+        }
+
+        function clearError() {
+            errorBox.classList.add("hidden");
+        }
+
+        function revokeUrls() {
+            objectUrls.forEach((u) => URL.revokeObjectURL(u));
+            objectUrls = [];
+        }
+
+        function formatBytes(bytes: number): string {
+            if (bytes < 1024) return bytes + " B";
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+            return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+        }
+
+        // Width and height of an image file, or null if it cannot be read
+        function getDimensions(
+            blob: Blob,
+        ): Promise<{ w: number; h: number } | null> {
+            return new Promise((resolve) => {
+                const url = URL.createObjectURL(blob);
+                const img = new Image();
+                img.onload = () => {
+                    resolve({ w: img.naturalWidth, h: img.naturalHeight });
+                    URL.revokeObjectURL(url);
+                };
+                img.onerror = () => {
+                    resolve(null);
+                    URL.revokeObjectURL(url);
+                };
+                img.src = url;
+            });
+        }
+
+        function updateModeUI() {
+            const target = getMode() === "target";
+            qualityBox.classList.toggle("hidden", target);
+            targetBox.classList.toggle("hidden", !target);
+            const isPng = selectedFile?.type === "image/png";
+            pngNote.classList.toggle(
+                "hidden",
+                !(isPng && !target && formatSelect.value === "same"),
+            );
+        }
+
+        function handleFile(file: File) {
+            clearError();
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                showError(
+                    "Please choose a JPG, PNG, or WebP image. iPhone HEIC photos need to be saved as JPG first.",
+                );
+                return;
+            }
+            if (file.size > MAX_MB * 1024 * 1024) {
+                showError(
+                    `That file is larger than ${MAX_MB} MB. Please choose a smaller image.`,
+                );
+                return;
+            }
+            selectedFile = file;
+            compressBtn.disabled = false;
+            dropText.textContent = `Selected: ${file.name}`;
+            dropHint.textContent = `${formatBytes(file.size)}. Click to choose a different image.`;
+            results.classList.add("hidden");
+            updateModeUI();
+        }
 
         qualitySlider.addEventListener("input", () => {
             qualityValue.textContent = qualitySlider.value;
         });
+        modeRadios.forEach((r) => r.addEventListener("change", updateModeUI));
+        formatSelect.addEventListener("change", updateModeUI);
 
         dropZone.addEventListener("click", () => fileInput.click());
+        dropZone.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInput.click();
+            }
+        });
 
         dropZone.addEventListener("dragover", (e) => {
             e.preventDefault();
             dropZone.classList.add("border-blue-500", "bg-blue-50");
         });
-
         dropZone.addEventListener("dragleave", () => {
             dropZone.classList.remove("border-blue-500", "bg-blue-50");
         });
-
         dropZone.addEventListener("drop", (e) => {
             e.preventDefault();
             dropZone.classList.remove("border-blue-500", "bg-blue-50");
@@ -511,77 +843,112 @@ import Layout from "../../layouts/Layout.astro";
             }
         });
 
-        function handleFile(file: File) {
-            if (!file.type.startsWith("image/")) {
-                alert("Please select an image file (JPG, PNG, or WebP).");
-                return;
-            }
-            if (file.size > 20 * 1024 * 1024) {
-                alert(
-                    "File size too large. Please select an image under 20 MB.",
-                );
-                return;
-            }
-            selectedFile = file;
-            compressBtn.disabled = false;
-            dropZone.querySelector("p")!.textContent = `Selected: ${file.name}`;
-        }
-
-        function formatBytes(bytes: number): string {
-            if (bytes < 1024) return bytes + " B";
-            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-            return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+        function setMessage(text: string, kind: "info" | "warn") {
+            resultMessage.textContent = text;
+            resultMessage.className =
+                "mb-4 text-sm p-3 rounded-lg border " +
+                (kind === "warn"
+                    ? "bg-yellow-50 border-yellow-200 text-yellow-800"
+                    : "bg-blue-50 border-blue-200 text-blue-800");
         }
 
         compressBtn.addEventListener("click", async () => {
             if (!selectedFile) return;
+            const original = selectedFile;
+            clearError();
+            revokeUrls();
             compressBtn.disabled = true;
             compressBtn.textContent = "Compressing...";
 
-            const quality = parseInt(qualitySlider.value) / 100;
+            const mode = getMode();
+            const targetKB = parseInt(targetSelect.value, 10);
+
+            // Options for the browser-image-compression library
+            const options: Record<string, unknown> = { useWebWorker: true };
+            if (formatSelect.value === "webp") options.fileType = "image/webp";
+            if (mode === "quality") {
+                options.initialQuality =
+                    parseInt(qualitySlider.value, 10) / 100;
+                options.alwaysKeepResolution = true; // keep width and height
+            } else {
+                options.maxSizeMB = targetKB / 1024;
+                options.maxIteration = 20;
+            }
 
             try {
-                const compressedFile = await imageCompression(selectedFile, {
-                    maxSizeMB: 10,
-                    initialQuality: quality,
-                    useWebWorker: true,
-                });
+                const compressed: Blob = await imageCompression(
+                    original,
+                    options as never,
+                );
 
-                const originalSize = selectedFile.size;
-                const compressedSize = compressedFile.size;
-                const savedPercent =
-                    ((originalSize - compressedSize) / originalSize) * 100;
+                // If the result is not smaller, offer the original instead
+                const smaller = compressed.size < original.size;
+                const best: Blob = smaller ? compressed : original;
 
+                const originalUrl = URL.createObjectURL(original);
+                const bestUrl = URL.createObjectURL(best);
+                objectUrls.push(originalUrl, bestUrl);
+
+                const saved = smaller
+                    ? ((original.size - best.size) / original.size) * 100
+                    : 0;
                 document.getElementById("original-size")!.textContent =
-                    formatBytes(originalSize);
+                    formatBytes(original.size);
                 document.getElementById("compressed-size")!.textContent =
-                    formatBytes(compressedSize);
+                    formatBytes(best.size);
                 document.getElementById("saved-percent")!.textContent =
-                    savedPercent.toFixed(1) + "%";
+                    saved.toFixed(1) + "%";
 
-                const originalUrl = URL.createObjectURL(selectedFile);
-                const compressedUrl = URL.createObjectURL(compressedFile);
-                (
-                    document.getElementById(
-                        "preview-original",
-                    ) as HTMLImageElement
-                ).src = originalUrl;
-                (
-                    document.getElementById(
-                        "preview-compressed",
-                    ) as HTMLImageElement
-                ).src = compressedUrl;
+                previewOriginal.src = originalUrl;
+                previewCompressed.src = bestUrl;
 
-                const originalName = selectedFile.name;
-                const ext = originalName.split(".").pop();
-                const baseName = originalName.replace(/\.[^.]+$/, "");
-                downloadBtn.href = compressedUrl;
-                downloadBtn.download = `${baseName}-compressed.${ext}`;
+                const [d1, d2] = await Promise.all([
+                    getDimensions(original),
+                    getDimensions(best),
+                ]);
+                document.getElementById("dimensions")!.textContent =
+                    d1 && d2
+                        ? d1.w === d2.w && d1.h === d2.h
+                            ? `${d1.w} × ${d1.h} px (unchanged)`
+                            : `${d1.w} × ${d1.h} px → ${d2.w} × ${d2.h} px`
+                        : "—";
+
+                // Download link
+                const baseName = original.name.replace(/\.[^.]+$/, "");
+                const bestType = best.type || original.type;
+                const ext = EXTENSIONS[bestType] || "jpg";
+                downloadBtn.href = bestUrl;
+                if (smaller) {
+                    downloadBtn.download = `${baseName}-compressed.${ext}`;
+                    downloadBtn.textContent = "Download Compressed Image";
+                } else {
+                    downloadBtn.download = original.name;
+                    downloadBtn.textContent = "Download Original (unchanged)";
+                }
+
+                // Message about the outcome
+                resultMessage.className = "hidden";
+                if (!smaller) {
+                    setMessage(
+                        "This image could not be made smaller at these settings, so the original is shown. It may already be well compressed. Try a lower quality or a target size, or choose WebP.",
+                        "warn",
+                    );
+                } else if (mode === "target" && best.size > targetKB * 1024) {
+                    setMessage(
+                        `The smallest result is ${formatBytes(best.size)}, which is above your ${targetKB >= 1024 ? "1 MB" : targetKB + " KB"} target. Try a larger target, choose WebP, or shrink the image with the Image Resizer first.`,
+                        "warn",
+                    );
+                } else if (mode === "target") {
+                    setMessage(
+                        `Done: the file is ${formatBytes(best.size)}, within your ${targetKB >= 1024 ? "1 MB" : targetKB + " KB"} target. Check the dimensions below if your form has size requirements.`,
+                        "info",
+                    );
+                }
 
                 results.classList.remove("hidden");
                 results.scrollIntoView({ behavior: "smooth" });
-            } catch (err) {
-                alert(
+            } catch {
+                showError(
                     "Compression failed. Please try again with a different image.",
                 );
             } finally {
@@ -593,75 +960,26 @@ import Layout from "../../layouts/Layout.astro";
         resetBtn.addEventListener("click", () => {
             selectedFile = null;
             fileInput.value = "";
+            revokeUrls();
             results.classList.add("hidden");
+            clearError();
             compressBtn.disabled = true;
             compressBtn.textContent = "Compress Image";
-            dropZone.querySelector("p")!.textContent =
-                "Click or tap to choose an image";
+            dropText.textContent = "Click, tap, or drop an image here";
+            dropHint.textContent = `JPG, PNG, or WebP, up to ${MAX_MB} MB`;
+            updateModeUI();
         });
+
+        updateModeUI();
     </script>
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Image Compressor",
-            applicationCategory: "MultimediaApplication",
-            operatingSystem: "Any",
-            description:
-                "Free online image compressor. Compress JPG, PNG, and WebP images without losing quality. 100% client-side, no upload.",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        })}
+        set:html={JSON.stringify(webAppSchema)}
     />
-
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "Are my images uploaded to a server?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "No. All compression happens in your browser using JavaScript. Your images never leave your device.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "What quality setting should I use?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "For most web images, 70–80% is a good balance between file size and quality. For photos you plan to print, use 90% or higher.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Does compression affect image dimensions?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "No. This tool only reduces file size, not the width or height of the image. If you need to change dimensions, use our Image Resizer tool.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Does compression reduce image quality?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "At 70%+ quality, most people can't see a difference. Below 60%, artifacts start becoming visible. Always work from the original file to avoid re-compression losses.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is this tool free?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
-                    },
-                },
-            ],
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

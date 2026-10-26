@@ -1,28 +1,162 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
+const faqs = [
+    {
+        q: "What's the difference between percentage and percent?",
+        a: 'They mean the same thing. "Percent" (per cent) literally means "per hundred." "Percentage" is the noun form, as in "calculate the percentage."',
+    },
+    {
+        q: "How do I calculate percentage increase?",
+        a: "Subtract the original value from the new value, divide by the original value, then multiply by 100. Example: 100 to 150 gives (50 ÷ 100) × 100 = 50% increase.",
+    },
+    {
+        q: "How do I calculate percentage decrease?",
+        a: "The same formula works. If the new value is lower, the result is negative. Example: 150 to 100 gives (−50 ÷ 150) × 100 = −33.33%, a decrease of 33.33%.",
+    },
+    {
+        q: "What's the difference between percentage change and percentage points?",
+        a: "Percentage points measure the simple difference between two percentages (5% to 8% is a 3 percentage point increase). Percentage change measures the relative difference: (8 − 5) ÷ 5 × 100 = 60% change.",
+    },
+    {
+        q: "How do I add a percentage to a number?",
+        a: "Multiply the number by (1 + percent ÷ 100). Example: adding 18% to 3,000 gives 3,000 × 1.18 = 3,540. To subtract a percentage, multiply by (1 − percent ÷ 100) instead.",
+    },
+    {
+        q: "How do I find the original price before a discount or tax?",
+        a: 'Divide the final amount by the fraction that remains. If a price after 20% off is 800, the original is 800 ÷ 0.80 = 1,000. If a price already includes 18% tax, divide it by 1.18. The "X is Y% of what number?" calculator does this for you.',
+    },
+    {
+        q: "Can I calculate discounts on multiple items?",
+        a: "Yes. Use the Discount Calculator once per item. For a cart with several discounted items, calculate each final price, then add them together.",
+    },
+    {
+        q: "Is this tool free?",
+        a: "Yes. It is free, needs no signup, and has no limits.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Percentage Calculator",
+    url: pageUrl,
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free online percentage calculator. Find X% of Y, percentage change, discounts, add or subtract a percentage, and reverse percentages.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "Percentage Calculator",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="Percentage Calculator — Solve Percentage Problems Free"
-    description="Free online percentage calculator by ToolsVibe. Instantly solve X% of Y, calculate percentage increases or decreases, final discount prices, and markups."
+    title="Percentage Calculator: Percent Of, Change, Discount & More"
+    description="Free percentage calculator. Find X% of Y, percentage change, discounts, add or subtract a percentage, and reverse percentages. Updates as you type."
 >
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <a href="/tools/" class="hover:underline">Tools</a>
+                <span aria-hidden="true">/</span>
+                <span>Percentage Calculator</span>
+            </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">
-                Multi-Purpose Percentage Calculator
+                Percentage Calculator
             </h1>
             <p class="text-gray-600 mb-2">
                 Solve any percentage problem instantly: find X% of Y, calculate
-                percentage changes, markups, retail discounts, and more.
+                percentage changes, discounts, add or subtract a percentage, and
+                work backwards to the original number.
             </p>
             <p class="text-xs text-gray-500">
-                ⚡ Instant Results: Calculations update in real-time as you
-                type, completely in your browser.
+                ⚡ Instant Results: Calculations update as you type, completely
+                in your browser.
             </p>
+            <nav
+                aria-label="Calculators on this page"
+                class="mt-4 flex flex-wrap gap-2 text-xs"
+            >
+                <a
+                    href="#percent-of"
+                    class="px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-blue-300 text-blue-600"
+                    >X% of Y</a
+                >
+                <a
+                    href="#what-percent"
+                    class="px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-blue-300 text-blue-600"
+                    >What percent</a
+                >
+                <a
+                    href="#percent-change"
+                    class="px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-blue-300 text-blue-600"
+                    >Increase / decrease</a
+                >
+                <a
+                    href="#discount"
+                    class="px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-blue-300 text-blue-600"
+                    >Discount</a
+                >
+                <a
+                    href="#add-subtract"
+                    class="px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-blue-300 text-blue-600"
+                    >Add / subtract %</a
+                >
+                <a
+                    href="#reverse"
+                    class="px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-blue-300 text-blue-600"
+                    >Reverse percentage</a
+                >
+            </nav>
         </header>
 
         <!-- Calculator 1: X% of Y -->
-        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-4">
+        <section
+            id="percent-of"
+            class="bg-white p-6 rounded-xl border border-gray-200 mb-4 scroll-mt-24"
+        >
             <h2 class="text-lg font-semibold mb-4">What is X% of Y?</h2>
             <div class="flex flex-wrap items-center gap-3">
                 <span class="text-gray-700">What is</span>
@@ -30,6 +164,7 @@ import Layout from "../../layouts/Layout.astro";
                     type="number"
                     id="c1-x"
                     value="15"
+                    aria-label="Percentage"
                     class="w-24 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span class="text-gray-700">% of</span>
@@ -37,11 +172,15 @@ import Layout from "../../layouts/Layout.astro";
                     type="number"
                     id="c1-y"
                     value="200"
+                    aria-label="Number"
                     class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span class="text-gray-700">?</span>
             </div>
-            <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div
+                class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg"
+                aria-live="polite"
+            >
                 <p class="text-sm text-gray-600 mb-1">Result</p>
                 <p id="c1-result" class="text-2xl font-bold text-blue-700">
                     30
@@ -50,13 +189,17 @@ import Layout from "../../layouts/Layout.astro";
         </section>
 
         <!-- Calculator 2: X is what % of Y -->
-        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-4">
+        <section
+            id="what-percent"
+            class="bg-white p-6 rounded-xl border border-gray-200 mb-4 scroll-mt-24"
+        >
             <h2 class="text-lg font-semibold mb-4">X is what percent of Y?</h2>
             <div class="flex flex-wrap items-center gap-3">
                 <input
                     type="number"
                     id="c2-x"
                     value="30"
+                    aria-label="Part"
                     class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span class="text-gray-700">is what percent of</span>
@@ -64,11 +207,15 @@ import Layout from "../../layouts/Layout.astro";
                     type="number"
                     id="c2-y"
                     value="200"
+                    aria-label="Total"
                     class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span class="text-gray-700">?</span>
             </div>
-            <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div
+                class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg"
+                aria-live="polite"
+            >
                 <p class="text-sm text-gray-600 mb-1">Result</p>
                 <p id="c2-result" class="text-2xl font-bold text-blue-700">
                     15%
@@ -77,7 +224,10 @@ import Layout from "../../layouts/Layout.astro";
         </section>
 
         <!-- Calculator 3: Percentage Increase/Decrease -->
-        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-4">
+        <section
+            id="percent-change"
+            class="bg-white p-6 rounded-xl border border-gray-200 mb-4 scroll-mt-24"
+        >
             <h2 class="text-lg font-semibold mb-4">
                 Percentage Increase / Decrease
             </h2>
@@ -87,6 +237,7 @@ import Layout from "../../layouts/Layout.astro";
                     type="number"
                     id="c3-from"
                     value="100"
+                    aria-label="Starting value"
                     class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span class="text-gray-700">to</span>
@@ -94,19 +245,26 @@ import Layout from "../../layouts/Layout.astro";
                     type="number"
                     id="c3-to"
                     value="150"
+                    aria-label="New value"
                     class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
-            <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div
+                class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg"
+                aria-live="polite"
+            >
                 <p class="text-sm text-gray-600 mb-1">Change</p>
-                <p id="c3-result" class="text-2xl font-bold text-blue-700">
+                <p id="c3-result" class="text-2xl font-bold text-green-600">
                     +50%
                 </p>
             </div>
         </section>
 
         <!-- Calculator 4: Discount -->
-        <section class="bg-white p-6 rounded-xl border border-gray-200 mb-4">
+        <section
+            id="discount"
+            class="bg-white p-6 rounded-xl border border-gray-200 mb-4 scroll-mt-24"
+        >
             <h2 class="text-lg font-semibold mb-4">Discount Calculator</h2>
             <div class="flex flex-wrap items-center gap-3">
                 <span class="text-gray-700">Original price</span>
@@ -114,6 +272,7 @@ import Layout from "../../layouts/Layout.astro";
                     type="number"
                     id="c4-price"
                     value="1000"
+                    aria-label="Original price"
                     class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span class="text-gray-700">with</span>
@@ -121,11 +280,15 @@ import Layout from "../../layouts/Layout.astro";
                     type="number"
                     id="c4-discount"
                     value="20"
+                    aria-label="Discount percentage"
                     class="w-24 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span class="text-gray-700">% off</span>
             </div>
-            <div class="mt-4 grid grid-cols-2 gap-3">
+            <p id="c4-note" class="hidden mt-3 text-xs text-red-600">
+                Enter a discount between 0 and 100.
+            </p>
+            <div class="mt-4 grid grid-cols-2 gap-3" aria-live="polite">
                 <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
                     <p class="text-sm text-gray-600 mb-1">Final Price</p>
                     <p id="c4-final" class="text-xl font-bold text-green-700">
@@ -140,38 +303,134 @@ import Layout from "../../layouts/Layout.astro";
                 </div>
             </div>
         </section>
+
+        <!-- Calculator 5: Add / subtract a percentage -->
+        <section
+            id="add-subtract"
+            class="bg-white p-6 rounded-xl border border-gray-200 mb-4 scroll-mt-24"
+        >
+            <h2 class="text-lg font-semibold mb-4">
+                Add or Subtract a Percentage
+            </h2>
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="text-gray-700">Take</span>
+                <input
+                    type="number"
+                    id="c5-num"
+                    value="3000"
+                    aria-label="Number"
+                    class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-gray-700">and change it by</span>
+                <input
+                    type="number"
+                    id="c5-pct"
+                    value="18"
+                    aria-label="Percentage"
+                    class="w-24 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-gray-700">%</span>
+            </div>
+            <div
+                class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3"
+                aria-live="polite"
+            >
+                <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p class="text-sm text-gray-600 mb-1">After adding</p>
+                    <p id="c5-up" class="text-xl font-bold text-green-700">
+                        3,540
+                    </p>
+                </div>
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="text-sm text-gray-600 mb-1">After subtracting</p>
+                    <p id="c5-down" class="text-xl font-bold text-red-700">
+                        2,460
+                    </p>
+                </div>
+                <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p class="text-sm text-gray-600 mb-1">
+                        The percentage itself
+                    </p>
+                    <p id="c5-amount" class="text-xl font-bold text-blue-700">
+                        540
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculator 6: X is Y% of what number -->
+        <section
+            id="reverse"
+            class="bg-white p-6 rounded-xl border border-gray-200 mb-4 scroll-mt-24"
+        >
+            <h2 class="text-lg font-semibold mb-4">X is Y% of what number?</h2>
+            <div class="flex flex-wrap items-center gap-3">
+                <input
+                    type="number"
+                    id="c6-x"
+                    value="30"
+                    aria-label="Part"
+                    class="w-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-gray-700">is</span>
+                <input
+                    type="number"
+                    id="c6-pct"
+                    value="15"
+                    aria-label="Percentage"
+                    class="w-24 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-gray-700">% of what number?</span>
+            </div>
+            <div
+                class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg"
+                aria-live="polite"
+            >
+                <p class="text-sm text-gray-600 mb-1">The original number</p>
+                <p id="c6-result" class="text-2xl font-bold text-blue-700">
+                    200
+                </p>
+            </div>
+        </section>
     </div>
 
-    <!-- SEO Content (800+ words) -->
+    <!-- SEO Content -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">
             About This Percentage Calculator
         </h2>
         <p class="text-gray-700 mb-4">
-            This free percentage calculator handles the four most common
-            percentage problems: finding X% of Y, calculating what percent X is
-            of Y, percentage increase/decrease, and discount calculations. All
-            results update instantly as you type. It runs entirely in your
-            browser — no data is sent anywhere.
+            This free percentage calculator handles the six most common
+            percentage problems: finding X% of Y, working out what percent X is
+            of Y, percentage increase or decrease, discounts, adding or
+            subtracting a percentage, and finding the original number from a
+            percentage. All results update instantly as you type. It runs
+            entirely in your browser, so no data is sent anywhere.
         </p>
         <p class="text-gray-700 mb-4">
-            Percentages show up everywhere: shopping discounts, tax
-            calculations, tip amounts, grade scores, interest rates, and
-            business growth. This tool gives you a single page to solve every
-            percentage problem you'll encounter.
+            Percentages show up everywhere: shopping discounts, sales tax, tips,
+            grade scores, interest rates, and business growth. This tool gives
+            you a single page to solve the percentage problems you'll encounter.
         </p>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">The Four Calculators</h3>
+        <h3 class="text-xl font-semibold mt-6 mb-3">The Six Calculators</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li><strong>What is X% of Y:</strong> Find 15% of 200 = 30</li>
+            <li><strong>What is X% of Y:</strong> 15% of 200 = 30</li>
             <li>
                 <strong>X is what % of Y:</strong> 30 is what percent of 200 = 15%
             </li>
             <li>
-                <strong>Percentage Change:</strong> From 100 to 150 = +50% increase
+                <strong>Percentage change:</strong> From 100 to 150 = +50% increase
             </li>
             <li>
-                <strong>Discount:</strong> 20% off 1000 = 800 (you save 200)
+                <strong>Discount:</strong> 20% off 1,000 = 800 (you save 200)
+            </li>
+            <li>
+                <strong>Add or subtract a percentage:</strong> 3,000 + 18% = 3,540,
+                and 3,000 − 18% = 2,460
+            </li>
+            <li>
+                <strong>X is Y% of what number:</strong> 30 is 15% of 200
             </li>
         </ul>
 
@@ -182,15 +441,24 @@ import Layout from "../../layouts/Layout.astro";
             <li>X% of Y = (X ÷ 100) × Y</li>
             <li>X is what % of Y = (X ÷ Y) × 100</li>
             <li>Percentage change = ((New − Old) ÷ Old) × 100</li>
-            <li>Final price = Original × (1 − Discount ÷ 100)</li>
+            <li>
+                Final price after a discount = Original × (1 − Discount ÷ 100)
+            </li>
+            <li>Add a percentage: New = Old × (1 + X ÷ 100)</li>
+            <li>Original number = Part ÷ (Percent ÷ 100)</li>
         </ul>
+        <p class="text-gray-700 mt-3 mb-4">
+            If the starting value is negative, the percentage change is measured
+            against its absolute value, so a move from −100 to −50 counts as a
+            50% increase.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
             <li>Pick the calculator that matches your problem</li>
             <li>Enter the numbers in the fields</li>
             <li>Results update automatically as you type</li>
-            <li>No button needed — instant answers</li>
+            <li>No button needed, answers are instant</li>
         </ol>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
@@ -198,38 +466,51 @@ import Layout from "../../layouts/Layout.astro";
         <h4 class="font-semibold mt-4 mb-2">1. Shopping Discounts</h4>
         <p class="text-gray-700 mb-4">
             A jacket is PKR 5,000 with 30% off. What's the final price? The
-            Discount Calculator shows 3,500 — you save 1,500. Works for every
+            Discount Calculator shows 3,500, so you save 1,500. Works for every
             sale, coupon, and promotion.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">2. Tax Calculations</h4>
+        <h4 class="font-semibold mt-4 mb-2">2. Adding Sales Tax</h4>
         <p class="text-gray-700 mb-4">
-            If sales tax is 17%, what's the tax on a PKR 10,000 purchase? Use
-            the "X% of Y" calculator: 17% of 10,000 = 1,700.
+            In Pakistan the standard sales tax rate on most goods is 18%. Use
+            "Add or Subtract a Percentage" with 10,000 and 18%: the tax is 1,800
+            and the total is 11,800. Services are taxed separately by the
+            provinces and some goods have special rates, so check the rate that
+            applies to your item.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">3. Grade and Exam Scores</h4>
+        <h4 class="font-semibold mt-4 mb-2">
+            3. Removing Tax From a Price That Includes It
+        </h4>
         <p class="text-gray-700 mb-4">
-            You scored 87 out of 100 — what percentage is that? Use "X is what %
+            If a bill of PKR 11,800 includes 18% tax, the price before tax is
+            11,800 ÷ 1.18 = 10,000. In the "X is Y% of what number?" calculator,
+            enter 11,800 and 118, because the total is 118% of the pre-tax
+            price.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">4. Grade and Exam Scores</h4>
+        <p class="text-gray-700 mb-4">
+            You scored 87 out of 100. What percentage is that? Use "X is what %
             of Y": 87 ÷ 100 × 100 = 87%. Works for any score-to-percentage
             conversion.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">4. Business Growth Analysis</h4>
+        <h4 class="font-semibold mt-4 mb-2">5. Business Growth Analysis</h4>
         <p class="text-gray-700 mb-4">
-            Revenue grew from PKR 500,000 to PKR 750,000 — what's the growth
+            Revenue grew from PKR 500,000 to PKR 750,000. What's the growth
             rate? Use the Percentage Change calculator: ((750,000 − 500,000) ÷
             500,000) × 100 = 50% growth.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">5. Tip Calculations</h4>
+        <h4 class="font-semibold mt-4 mb-2">6. Tip Calculations</h4>
         <p class="text-gray-700 mb-4">
             If a restaurant bill is PKR 2,500 and you want to tip 15%, use "X%
             of Y": 15% of 2,500 = 375. Total to pay: 2,875.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
-            6. Interest and Investment Returns
+            7. Interest and Investment Returns
         </h4>
         <p class="text-gray-700 mb-4">
             An investment grew from PKR 100,000 to PKR 125,000. The Percentage
@@ -237,15 +518,14 @@ import Layout from "../../layouts/Layout.astro";
             loss percentages.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">7. Price Comparison</h4>
+        <h4 class="font-semibold mt-4 mb-2">8. Price Comparison</h4>
         <p class="text-gray-700 mb-4">
             One shop sells at PKR 1,200 with 15% off, another at PKR 1,100 with
-            10% off. Use the Discount Calculator for both, then compare the
-            final prices. This makes it easy to spot which deal is actually
-            better.
+            10% off. Use the Discount Calculator for both: 1,020 versus 990. The
+            second shop is the better deal.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">8. Sales Commission</h4>
+        <h4 class="font-semibold mt-4 mb-2">9. Sales Commission</h4>
         <p class="text-gray-700 mb-4">
             A salesperson earns 3% commission on a PKR 800,000 sale. Use "X% of
             Y": 3% of 800,000 = 24,000. Works for any commission structure.
@@ -253,89 +533,38 @@ import Layout from "../../layouts/Layout.astro";
 
         <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
         <p class="text-gray-700 mb-4">
-            Here's what happens across the four calculators with a real
-            scenario:
+            Here's a shopping scenario that uses several of the calculators:
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Sale price:</strong> A PKR 4,000 item is 25% off — final price
-                3,000, savings 1,000
+                <strong>Sale price:</strong> A PKR 4,000 item is 25% off, so the final
+                price is 3,000 and you save 1,000
             </li>
-            <li><strong>Tax on the sale:</strong> 17% tax on 3,000 = 510</li>
-            <li><strong>Total to pay:</strong> 3,000 + 510 = 3,510</li>
             <li>
-                <strong>Comparison:</strong> You saved 1,000 vs the original price
-                — a 25% saving
+                <strong>Tax on the sale:</strong> 18% tax on 3,000 = 540
+            </li>
+            <li>
+                <strong>Total to pay:</strong> 3,000 + 540 = 3,540 (or 3,000 plus
+                18% in the Add or Subtract calculator)
+            </li>
+            <li>
+                <strong>Saving:</strong> You saved 1,000 against the original price,
+                which is 25%
             </li>
         </ul>
-        <p class="text-gray-700 mt-4 mb-4">
-            That's how a real shopping scenario uses all four percentage
-            operations in one flow.
-        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What's the difference between percentage and percent?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    They mean the same thing. "Percent" (per cent) literally
-                    means "per hundred." "Percentage" is the noun form — e.g.
-                    "calculate the percentage."
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    How do I calculate percentage increase?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Subtract the original value from the new value, divide by
-                    the original value, then multiply by 100. Example: 100 → 150
-                    gives (50 ÷ 100) × 100 = 50% increase.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    How do I calculate percentage decrease?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    The same formula works. If the new value is lower, the
-                    result is negative. Example: 150 → 100 gives (−50 ÷ 150) ×
-                    100 = −33.33% decrease.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What's the difference between percentage change and
-                    percentage points?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Percentage points measure the simple difference between two
-                    percentages (5% to 8% is a 3 percentage point increase).
-                    Percentage change measures the relative difference ((8 − 5)
-                    ÷ 5 × 100 = 60% change).
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Can I calculate discounts on multiple items?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes. Use the Discount Calculator once per item. For a cart
-                    with several discounted items, calculate each final price,
-                    then add them together.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
-                <p class="text-gray-700 mt-1">
-                    Yes, completely free with no signup, no limits, and no
-                    watermarks.
-                </p>
-            </div>
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
+            }
         </div>
     </section>
 
@@ -374,54 +603,70 @@ import Layout from "../../layouts/Layout.astro";
     </section>
 
     <script>
-        const c1x = document.getElementById("c1-x") as HTMLInputElement;
-        const c1y = document.getElementById("c1-y") as HTMLInputElement;
-        const c1Result = document.getElementById("c1-result")!;
+        const byId = <T extends HTMLElement>(id: string) =>
+            document.getElementById(id) as T;
 
-        const c2x = document.getElementById("c2-x") as HTMLInputElement;
-        const c2y = document.getElementById("c2-y") as HTMLInputElement;
-        const c2Result = document.getElementById("c2-result")!;
+        const c1x = byId<HTMLInputElement>("c1-x");
+        const c1y = byId<HTMLInputElement>("c1-y");
+        const c1Result = byId("c1-result");
 
-        const c3From = document.getElementById("c3-from") as HTMLInputElement;
-        const c3To = document.getElementById("c3-to") as HTMLInputElement;
-        const c3Result = document.getElementById("c3-result")!;
+        const c2x = byId<HTMLInputElement>("c2-x");
+        const c2y = byId<HTMLInputElement>("c2-y");
+        const c2Result = byId("c2-result");
 
-        const c4Price = document.getElementById("c4-price") as HTMLInputElement;
-        const c4Discount = document.getElementById(
-            "c4-discount",
-        ) as HTMLInputElement;
-        const c4Final = document.getElementById("c4-final")!;
-        const c4Saved = document.getElementById("c4-saved")!;
+        const c3From = byId<HTMLInputElement>("c3-from");
+        const c3To = byId<HTMLInputElement>("c3-to");
+        const c3Result = byId("c3-result");
 
-        function format(num: number): string {
-            if (!isFinite(num)) return "—";
-            return num.toLocaleString("en-US", { maximumFractionDigits: 4 });
+        const c4Price = byId<HTMLInputElement>("c4-price");
+        const c4Discount = byId<HTMLInputElement>("c4-discount");
+        const c4Final = byId("c4-final");
+        const c4Saved = byId("c4-saved");
+        const c4Note = byId("c4-note");
+
+        const c5Num = byId<HTMLInputElement>("c5-num");
+        const c5Pct = byId<HTMLInputElement>("c5-pct");
+        const c5Up = byId("c5-up");
+        const c5Down = byId("c5-down");
+        const c5Amount = byId("c5-amount");
+
+        const c6x = byId<HTMLInputElement>("c6-x");
+        const c6Pct = byId<HTMLInputElement>("c6-pct");
+        const c6Result = byId("c6-result");
+
+        // Empty or invalid fields count as 0
+        function num(el: HTMLInputElement): number {
+            const v = parseFloat(el.value);
+            return Number.isFinite(v) ? v : 0;
+        }
+
+        function format(n: number): string {
+            if (!Number.isFinite(n)) return "—";
+            if (n === 0) n = 0; // turns -0 into 0
+            return n.toLocaleString("en-US", { maximumFractionDigits: 4 });
         }
 
         function calc1() {
-            const x = parseFloat(c1x.value) || 0;
-            const y = parseFloat(c1y.value) || 0;
-            c1Result.textContent = format((x / 100) * y);
+            c1Result.textContent = format((num(c1x) / 100) * num(c1y));
         }
 
         function calc2() {
-            const x = parseFloat(c2x.value) || 0;
-            const y = parseFloat(c2y.value) || 0;
-            if (y === 0) {
-                c2Result.textContent = "—";
-                return;
-            }
-            c2Result.textContent = format((x / y) * 100) + "%";
+            const y = num(c2y);
+            c2Result.textContent =
+                y === 0 ? "—" : format((num(c2x) / y) * 100) + "%";
         }
 
         function calc3() {
-            const from = parseFloat(c3From.value) || 0;
-            const to = parseFloat(c3To.value) || 0;
+            const from = num(c3From);
+            const to = num(c3To);
             if (from === 0) {
                 c3Result.textContent = "—";
+                c3Result.className = "text-2xl font-bold text-blue-700";
                 return;
             }
-            const change = ((to - from) / from) * 100;
+            // Measured against the absolute value, so a rise from -100 to -50
+            // is +50% rather than -50%
+            const change = ((to - from) / Math.abs(from)) * 100;
             const sign = change > 0 ? "+" : "";
             c3Result.textContent = sign + format(change) + "%";
             c3Result.className =
@@ -430,12 +675,31 @@ import Layout from "../../layouts/Layout.astro";
         }
 
         function calc4() {
-            const price = parseFloat(c4Price.value) || 0;
-            const discount = parseFloat(c4Discount.value) || 0;
+            const price = num(c4Price);
+            const discount = num(c4Discount);
+            if (discount < 0 || discount > 100) {
+                c4Note.classList.remove("hidden");
+                c4Final.textContent = "—";
+                c4Saved.textContent = "—";
+                return;
+            }
+            c4Note.classList.add("hidden");
             const saved = (price * discount) / 100;
-            const final = price - saved;
-            c4Final.textContent = format(final);
+            c4Final.textContent = format(price - saved);
             c4Saved.textContent = format(saved);
+        }
+
+        function calc5() {
+            const n = num(c5Num);
+            const p = num(c5Pct);
+            c5Up.textContent = format(n * (1 + p / 100));
+            c5Down.textContent = format(n * (1 - p / 100));
+            c5Amount.textContent = format((n * p) / 100);
+        }
+
+        function calc6() {
+            const p = num(c6Pct);
+            c6Result.textContent = p === 0 ? "—" : format(num(c6x) / (p / 100));
         }
 
         [c1x, c1y].forEach((el) => el.addEventListener("input", calc1));
@@ -444,58 +708,24 @@ import Layout from "../../layouts/Layout.astro";
         [c4Price, c4Discount].forEach((el) =>
             el.addEventListener("input", calc4),
         );
+        [c5Num, c5Pct].forEach((el) => el.addEventListener("input", calc5));
+        [c6x, c6Pct].forEach((el) => el.addEventListener("input", calc6));
 
         calc1();
         calc2();
         calc3();
         calc4();
+        calc5();
+        calc6();
     </script>
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Percentage Calculator",
-            applicationCategory: "UtilityApplication",
-            operatingSystem: "Any",
-            description:
-                "Free online percentage calculator. Solve X% of Y, percentage change, discounts, and more.",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        })}
+        set:html={JSON.stringify(webAppSchema)}
     />
-
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "What's the difference between percentage and percent?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "They mean the same thing. Percent (per cent) literally means per hundred. Percentage is the noun form — e.g. calculate the percentage.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "How do I calculate percentage increase?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Subtract the original value from the new value, divide by the original value, then multiply by 100. Example: 100 to 150 gives (50 divided by 100) times 100 = 50% increase.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is this tool free?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
-                    },
-                },
-            ],
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

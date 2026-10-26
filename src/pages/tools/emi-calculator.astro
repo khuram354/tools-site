@@ -1,15 +1,102 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
+const faqs = [
+    {
+        q: "What interest rate should I use?",
+        a: "Use the exact rate quoted by your bank in your loan offer letter. Rates vary significantly based on the bank, loan type, tenure, and your credit profile.",
+    },
+    {
+        q: "Does a longer tenure reduce my EMI?",
+        a: "Yes, a longer tenure reduces your monthly EMI but increases the total interest you pay over the life of the loan. A shorter tenure has a higher EMI but saves on total interest.",
+    },
+    {
+        q: "Is this EMI calculator accurate?",
+        a: "It uses the standard amortized loan formula. Note that Islamic banks (using diminishing musharakah) and flat-rate loans calculate differently. Always confirm the exact EMI with your bank before signing a loan agreement.",
+    },
+    {
+        q: "Does this include processing fees or insurance?",
+        a: "No. The calculator only covers principal and interest. Real-world costs can also include processing fees, insurance, and other charges, so ask your bank for the full cost.",
+    },
+    {
+        q: "Can I use this for a car loan?",
+        a: "Yes. The same formula applies to any amortized loan: car loans, home loans, personal loans, and business loans.",
+    },
+    {
+        q: "Is my financial data safe?",
+        a: "Yes. All calculations happen in your browser. Your loan amount, interest rate, and tenure are never sent to any server.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "EMI Calculator Pakistan",
+    url: pageUrl,
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free EMI calculator for Pakistan. Calculate monthly loan EMI, total interest, and yearly breakdown for home, car, and personal loans.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "EMI Calculator",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="ToolsVibe EMI Calculator Pakistan: Real Time Calculate Loan"
-    description="Free EMI calculator by ToolsVibe.online. Calculate monthly installments, total interest, and repayment schedules for home, car, and personal loans in Pakistan."
+    title="EMI Calculator Pakistan: Monthly Loan Payment & Interest"
+    description="Free EMI calculator for Pakistan. Work out your monthly installment, total interest and yearly repayment breakdown for home, car and personal loans."
 >
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <a href="/tools/" class="hover:underline">Tools</a>
+                <span aria-hidden="true">/</span>
+                <span>EMI Calculator</span>
+            </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">
-                Online Loan EMI Calculator
+                Loan EMI Calculator for Pakistan
             </h1>
             <p class="text-gray-600 mb-2">
                 Easily estimate your monthly installments, total interest, and
@@ -17,8 +104,8 @@ import Layout from "../../layouts/Layout.astro";
                 personal bank loans in Pakistan.
             </p>
             <p class="text-xs text-gray-500">
-                🔒 100% Secure: Calculations run entirely in your browser. Your
-                financial data is never saved.
+                🔒 Private: Calculations run in your browser. Your loan details
+                are never saved or sent anywhere.
             </p>
         </header>
 
@@ -40,28 +127,33 @@ import Layout from "../../layouts/Layout.astro";
                         step="10000"
                         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                    <div class="flex gap-2 mt-2">
+                    <div class="flex flex-wrap gap-2 mt-2">
                         <button
+                            type="button"
                             data-amount="500000"
                             class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
                             >5 Lakh</button
                         >
                         <button
+                            type="button"
                             data-amount="1000000"
                             class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
                             >10 Lakh</button
                         >
                         <button
+                            type="button"
                             data-amount="2000000"
                             class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
                             >20 Lakh</button
                         >
                         <button
+                            type="button"
                             data-amount="5000000"
                             class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
                             >50 Lakh</button
                         >
                         <button
+                            type="button"
                             data-amount="10000000"
                             class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
                             >1 Crore</button
@@ -110,6 +202,9 @@ import Layout from "../../layouts/Layout.astro";
                     </div>
                 </div>
 
+                <p id="error" role="alert" class="hidden text-sm text-red-600">
+                </p>
+
                 <button
                     id="calculate-btn"
                     class="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
@@ -120,7 +215,7 @@ import Layout from "../../layouts/Layout.astro";
         </section>
 
         <!-- Results -->
-        <section id="results" class="hidden">
+        <section id="results" class="hidden" aria-live="polite">
             <!-- Main EMI -->
             <div
                 class="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-6 text-center"
@@ -168,9 +263,9 @@ import Layout from "../../layouts/Layout.astro";
 
             <!-- Visual Bar -->
             <div class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
-                <h3 class="text-lg font-semibold mb-4">
+                <h2 class="text-lg font-semibold mb-4">
                     Principal vs Interest
-                </h3>
+                </h2>
                 <div class="h-8 rounded-lg overflow-hidden flex">
                     <div
                         id="principal-bar"
@@ -197,7 +292,7 @@ import Layout from "../../layouts/Layout.astro";
 
             <!-- Yearly Breakdown Table -->
             <div class="bg-white p-6 rounded-xl border border-gray-200">
-                <h3 class="text-lg font-semibold mb-4">Yearly Breakdown</h3>
+                <h2 class="text-lg font-semibold mb-4">Yearly Breakdown</h2>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
@@ -222,21 +317,22 @@ import Layout from "../../layouts/Layout.astro";
         </section>
     </div>
 
-    <!-- SEO Content (800+ words) -->
+    <!-- SEO Content -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This EMI Calculator</h2>
         <p class="text-gray-700 mb-4">
             This free EMI calculator helps you estimate your monthly loan
             payment (EMI), total interest, and total amount payable. It works
             for home loans, car loans, personal loans, and any other type of
-            amortized loan. It runs entirely in your browser — your loan details
-            never leave your device.
+            amortized loan. It runs entirely in your browser, so your loan
+            details never leave your device.
         </p>
         <p class="text-gray-700 mb-4">
             Whether you're planning to buy a house, finance a car, or take a
             personal loan, knowing your monthly EMI before you sign anything
             helps you make smarter financial decisions. This tool gives you a
-            complete breakdown in seconds.
+            complete breakdown in seconds, and the results update as you change
+            the amount, rate, or tenure.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">What is EMI?</h3>
@@ -260,8 +356,8 @@ import Layout from "../../layouts/Layout.astro";
             <li>Enter the annual interest rate quoted by your bank</li>
             <li>Set the loan tenure using the slider (1 to 30 years)</li>
             <li>
-                Click "Calculate EMI" to see your monthly payment, total
-                interest, and total amount payable
+                See your monthly payment, total interest, and total amount
+                payable (press "Calculate EMI" to jump to the results)
             </li>
             <li>
                 Review the yearly breakdown to understand how your balance
@@ -308,23 +404,25 @@ import Layout from "../../layouts/Layout.astro";
         <p class="text-gray-700 mb-4">
             If you're considering a personal loan for a wedding, education, or
             medical expense, use this tool to check whether the monthly EMI fits
-            your budget. A common guideline: your total monthly EMIs should not
-            exceed 40% of your net income.
+            your budget. Many advisors suggest keeping your total monthly EMIs
+            well below half of your net income, and lenders apply their own
+            limits.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">4. Prepayment Planning</h4>
         <p class="text-gray-700 mb-4">
             If you plan to make a lump-sum prepayment, understanding your
-            amortization schedule helps you see how much interest you'll save.
-            The yearly breakdown shows exactly how much interest is still ahead
-            of you.
+            amortization schedule helps you see how much interest you could
+            save. The yearly breakdown shows how your balance falls each year
+            and how much of each year's payments goes to interest.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">5. Debt Consolidation Decisions</h4>
         <p class="text-gray-700 mb-4">
-            If you have multiple loans, use this calculator to see the total
-            monthly burden. It can help you decide whether consolidating into a
-            single loan at a lower rate makes sense.
+            If you have multiple loans, run each one through the calculator and
+            add up the EMIs to see your total monthly burden. Then compare that
+            with a single consolidated loan at a lower rate to see whether it
+            makes sense.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
@@ -340,27 +438,28 @@ import Layout from "../../layouts/Layout.astro";
 
         <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
         <p class="text-gray-700 mb-4">
-            Here's what happens with a typical home loan:
+            Here's what happens with a sample loan:
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li><strong>Loan amount:</strong> PKR 2,000,000</li>
             <li><strong>Interest rate:</strong> 12% per year</li>
             <li><strong>Tenure:</strong> 5 years (60 months)</li>
-            <li><strong>Monthly EMI:</strong> ~PKR 44,489</li>
-            <li><strong>Total interest:</strong> ~PKR 669,340</li>
-            <li><strong>Total payment:</strong> ~PKR 2,669,340</li>
+            <li><strong>Monthly EMI:</strong> PKR 44,489</li>
+            <li><strong>Total interest:</strong> PKR 669,334</li>
+            <li><strong>Total payment:</strong> PKR 2,669,334</li>
         </ul>
         <p class="text-gray-700 mt-4 mb-4">
-            That's a 33% total cost on top of the principal. If the tenure were
-            10 years instead of 5, the monthly EMI would drop to ~PKR 28,694 —
-            but total interest would rise to ~PKR 1,443,280.
+            That's about 33% in interest on top of the principal. If the tenure
+            were 10 years instead of 5, the monthly EMI would drop to PKR 28,694
+            — but total interest would rise to PKR 1,443,303.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Important Notes</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Processing fees:</strong> Most banks charge 1–2% of the loan
-                amount as a one-time processing fee. This is not included in the calculation.
+                <strong>Processing fees:</strong> Many banks charge a one-time processing
+                fee, often a percentage of the loan amount. It is not included in
+                the calculation.
             </li>
             <li>
                 <strong>Insurance:</strong> Some banks require loan insurance, which
@@ -372,7 +471,9 @@ import Layout from "../../layouts/Layout.astro";
             </li>
             <li>
                 <strong>Rate changes:</strong> Floating-rate loans can change with
-                market conditions. This calculator assumes a fixed rate.
+                market conditions. In Pakistan, many floating-rate loans are priced
+                as KIBOR plus a bank spread, so your rate can change at each reset
+                date. This calculator assumes a fixed rate.
             </li>
         </ul>
 
@@ -380,66 +481,14 @@ import Layout from "../../layouts/Layout.astro";
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What interest rate should I use?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Use the exact rate quoted by your bank in your loan offer
-                    letter. Rates vary significantly based on the bank, loan
-                    type, tenure, and your credit profile.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does a longer tenure reduce my EMI?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes, a longer tenure reduces your monthly EMI but increases
-                    the total interest you pay over the life of the loan. A
-                    shorter tenure has a higher EMI but saves on total interest.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Is this EMI calculator accurate?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    It uses the standard amortized loan formula. Note that
-                    Islamic banks (using diminishing musharakah) and flat-rate
-                    loans calculate differently. Always confirm the exact EMI
-                    with your bank before signing a loan agreement.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does this include processing fees or insurance?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. The calculator only covers principal and interest.
-                    Real-world figures may include processing fees (1–2%),
-                    insurance, and other charges.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Can I use this for a car loan?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes. The same formula applies to any amortized loan — car
-                    loans, home loans, personal loans, and business loans.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Is my financial data safe?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes. All calculations happen in your browser. Your loan
-                    amount, interest rate, and tenure are never sent to any
-                    server.
-                </p>
-            </div>
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
+            }
         </div>
     </section>
 
@@ -512,6 +561,7 @@ import Layout from "../../layouts/Layout.astro";
         const tenureValue = document.getElementById("tenure-value")!;
         const calculateBtn = document.getElementById("calculate-btn")!;
         const results = document.getElementById("results")!;
+        const errorBox = document.getElementById("error")!;
         const amtBtns =
             document.querySelectorAll<HTMLButtonElement>(".amt-btn");
 
@@ -541,15 +591,31 @@ import Layout from "../../layouts/Layout.astro";
             return { emi, totalPayment, totalInterest, months, monthlyRate };
         }
 
-        function calculate() {
-            const principal = parseFloat(loanAmount.value) || 0;
-            const rate = parseFloat(interestRate.value) || 0;
-            const years = parseInt(tenureYears.value) || 1;
+        // Returns true when the inputs were valid and the results were updated.
+        // With showErrors = false (live typing) invalid input is simply ignored
+        // and the previous results stay on screen.
+        function calculate(showErrors: boolean): boolean {
+            const principal = parseFloat(loanAmount.value);
+            const rate = parseFloat(interestRate.value);
+            const years = parseInt(tenureYears.value, 10);
 
-            if (principal <= 0) {
-                alert("Please enter a valid loan amount.");
-                return;
+            let message = "";
+            if (!(principal > 0)) {
+                message = "Please enter a valid loan amount.";
+            } else if (!(rate >= 0 && rate <= 100)) {
+                message = "Please enter an interest rate between 0 and 100.";
+            } else if (!(years >= 1)) {
+                message = "Please choose a loan tenure of at least 1 year.";
             }
+
+            if (message) {
+                if (showErrors) {
+                    errorBox.textContent = message;
+                    errorBox.classList.remove("hidden");
+                }
+                return false;
+            }
+            errorBox.classList.add("hidden");
 
             const { emi, totalPayment, totalInterest, months, monthlyRate } =
                 calculateEMI(principal, rate, years);
@@ -602,79 +668,40 @@ import Layout from "../../layouts/Layout.astro";
             }
 
             results.classList.remove("hidden");
+            return true;
         }
 
+        // Live updates while the person changes any value.
         tenureYears.addEventListener("input", () => {
             tenureValue.textContent = tenureYears.value;
+            calculate(false);
         });
+        loanAmount.addEventListener("input", () => calculate(false));
+        interestRate.addEventListener("input", () => calculate(false));
 
         amtBtns.forEach((btn) => {
             btn.addEventListener("click", () => {
                 loanAmount.value = btn.dataset.amount!;
+                calculate(false);
             });
         });
 
         calculateBtn.addEventListener("click", () => {
-            calculate();
-            results.scrollIntoView({ behavior: "smooth" });
+            if (calculate(true)) {
+                results.scrollIntoView({ behavior: "smooth" });
+            }
         });
 
-        calculate();
+        calculate(false);
     </script>
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "EMI Calculator",
-            applicationCategory: "FinanceApplication",
-            operatingSystem: "Any",
-            description:
-                "Free EMI calculator for Pakistan. Calculate monthly loan EMI, total interest, and yearly breakdown for home, car, and personal loans.",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
-        })}
+        set:html={JSON.stringify(webAppSchema)}
     />
-
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "What interest rate should I use?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Use the exact rate quoted by your bank in your loan offer letter. Rates vary significantly based on the bank, loan type, tenure, and your credit profile.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Does a longer tenure reduce my EMI?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes, a longer tenure reduces your monthly EMI but increases the total interest you pay over the life of the loan.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is this EMI calculator accurate?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "It uses the standard amortized loan formula. Note that Islamic banks (using diminishing musharakah) and flat-rate loans calculate differently. Always confirm the exact EMI with your bank before signing a loan agreement.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is my financial data safe?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes. All calculations happen in your browser. Your loan amount, interest rate, and tenure are never sent to any server.",
-                    },
-                },
-            ],
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

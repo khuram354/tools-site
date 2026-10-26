@@ -1,21 +1,117 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
+const faqs = [
+    {
+        q: "Is my JSON data safe?",
+        a: "Yes. All formatting and validation happens in your browser. No data is sent to any server. Your JSON never leaves your device.",
+    },
+    {
+        q: "What is JSON?",
+        a: "JSON (JavaScript Object Notation) is a lightweight data format used to exchange data between servers and web applications. It is easy for humans to read and machines to parse.",
+    },
+    {
+        q: "Does formatting change my data?",
+        a: "No. The formatter only changes whitespace. Key order, string contents, and numbers stay exactly as you pasted them, including very large numbers such as 12345678901234567890.",
+    },
+    {
+        q: 'What does "Unexpected token" mean in JSON?',
+        a: "The parser found a character where JSON does not allow it, such as a trailing comma, single quotes, an unquoted key, a comment, or text before the first bracket. This tool shows the line and column and selects the character in your input so you can find it quickly.",
+    },
+    {
+        q: "Does this tool support large JSON files?",
+        a: "It handles typical API responses and files of several megabytes quickly. Because everything runs in your browser, very large files (tens of megabytes) can be slow or freeze the tab, so use a desktop tool like VS Code or jq for those.",
+    },
+    {
+        q: "Can I use comments in JSON?",
+        a: "No. Standard JSON has no comment syntax. If you need comments, use JSONC (used by VS Code) or YAML, but note that most APIs won't accept either.",
+    },
+    {
+        q: "What's the difference between Format and Minify?",
+        a: "Format adds indentation and line breaks to make JSON human-readable. Minify removes all whitespace to make the JSON as compact as possible, which is useful when you store or send a lot of data.",
+    },
+    {
+        q: "Is this tool free?",
+        a: "Yes. It is free, needs no signup, and has no limits.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "JSON Formatter & Validator",
+    url: pageUrl,
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free online JSON formatter and validator. Beautify or minify JSON and find syntax errors by line and column, all in your browser.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "JSON Formatter",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="JSON Formatter & Validator — Free Online JSON Tool"
-    description="Format, validate, and beautify JSON online. Free JSON formatter with syntax error detection. No signup required."
+    title="JSON Formatter & Validator Online: Beautify & Minify"
+    description="Free online JSON formatter and validator. Beautify or minify JSON and find syntax errors by line and column. Runs in your browser, no signup."
 >
     <div class="max-w-4xl mx-auto">
+        <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+            <a href="/" class="hover:underline">Home</a>
+            <span aria-hidden="true">/</span>
+            <a href="/tools/" class="hover:underline">Tools</a>
+            <span aria-hidden="true">/</span>
+            <span>JSON Formatter</span>
+        </nav>
         <h1 class="text-3xl md:text-4xl font-bold mb-3">
             JSON Formatter & Validator
         </h1>
         <p class="text-gray-600 mb-6">
-            Paste your JSON below to format, validate, and beautify it. Errors
-            will be highlighted.
+            Paste your JSON below to format, validate, and beautify it. If it is
+            invalid, the tool shows the line and column and selects the problem
+            character in your input.
         </p>
 
-        <div class="flex gap-3 mb-4 flex-wrap">
+        <div class="flex gap-3 mb-4 flex-wrap items-center">
             <button
                 id="format-btn"
                 class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
@@ -40,18 +136,33 @@ import Layout from "../../layouts/Layout.astro";
             >
                 Clear
             </button>
+            <label class="flex items-center gap-2 text-sm text-gray-700">
+                <span>Indent</span>
+                <select
+                    id="indent-select"
+                    class="p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    <option value="2" selected>2 spaces</option>
+                    <option value="4">4 spaces</option>
+                    <option value="tab">Tab</option>
+                </select>
+            </label>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                <label class="block text-sm font-medium mb-2">Input JSON</label>
+                <label for="json-input" class="block text-sm font-medium mb-2"
+                    >Input JSON</label
+                >
                 <textarea
                     id="json-input"
                     class="w-full h-96 p-4 border border-gray-300 rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
                     placeholder='{"name": "John", "age": 30}'></textarea>
             </div>
             <div>
-                <label class="block text-sm font-medium mb-2">Output</label>
+                <label for="json-output" class="block text-sm font-medium mb-2"
+                    >Output</label
+                >
                 <textarea
                     id="json-output"
                     readonly
@@ -61,31 +172,44 @@ import Layout from "../../layouts/Layout.astro";
             </div>
         </div>
 
-        <div id="status" class="mt-4 text-sm font-medium"></div>
+        <div
+            id="status"
+            role="status"
+            aria-live="polite"
+            class="mt-4 text-sm font-medium"
+        >
+        </div>
+        <p class="text-xs text-gray-500 mt-1">
+            Tip: press Ctrl + Enter (or Cmd + Enter) in the input box to format.
+        </p>
     </div>
-    <!-- SEO Content (800+ words) -->
+
+    <!-- SEO Content -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This JSON Formatter</h2>
         <p class="text-gray-700 mb-4">
             This free online JSON formatter and validator helps developers
-            format, beautify, and validate JSON data instantly. It detects
-            syntax errors and shows clear messages so you can fix your JSON
-            quickly. Everything runs in your browser — your data never leaves
-            your device.
+            format, beautify, minify, and validate JSON data instantly. It
+            detects syntax errors and shows the line and column so you can fix
+            your JSON quickly. Everything runs in your browser, so your data
+            never leaves your device.
         </p>
         <p class="text-gray-700 mb-4">
             JSON is the standard data format for APIs, config files, and web
-            apps. But raw JSON from a server or log file is often minified — a
+            apps. But raw JSON from a server or log file is often minified: a
             single long line that's impossible to read. This tool turns that
-            mess into clean, indented, human-readable JSON in one click. It also
-            catches syntax errors with exact positions, so you know exactly
-            where to look.
+            mess into clean, indented, human-readable JSON in one click. It only
+            changes whitespace, so your numbers, keys, and strings stay exactly
+            as you pasted them.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
             <li>Paste your JSON into the input box (or type it directly).</li>
-            <li>Click "Format" to beautify it with 2-space indentation.</li>
+            <li>
+                Choose your indentation (2 spaces, 4 spaces, or a tab) and click
+                "Format" to beautify it.
+            </li>
             <li>
                 Click "Minify" to remove all whitespace and produce a
                 single-line JSON string.
@@ -99,12 +223,17 @@ import Layout from "../../layouts/Layout.astro";
         <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Instant formatting:</strong> Paste and click — no waiting,
-                no loading.
+                <strong>Instant formatting:</strong> Paste and click, with no waiting
+                and no loading.
             </li>
             <li>
-                <strong>Error detection:</strong> Invalid JSON shows the exact error
-                message so you can fix it fast.
+                <strong>Finds the error for you:</strong> Invalid JSON shows the line,
+                column, and error message, and selects the problem character.
+            </li>
+            <li>
+                <strong>Your data stays intact:</strong> Only whitespace changes.
+                Large numbers, number formats like <code>1.0</code>, and escape
+                sequences are not rewritten.
             </li>
             <li>
                 <strong>Privacy first:</strong> Everything runs in your browser. No
@@ -116,7 +245,7 @@ import Layout from "../../layouts/Layout.astro";
             </li>
             <li>
                 <strong>Works on any device:</strong> Desktop, laptop, tablet, or
-                phone — no app needed.
+                phone, with no app needed.
             </li>
         </ul>
 
@@ -126,7 +255,7 @@ import Layout from "../../layouts/Layout.astro";
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
                 <strong>Trailing commas:</strong> A comma after the last item breaks
-                JSON. This tool catches it instantly.
+                JSON. The tool points to where the parser got stuck.
             </li>
             <li>
                 <strong>Single quotes:</strong> JSON only accepts double quotes. Single
@@ -142,18 +271,23 @@ import Layout from "../../layouts/Layout.astro";
             </li>
             <li>
                 <strong>Invalid values:</strong>
-                <code>undefined</code>, comments, and other non-JSON values are
-                detected.
+                <code>undefined</code>, <code>NaN</code>, comments, and other
+                non-JSON values are detected.
             </li>
         </ul>
+        <p class="text-gray-700 mt-3 mb-4">
+            The exact wording of the error message comes from your browser, so
+            it can differ between Chrome, Firefox, and Safari. Safari does not
+            report a position, in which case only the message is shown.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Real Use Cases</h3>
 
         <h4 class="font-semibold mt-4 mb-2">1. Debugging API Responses</h4>
         <p class="text-gray-700 mb-4">
             When an API returns minified JSON, it's nearly impossible to read.
-            Paste it here, click "Format," and you'll see the full structure —
-            nested objects, arrays, and values — all neatly indented.
+            Paste it here, click "Format," and you'll see the full structure:
+            nested objects, arrays, and values, all neatly indented.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">2. Validating Config Files</h4>
@@ -161,16 +295,18 @@ import Layout from "../../layouts/Layout.astro";
             A missing comma in a <code>package.json</code> or <code
                 >tsconfig.json</code
             > file can break your entire build. Paste the file here to verify it's
-            valid before committing.
+            valid before committing. Note that <code>tsconfig.json</code> often contains
+            comments, which standard JSON does not allow.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
-            3. Preparing Data for an API Request
+            3. Compact JSON for Requests and Storage
         </h4>
         <p class="text-gray-700 mb-4">
-            Many APIs require minified JSON in POST requests. Use the "Minify"
-            button to compress your JSON into a single line — ready to paste
-            into a request body.
+            Minified JSON is smaller, which helps when you store or send a lot
+            of data, and it's convenient for pasting into a curl command or an
+            environment variable. Use the "Minify" button to compress your JSON
+            into a single line.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">4. Learning JSON Structure</h4>
@@ -180,10 +316,12 @@ import Layout from "../../layouts/Layout.astro";
             arrays are structured.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">5. Cleaning Up Log Files</h4>
+        <h4 class="font-semibold mt-4 mb-2">5. Reading Log Entries</h4>
         <p class="text-gray-700 mb-4">
-            JSON logs are often stored as one line per event. Formatting makes
-            them readable and easier to analyze.
+            JSON logs are often stored as one event per line. Paste one event at
+            a time to make it readable. A whole log file with many JSON objects
+            on separate lines is not a single valid JSON document, so this tool
+            will report an error for it.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
@@ -238,64 +376,14 @@ import Layout from "../../layouts/Layout.astro";
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Is my JSON data safe?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes. All formatting and validation happens in your browser.
-                    No data is sent to any server. Your JSON never leaves your
-                    device.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">What is JSON?</h4>
-                <p class="text-gray-700 mt-1">
-                    JSON (JavaScript Object Notation) is a lightweight data
-                    format used to exchange data between servers and web
-                    applications. It is easy for humans to read and machines to
-                    parse.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does this tool support large JSON files?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes, it can handle large JSON files. Performance depends on
-                    your browser and device memory. If you're formatting files
-                    over 50 MB, consider using a desktop tool like VS Code or jq
-                    instead.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Can I use comments in JSON?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. Standard JSON has no comment syntax. If you need
-                    comments, use JSONC (used by VS Code) or YAML — but note
-                    that most APIs won't accept either.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What's the difference between Format and Minify?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Format adds indentation and line breaks to make JSON
-                    human-readable. Minify removes all whitespace to make the
-                    JSON as compact as possible — useful for sending over the
-                    network.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
-                <p class="text-gray-700 mt-1">
-                    Yes, completely free with no signup, no limits, and no
-                    watermarks.
-                </p>
-            </div>
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
+            }
         </div>
     </section>
 
@@ -335,13 +423,6 @@ import Layout from "../../layouts/Layout.astro";
         <h2 class="text-2xl font-bold mb-6">Related Guides</h2>
         <div class="space-y-3">
             <a
-                href="/blog/json-explained/"
-                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-            >
-                <h3 class="font-medium">JSON Explained: A Beginner's Guide</h3>
-                <p class="text-sm text-gray-600">Learn JSON from scratch.</p>
-            </a>
-            <a
                 href="/blog/common-json-errors/"
                 class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
             >
@@ -351,6 +432,13 @@ import Layout from "../../layouts/Layout.astro";
                 <p class="text-sm text-gray-600">
                     Fix JSON syntax errors fast.
                 </p>
+            </a>
+            <a
+                href="/blog/json-explained/"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-medium">JSON Explained: A Beginner's Guide</h3>
+                <p class="text-sm text-gray-600">Learn JSON from scratch.</p>
             </a>
             <a
                 href="/blog/json-vs-xml/"
@@ -376,6 +464,14 @@ import Layout from "../../layouts/Layout.astro";
         const minifyBtn = document.getElementById("minify-btn")!;
         const copyBtn = document.getElementById("copy-btn")!;
         const clearBtn = document.getElementById("clear-btn")!;
+        const indentSelect = document.getElementById(
+            "indent-select",
+        ) as HTMLSelectElement;
+
+        // The only characters JSON allows as whitespace
+        const WS = new Set([" ", "\n", "\r", "\t"]);
+
+        let lastAction: "format" | "minify" | null = null;
 
         function showStatus(message: string, type: "success" | "error") {
             status.textContent = message;
@@ -389,54 +485,222 @@ import Layout from "../../layouts/Layout.astro";
             status.className = "mt-4 text-sm font-medium";
         }
 
-        formatBtn.addEventListener("click", () => {
-            const text = input.value.trim();
-            if (!text) {
-                showStatus("Please enter some JSON.", "error");
-                return;
+        function indentUnit(): string {
+            const v = indentSelect.value;
+            return v === "tab" ? "\t" : " ".repeat(Number(v));
+        }
+
+        // Re-indents VALID json by changing whitespace only. Unlike
+        // JSON.stringify(JSON.parse(x)), it never rewrites the data itself, so
+        // big numbers (12345678901234567890), 1.0, 1e3, "\u00e9" escapes, and
+        // duplicate keys come out exactly as they went in.
+        function formatJSON(text: string, unit: string): string {
+            const out: string[] = [];
+            const pad: string[] = [""];
+            const indentOf = (n: number): string => {
+                while (pad.length <= n) pad.push(pad[pad.length - 1] + unit);
+                return pad[n];
+            };
+            let level = 0;
+            let inString = false;
+            let escaped = false;
+
+            for (let i = 0; i < text.length; i++) {
+                const ch = text[i];
+                if (inString) {
+                    out.push(ch);
+                    if (escaped) escaped = false;
+                    else if (ch === "\\") escaped = true;
+                    else if (ch === '"') inString = false;
+                    continue;
+                }
+                if (WS.has(ch)) continue;
+                if (ch === '"') {
+                    inString = true;
+                    out.push(ch);
+                    continue;
+                }
+                if (ch === "{" || ch === "[") {
+                    let j = i + 1;
+                    while (j < text.length && WS.has(text[j])) j++;
+                    const close = ch === "{" ? "}" : "]";
+                    if (text[j] === close) {
+                        // empty object or array stays on one line
+                        out.push(ch + close);
+                        i = j;
+                        continue;
+                    }
+                    level++;
+                    out.push(ch + "\n" + indentOf(level));
+                } else if (ch === "}" || ch === "]") {
+                    level--;
+                    out.push("\n" + indentOf(level) + ch);
+                } else if (ch === ",") {
+                    out.push(",\n" + indentOf(level));
+                } else if (ch === ":") {
+                    out.push(": ");
+                } else {
+                    out.push(ch);
+                }
             }
+            return out.join("");
+        }
+
+        // Removes all whitespace outside strings from VALID json.
+        function minifyJSON(text: string): string {
+            const out: string[] = [];
+            let inString = false;
+            let escaped = false;
+            for (let i = 0; i < text.length; i++) {
+                const ch = text[i];
+                if (inString) {
+                    out.push(ch);
+                    if (escaped) escaped = false;
+                    else if (ch === "\\") escaped = true;
+                    else if (ch === '"') inString = false;
+                    continue;
+                }
+                if (WS.has(ch)) continue;
+                if (ch === '"') inString = true;
+                out.push(ch);
+            }
+            return out.join("");
+        }
+
+        // Line and column (both 1-based) of a character position in the text
+        function locate(text: string, pos: number) {
+            let line = 1;
+            let lastNewline = -1;
+            for (let i = 0; i < pos && i < text.length; i++) {
+                if (text[i] === "\n") {
+                    line++;
+                    lastNewline = i;
+                }
+            }
+            return { line, column: pos - lastNewline };
+        }
+
+        // Chrome reports "position N", Firefox reports "line L column C".
+        // Safari reports neither, so this can return null.
+        function positionOf(message: string, text: string): number | null {
+            const lc = message.match(/line (\d+) column (\d+)/i);
+            if (lc) {
+                const line = Number(lc[1]);
+                const col = Number(lc[2]);
+                let pos = 0;
+                let l = 1;
+                while (l < line && pos < text.length) {
+                    if (text[pos] === "\n") l++;
+                    pos++;
+                }
+                return Math.min(pos + col - 1, text.length);
+            }
+            const p = message.match(/position (\d+)/i);
+            return p ? Math.min(Number(p[1]), text.length) : null;
+        }
+
+        // Returns the valid JSON text, or null after showing what is wrong.
+        function validate(): string | null {
+            const raw = input.value;
+            if (!raw.trim()) {
+                showStatus("Please enter some JSON.", "error");
+                return null;
+            }
+            // A byte order mark at the start makes JSON.parse fail
+            const offset = raw.charCodeAt(0) === 0xfeff ? 1 : 0;
+            const text = raw.slice(offset);
             try {
-                const parsed = JSON.parse(text);
-                output.value = JSON.stringify(parsed, null, 2);
-                showStatus("✓ Valid JSON — formatted successfully.", "success");
+                JSON.parse(text);
+                return text;
             } catch (err) {
                 output.value = "";
-                showStatus(
-                    "✗ Invalid JSON: " + (err as Error).message,
-                    "error",
-                );
+                const message = (err as Error).message;
+                const pos = positionOf(message, text);
+                if (pos === null) {
+                    showStatus("✗ Invalid JSON: " + message, "error");
+                } else {
+                    const { line, column } = locate(text, pos);
+                    showStatus(
+                        `✗ Invalid JSON at line ${line}, column ${column}: ${message}`,
+                        "error",
+                    );
+                    // Select the character where the parser got stuck
+                    const start = pos + offset;
+                    input.focus();
+                    input.setSelectionRange(
+                        start,
+                        Math.min(start + 1, input.value.length),
+                    );
+                }
+                return null;
+            }
+        }
+
+        function doFormat() {
+            const text = validate();
+            if (text === null) return;
+            output.value = formatJSON(text, indentUnit());
+            lastAction = "format";
+            showStatus("✓ Valid JSON — formatted successfully.", "success");
+        }
+
+        function doMinify() {
+            const text = validate();
+            if (text === null) return;
+            output.value = minifyJSON(text);
+            lastAction = "minify";
+            showStatus("✓ JSON minified successfully.", "success");
+        }
+
+        formatBtn.addEventListener("click", doFormat);
+        minifyBtn.addEventListener("click", doMinify);
+
+        // Ctrl/Cmd + Enter in the input box formats
+        input.addEventListener("keydown", (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+                e.preventDefault();
+                doFormat();
             }
         });
 
-        minifyBtn.addEventListener("click", () => {
-            const text = input.value.trim();
-            if (!text) {
-                showStatus("Please enter some JSON.", "error");
+        // Changing the indentation redoes the last format
+        indentSelect.addEventListener("change", () => {
+            if (lastAction === "format" && input.value.trim()) doFormat();
+        });
+
+        copyBtn.addEventListener("click", async () => {
+            if (!output.value) {
+                showStatus(
+                    "Nothing to copy yet. Format or minify first.",
+                    "error",
+                );
                 return;
             }
             try {
-                const parsed = JSON.parse(text);
-                output.value = JSON.stringify(parsed);
-                showStatus("✓ JSON minified successfully.", "success");
-            } catch (err) {
-                output.value = "";
-                showStatus(
-                    "✗ Invalid JSON: " + (err as Error).message,
-                    "error",
-                );
-            }
-        });
-
-        copyBtn.addEventListener("click", () => {
-            if (output.value) {
-                navigator.clipboard.writeText(output.value);
+                await navigator.clipboard.writeText(output.value);
                 showStatus("✓ Copied to clipboard.", "success");
+            } catch {
+                // Fallback for browsers that block the clipboard API
+                let ok = false;
+                try {
+                    output.select();
+                    ok = document.execCommand("copy");
+                } catch {
+                    ok = false;
+                }
+                showStatus(
+                    ok
+                        ? "✓ Copied to clipboard."
+                        : "✗ Could not copy. Select the output and press Ctrl + C.",
+                    ok ? "success" : "error",
+                );
             }
         });
 
         clearBtn.addEventListener("click", () => {
             input.value = "";
             output.value = "";
+            lastAction = null;
             clearStatus();
             input.focus();
         });
@@ -444,53 +708,11 @@ import Layout from "../../layouts/Layout.astro";
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "JSON Formatter & Validator",
-            applicationCategory: "DeveloperApplication",
-            operatingSystem: "Any",
-            description:
-                "Free online JSON formatter and validator. Format, beautify, and validate JSON data instantly.",
-            offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "USD",
-            },
-        })}
+        set:html={JSON.stringify(webAppSchema)}
     />
-
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "Is my JSON data safe?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes. All formatting and validation happens in your browser. No data is sent to any server.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "What is JSON?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "JSON (JavaScript Object Notation) is a lightweight data format used to exchange data between servers and web applications.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Does this tool support large JSON files?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes, it can handle large JSON files. Performance depends on your browser and device memory.",
-                    },
-                },
-            ],
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

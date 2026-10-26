@@ -1,13 +1,137 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+// ---------------------------------------------------------------------------
+// EDIT THIS BLOCK when you re-check the figures (gold and silver move daily,
+// so refresh the example prices every month or so).
+// ---------------------------------------------------------------------------
+const PRICES_DATE = "October 17, 2026";
+const DEFAULT_GOLD_PRICE = 37800; // PKR per gram, 24K gold
+const DEFAULT_SILVER_PRICE = 536; // PKR per gram, silver
+const GOVT_NISAB = 503529; // PKR, Nisab the government notified for bank Zakat deduction
+const GOVT_NISAB_YEAR = "2026";
+// ---------------------------------------------------------------------------
+
+const SILVER_NISAB_GRAMS = 612.36; // 52.5 tola
+const GOLD_NISAB_GRAMS = 87.48; // 7.5 tola
+
+const pkr = (n: number) => "PKR " + Math.round(n).toLocaleString("en-US");
+
+// The worked example uses the same maths as the calculator and the example
+// prices above, so it can never go out of step with them.
+const ex = { cash: 800000, goldGrams: 50, investments: 200000, debts: 100000 };
+const exGoldValue = ex.goldGrams * DEFAULT_GOLD_PRICE;
+const exTotalAssets = ex.cash + exGoldValue + ex.investments;
+const exNetWealth = exTotalAssets - ex.debts;
+const exNisab = SILVER_NISAB_GRAMS * DEFAULT_SILVER_PRICE;
+const exZakat = exNetWealth >= exNisab ? exNetWealth * 0.025 : 0;
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
+const faqs = [
+    {
+        q: "What is the rate of Zakat?",
+        a: "Zakat is 2.5% (one-fortieth) of your net qualifying wealth, once that wealth has stayed at or above the Nisab for one lunar year.",
+    },
+    {
+        q: "Should I use gold or silver Nisab?",
+        a: "In Pakistan the silver Nisab is the usual default, following the Hanafi view, and the government also sets its bank-deduction Nisab from the silver price. Some scholars use the gold Nisab instead. Choose the one your scholar recommends.",
+    },
+    {
+        q: "Do I pay Zakat on my house or car?",
+        a: "No. Personal-use items like your primary home, personal vehicle, and household furniture are not Zakatable.",
+    },
+    {
+        q: "Is gold jewelry Zakatable?",
+        a: "In the Hanafi school, which many people in Pakistan follow, Zakat is due on gold and silver jewelry that you own. Other schools differ for jewelry that is worn regularly. Ask your scholar if you are unsure.",
+    },
+    {
+        q: "What if I don't know current gold or silver prices?",
+        a: "Enter today's market price per gram. One tola is 11.664 grams, so divide a price per tola by 11.664 to get the price per gram. Use the 24K rate for pure gold, or ask your jeweller for the rate that matches your jewelry.",
+    },
+    {
+        q: "Which debts can I deduct?",
+        a: "Debts that are due now, such as bills and instalments you owe, are generally deducted from your wealth before Zakat is calculated. Scholars differ on long-term loans such as a home mortgage, so ask your scholar.",
+    },
+    {
+        q: "Why does my bank deduct Zakat in Ramadan?",
+        a: `Under the Zakat and Ushr Ordinance 1980, banks deduct 2.5% Zakat at source from eligible accounts on the first day of Ramadan when the balance is at or above the Nisab the government notifies each year (Rs ${GOVT_NISAB.toLocaleString("en-US")} for ${GOVT_NISAB_YEAR}). Account holders who have submitted the required declaration are exempt, and current accounts are generally not included. This calculator is for your own Zakat, so ask a scholar how to treat any amount your bank has already deducted.`,
+    },
+    {
+        q: "Does Zakat apply to all my wealth?",
+        a: "Zakat applies only to specific categories: cash, gold, silver, investments, business inventory, and receivables. Personal items like your home, car, and clothing are excluded.",
+    },
+    {
+        q: "Is my data safe?",
+        a: "Yes. All calculations happen in your browser. Your financial information is never sent to any server.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Zakat Calculator Pakistan",
+    url: pageUrl,
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free Zakat calculator for Pakistan. Calculate Zakat on cash, gold, silver, investments, business inventory and receivables against the silver or gold Nisab.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "Zakat Calculator",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="Online Zakat Calculator Pakistan — Gold, Silver & Cash"
-    description="Figure out your exact Zakat in minutes. Simply input your gold, silver, cash, or shares to get an instant calculation based on standard Nisab."
+    title="Zakat Calculator Pakistan: Gold, Silver, Cash & Nisab"
+    description="Free Zakat calculator for Pakistan. Enter cash, gold, silver, shares and business assets to see your Zakat at 2.5% against the silver or gold Nisab."
 >
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <a href="/tools/" class="hover:underline">Tools</a>
+                <span aria-hidden="true">/</span>
+                <span>Zakat Calculator</span>
+            </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">
                 Zakat Calculator Pakistan
             </h1>
@@ -20,6 +144,15 @@ import Layout from "../../layouts/Layout.astro";
                 your device.
             </p>
         </header>
+
+        <!-- Values the calculator script reads (same constants as the page text) -->
+        <div
+            id="calc-config"
+            data-silver-nisab={SILVER_NISAB_GRAMS}
+            data-gold-nisab={GOLD_NISAB_GRAMS}
+            hidden
+        >
+        </div>
 
         <!-- Nisab Info -->
         <section class="bg-blue-50 border border-blue-200 p-4 rounded-xl mb-6">
@@ -47,6 +180,13 @@ import Layout from "../../layouts/Layout.astro";
                     <span><strong>Gold Nisab:</strong> 87.48g gold</span>
                 </label>
             </div>
+            <p class="text-xs text-gray-600 mt-3">
+                For reference, the government's Nisab for Zakat deducted from
+                bank accounts is Rs {GOVT_NISAB.toLocaleString("en-US")} for {
+                    GOVT_NISAB_YEAR
+                }. It is fixed once a year, so it can differ from the Nisab
+                worked out from today's price below.
+            </p>
         </section>
 
         <!-- Assets Input -->
@@ -81,6 +221,9 @@ import Layout from "../../layouts/Layout.astro";
                         step="0.1"
                         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
+                    <p class="text-xs text-gray-500 mt-1">
+                        Have it in tola? 1 tola = 11.664 grams.
+                    </p>
                     <div class="mt-2">
                         <label
                             for="gold-price"
@@ -90,10 +233,14 @@ import Layout from "../../layouts/Layout.astro";
                         <input
                             type="number"
                             id="gold-price"
-                            value="22000"
+                            value={DEFAULT_GOLD_PRICE}
                             min="0"
                             class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
+                        <p class="text-xs text-gray-500 mt-1">
+                            Example price from {PRICES_DATE}. Please enter
+                            today's rate.
+                        </p>
                     </div>
                     <div
                         class="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg"
@@ -136,10 +283,14 @@ import Layout from "../../layouts/Layout.astro";
                         <input
                             type="number"
                             id="silver-price"
-                            value="260"
+                            value={DEFAULT_SILVER_PRICE}
                             min="0"
                             class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
+                        <p class="text-xs text-gray-500 mt-1">
+                            Example price from {PRICES_DATE}. Please enter
+                            today's rate.
+                        </p>
                     </div>
                     <div
                         class="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg"
@@ -227,7 +378,14 @@ import Layout from "../../layouts/Layout.astro";
                     min="0"
                     class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                <p class="text-xs text-gray-500 mt-1">
+                    Enter debts that are due now. Ask your scholar about
+                    long-term loans.
+                </p>
             </div>
+
+            <p id="error" role="alert" class="hidden mt-4 text-sm text-red-600">
+            </p>
 
             <button
                 id="calculate-btn"
@@ -238,7 +396,7 @@ import Layout from "../../layouts/Layout.astro";
         </section>
 
         <!-- Results -->
-        <section id="results" class="hidden">
+        <section id="results" class="hidden" aria-live="polite">
             <div
                 class="bg-green-50 border border-green-200 p-6 rounded-xl mb-6 text-center"
             >
@@ -247,10 +405,14 @@ import Layout from "../../layouts/Layout.astro";
                     PKR 0
                 </p>
                 <p id="zakat-status" class="text-sm text-gray-600 mt-2">—</p>
+                <p class="text-xs text-gray-500 mt-3">
+                    Zakat is due only if your wealth stayed at or above the
+                    Nisab for one full lunar year (Hawl).
+                </p>
             </div>
 
             <div class="bg-white p-6 rounded-xl border border-gray-200">
-                <h3 class="text-lg font-semibold mb-4">Detailed Breakdown</h3>
+                <h2 class="text-lg font-semibold mb-4">Detailed Breakdown</h2>
                 <table class="w-full text-sm">
                     <tbody class="divide-y divide-gray-100">
                         <tr>
@@ -341,29 +503,28 @@ import Layout from "../../layouts/Layout.astro";
         </section>
     </div>
 
-    <!-- SEO Content (800+ words) -->
+    <!-- SEO Content -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This Zakat Calculator</h2>
         <p class="text-gray-700 mb-4">
             This free Zakat calculator helps Muslims calculate their annual
             Zakat on cash, gold, silver, savings, investments, business
             inventory, and receivables. It uses the standard Nisab thresholds
-            based on gold and silver weights. Everything runs in your browser —
-            your financial data never leaves your device.
+            based on gold and silver weights. Everything runs in your browser,
+            so your financial data never leaves your device.
         </p>
         <p class="text-gray-700 mb-4">
             Zakat is one of the Five Pillars of Islam, and calculating it
             accurately is important for every eligible Muslim. This tool makes
-            that calculation simple, transparent, and private. No signup, no
-            tracking, no data stored on any server.
+            that calculation simple, transparent, and private. No signup and no
+            data stored on any server.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">What is Zakat?</h3>
         <p class="text-gray-700 mb-4">
-            Zakat is one of the Five Pillars of Islam. It is an obligatory
-            annual charity of <strong>2.5%</strong> on a Muslim's qualifying wealth,
-            provided that wealth exceeds the Nisab threshold and has been held for
-            one lunar year (Hawl).
+            Zakat is an obligatory annual charity of <strong>2.5%</strong> on a Muslim's
+            qualifying wealth, provided that wealth reaches the Nisab threshold and
+            has been held for one lunar year (Hawl).
         </p>
         <p class="text-gray-700 mb-4">
             Unlike voluntary charity (Sadaqah), Zakat is a religious obligation
@@ -385,8 +546,17 @@ import Layout from "../../layouts/Layout.astro";
             </li>
         </ul>
         <p class="text-gray-700 mt-3 mb-4">
-            Many scholars and commonly in Pakistan, the silver Nisab is used
-            because it is lower — making Zakat obligatory for more people.
+            In Pakistan the silver Nisab is commonly used, following the Hanafi
+            view, because it is lower and so covers more people. Some scholars
+            use the gold Nisab instead. If you are unsure, ask your scholar.
+        </p>
+        <p class="text-gray-700 mb-4">
+            The Nisab in rupees depends on the price of silver or gold, so it
+            changes as prices change. The government notifies one fixed Nisab
+            each year for Zakat deducted from bank accounts (Rs {
+                GOVT_NISAB.toLocaleString("en-US")
+            } for {GOVT_NISAB_YEAR}), which can differ from the figure worked
+            out from today's price.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
@@ -395,15 +565,16 @@ import Layout from "../../layouts/Layout.astro";
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
             <li>Choose your Nisab basis (silver or gold)</li>
             <li>Enter your cash in hand and bank accounts</li>
+            <li>Enter your gold in grams and today's gold price per gram</li>
             <li>
-                Enter your gold in grams and the current gold price per gram
-            </li>
-            <li>
-                Enter your silver in grams and the current silver price per gram
+                Enter your silver in grams and today's silver price per gram
             </li>
             <li>Add any investments, business inventory, and receivables</li>
-            <li>Enter any deductible debts</li>
-            <li>Click "Calculate Zakat" to see your total</li>
+            <li>Enter any debts that are due now</li>
+            <li>
+                See your Zakat. It updates as you type, and "Calculate Zakat"
+                jumps you to the results.
+            </li>
         </ol>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
@@ -415,13 +586,15 @@ import Layout from "../../layouts/Layout.astro";
                 whether in a savings account, current account, or in cash.
             </li>
             <li>
-                <strong>Gold and silver:</strong> In any form — jewelry, coins, bars,
-                or ornaments (with some scholarly differences on jewelry in regular
-                use).
+                <strong>Gold and silver:</strong> In any form: jewelry, coins, bars,
+                or ornaments (scholars differ on jewelry that is worn regularly; see
+                the FAQ below).
             </li>
             <li>
-                <strong>Investments:</strong> Shares, mutual funds, stocks, and other
-                financial instruments.
+                <strong>Investments:</strong> Shares, mutual funds, and other financial
+                instruments. Many scholars apply Zakat on the market value of investments
+                held to trade or as an investment, and rulings differ for long-term
+                holdings, so ask your scholar.
             </li>
             <li>
                 <strong>Business inventory:</strong> Stock and goods held for sale.
@@ -447,7 +620,7 @@ import Layout from "../../layouts/Layout.astro";
         <p class="text-gray-700 mb-4">
             The most common scenario: you have cash in bank accounts and want to
             calculate Zakat on it. Enter your total savings, and the calculator
-            shows the exact amount due at 2.5%.
+            shows the amount due at 2.5%.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">2. Zakat on Gold Jewelry</h4>
@@ -460,20 +633,19 @@ import Layout from "../../layouts/Layout.astro";
         <h4 class="font-semibold mt-4 mb-2">3. Zakat on Business Assets</h4>
         <p class="text-gray-700 mb-4">
             Business owners need to include cash, inventory, and receivables.
-            Deductible debts (money you owe) can be subtracted before
-            calculating Zakat.
+            Debts that are due now can be subtracted before calculating Zakat.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">4. Zakat on Investments</h4>
         <p class="text-gray-700 mb-4">
-            Shares, mutual funds, and other investments are Zakatable based on
-            their current market value. Enter the total value and the calculator
-            includes it in the total.
+            Enter the current market value of the shares, mutual funds, or other
+            investments you want to include, and the calculator adds it to your
+            total. Ask your scholar which of your holdings count.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">5. Checking Nisab Eligibility</h4>
         <p class="text-gray-700 mb-4">
-            If your total wealth is below Nisab, Zakat is not obligatory. The
+            If your net wealth is below the Nisab, Zakat is not obligatory. The
             calculator tells you immediately whether you meet the threshold.
         </p>
 
@@ -484,84 +656,52 @@ import Layout from "../../layouts/Layout.astro";
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
-        <p class="text-gray-700 mb-4">Here's a typical calculation:</p>
+        <p class="text-gray-700 mb-4">
+            Here's a sample calculation using the example prices from {
+                PRICES_DATE
+            }:
+        </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li><strong>Cash & bank:</strong> PKR 800,000</li>
+            <li><strong>Cash & bank:</strong> {pkr(ex.cash)}</li>
             <li>
-                <strong>Gold:</strong> 50 grams × PKR 22,000 = PKR 1,100,000
+                <strong>Gold:</strong>
+                {ex.goldGrams} grams × {pkr(DEFAULT_GOLD_PRICE)} = {
+                    pkr(exGoldValue)
+                }
             </li>
             <li><strong>Silver:</strong> 0 grams</li>
-            <li><strong>Investments:</strong> PKR 200,000</li>
-            <li><strong>Total assets:</strong> PKR 2,100,000</li>
-            <li><strong>Debts:</strong> PKR 100,000</li>
-            <li><strong>Net wealth:</strong> PKR 2,000,000</li>
+            <li><strong>Investments:</strong> {pkr(ex.investments)}</li>
+            <li><strong>Total assets:</strong> {pkr(exTotalAssets)}</li>
+            <li><strong>Debts:</strong> {pkr(ex.debts)}</li>
+            <li><strong>Net wealth:</strong> {pkr(exNetWealth)}</li>
             <li>
-                <strong>Silver Nisab:</strong> 612.36g × PKR 260 = PKR 159,214
+                <strong>Silver Nisab:</strong>
+                {SILVER_NISAB_GRAMS}g × {pkr(DEFAULT_SILVER_PRICE)} = {
+                    pkr(exNisab)
+                }
             </li>
-            <li><strong>Net wealth exceeds Nisab:</strong> Yes</li>
-            <li><strong>Zakat due (2.5%):</strong> PKR 50,000</li>
+            <li>
+                <strong>Net wealth exceeds Nisab:</strong>
+                {exNetWealth >= exNisab ? "Yes" : "No"}
+            </li>
+            <li>
+                <strong>Zakat due (2.5%):</strong>
+                {pkr(exZakat)}
+            </li>
         </ul>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What is the rate of Zakat?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Zakat is <strong>2.5%</strong> (one-fortieth) of your net qualifying
-                    wealth.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Should I use gold or silver Nisab?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Most scholars recommend silver Nisab because it is lower,
-                    which means more people qualify. Either is valid — the
-                    choice is yours, but consult a scholar if unsure.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Do I pay Zakat on my house or car?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. Personal-use items like your primary home, personal
-                    vehicle, and household furniture are not Zakatable.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What if I don't know current gold or silver prices?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Enter the current market price per gram. For accurate Zakat,
-                    use today's local gold or silver rate from your city's
-                    sarafa bazaar.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">Is my data safe?</h4>
-                <p class="text-gray-700 mt-1">
-                    Yes. All calculations happen in your browser. Your financial
-                    information is never sent to any server.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does Zakat apply to all my wealth?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Zakat applies only to specific categories: cash, gold,
-                    silver, investments, business inventory, and receivables.
-                    Personal items like your home, car, and clothing are
-                    excluded.
-                </p>
-            </div>
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
+            }
         </div>
 
         <p
@@ -569,7 +709,7 @@ import Layout from "../../layouts/Layout.astro";
         >
             <strong>Disclaimer:</strong> This calculator is for general guidance only.
             For specific fiqh rulings and personal situations, consult your trusted
-            scholar or mufti. The author is not responsible for any errors or omissions
+            scholar or mufti. ToolsVibe is not responsible for any errors or omissions
             in the calculations.
         </p>
     </section>
@@ -610,6 +750,15 @@ import Layout from "../../layouts/Layout.astro";
         <h2 class="text-2xl font-bold mb-6">Related Guides</h2>
         <div class="space-y-3">
             <a
+                href="/blog/how-to-calculate-zakat-gold/"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-medium">How to Calculate Zakat on Gold</h3>
+                <p class="text-sm text-gray-600">
+                    Step-by-step guide to Zakat on gold and jewelry.
+                </p>
+            </a>
+            <a
                 href="/blog/how-to-save-tax-pakistan/"
                 class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
             >
@@ -620,19 +769,14 @@ import Layout from "../../layouts/Layout.astro";
                     Tax credits and deductions you should know.
                 </p>
             </a>
-            <a
-                href="/blog/salary-tax-pakistan/"
-                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-            >
-                <h3 class="font-medium">
-                    How to Calculate Salary Tax in Pakistan
-                </h3>
-                <p class="text-sm text-gray-600">Complete FBR slab guide.</p>
-            </a>
         </div>
     </section>
 
     <script>
+        const cfg = document.getElementById("calc-config")!;
+        const SILVER_NISAB_GRAMS = parseFloat(cfg.dataset.silverNisab!);
+        const GOLD_NISAB_GRAMS = parseFloat(cfg.dataset.goldNisab!);
+
         const cashInput = document.getElementById("cash") as HTMLInputElement;
         const goldInput = document.getElementById("gold") as HTMLInputElement;
         const goldPriceInput = document.getElementById(
@@ -656,15 +800,19 @@ import Layout from "../../layouts/Layout.astro";
         const debtsInput = document.getElementById("debts") as HTMLInputElement;
         const calculateBtn = document.getElementById("calculate-btn")!;
         const results = document.getElementById("results")!;
+        const errorBox = document.getElementById("error")!;
         const nisabRadios = document.querySelectorAll<HTMLInputElement>(
             'input[name="nisab-type"]',
         );
 
-        const SILVER_NISAB_GRAMS = 612.36;
-        const GOLD_NISAB_GRAMS = 87.48;
-
         function formatPKR(num: number): string {
             return "PKR " + Math.round(num).toLocaleString("en-US");
+        }
+
+        // Empty, invalid or negative values count as 0
+        function num(el: HTMLInputElement): number {
+            const v = parseFloat(el.value);
+            return Number.isFinite(v) && v > 0 ? v : 0;
         }
 
         function getSelectedNisab(): "gold" | "silver" {
@@ -674,16 +822,39 @@ import Layout from "../../layouts/Layout.astro";
             return "silver";
         }
 
-        function calculate() {
-            const cash = parseFloat(cashInput.value) || 0;
-            const goldGrams = parseFloat(goldInput.value) || 0;
-            const goldPrice = parseFloat(goldPriceInput.value) || 0;
-            const silverGrams = parseFloat(silverInput.value) || 0;
-            const silverPrice = parseFloat(silverPriceInput.value) || 0;
-            const investments = parseFloat(investmentsInput.value) || 0;
-            const business = parseFloat(businessInput.value) || 0;
-            const receivables = parseFloat(receivablesInput.value) || 0;
-            const debts = parseFloat(debtsInput.value) || 0;
+        // Returns true when the inputs were valid and the results were updated.
+        // With showErrors = false (live typing) invalid input is ignored and
+        // the previous results stay on screen.
+        function calculate(showErrors: boolean): boolean {
+            const cash = num(cashInput);
+            const goldGrams = num(goldInput);
+            const goldPrice = num(goldPriceInput);
+            const silverGrams = num(silverInput);
+            const silverPrice = num(silverPriceInput);
+            const investments = num(investmentsInput);
+            const business = num(businessInput);
+            const receivables = num(receivablesInput);
+            const debts = num(debtsInput);
+
+            const nisabType = getSelectedNisab();
+            const nisabPrice = nisabType === "gold" ? goldPrice : silverPrice;
+
+            let message = "";
+            if (!(nisabPrice > 0)) {
+                message = `Enter today's ${nisabType} price per gram so the Nisab can be worked out.`;
+            } else if (goldGrams > 0 && !(goldPrice > 0)) {
+                message = "Enter the gold price per gram.";
+            } else if (silverGrams > 0 && !(silverPrice > 0)) {
+                message = "Enter the silver price per gram.";
+            }
+            if (message) {
+                if (showErrors) {
+                    errorBox.textContent = message;
+                    errorBox.classList.remove("hidden");
+                }
+                return false;
+            }
+            errorBox.classList.add("hidden");
 
             const goldValue = goldGrams * goldPrice;
             const silverValue = silverGrams * silverPrice;
@@ -697,11 +868,9 @@ import Layout from "../../layouts/Layout.astro";
                 receivables;
             const netWealth = Math.max(0, totalAssets - debts);
 
-            const nisabType = getSelectedNisab();
             const nisabThreshold =
-                nisabType === "gold"
-                    ? GOLD_NISAB_GRAMS * goldPrice
-                    : SILVER_NISAB_GRAMS * silverPrice;
+                (nisabType === "gold" ? GOLD_NISAB_GRAMS : SILVER_NISAB_GRAMS) *
+                nisabPrice;
 
             const isZakatable = netWealth >= nisabThreshold;
             const zakat = isZakatable ? netWealth * 0.025 : 0;
@@ -712,11 +881,11 @@ import Layout from "../../layouts/Layout.astro";
             const statusEl = document.getElementById("zakat-status")!;
             if (isZakatable) {
                 statusEl.textContent =
-                    "✓ Your net wealth exceeds Nisab — Zakat is obligatory.";
+                    "✓ Your net wealth is at or above the Nisab — Zakat is obligatory once a full lunar year has passed.";
                 statusEl.className = "text-sm text-green-700 mt-2 font-medium";
             } else {
                 statusEl.textContent =
-                    "ℹ Your net wealth is below Nisab — Zakat is not obligatory.";
+                    "ℹ Your net wealth is below the Nisab — Zakat is not obligatory.";
                 statusEl.className = "text-sm text-gray-600 mt-2";
             }
 
@@ -745,68 +914,41 @@ import Layout from "../../layouts/Layout.astro";
                 formatPKR(zakat);
 
             results.classList.remove("hidden");
+            return true;
         }
 
+        // Live updates while the person changes any value.
+        [
+            cashInput,
+            goldInput,
+            goldPriceInput,
+            silverInput,
+            silverPriceInput,
+            investmentsInput,
+            businessInput,
+            receivablesInput,
+            debtsInput,
+        ].forEach((el) => el.addEventListener("input", () => calculate(false)));
+        nisabRadios.forEach((radio) =>
+            radio.addEventListener("change", () => calculate(false)),
+        );
+
         calculateBtn.addEventListener("click", () => {
-            calculate();
-            results.scrollIntoView({ behavior: "smooth" });
+            if (calculate(true)) {
+                results.scrollIntoView({ behavior: "smooth" });
+            }
         });
 
-        calculate();
+        calculate(false);
     </script>
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Zakat Calculator",
-            applicationCategory: "FinanceApplication",
-            operatingSystem: "Any",
-            description:
-                "Free online Zakat calculator. Calculate Zakat on gold, silver, cash, savings, and investments using standard Nisab thresholds.",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
-        })}
+        set:html={JSON.stringify(webAppSchema)}
     />
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "What is the rate of Zakat?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Zakat is 2.5% (one-fortieth) of your net qualifying wealth.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Should I use gold or silver Nisab?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Most scholars recommend silver Nisab because it is lower, which means more people qualify. Either is valid — the choice is yours.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Do I pay Zakat on my house or car?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "No. Personal-use items like your primary home, personal vehicle, and household furniture are not Zakatable.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "What if I don't know current gold or silver prices?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Enter the current market price per gram. For accurate Zakat, use today's local gold or silver rate from your city's sarafa bazaar.",
-                    },
-                },
-            ],
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

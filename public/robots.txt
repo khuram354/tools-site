@@ -5,9 +5,6 @@ Allow: /
 Disallow: /*?*utm_
 Disallow: /*?*ref=
 
-# Block 404 page
-Disallow: /404
-
 # Do NOT block /_astro/ — Google needs CSS/JS to render tools
 Allow: /_astro/
 
