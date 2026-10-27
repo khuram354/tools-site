@@ -1,23 +1,156 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+const MAX_MB = 20; // largest file the tool accepts
+
+// Aspect ratio presets: the buttons and the text on this page are built from
+// this list. "free" means no fixed ratio. Exact fractions, not rounded values.
+const RATIOS = [
+    { label: "Free", value: "free" },
+    { label: "1:1", value: String(1) },
+    { label: "16:9", value: String(16 / 9) },
+    { label: "4:3", value: String(4 / 3) },
+    { label: "4:5", value: String(4 / 5) },
+    { label: "9:16", value: String(9 / 16) },
+];
+const ratioList = RATIOS.filter((r) => r.value !== "free").map((r) => r.label);
+
+const ACTIONS = [
+    { id: "rotate-left", text: "⟲ Rotate left", label: "Rotate left" },
+    { id: "rotate-right", text: "⟳ Rotate right", label: "Rotate right" },
+    { id: "flip-h", text: "⇋ Flip horizontal", label: "Flip horizontally" },
+    { id: "flip-v", text: "⇅ Flip vertical", label: "Flip vertically" },
+    { id: "reset", text: "Reset", label: "Reset the crop box and the image" },
+];
+
+const BTN = "px-3 py-2 text-sm font-medium border rounded-lg transition ";
+const BTN_ON = "bg-blue-600 text-white border-blue-600";
+const BTN_OFF =
+    "bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-400";
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
+const faqs = [
+    {
+        q: "Are my images uploaded to a server?",
+        a: "No. All cropping happens in your browser using JavaScript. Your images never leave your device.",
+    },
+    {
+        q: "What's the best aspect ratio for Instagram?",
+        a: "Common Instagram post shapes are 1:1 (square) and 4:5 (portrait), and Stories and Reels use 9:16. Instagram changes the sizes it supports from time to time, so check the app for the current options. Use the presets above to crop to these ratios.",
+    },
+    {
+        q: "Does cropping affect image quality?",
+        a: "Cropping itself does not change the pixels that remain, and the tool keeps the original resolution of the area you select. If you save as JPG or WebP, the image is saved again, which can lower quality slightly. PNG is lossless but gives larger files. By default the tool keeps your original format.",
+    },
+    {
+        q: "Which file format does the cropped image use?",
+        a: "By default the same as your original: JPG stays JPG, PNG stays PNG, and WebP stays WebP. You can also choose PNG, JPG, or WebP before you crop. JPG and WebP have a quality slider. If you choose JPG, transparent areas are filled with white.",
+    },
+    {
+        q: "Can I crop to a custom aspect ratio?",
+        a: `Yes. Select "Free" to crop to any shape without restrictions, or use one of the presets (${ratioList.join(", ")}) for common platforms.`,
+    },
+    {
+        q: "Can I rotate or flip the image?",
+        a: "Yes. Use the Rotate and Flip buttons above the image, then set the crop box. The Reset button puts the image and the crop box back to how they started.",
+    },
+    {
+        q: "How do I crop to an exact size like 413 × 531 pixels?",
+        a: "The live crop size under the image shows the width and height of your selection in pixels. For an exact size, crop to the right shape here, then set the exact width and height with the Image Resizer.",
+    },
+    {
+        q: "Does the cropped image keep camera and location data?",
+        a: "Usually not. The image is drawn onto a canvas and saved again in your browser, which normally drops metadata such as camera details and GPS location. Check the downloaded file if this matters to you.",
+    },
+    {
+        q: "Is there a limit on image size?",
+        a: `Files up to ${MAX_MB} MB are accepted. Very large photos can fail on phones whose browsers limit how big an image can be processed. If the crop fails, select a smaller area, or shrink the photo first with the Image Resizer.`,
+    },
+    {
+        q: "Is this tool free?",
+        a: "Yes. It is free, needs no signup, and has no limits.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Image Cropper",
+    url: pageUrl,
+    applicationCategory: "MultimediaApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free online image cropper. Crop JPG, PNG, and WebP images to any size or aspect ratio, rotate or flip them, and download the result.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "Image Cropper",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="Image Cropper — Crop JPG, PNG & WebP Online Free"
-    description="Crop JPG, PNG, and WebP images online for free. Custom crop, aspect ratio presets, and instant download. No signup."
+    title="Image Cropper: Crop JPG, PNG & WebP Online"
+    description="Free image cropper. Crop JPG, PNG and WebP to any size or ratio: 1:1, 16:9, 4:3, 4:5, 9:16. Rotate, flip, and download. No upload, no signup."
 >
     <div class="max-w-4xl mx-auto">
         <header class="mb-8">
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <a href="/tools/" class="hover:underline">Tools</a>
+                <span aria-hidden="true">/</span>
+                <span>Image Cropper</span>
+            </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">Image Cropper</h1>
             <p class="text-gray-600 mb-2">
                 Crop JPG, PNG, and WebP images to any size or aspect ratio.
-                Simple drag-to-crop, presets, and instant download.
+                Simple drag-to-crop, presets, rotate and flip, and instant
+                download.
             </p>
             <p class="text-xs text-gray-500">
                 Works entirely in your browser. Your images never leave your
                 device.
             </p>
         </header>
+
+        <div id="calc-config" data-max-mb={MAX_MB} hidden></div>
 
         <!-- Upload Section -->
         <section
@@ -26,6 +159,9 @@ import Layout from "../../layouts/Layout.astro";
         >
             <div
                 id="drop-zone"
+                role="button"
+                tabindex="0"
+                aria-label="Choose an image to crop"
                 class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition cursor-pointer"
             >
                 <svg
@@ -39,12 +175,17 @@ import Layout from "../../layouts/Layout.astro";
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     class="mx-auto mb-3"
+                    aria-hidden="true"
                 >
                     <path d="M6.13 1L6 16a2 2 0 0 0 2 2h15"></path>
                     <path d="M1 6.13L16 6a2 2 0 0 1 2 2v15"></path>
                 </svg>
-                <p class="font-medium mb-1">Click or tap to choose an image</p>
-                <p class="text-sm text-gray-500">JPG, PNG, or WebP</p>
+                <p class="font-medium mb-1">
+                    Click, tap, or drop an image here
+                </p>
+                <p class="text-sm text-gray-500">
+                    JPG, PNG, or WebP, up to {MAX_MB} MB
+                </p>
                 <input
                     type="file"
                     id="file-input"
@@ -52,6 +193,8 @@ import Layout from "../../layouts/Layout.astro";
                     class="hidden"
                 />
             </div>
+            <p id="error" role="alert" class="hidden mt-4 text-sm text-red-600">
+            </p>
         </section>
 
         <!-- Crop Section -->
@@ -63,36 +206,41 @@ import Layout from "../../layouts/Layout.astro";
                 <div class="mb-4">
                     <p class="text-sm font-medium mb-2">Aspect Ratio:</p>
                     <div class="flex flex-wrap gap-2">
-                        <button
-                            data-ratio="free"
-                            class="ratio-btn px-3 py-2 text-sm font-medium bg-blue-600 text-white border border-blue-600 rounded-lg transition"
-                            >Free</button
-                        >
-                        <button
-                            data-ratio="1"
-                            class="ratio-btn px-3 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 hover:border-blue-400 transition"
-                            >1:1</button
-                        >
-                        <button
-                            data-ratio="1.7777"
-                            class="ratio-btn px-3 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 hover:border-blue-400 transition"
-                            >16:9</button
-                        >
-                        <button
-                            data-ratio="1.3333"
-                            class="ratio-btn px-3 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 hover:border-blue-400 transition"
-                            >4:3</button
-                        >
-                        <button
-                            data-ratio="0.8"
-                            class="ratio-btn px-3 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 hover:border-blue-400 transition"
-                            >4:5</button
-                        >
-                        <button
-                            data-ratio="0.5625"
-                            class="ratio-btn px-3 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-50 hover:border-blue-400 transition"
-                            >9:16</button
-                        >
+                        {
+                            RATIOS.map((r, i) => (
+                                <button
+                                    type="button"
+                                    data-ratio={r.value}
+                                    aria-pressed={i === 0 ? "true" : "false"}
+                                    class={
+                                        "ratio-btn " +
+                                        BTN +
+                                        (i === 0 ? BTN_ON : BTN_OFF)
+                                    }
+                                >
+                                    {r.label}
+                                </button>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                <!-- Adjust -->
+                <div class="mb-4">
+                    <p class="text-sm font-medium mb-2">Adjust:</p>
+                    <div class="flex flex-wrap gap-2">
+                        {
+                            ACTIONS.map((a) => (
+                                <button
+                                    type="button"
+                                    data-action={a.id}
+                                    aria-label={a.label}
+                                    class={"action-btn " + BTN + BTN_OFF}
+                                >
+                                    {a.text}
+                                </button>
+                            ))
+                        }
                     </div>
                 </div>
 
@@ -104,6 +252,61 @@ import Layout from "../../layouts/Layout.astro";
                         style="max-width: 100%; display: block;"
                     />
                 </div>
+                <p id="crop-size" class="text-sm text-gray-600 mt-3">
+                    Crop size: —
+                </p>
+
+                <!-- Output -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <label
+                            for="out-format"
+                            class="block text-sm font-medium mb-2"
+                            >Save as</label
+                        >
+                        <select
+                            id="out-format"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value="same" selected
+                                >Same as original (recommended)</option
+                            >
+                            <option value="image/png"
+                                >PNG (lossless, larger)</option
+                            >
+                            <option value="image/jpeg">JPG</option>
+                            <option value="image/webp" id="webp-option"
+                                >WebP</option
+                            >
+                        </select>
+                    </div>
+                    <div id="quality-box">
+                        <label
+                            for="quality"
+                            class="block text-sm font-medium mb-2"
+                        >
+                            Quality: <span id="quality-value">92</span>%
+                        </label>
+                        <input
+                            type="range"
+                            id="quality"
+                            min="10"
+                            max="100"
+                            value="92"
+                            class="w-full"
+                        />
+                        <p class="text-xs text-gray-500 mt-1">
+                            Lower quality = smaller file (JPG and WebP only)
+                        </p>
+                    </div>
+                </div>
+
+                <p
+                    id="crop-error"
+                    role="alert"
+                    class="hidden mt-4 text-sm text-red-600"
+                >
+                </p>
 
                 <!-- Action Buttons -->
                 <div class="flex flex-wrap gap-3 mt-6">
@@ -124,9 +327,10 @@ import Layout from "../../layouts/Layout.astro";
         </section>
 
         <!-- Result -->
-        <section id="result-section" class="hidden">
+        <section id="result-section" class="hidden" aria-live="polite">
             <div class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
-                <h2 class="text-xl font-semibold mb-4">Cropped Result</h2>
+                <h2 class="text-xl font-semibold mb-2">Cropped Result</h2>
+                <p id="result-info" class="text-sm text-gray-600 mb-4">—</p>
 
                 <div class="bg-gray-100 rounded-lg p-4 mb-4">
                     <img
@@ -155,52 +359,63 @@ import Layout from "../../layouts/Layout.astro";
         </section>
     </div>
 
-    <!-- SEO Content (800+ words) -->
+    <!-- SEO Content -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This Image Cropper</h2>
         <p class="text-gray-700 mb-4">
             This free online image cropper lets you trim JPG, PNG, and WebP
-            images to the perfect size. It runs entirely in your browser — your
-            images never leave your device. Whether you need a square Instagram
-            post, a 16:9 YouTube thumbnail, or a custom crop for a website
-            header, this tool gets it done in seconds.
+            images to the perfect size. It runs entirely in your browser, so
+            your images never leave your device. Whether you need a square
+            Instagram post, a 16:9 YouTube thumbnail, or a custom crop for a
+            website header, this tool gets it done in seconds.
         </p>
         <p class="text-gray-700 mb-4">
             Most cropping tools are either part of a heavy app like Photoshop or
             require an upload to a server. This one skips both. Drop your image,
-            drag the crop box, and download the result — no signup, no software,
-            no privacy concerns.
+            drag the crop box, and download the result, with no signup and no
+            software.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
-            <li>Click or tap the upload area to choose an image</li>
             <li>
-                Choose an aspect ratio (1:1, 16:9, 4:3, 4:5, 9:16) or keep it
-                free
+                Click or tap the upload area (or drop a file) to choose an image
             </li>
-            <li>Drag the crop box to select the area you want to keep</li>
-            <li>Click "Crop & Download"</li>
-            <li>Download the cropped image</li>
+            <li>
+                Choose an aspect ratio ({ratioList.join(", ")}) or keep it free
+            </li>
+            <li>
+                Rotate or flip the image if needed, then drag the crop box to
+                select the area you want to keep
+            </li>
+            <li>Check the live crop size in pixels under the image</li>
+            <li>Click "Crop & Download" and download the cropped image</li>
         </ol>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Instant cropping:</strong> Results in under a second, no upload
-                or wait.
+                <strong>Fast cropping:</strong> No upload and no waiting.
             </li>
             <li>
-                <strong>Aspect ratio presets:</strong> One-click cropping for Instagram,
+                <strong>Aspect ratio presets:</strong> One-click ratios for Instagram,
                 YouTube, Facebook, and more.
             </li>
             <li>
-                <strong>Drag-to-crop:</strong> Visual cropping with real-time preview
-                — no guessing coordinates.
+                <strong>Drag-to-crop:</strong> Visual cropping with a live size readout,
+                so you never have to guess coordinates.
+            </li>
+            <li>
+                <strong>Keeps your format and resolution:</strong> A JPG stays a JPG,
+                and the crop is saved at the original resolution of the area you select.
+            </li>
+            <li>
+                <strong>Rotate and flip:</strong> Fix a sideways phone photo before
+                you crop.
             </li>
             <li>
                 <strong>Privacy first:</strong> Everything runs in your browser. No
-                uploads, no tracking.
+                uploads.
             </li>
             <li>
                 <strong>Free with no limits:</strong> Crop as many images as you want,
@@ -212,65 +427,86 @@ import Layout from "../../layouts/Layout.astro";
 
         <h4 class="font-semibold mt-4 mb-2">1. Instagram Posts and Stories</h4>
         <p class="text-gray-700 mb-4">
-            Instagram posts work best at 1:1 (square) or 4:5 (portrait). Stories
-            and Reels use 9:16. Use the preset buttons to crop your image to any
-            of these ratios instantly. No more awkward cropping in the Instagram
-            app.
+            Common Instagram post shapes are 1:1 (square) and 4:5 (portrait).
+            Stories and Reels use 9:16. Use the preset buttons to crop your
+            image to these ratios, and check the app for the sizes it currently
+            supports.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">2. YouTube Thumbnails</h4>
         <p class="text-gray-700 mb-4">
-            YouTube thumbnails are 1280 × 720 pixels, which is a 16:9 ratio. Use
-            the 16:9 preset to crop your image to exactly that shape, then
-            resize it to 1280 × 720 with our Image Resizer.
+            YouTube recommends thumbnails of 1280 × 720 pixels, which is a 16:9
+            ratio. Use the 16:9 preset to crop your image to that shape, then
+            set the exact size with our <a
+                href="/tools/image-resizer/"
+                class="text-blue-600 hover:underline font-medium"
+                >Image Resizer</a
+            >.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">3. Profile Pictures</h4>
         <p class="text-gray-700 mb-4">
-            Most social platforms use circular profile pictures cropped from a
-            square image. Crop your photo to 1:1 (square) first, then let the
+            Most social platforms show profile pictures as a circle cropped from
+            a square image. Crop your photo to 1:1 (square) first, then let the
             platform handle the circle.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">4. Website Hero Images</h4>
+        <h4 class="font-semibold mt-4 mb-2">
+            4. Photos for Forms and Documents
+        </h4>
         <p class="text-gray-700 mb-4">
-            Hero images often need specific aspect ratios — 16:9 for wide
+            Application forms often want a portrait photo in a particular shape.
+            Crop to the shape the form asks for, then use the Image Resizer for
+            the exact pixel size and the Image Compressor if there is a file
+            size limit.
+        </p>
+
+        <h4 class="font-semibold mt-4 mb-2">5. Website Hero Images</h4>
+        <p class="text-gray-700 mb-4">
+            Hero images often need a specific aspect ratio: 16:9 for wide
             banners, 4:3 for medium banners, 1:1 for square tile layouts. Crop
             first, then resize to the exact pixel dimensions you need.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">5. Product Photos</h4>
+        <h4 class="font-semibold mt-4 mb-2">6. Product Photos</h4>
         <p class="text-gray-700 mb-4">
-            E-commerce platforms like Shopify recommend square (1:1) product
-            photos. Cropping to 1:1 ensures your product appears consistently
-            across category pages and product detail pages.
+            Many online stores prefer square (1:1) product photos. Cropping to
+            1:1 helps your product appear consistently across category pages and
+            product detail pages.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">6. Removing Unwanted Elements</h4>
+        <h4 class="font-semibold mt-4 mb-2">7. Removing Unwanted Elements</h4>
         <p class="text-gray-700 mb-4">
-            If a photo has a distracting element on one side — a passerby, a
-            street sign, an awkward edge — crop it out. The "Free" ratio lets
-            you crop to any shape without restrictions.
+            If a photo has a distracting element on one side, such as a
+            passerby, a street sign, or an awkward edge, crop it out. The "Free"
+            ratio lets you crop to any shape without restrictions.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
         <p class="text-gray-700 mb-4">
-            Here's what happens when you crop a photo for Instagram:
+            Here's how you might prepare a phone photo for Instagram:
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Original:</strong> 4032 × 3024 pixels (4:3 ratio), 4.2 MB
+                <strong>Original:</strong> 4032 × 3024 pixels (a 4:3 photo)
             </li>
-            <li><strong>Target ratio:</strong> 1:1 (square) for Instagram</li>
+            <li><strong>Target ratio:</strong> 1:1 (square)</li>
             <li>
-                <strong>Crop selection:</strong> 3024 × 3024 pixels (the largest square
-                in the image)
+                <strong>Largest square in the photo:</strong> 3024 × 3024 pixels,
+                the full height of the image
             </li>
-            <li><strong>New file size:</strong> ~3.1 MB</li>
+            <li>
+                <strong>Next step:</strong> Resize the square to 1080 × 1080 pixels,
+                a size commonly used for square posts
+            </li>
+            <li>
+                <strong>Last step:</strong> Compress it if the file is still larger
+                than you want
+            </li>
         </ul>
         <p class="text-gray-700 mt-4 mb-4">
-            After cropping, you can resize the image to 1080 × 1080 (Instagram's
-            recommended size) and compress it to ~300 KB — ready to upload.
+            The tool shows the final size in pixels and the file size for every
+            crop, so you can see the result before you upload.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
@@ -281,7 +517,7 @@ import Layout from "../../layouts/Layout.astro";
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Crop:</strong> Removes part of the image. The size changes
+                <strong>Crop:</strong> Removes part of the image. The dimensions change
                 because you're cutting off edges.
             </li>
             <li>
@@ -289,11 +525,12 @@ import Layout from "../../layouts/Layout.astro";
                 entire image is kept, just scaled up or down.
             </li>
             <li>
-                <strong>Compress:</strong> Reduces file size without changing dimensions.
+                <strong>Compress:</strong> Reduces file size, usually by lowering
+                quality, without changing what the picture shows.
             </li>
         </ul>
         <p class="text-gray-700 mt-4 mb-4">
-            For most workflows, you'll want all three — usually in this order:
+            For most workflows you'll want all three, usually in this order:
             crop, resize, compress. Our image tools handle each step:
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
@@ -308,13 +545,15 @@ import Layout from "../../layouts/Layout.astro";
                 <a
                     href="/tools/image-resizer/"
                     class="text-blue-600 hover:underline font-medium"
-                    >Image Resizer</a>
+                    >Image Resizer</a
+                >
             </li>
             <li>
                 <a
                     href="/tools/image-compressor/"
                     class="text-blue-600 hover:underline font-medium"
-                    >Image Compressor</a>
+                    >Image Compressor</a
+                >
             </li>
         </ul>
 
@@ -322,61 +561,14 @@ import Layout from "../../layouts/Layout.astro";
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Are my images uploaded to a server?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. All cropping happens in your browser using JavaScript.
-                    Your images never leave your device.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What's the best aspect ratio for Instagram?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Instagram posts use 1:1 (square) or 4:5 (portrait). Stories
-                    and Reels use 9:16. Use the presets above to crop to these
-                    ratios.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does cropping affect image quality?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. Cropping removes pixels outside the crop area but
-                    doesn't change the quality of the pixels that remain. The
-                    remaining pixels stay exactly the same.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Can I crop to a custom aspect ratio?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Yes. Select "Free" to crop to any shape without
-                    restrictions, or use one of the presets (1:1, 16:9, 4:3,
-                    4:5, 9:16) for common platforms.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does cropping change the file format?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Cropped images are saved as PNG to preserve quality. If you
-                    need a different format, use our Image Converter afterward.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
-                <p class="text-gray-700 mt-1">
-                    Yes, completely free with no signup, no limits, and no
-                    watermarks.
-                </p>
-            </div>
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
+            }
         </div>
     </section>
 
@@ -399,7 +591,7 @@ import Layout from "../../layouts/Layout.astro";
             >
                 <h3 class="font-semibold mb-1">Image Compressor</h3>
                 <p class="text-sm text-gray-600">
-                    Reduce image file size without losing quality.
+                    Reduce image file size by quality or to a target size.
                 </p>
             </a>
             <a
@@ -440,6 +632,27 @@ import Layout from "../../layouts/Layout.astro";
         import Cropper from "cropperjs";
         import "cropperjs/dist/cropper.css";
 
+        const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+        const EXTENSIONS: Record<string, string> = {
+            "image/jpeg": "jpg",
+            "image/png": "png",
+            "image/webp": "webp",
+        };
+        const LABELS: Record<string, string> = {
+            "image/jpeg": "JPG",
+            "image/png": "PNG",
+            "image/webp": "WebP",
+        };
+        const BTN =
+            "px-3 py-2 text-sm font-medium border rounded-lg transition ";
+        const BTN_ON = "bg-blue-600 text-white border-blue-600";
+        const BTN_OFF =
+            "bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-400";
+
+        const MAX_MB = Number(
+            document.getElementById("calc-config")!.dataset.maxMb,
+        );
+
         const uploadSection = document.getElementById("upload-section")!;
         const cropSection = document.getElementById("crop-section")!;
         const resultSection = document.getElementById("result-section")!;
@@ -447,9 +660,12 @@ import Layout from "../../layouts/Layout.astro";
         const fileInput = document.getElementById(
             "file-input",
         ) as HTMLInputElement;
+        const errorBox = document.getElementById("error")!;
+        const cropError = document.getElementById("crop-error")!;
         const cropImage = document.getElementById(
             "crop-image",
         ) as HTMLImageElement;
+        const cropSize = document.getElementById("crop-size")!;
         const cropBtn = document.getElementById("crop-btn")!;
         const resetBtn = document.getElementById("reset-btn")!;
         const cropAgainBtn = document.getElementById("crop-again-btn")!;
@@ -459,30 +675,126 @@ import Layout from "../../layouts/Layout.astro";
         const resultImage = document.getElementById(
             "result-image",
         ) as HTMLImageElement;
+        const resultInfo = document.getElementById("result-info")!;
+        const outFormat = document.getElementById(
+            "out-format",
+        ) as HTMLSelectElement;
+        const webpOption = document.getElementById(
+            "webp-option",
+        ) as HTMLOptionElement;
+        const qualityBox = document.getElementById("quality-box")!;
+        const qualitySlider = document.getElementById(
+            "quality",
+        ) as HTMLInputElement;
+        const qualityValue = document.getElementById("quality-value")!;
         const ratioBtns =
             document.querySelectorAll<HTMLButtonElement>(".ratio-btn");
+        const actionBtns =
+            document.querySelectorAll<HTMLButtonElement>(".action-btn");
 
         let cropper: Cropper | null = null;
+        let currentFile: File | null = null;
         let currentFileName = "image";
+        let imageUrl: string | null = null;
+        let resultUrl: string | null = null;
+        let currentRatio = NaN; // NaN = free
+        let scaleX = 1;
+        let scaleY = 1;
+
+        function showError(message: string) {
+            errorBox.textContent = message;
+            errorBox.classList.remove("hidden");
+        }
+        function showCropError(message: string) {
+            cropError.textContent = message;
+            cropError.classList.remove("hidden");
+        }
+        function clearErrors() {
+            errorBox.classList.add("hidden");
+            cropError.classList.add("hidden");
+        }
+
+        function formatBytes(bytes: number): string {
+            if (bytes < 1024) return bytes + " B";
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+            return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+        }
+
+        // Some browsers (notably older Safari) cannot create WebP files
+        function canEncode(mime: string): boolean {
+            const c = document.createElement("canvas");
+            c.width = 1;
+            c.height = 1;
+            return c.toDataURL(mime).startsWith(`data:${mime}`);
+        }
+        if (!canEncode("image/webp")) {
+            webpOption.disabled = true;
+            webpOption.textContent = "WebP (not supported by this browser)";
+        }
+
+        // The format the cropped file will be saved in
+        function outputMime(): string {
+            if (outFormat.value === "same") {
+                return currentFile && ALLOWED_TYPES.includes(currentFile.type)
+                    ? currentFile.type
+                    : "image/png";
+            }
+            return outFormat.value;
+        }
+
+        function updateQualityBox() {
+            qualityBox.classList.toggle("hidden", outputMime() === "image/png");
+        }
+        outFormat.addEventListener("change", updateQualityBox);
+        qualitySlider.addEventListener("input", () => {
+            qualityValue.textContent = qualitySlider.value;
+        });
+
+        function setRatioUI(value: string) {
+            ratioBtns.forEach((b) => {
+                const on = b.dataset.ratio === value;
+                b.className = "ratio-btn " + BTN + (on ? BTN_ON : BTN_OFF);
+                b.setAttribute("aria-pressed", on ? "true" : "false");
+            });
+        }
+
+        function createCropper() {
+            if (cropper) cropper.destroy();
+            scaleX = 1;
+            scaleY = 1;
+            cropper = new Cropper(cropImage, {
+                viewMode: 1,
+                dragMode: "move",
+                autoCropArea: 0.8,
+                background: false,
+                aspectRatio: currentRatio,
+                crop(event: any) {
+                    const d = event.detail;
+                    cropSize.textContent = `Crop size: ${Math.round(d.width)} × ${Math.round(d.height)} px`;
+                },
+            });
+        }
 
         dropZone.addEventListener("click", () => fileInput.click());
-
+        dropZone.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInput.click();
+            }
+        });
         dropZone.addEventListener("dragover", (e) => {
             e.preventDefault();
             dropZone.classList.add("border-blue-500", "bg-blue-50");
         });
-
         dropZone.addEventListener("dragleave", () => {
             dropZone.classList.remove("border-blue-500", "bg-blue-50");
         });
-
         dropZone.addEventListener("drop", (e) => {
             e.preventDefault();
             dropZone.classList.remove("border-blue-500", "bg-blue-50");
             const files = (e as DragEvent).dataTransfer?.files;
             if (files && files.length > 0) handleFile(files[0]);
         });
-
         fileInput.addEventListener("change", () => {
             if (fileInput.files && fileInput.files.length > 0) {
                 handleFile(fileInput.files[0]);
@@ -490,93 +802,138 @@ import Layout from "../../layouts/Layout.astro";
         });
 
         function handleFile(file: File) {
-            if (!file.type.startsWith("image/")) {
-                alert("Please select an image file (JPG, PNG, or WebP).");
+            clearErrors();
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                showError(
+                    "Please choose a JPG, PNG, or WebP image. Other formats such as HEIC, GIF, or BMP are not supported.",
+                );
                 return;
             }
-            if (file.size > 20 * 1024 * 1024) {
-                alert(
-                    "File size too large. Please select an image under 20 MB.",
+            if (file.size > MAX_MB * 1024 * 1024) {
+                showError(
+                    `That file is larger than ${MAX_MB} MB. Please choose a smaller image.`,
                 );
                 return;
             }
 
+            currentFile = file;
             currentFileName = file.name.replace(/\.[^.]+$/, "");
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                cropImage.src = e.target?.result as string;
+            if (imageUrl) URL.revokeObjectURL(imageUrl);
+            imageUrl = URL.createObjectURL(file);
 
+            cropImage.onload = () => {
                 uploadSection.classList.add("hidden");
                 resultSection.classList.add("hidden");
                 cropSection.classList.remove("hidden");
-
-                if (cropper) cropper.destroy();
-                cropper = new Cropper(cropImage, {
-                    viewMode: 1,
-                    dragMode: "move",
-                    autoCropArea: 0.8,
-                    background: false,
-                });
+                currentRatio = NaN;
+                setRatioUI("free");
+                updateQualityBox();
+                createCropper();
             };
-            reader.readAsDataURL(file);
+            cropImage.onerror = () => {
+                showError(
+                    "That image could not be read. Please try another file.",
+                );
+            };
+            cropImage.src = imageUrl;
         }
 
         ratioBtns.forEach((btn) => {
             btn.addEventListener("click", () => {
-                ratioBtns.forEach((b) => {
-                    b.classList.remove(
-                        "bg-blue-600",
-                        "text-white",
-                        "border-blue-600",
-                    );
-                    b.classList.add(
-                        "bg-white",
-                        "text-gray-700",
-                        "border-gray-300",
-                    );
-                });
-                btn.classList.remove(
-                    "bg-white",
-                    "text-gray-700",
-                    "border-gray-300",
-                );
-                btn.classList.add(
-                    "bg-blue-600",
-                    "text-white",
-                    "border-blue-600",
-                );
-
-                if (!cropper) return;
                 const ratio = btn.dataset.ratio!;
-                if (ratio === "free") {
-                    cropper.setAspectRatio(NaN);
-                } else {
-                    cropper.setAspectRatio(parseFloat(ratio));
+                currentRatio = ratio === "free" ? NaN : parseFloat(ratio);
+                setRatioUI(ratio);
+                if (cropper) cropper.setAspectRatio(currentRatio);
+            });
+        });
+
+        actionBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                if (!cropper) return;
+                switch (btn.dataset.action) {
+                    case "rotate-left":
+                        cropper.rotate(-90);
+                        break;
+                    case "rotate-right":
+                        cropper.rotate(90);
+                        break;
+                    case "flip-h":
+                        scaleX = -scaleX;
+                        cropper.scaleX(scaleX);
+                        break;
+                    case "flip-v":
+                        scaleY = -scaleY;
+                        cropper.scaleY(scaleY);
+                        break;
+                    case "reset":
+                        cropper.reset();
+                        scaleX = 1;
+                        scaleY = 1;
+                        break;
                 }
             });
         });
 
         cropBtn.addEventListener("click", () => {
             if (!cropper) return;
-            const canvas = cropper.getCroppedCanvas({
-                maxWidth: 4096,
-                maxHeight: 4096,
+            clearErrors();
+            const mime = outputMime();
+
+            // No size cap: the crop keeps the original resolution of the
+            // selected area. JPG has no transparency, so fill with white.
+            const canvasOptions: Record<string, unknown> = {
                 imageSmoothingQuality: "high",
-            });
-            if (!canvas) return;
+            };
+            if (mime === "image/jpeg") canvasOptions.fillColor = "#ffffff";
 
-            canvas.toBlob((blob) => {
-                if (!blob) return;
-                const url = URL.createObjectURL(blob);
-                resultImage.src = url;
-                downloadLink.href = url;
-                downloadLink.download = `${currentFileName}-cropped.png`;
+            let canvas: HTMLCanvasElement | null = null;
+            try {
+                canvas = cropper.getCroppedCanvas(canvasOptions as never);
+            } catch {
+                canvas = null;
+            }
+            if (!canvas) {
+                showCropError(
+                    "Could not crop this image. The selected area may be too large for your browser. Select a smaller area, or shrink the photo first with the Image Resizer.",
+                );
+                return;
+            }
 
-                cropSection.classList.add("hidden");
-                resultSection.classList.remove("hidden");
-                resultSection.scrollIntoView({ behavior: "smooth" });
-            }, "image/png");
+            const w = canvas.width;
+            const h = canvas.height;
+            const quality = parseInt(qualitySlider.value, 10) / 100;
+
+            canvas.toBlob(
+                (blob) => {
+                    if (!blob) {
+                        showCropError(
+                            "Could not save the cropped image. The selected area may be too large for your browser. Select a smaller area or shrink the photo first.",
+                        );
+                        return;
+                    }
+                    // The browser must really have produced the chosen format
+                    if (blob.type !== mime) {
+                        showCropError(
+                            `Your browser could not create a ${LABELS[mime] || "file in that format"}. Choose another format under "Save as", or use a recent Chrome, Edge, or Firefox.`,
+                        );
+                        return;
+                    }
+
+                    if (resultUrl) URL.revokeObjectURL(resultUrl);
+                    resultUrl = URL.createObjectURL(blob);
+                    resultImage.src = resultUrl;
+                    downloadLink.href = resultUrl;
+                    downloadLink.download = `${currentFileName}-cropped.${EXTENSIONS[mime] || "png"}`;
+                    resultInfo.textContent = `${w} × ${h} px · ${formatBytes(blob.size)} · ${LABELS[mime] || ""}`;
+
+                    cropSection.classList.add("hidden");
+                    resultSection.classList.remove("hidden");
+                    resultSection.scrollIntoView({ behavior: "smooth" });
+                },
+                mime,
+                mime === "image/png" ? undefined : quality,
+            );
         });
 
         resetBtn.addEventListener("click", () => {
@@ -584,7 +941,13 @@ import Layout from "../../layouts/Layout.astro";
                 cropper.destroy();
                 cropper = null;
             }
+            if (imageUrl) URL.revokeObjectURL(imageUrl);
+            if (resultUrl) URL.revokeObjectURL(resultUrl);
+            imageUrl = null;
+            resultUrl = null;
+            currentFile = null;
             fileInput.value = "";
+            clearErrors();
             cropSection.classList.add("hidden");
             resultSection.classList.add("hidden");
             uploadSection.classList.remove("hidden");
@@ -593,69 +956,17 @@ import Layout from "../../layouts/Layout.astro";
         cropAgainBtn.addEventListener("click", () => {
             resultSection.classList.add("hidden");
             cropSection.classList.remove("hidden");
-            if (cropper) cropper.destroy();
-            cropper = new Cropper(cropImage, {
-                viewMode: 1,
-                dragMode: "move",
-                autoCropArea: 0.8,
-                background: false,
-            });
+            createCropper();
         });
     </script>
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Image Cropper",
-            applicationCategory: "MultimediaApplication",
-            operatingSystem: "Any",
-            description:
-                "Free online image cropper. Crop JPG, PNG, and WebP images to any size or aspect ratio.",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        })}
+        set:html={JSON.stringify(webAppSchema)}
     />
-
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "Are my images uploaded to a server?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "No. All cropping happens in your browser using JavaScript. Your images never leave your device.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "What's the best aspect ratio for Instagram?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Instagram posts use 1:1 (square) or 4:5 (portrait). Stories and Reels use 9:16. Use the presets above to crop to these ratios.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Does cropping affect image quality?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "No. Cropping removes pixels outside the crop area but doesn't change the quality of the pixels that remain.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is this tool free?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
-                    },
-                },
-            ],
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

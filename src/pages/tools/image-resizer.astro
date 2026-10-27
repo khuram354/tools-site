@@ -1,17 +1,139 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+const MAX_MB = 20;
+const MAX_SIDE = 10000;
+
+const PRESETS = [
+    { kind: "percent", value: 25, label: "25%" },
+    { kind: "percent", value: 50, label: "50%" },
+    { kind: "percent", value: 75, label: "75%" },
+    { kind: "width", value: 1920, label: "1920 px wide" },
+    { kind: "width", value: 1280, label: "1280 px wide" },
+    { kind: "width", value: 800, label: "800 px wide" },
+];
+const presetNames = PRESETS.map((p) => p.label);
+
+const ex = { w: 4032, h: 3024, targetW: 1080 };
+const exH = Math.round((ex.targetW * ex.h) / ex.w);
+const ratioEx = { w: 1920, h: 1080, targetW: 1280 };
+const ratioExH = Math.round((ratioEx.targetW * ratioEx.h) / ratioEx.w);
+
+const BTN =
+    "preset-btn px-3 py-2.5 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition";
+
+const faqs = [
+    {
+        q: "Are my images uploaded to a server?",
+        a: "No. All resizing happens in your browser using JavaScript. Your images never leave your device.",
+    },
+    {
+        q: 'What does "Maintain aspect ratio" do?',
+        a: "It keeps the original width-to-height ratio, so your image doesn't look stretched or squished. When you change the width, the height adjusts automatically (and vice versa).",
+    },
+    {
+        q: "Does resizing affect image quality?",
+        a: "Making an image smaller keeps it sharp when done well, and this tool scales large reductions in steps to avoid jagged edges. Enlarging an image makes it look blurry, because the tool has to stretch the pixels it has. You can't add detail that isn't there. JPG and WebP files are saved again after resizing, which has a small effect on quality.",
+    },
+    {
+        q: "How do I resize an image to an exact size like 1080 × 1080?",
+        a: "If your photo is not square, resizing to a square would stretch it. First crop it to a square with the Image Cropper (choose 1:1), then enter 1080 for the width here, and the height follows. If you really want to force a different shape, untick Maintain aspect ratio and enter both numbers, but expect the picture to look stretched.",
+    },
+    {
+        q: "Can I make an image a specific file size, like 100 KB?",
+        a: 'Resizing makes the file smaller, but it does not aim for a size in KB. To hit a target such as 50 KB or 100 KB, use the Image Compressor and choose "To a target size". Resizing first and then compressing usually gives the best result.',
+    },
+    {
+        q: "Can I resize multiple images at once?",
+        a: "This tool resizes one image at a time. For bulk work, open multiple browser tabs, one per image, and process them in parallel.",
+    },
+    {
+        q: "Does resizing change the file format?",
+        a: "No. The output format matches the input format: JPG stays JPG, PNG stays PNG, and WebP stays WebP. If you need to change the format, use the Image Converter.",
+    },
+    {
+        q: "Does the resized image keep camera and location data?",
+        a: "Usually not. The image is drawn onto a canvas and saved again in your browser, which normally drops metadata such as camera details and GPS location. Check the downloaded file if this matters to you.",
+    },
+    {
+        q: "What is the largest size I can resize to?",
+        a: `Up to ${MAX_SIDE.toLocaleString("en-US")} pixels on each side, for files up to ${MAX_MB} MB. Very large sizes can fail on phones whose browsers limit how big an image can be processed. If that happens, choose a smaller size.`,
+    },
+    {
+        q: "Is this tool free?",
+        a: "Yes. It is free, needs no signup, and has no limits.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Image Resizer",
+    url: pageUrl,
+    applicationCategory: "MultimediaApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free online image resizer. Resize JPG, PNG, and WebP images to an exact width and height or a percentage, with aspect ratio control, in your browser.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "Image Resizer",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="Image Resizer — Resize JPG, PNG & WebP Online Free"
-    description="Resize JPG, PNG, and WebP images online for free. Change width and height, maintain aspect ratio, and download instantly. No signup, 100% private."
+    title="Image Resizer: Resize JPG, PNG & WebP Online"
+    description="Free image resizer. Set an exact width and height or a percentage, keep the aspect ratio, and download JPG, PNG or WebP. Runs in your browser, no upload."
 >
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <a href="/tools/" class="hover:underline">Tools</a>
+                <span aria-hidden="true">/</span>
+                <span>Image Resizer</span>
+            </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">Image Resizer</h1>
             <p class="text-gray-600 mb-2">
-                Resize JPG, PNG, and WebP images to any dimension. Maintain
-                aspect ratio or set custom width and height.
+                Resize JPG, PNG, and WebP images to any dimension or percentage.
+                Maintain the aspect ratio or set a custom width and height.
             </p>
             <p class="text-xs text-gray-500">
                 Works entirely in your browser. Your images never leave your
@@ -19,10 +141,21 @@ import Layout from "../../layouts/Layout.astro";
             </p>
         </header>
 
+        <div
+            id="calc-config"
+            data-max-mb={MAX_MB}
+            data-max-side={MAX_SIDE}
+            hidden
+        >
+        </div>
+
         <!-- Upload Section -->
         <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
             <div
                 id="drop-zone"
+                role="button"
+                tabindex="0"
+                aria-label="Choose an image to resize"
                 class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition cursor-pointer"
             >
                 <svg
@@ -36,14 +169,19 @@ import Layout from "../../layouts/Layout.astro";
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     class="mx-auto mb-3"
+                    aria-hidden="true"
                 >
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"
                     ></rect>
                     <circle cx="8.5" cy="8.5" r="1.5"></circle>
                     <polyline points="21 15 16 10 5 21"></polyline>
                 </svg>
-                <p class="font-medium mb-1">Click or tap to choose an image</p>
-                <p class="text-sm text-gray-500">JPG, PNG, or WebP</p>
+                <p id="drop-text" class="font-medium mb-1">
+                    Click, tap, or drop an image here
+                </p>
+                <p id="drop-hint" class="text-sm text-gray-500">
+                    JPG, PNG, or WebP, up to {MAX_MB} MB
+                </p>
                 <input
                     type="file"
                     id="file-input"
@@ -51,6 +189,8 @@ import Layout from "../../layouts/Layout.astro";
                     class="hidden"
                 />
             </div>
+            <p id="error" role="alert" class="hidden mt-4 text-sm text-red-600">
+            </p>
 
             <!-- Dimensions Input -->
             <div id="dimensions-section" class="mt-6 hidden">
@@ -65,7 +205,7 @@ import Layout from "../../layouts/Layout.astro";
                             type="number"
                             id="width"
                             min="1"
-                            max="10000"
+                            max={MAX_SIDE}
                             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
@@ -79,7 +219,7 @@ import Layout from "../../layouts/Layout.astro";
                             type="number"
                             id="height"
                             min="1"
-                            max="10000"
+                            max={MAX_SIDE}
                             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
@@ -97,36 +237,55 @@ import Layout from "../../layouts/Layout.astro";
                     </label>
                 </div>
 
+                <p
+                    id="enlarge-note"
+                    class="hidden mt-3 text-sm text-yellow-800 bg-yellow-50 border border-yellow-200 p-3 rounded-lg"
+                >
+                    This is larger than the original, so the image will look
+                    blurry and the file will be bigger. Resizing can't add
+                    detail that isn't there.
+                </p>
+
                 <!-- Presets -->
                 <div class="mt-4">
                     <p class="text-sm font-medium mb-3">Quick Presets:</p>
-                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                        <button
-                            data-preset="50"
-                            class="preset-btn px-3 py-2.5 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition"
-                            >50%</button
-                        >
-                        <button
-                            data-preset="75"
-                            class="preset-btn px-3 py-2.5 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition"
-                            >75%</button
-                        >
-                        <button
-                            data-preset="1920"
-                            class="preset-btn px-3 py-2.5 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition"
-                            >1920px</button
-                        >
-                        <button
-                            data-preset="1280"
-                            class="preset-btn px-3 py-2.5 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition"
-                            >1280px</button
-                        >
-                        <button
-                            data-preset="800"
-                            class="preset-btn px-3 py-2.5 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition"
-                            >800px</button
-                        >
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {
+                            PRESETS.map((p) => (
+                                <button
+                                    type="button"
+                                    data-percent={
+                                        p.kind === "percent"
+                                            ? p.value
+                                            : undefined
+                                    }
+                                    data-width={
+                                        p.kind === "width" ? p.value : undefined
+                                    }
+                                    class={BTN}
+                                >
+                                    {p.label}
+                                </button>
+                            ))
+                        }
                     </div>
+                </div>
+
+                <div id="quality-box" class="mt-4">
+                    <label for="quality" class="block text-sm font-medium mb-2">
+                        Quality: <span id="quality-value">92</span>%
+                    </label>
+                    <input
+                        type="range"
+                        id="quality"
+                        min="10"
+                        max="100"
+                        value="92"
+                        class="w-full"
+                    />
+                    <p class="text-xs text-gray-500 mt-1">
+                        Lower quality = smaller file (JPG and WebP only)
+                    </p>
                 </div>
 
                 <button
@@ -170,6 +329,7 @@ import Layout from "../../layouts/Layout.astro";
 
                 <div
                     id="size-saved"
+                    role="status"
                     class="hidden mb-6 p-3 rounded-lg text-center text-sm font-medium"
                 >
                 </div>
@@ -225,28 +385,34 @@ import Layout from "../../layouts/Layout.astro";
         </section>
     </div>
 
-    <!-- SEO Content (800+ words) -->
+    <!-- SEO Content -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This Image Resizer</h2>
         <p class="text-gray-700 mb-4">
             This free online image resizer lets you change the dimensions of
-            JPG, PNG, and WebP images instantly. It runs entirely in your
+            JPG, PNG, and WebP images in seconds. It runs entirely in your
             browser, so your images are never uploaded to any server. Whether
             you need to shrink a photo for a website, resize an image for social
-            media, or prepare images for a form with strict dimension
-            requirements, this tool gets it done in seconds.
+            media, or prepare a picture for a form with dimension requirements,
+            this tool gets it done.
         </p>
         <p class="text-gray-700 mb-4">
             Most image resizing tools require an upload, a download, and
             sometimes an account. This one skips all of that. Drop your image,
-            set your dimensions, and download the result — all without leaving
+            set your dimensions, and download the result, all without leaving
             the page.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
-            <li>Click or tap the upload area to choose an image</li>
-            <li>Enter your desired width and height, or use a quick preset</li>
+            <li>
+                Click or tap the upload area (or drop a file) to choose an image
+            </li>
+            <li>
+                Enter your desired width and height, or use a quick preset ({
+                    presetNames.join(", ")
+                })
+            </li>
             <li>Keep "Maintain aspect ratio" checked to avoid distortion</li>
             <li>Click "Resize Image"</li>
             <li>Preview the result and download</li>
@@ -255,24 +421,27 @@ import Layout from "../../layouts/Layout.astro";
         <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Instant resize:</strong> Results in under a second, no queue
-                or wait.
+                <strong>Fast resizing:</strong> No upload, no queue, no wait.
             </li>
             <li>
                 <strong>Aspect ratio lock:</strong> Prevent stretched or squished
                 images with one checkbox.
             </li>
             <li>
-                <strong>Quick presets:</strong> 50%, 75%, 1920px, 1280px, 800px —
-                one-click sizing for common use cases.
+                <strong>Quick presets:</strong>
+                {presetNames.join(", ")}, for common sizes with one click.
             </li>
             <li>
-                <strong>Before/after preview:</strong> See exactly what you're getting
-                before downloading.
+                <strong>Sharp results:</strong> Large reductions are scaled in steps,
+                which keeps edges cleaner than a single big jump.
+            </li>
+            <li>
+                <strong>Before/after preview:</strong> See the new dimensions and
+                file size before downloading.
             </li>
             <li>
                 <strong>Privacy first:</strong> Everything runs in your browser. No
-                uploads, no tracking.
+                uploads.
             </li>
             <li>
                 <strong>Free with no limits:</strong> Resize as many images as you
@@ -286,157 +455,124 @@ import Layout from "../../layouts/Layout.astro";
             1. Preparing Images for a Website
         </h4>
         <p class="text-gray-700 mb-4">
-            Large images slow down websites. If your hero image is 4000px wide
-            but displays at 1200px, resize it first. This tool lets you set the
-            exact dimension your site needs — no wasted pixels, no wasted
-            bandwidth.
+            Large images slow down websites. If your hero image is 4000 pixels
+            wide but displays at 1200 pixels, resize it first. Set the exact
+            width your site needs and you avoid sending pixels nobody sees.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
             2. Meeting Social Media Requirements
         </h4>
         <p class="text-gray-700 mb-4">
-            Each platform has its own size: Instagram posts at 1080 × 1080,
-            Stories at 1080 × 1920, Facebook covers at 820 × 312, LinkedIn
-            banners at 1584 × 396. Use the preset buttons or enter custom
-            dimensions to match any platform.
+            Each platform has its own sizes. Commonly used ones are 1080 × 1080
+            for square Instagram posts, 1080 × 1920 for Stories, and 1584 × 396
+            for a LinkedIn banner. Platforms change their recommendations from
+            time to time, so check the current guidance before you upload. If
+            the shape differs from your photo, crop it first with the <a
+                href="/tools/image-cropper/"
+                class="text-blue-600 hover:underline font-medium"
+                >Image Cropper</a
+            >.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
-            3. Uploading to Government or Job Portals
+            3. Uploading to Forms and Job Portals
         </h4>
         <p class="text-gray-700 mb-4">
-            Many forms require specific dimensions — often 200 × 230 pixels for
-            passport photos, or 600 × 600 pixels for job applications. This tool
-            resizes to any exact dimension without any distortion.
+            Many forms ask for a photo of a particular size in pixels. The sizes
+            differ from form to form, so follow the instructions on the one you
+            are filling in, enter the width and height here, and use the Image
+            Compressor afterwards if there is also a file size limit.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
             4. Reducing File Size Before Sharing
         </h4>
         <p class="text-gray-700 mb-4">
-            While resizing doesn't always reduce file size dramatically, smaller
-            dimensions usually mean smaller files. For a bigger reduction, use
-            the "resize + compress" workflow: resize here, then compress with
-            our Image Compressor.
+            Smaller dimensions usually mean a smaller file, although the saving
+            depends on the image. For a bigger reduction, use the "resize, then
+            compress" workflow: resize here, then use our <a
+                href="/tools/image-compressor/"
+                class="text-blue-600 hover:underline font-medium"
+                >Image Compressor</a
+            >.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
             5. Preparing Product Photos for E-commerce
         </h4>
         <p class="text-gray-700 mb-4">
-            Shopify recommends 2048 × 2048 square images. Amazon requires 1000px
-            minimum on the longest side. WooCommerce works best with 800 × 800.
-            This tool resizes to any dimension that matches your platform's
-            requirements.
+            Store platforms have their own image guidance. Shopify, for example,
+            suggests square product images of up to 2048 × 2048 pixels, Amazon
+            recommends at least 1000 pixels on the longest side so shoppers can
+            zoom, and WooCommerce sizes depend on your theme. Check your
+            platform's current rules, then set the size here.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
             6. Making Thumbnails from Larger Images
         </h4>
         <p class="text-gray-700 mb-4">
-            Need a 400 × 400 thumbnail from a 4000 × 3000 photo? The aspect
-            ratio lock prevents the image from being squished. Use the 50%
-            preset for a quick half-size version, or set custom dimensions for
-            exact thumbnails.
+            Need a small thumbnail from a large photo? The aspect ratio lock
+            prevents the image from being squished. Use a percentage preset for
+            a quick scaled-down version, or set custom dimensions.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
         <p class="text-gray-700 mb-4">
-            Here's what happens when you resize a typical phone photo:
+            Here's what the tool works out for a typical phone photo:
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li><strong>Original:</strong> 4032 × 3024 pixels, 4.2 MB</li>
             <li>
-                <strong>Target width:</strong> 1080 pixels (Instagram post size)
+                <strong>Original:</strong>
+                {ex.w} × {ex.h} pixels (a 4:3 photo)
             </li>
             <li>
-                <strong>Auto height:</strong> 810 pixels (aspect ratio maintained)
+                <strong>Target width:</strong>
+                {ex.targetW} pixels
             </li>
-            <li><strong>New file size:</strong> ~380 KB</li>
-            <li><strong>Size savings:</strong> 91%</li>
+            <li>
+                <strong>Height, worked out automatically:</strong>
+                {exH} pixels (aspect ratio maintained)
+            </li>
         </ul>
         <p class="text-gray-700 mt-4 mb-4">
-            That's the difference between an image that takes 10 seconds to load
-            and one that loads instantly.
+            The tool then shows the new file size next to the original, so you
+            can see how much smaller it is. The exact saving depends on the
+            photo, which is why the tool shows it for every image instead of
+            promising a fixed number.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             What "Maintain Aspect Ratio" Does
         </h3>
         <p class="text-gray-700 mb-4">
-            Aspect ratio is the relationship between width and height. A 1920 ×
-            1080 image has a 16:9 aspect ratio. If you change the width to 1280
-            and keep the ratio locked, the height adjusts to 720 automatically.
+            Aspect ratio is the relationship between width and height. A {
+                ratioEx.w
+            } × {ratioEx.h} image has a 16:9 aspect ratio. If you change the width
+            to {ratioEx.targetW} and keep the ratio locked, the height adjusts to
+            {ratioExH} automatically.
         </p>
         <p class="text-gray-700 mb-4">
-            Without the lock, you'd have to enter both width and height manually
-            — and if they don't match the original ratio, the image gets
+            Without the lock, you'd have to enter both width and height
+            manually, and if they don't match the original ratio, the image gets
             stretched or squished. For most uses, keeping the lock on is the
-            right choice.
+            right choice. To change the shape of a picture without stretching
+            it, crop it first.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Are my images uploaded to a server?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. All resizing happens in your browser using JavaScript.
-                    Your images never leave your device.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What does "Maintain aspect ratio" do?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    It keeps the original width-to-height ratio, so your image
-                    doesn't look stretched or squished. When you change the
-                    width, the height adjusts automatically (and vice versa).
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does resizing affect image quality?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Reducing dimensions generally maintains quality. Enlarging
-                    an image can make it look blurry, since the tool is
-                    stretching existing pixels. You can't add detail that isn't
-                    there.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Can I resize multiple images at once?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    This tool resizes one image at a time. For bulk work, open
-                    multiple browser tabs — one per image — and process them in
-                    parallel.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does resizing change the file format?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. The output format matches the input format (JPG stays
-                    JPG, PNG stays PNG). If you need to convert formats, use our
-                    Image Converter.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
-                <p class="text-gray-700 mt-1">
-                    Yes, completely free with no signup, no limits, and no
-                    watermarks.
-                </p>
-            </div>
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
+            }
         </div>
     </section>
 
@@ -450,7 +586,7 @@ import Layout from "../../layouts/Layout.astro";
             >
                 <h3 class="font-semibold mb-1">Image Compressor</h3>
                 <p class="text-sm text-gray-600">
-                    Reduce image file size without losing quality.
+                    Reduce image file size by quality or to a target size.
                 </p>
             </a>
             <a
@@ -497,10 +633,29 @@ import Layout from "../../layouts/Layout.astro";
     </section>
 
     <script>
+        const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+        const EXTENSIONS: Record<string, string> = {
+            "image/jpeg": "jpg",
+            "image/png": "png",
+            "image/webp": "webp",
+        };
+        const LABELS: Record<string, string> = {
+            "image/jpeg": "JPG",
+            "image/png": "PNG",
+            "image/webp": "WebP",
+        };
+
+        const cfg = document.getElementById("calc-config")!;
+        const MAX_MB = Number(cfg.dataset.maxMb);
+        const MAX_SIDE = Number(cfg.dataset.maxSide);
+
         const dropZone = document.getElementById("drop-zone") as HTMLDivElement;
+        const dropText = document.getElementById("drop-text")!;
+        const dropHint = document.getElementById("drop-hint")!;
         const fileInput = document.getElementById(
             "file-input",
         ) as HTMLInputElement;
+        const errorBox = document.getElementById("error")!;
         const dimensionsSection =
             document.getElementById("dimensions-section")!;
         const widthInput = document.getElementById("width") as HTMLInputElement;
@@ -510,19 +665,42 @@ import Layout from "../../layouts/Layout.astro";
         const maintainRatio = document.getElementById(
             "maintain-ratio",
         ) as HTMLInputElement;
+        const enlargeNote = document.getElementById("enlarge-note")!;
+        const qualityBox = document.getElementById("quality-box")!;
+        const qualitySlider = document.getElementById(
+            "quality",
+        ) as HTMLInputElement;
+        const qualityValue = document.getElementById("quality-value")!;
         const resizeBtn = document.getElementById("resize-btn")!;
         const results = document.getElementById("results")!;
         const downloadBtn = document.getElementById(
             "download-btn",
         ) as HTMLAnchorElement;
         const resetBtn = document.getElementById("reset-btn")!;
+        const previewOriginal = document.getElementById(
+            "preview-original",
+        ) as HTMLImageElement;
+        const previewResized = document.getElementById(
+            "preview-resized",
+        ) as HTMLImageElement;
         const presetBtns =
             document.querySelectorAll<HTMLButtonElement>(".preset-btn");
 
         let selectedFile: File | null = null;
+        // ImageBitmap (modern, EXIF-aware) ya HTMLImageElement (fallback)
+        let originalImage: HTMLImageElement | ImageBitmap | null = null;
         let originalWidth = 0;
         let originalHeight = 0;
-        let originalImage: HTMLImageElement | null = null;
+        let originalUrl: string | null = null;
+        let resizedUrl: string | null = null;
+
+        function showError(message: string) {
+            errorBox.textContent = message;
+            errorBox.classList.remove("hidden");
+        }
+        function clearError() {
+            errorBox.classList.add("hidden");
+        }
 
         function formatBytes(bytes: number): string {
             if (bytes < 1024) return bytes + " B";
@@ -530,243 +708,351 @@ import Layout from "../../layouts/Layout.astro";
             return (bytes / (1024 * 1024)).toFixed(2) + " MB";
         }
 
-        function syncHeightFromWidth() {
-            if (!originalWidth || !originalHeight) return;
-            const w = parseInt(widthInput.value) || 0;
-            const ratio = originalHeight / originalWidth;
-            heightInput.value = Math.round(w * ratio).toString();
+        // A positive whole number from a field, or 0 if it is empty or invalid
+        function getNum(el: HTMLInputElement): number {
+            const v = parseInt(el.value, 10);
+            return Number.isFinite(v) && v > 0 ? v : 0;
         }
 
-        function syncWidthFromHeight() {
-            if (!originalWidth || !originalHeight) return;
-            const h = parseInt(heightInput.value) || 0;
-            const ratio = originalWidth / originalHeight;
-            widthInput.value = Math.round(h * ratio).toString();
+        function heightFor(width: number): number {
+            return Math.max(
+                1,
+                Math.round((width * originalHeight) / originalWidth),
+            );
+        }
+        function widthFor(height: number): number {
+            return Math.max(
+                1,
+                Math.round((height * originalWidth) / originalHeight),
+            );
         }
 
-        if (maintainRatio.checked) {
-            widthInput.addEventListener("input", syncHeightFromWidth);
-            heightInput.addEventListener("input", syncWidthFromHeight);
+        function updateEnlargeNote() {
+            const w = getNum(widthInput);
+            const h = getNum(heightInput);
+            enlargeNote.classList.toggle(
+                "hidden",
+                !(w > originalWidth || h > originalHeight),
+            );
         }
 
-        maintainRatio.addEventListener("change", () => {
-            if (maintainRatio.checked) {
-                widthInput.addEventListener("input", syncHeightFromWidth);
-                heightInput.addEventListener("input", syncWidthFromHeight);
-            } else {
-                widthInput.removeEventListener("input", syncHeightFromWidth);
-                heightInput.removeEventListener("input", syncWidthFromHeight);
+        widthInput.addEventListener("input", () => {
+            if (maintainRatio.checked && originalWidth) {
+                const w = getNum(widthInput);
+                heightInput.value = w ? String(heightFor(w)) : "";
             }
+            updateEnlargeNote();
+        });
+        heightInput.addEventListener("input", () => {
+            if (maintainRatio.checked && originalHeight) {
+                const h = getNum(heightInput);
+                widthInput.value = h ? String(widthFor(h)) : "";
+            }
+            updateEnlargeNote();
+        });
+        qualitySlider.addEventListener("input", () => {
+            qualityValue.textContent = qualitySlider.value;
+        });
+
+        // Presets: percent presets scale both sides, width presets set the
+        // width and work out the height from the original shape.
+        presetBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                if (!originalWidth || !originalHeight) return;
+                if (btn.dataset.percent) {
+                    const f = parseInt(btn.dataset.percent, 10) / 100;
+                    widthInput.value = String(
+                        Math.max(1, Math.round(originalWidth * f)),
+                    );
+                    heightInput.value = String(
+                        Math.max(1, Math.round(originalHeight * f)),
+                    );
+                } else if (btn.dataset.width) {
+                    const w = parseInt(btn.dataset.width, 10);
+                    widthInput.value = String(w);
+                    heightInput.value = String(heightFor(w));
+                }
+                updateEnlargeNote();
+            });
         });
 
         dropZone.addEventListener("click", () => fileInput.click());
-
+        dropZone.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInput.click();
+            }
+        });
         dropZone.addEventListener("dragover", (e) => {
             e.preventDefault();
             dropZone.classList.add("border-blue-500", "bg-blue-50");
         });
-
         dropZone.addEventListener("dragleave", () => {
             dropZone.classList.remove("border-blue-500", "bg-blue-50");
         });
-
         dropZone.addEventListener("drop", (e) => {
             e.preventDefault();
             dropZone.classList.remove("border-blue-500", "bg-blue-50");
             const files = (e as DragEvent).dataTransfer?.files;
             if (files && files.length > 0) handleFile(files[0]);
         });
-
         fileInput.addEventListener("change", () => {
             if (fileInput.files && fileInput.files.length > 0) {
                 handleFile(fileInput.files[0]);
             }
         });
 
-        function handleFile(file: File) {
-            if (!file.type.startsWith("image/")) {
-                alert("Please select an image file (JPG, PNG, or WebP).");
+        // EXIF orientation ko respect karta hai: phone se li gayi photos
+        // sidhi aati hain. Purane browsers ke liye Image element fallback.
+        async function loadImageSource(file: File): Promise<{
+            source: HTMLImageElement | ImageBitmap;
+            width: number;
+            height: number;
+        } | null> {
+            if (typeof createImageBitmap === "function") {
+                try {
+                    const bitmap = await createImageBitmap(file, {
+                        imageOrientation: "from-image",
+                    });
+                    return {
+                        source: bitmap,
+                        width: bitmap.width,
+                        height: bitmap.height,
+                    };
+                } catch {
+                    // fall through to Image fallback
+                }
+            }
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () =>
+                    resolve({
+                        source: img,
+                        width: img.naturalWidth,
+                        height: img.naturalHeight,
+                    });
+                img.onerror = () => resolve(null);
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        async function handleFile(file: File) {
+            clearError();
+
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                showError(
+                    "Please choose a JPG, PNG, or WebP image. Other formats such as HEIC, GIF, or BMP are not supported.",
+                );
+                fileInput.value = "";
                 return;
             }
-            if (file.size > 20 * 1024 * 1024) {
-                alert(
-                    "File size too large. Please select an image under 20 MB.",
+            if (file.size > MAX_MB * 1024 * 1024) {
+                showError(
+                    `That file is larger than ${MAX_MB} MB. Please choose a smaller image.`,
+                );
+                fileInput.value = "";
+                return;
+            }
+
+            if (originalUrl) URL.revokeObjectURL(originalUrl);
+            originalUrl = URL.createObjectURL(file);
+
+            const loaded = await loadImageSource(file);
+            if (!loaded) {
+                fileInput.value = "";
+                showError(
+                    "That image could not be read. Please try another file.",
                 );
                 return;
             }
+
             selectedFile = file;
-            const img = new Image();
-            img.onload = () => {
-                originalWidth = img.naturalWidth;
-                originalHeight = img.naturalHeight;
-                originalImage = img;
-                widthInput.value = originalWidth.toString();
-                heightInput.value = originalHeight.toString();
-                dimensionsSection.classList.remove("hidden");
-                dropZone.querySelector("p")!.textContent =
-                    `Selected: ${file.name} (${originalWidth} × ${originalHeight})`;
-            };
-            img.src = URL.createObjectURL(file);
+            originalImage = loaded.source;
+            originalWidth = loaded.width;
+            originalHeight = loaded.height;
+
+            widthInput.value = String(originalWidth);
+            heightInput.value = String(originalHeight);
+            dimensionsSection.classList.remove("hidden");
+            results.classList.add("hidden");
+            qualityBox.classList.toggle("hidden", file.type === "image/png");
+            dropText.textContent = `Selected: ${file.name}`;
+            dropHint.textContent = `${originalWidth} × ${originalHeight} px, ${formatBytes(file.size)}. Click to choose a different image.`;
+            updateEnlargeNote();
         }
 
-        presetBtns.forEach((btn) => {
-            btn.addEventListener("click", () => {
-                const preset = btn.dataset.preset!;
-                if (preset.endsWith("%")) {
-                    const percent = parseInt(preset) / 100;
-                    widthInput.value = Math.round(
-                        originalWidth * percent,
-                    ).toString();
-                    heightInput.value = Math.round(
-                        originalHeight * percent,
-                    ).toString();
-                } else {
-                    const targetWidth = parseInt(preset);
-                    const ratio = originalHeight / originalWidth;
-                    widthInput.value = targetWidth.toString();
-                    heightInput.value = Math.round(
-                        targetWidth * ratio,
-                    ).toString();
-                }
-            });
-        });
+        function sourceSize(src: HTMLImageElement | ImageBitmap): {
+            w: number;
+            h: number;
+        } {
+            if (src instanceof HTMLImageElement) {
+                return { w: src.naturalWidth, h: src.naturalHeight };
+            }
+            return { w: src.width, h: src.height };
+        }
 
-        resizeBtn.addEventListener("click", () => {
-            if (!selectedFile || !originalImage) return;
-            const newWidth = parseInt(widthInput.value);
-            const newHeight = parseInt(heightInput.value);
-            if (!newWidth || !newHeight || newWidth < 1 || newHeight < 1) {
-                alert("Please enter valid dimensions.");
-                return;
+        // Scales down in steps of at most half. One big jump can leave jagged
+        // edges, so large reductions are halved until they are close to the
+        // target size, then drawn once at the exact size.
+        function drawResized(
+            img: HTMLImageElement | ImageBitmap,
+            w: number,
+            h: number,
+        ): HTMLCanvasElement | null {
+            const orig = sourceSize(img);
+            let source: CanvasImageSource = img;
+            let cw = orig.w;
+            let ch = orig.h;
+
+            while (cw >= w * 2 && ch >= h * 2) {
+                const step = document.createElement("canvas");
+                step.width = Math.max(Math.floor(cw / 2), 1);
+                step.height = Math.max(Math.floor(ch / 2), 1);
+                const sctx = step.getContext("2d");
+                if (!sctx) return null;
+                sctx.imageSmoothingEnabled = true;
+                sctx.imageSmoothingQuality = "high";
+                sctx.drawImage(source, 0, 0, step.width, step.height);
+                source = step;
+                cw = step.width;
+                ch = step.height;
+                // intermediate canvas ko free karne ke liye dimensions reset
+                // (browser jaldi GC kar sakta hai)
+                if (source !== step) {
+                    step.width = 0;
+                    step.height = 0;
+                }
             }
 
             const canvas = document.createElement("canvas");
-            canvas.width = newWidth;
-            canvas.height = newHeight;
-            const ctx = canvas.getContext("2d")!;
-            ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return null;
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = "high";
+            ctx.drawImage(source, 0, 0, w, h);
+            return canvas;
+        }
+
+        resizeBtn.addEventListener("click", () => {
+            if (!selectedFile || !originalImage) return;
+            clearError();
+            const file = selectedFile;
+
+            const newWidth = getNum(widthInput);
+            const newHeight = getNum(heightInput);
+            if (!newWidth || !newHeight) {
+                showError(
+                    "Please enter a width and a height of at least 1 pixel.",
+                );
+                return;
+            }
+            if (newWidth > MAX_SIDE || newHeight > MAX_SIDE) {
+                showError(
+                    `The width and height can be at most ${MAX_SIDE.toLocaleString("en-US")} pixels.`,
+                );
+                return;
+            }
+
+            const canvas = drawResized(originalImage, newWidth, newHeight);
+            if (!canvas) {
+                showError(
+                    "Your browser could not prepare this size. Try a smaller size or a different browser.",
+                );
+                return;
+            }
+
+            const quality = parseInt(qualitySlider.value, 10) / 100;
 
             canvas.toBlob(
                 (blob) => {
-                    if (!blob) return;
-                    const resizedUrl = URL.createObjectURL(blob);
+                    if (!blob) {
+                        showError(
+                            "Could not resize this image. The size may be too large for your browser. Try a smaller size.",
+                        );
+                        return;
+                    }
+                    // The browser must really have produced the same format
+                    if (blob.type !== file.type) {
+                        showError(
+                            `Your browser could not save a ${LABELS[file.type] || "file in that"} format. Try a recent version of Chrome, Edge, or Firefox.`,
+                        );
+                        return;
+                    }
+
+                    if (resizedUrl) URL.revokeObjectURL(resizedUrl);
+                    resizedUrl = URL.createObjectURL(blob);
 
                     document.getElementById("original-dims")!.textContent =
                         `${originalWidth} × ${originalHeight}`;
                     document.getElementById("new-dims")!.textContent =
                         `${newWidth} × ${newHeight}`;
-
-                    const originalSize = selectedFile!.size;
-                    const newSize = blob.size;
-                    const savedPercent =
-                        ((originalSize - newSize) / originalSize) * 100;
-
                     document.getElementById("original-size")!.textContent =
-                        formatBytes(originalSize);
+                        formatBytes(file.size);
                     document.getElementById("new-size")!.textContent =
-                        formatBytes(newSize);
+                        formatBytes(blob.size);
 
                     const savedBox = document.getElementById("size-saved")!;
+                    const savedPercent =
+                        ((file.size - blob.size) / file.size) * 100;
                     savedBox.classList.remove("hidden");
                     if (savedPercent >= 0) {
-                        savedBox.textContent = `✓ File size reduced by ${savedPercent.toFixed(1)}% (${formatBytes(originalSize - newSize)} saved)`;
+                        savedBox.textContent = `✓ File size reduced by ${savedPercent.toFixed(1)}% (${formatBytes(file.size - blob.size)} saved)`;
                         savedBox.className =
                             "mb-6 p-3 rounded-lg text-center text-sm font-medium bg-green-50 text-green-700 border border-green-200";
                     } else {
-                        savedBox.textContent = `File size increased by ${Math.abs(savedPercent).toFixed(1)}% (${formatBytes(newSize - originalSize)} larger)`;
+                        const hint =
+                            newWidth > originalWidth ||
+                            newHeight > originalHeight
+                                ? " Enlarging an image makes the file bigger."
+                                : " Try a lower quality setting, or use the Image Compressor.";
+                        savedBox.textContent = `File size increased by ${Math.abs(savedPercent).toFixed(1)}% (${formatBytes(blob.size - file.size)} larger).${hint}`;
                         savedBox.className =
                             "mb-6 p-3 rounded-lg text-center text-sm font-medium bg-yellow-50 text-yellow-700 border border-yellow-200";
                     }
 
-                    (
-                        document.getElementById(
-                            "preview-original",
-                        ) as HTMLImageElement
-                    ).src = URL.createObjectURL(selectedFile!);
-                    (
-                        document.getElementById(
-                            "preview-resized",
-                        ) as HTMLImageElement
-                    ).src = resizedUrl;
+                    previewOriginal.src = originalUrl!;
+                    previewResized.src = resizedUrl;
 
-                    const originalName = selectedFile!.name;
-                    const ext = originalName.split(".").pop();
-                    const baseName = originalName.replace(/\.[^.]+$/, "");
+                    const ext = EXTENSIONS[blob.type] || "img";
+                    const baseName = file.name.replace(/\.[^.]+$/, "");
                     downloadBtn.href = resizedUrl;
                     downloadBtn.download = `${baseName}-${newWidth}x${newHeight}.${ext}`;
 
                     results.classList.remove("hidden");
                     results.scrollIntoView({ behavior: "smooth" });
                 },
-                selectedFile.type,
-                0.95,
+                file.type,
+                file.type === "image/png" ? undefined : quality,
             );
         });
 
         resetBtn.addEventListener("click", () => {
             selectedFile = null;
             originalImage = null;
+            originalWidth = 0;
+            originalHeight = 0;
             fileInput.value = "";
+            if (originalUrl) URL.revokeObjectURL(originalUrl);
+            if (resizedUrl) URL.revokeObjectURL(resizedUrl);
+            originalUrl = null;
+            resizedUrl = null;
+            clearError();
             results.classList.add("hidden");
             dimensionsSection.classList.add("hidden");
-            dropZone.querySelector("p")!.textContent =
-                "Click or tap here to choose an image";
+            dropText.textContent = "Click, tap, or drop an image here";
+            dropHint.textContent = `JPG, PNG, or WebP, up to ${MAX_MB} MB`;
         });
     </script>
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Image Resizer",
-            applicationCategory: "MultimediaApplication",
-            operatingSystem: "Any",
-            description:
-                "Free online image resizer. Resize JPG, PNG, and WebP images with aspect ratio control.",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        })}
+        set:html={JSON.stringify(webAppSchema)}
     />
-
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "Are my images uploaded to a server?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "No. All resizing happens in your browser using JavaScript. Your images never leave your device.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "What does Maintain aspect ratio do?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "It keeps the original width-to-height ratio, so your image doesn't look stretched or squished. When you change the width, the height adjusts automatically.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Does resizing affect image quality?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Reducing dimensions generally maintains quality. Enlarging an image can make it look blurry, since the tool is stretching existing pixels.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is this tool free?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
-                    },
-                },
-            ],
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

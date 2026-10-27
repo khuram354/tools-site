@@ -1,13 +1,118 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
+
+const MAX_MB = 20; // largest file the tool accepts
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
+const faqs = [
+    {
+        q: "Which format should I use?",
+        a: "Use JPG for photos (smaller files), PNG for images with transparency, sharp text, or flat colors, and WebP when you want small files with good quality on modern browsers and websites. If a form or app asks for a specific format, use that one.",
+    },
+    {
+        q: "How do I convert WebP to JPG?",
+        a: 'Choose the WebP image, select "JPG (JPEG)" under "Convert to", and click Convert Image. Then download the JPG. This is the usual fix when a downloaded picture is saved as WebP and an app or form will not accept it.',
+    },
+    {
+        q: "Does converting affect image quality?",
+        a: "JPG and WebP are lossy formats, so they discard some detail to reduce size, and PNG is lossless. Use a high quality setting (90% or more) to keep the result close to the original. Converting a lossy image such as a JPG to PNG does not bring back detail that is already gone, it only makes the file larger.",
+    },
+    {
+        q: "What happens to transparent areas when converting to JPG?",
+        a: "JPG doesn't support transparency, so transparent areas are filled with white. If you need to keep transparency, convert to PNG or WebP instead.",
+    },
+    {
+        q: "Why is the WebP option greyed out?",
+        a: "Some browsers cannot create WebP files. If the option is greyed out, use a recent version of Chrome, Edge, or Firefox. You can still convert to JPG or PNG.",
+    },
+    {
+        q: "Does the converted image keep its camera and location data?",
+        a: "Usually not. The image is drawn onto a canvas and saved again in your browser, which normally drops metadata such as camera details and GPS location. Check the downloaded file if this matters to you.",
+    },
+    {
+        q: "Are my images uploaded to a server?",
+        a: "No. All conversion happens in your browser. Your images never leave your device.",
+    },
+    {
+        q: "Is there a limit on image size?",
+        a: `Files up to ${MAX_MB} MB are accepted. Very large photos, with tens of megapixels, can fail on phones whose browsers limit how big an image can be processed. If that happens, shrink the image first with the Image Resizer.`,
+    },
+    {
+        q: "Can I convert to a format other than JPG, PNG, or WebP?",
+        a: "No. This tool reads and writes JPG, PNG, and WebP. For other formats such as BMP, TIFF, or HEIC, you will need a different tool.",
+    },
+    {
+        q: "Is this tool free?",
+        a: "Yes. It is free, needs no signup, and has no limits.",
+    },
+];
+
+const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Image Converter",
+    url: pageUrl,
+    applicationCategory: "MultimediaApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description:
+        "Free online image converter. Convert between JPG, PNG, and WebP in your browser with no upload.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://toolsvibe.online/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: "https://toolsvibe.online/tools/",
+        },
+        {
+            "@type": "ListItem",
+            position: 3,
+            name: "Image Converter",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="Image Converter — Convert JPG, PNG & WebP Online Free"
-    description="Convert JPG to PNG, PNG to WebP, WebP to JPG and more. Free online image converter with no signup, no upload, and no watermarks."
+    title="Image Converter: Convert JPG, PNG & WebP Online"
+    description="Convert PNG to JPG, JPG to PNG, WebP to JPG, JPG to WebP and more. Free, in your browser, no upload and no signup."
 >
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <a href="/tools/" class="hover:underline">Tools</a>
+                <span aria-hidden="true">/</span>
+                <span>Image Converter</span>
+            </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">Image Converter</h1>
             <p class="text-gray-600 mb-2">
                 Convert images between JPG, PNG, and WebP instantly. No upload,
@@ -19,10 +124,15 @@ import Layout from "../../layouts/Layout.astro";
             </p>
         </header>
 
+        <div id="calc-config" data-max-mb={MAX_MB} hidden></div>
+
         <!-- Upload Section -->
         <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
             <div
                 id="drop-zone"
+                role="button"
+                tabindex="0"
+                aria-label="Choose an image to convert"
                 class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition cursor-pointer"
             >
                 <svg
@@ -36,6 +146,7 @@ import Layout from "../../layouts/Layout.astro";
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     class="mx-auto mb-3"
+                    aria-hidden="true"
                 >
                     <polyline points="16 3 21 3 21 8"></polyline>
                     <line x1="4" y1="20" x2="21" y2="3"></line>
@@ -43,8 +154,12 @@ import Layout from "../../layouts/Layout.astro";
                     <line x1="15" y1="15" x2="21" y2="21"></line>
                     <line x1="4" y1="4" x2="9" y2="9"></line>
                 </svg>
-                <p class="font-medium mb-1">Click or tap to choose an image</p>
-                <p class="text-sm text-gray-500">JPG, PNG, or WebP</p>
+                <p id="drop-text" class="font-medium mb-1">
+                    Click, tap, or drop an image here
+                </p>
+                <p id="drop-hint" class="text-sm text-gray-500">
+                    JPG, PNG, or WebP, up to {MAX_MB} MB
+                </p>
                 <input
                     type="file"
                     id="file-input"
@@ -52,6 +167,9 @@ import Layout from "../../layouts/Layout.astro";
                     class="hidden"
                 />
             </div>
+
+            <p id="error" role="alert" class="hidden mt-4 text-sm text-red-600">
+            </p>
 
             <!-- Convert Options -->
             <div id="options-section" class="mt-6 hidden">
@@ -65,8 +183,14 @@ import Layout from "../../layouts/Layout.astro";
                     >
                         <option value="image/jpeg">JPG (JPEG)</option>
                         <option value="image/png">PNG</option>
-                        <option value="image/webp">WebP</option>
+                        <option value="image/webp" id="webp-option">WebP</option
+                        >
                     </select>
+                    <p
+                        id="format-note"
+                        class="hidden mt-2 text-xs text-gray-600"
+                    >
+                    </p>
                 </div>
 
                 <div id="quality-section" class="mt-4">
@@ -82,7 +206,7 @@ import Layout from "../../layouts/Layout.astro";
                         class="w-full"
                     />
                     <p class="text-xs text-gray-500 mt-1">
-                        Lower quality = smaller file size (JPG/WebP only)
+                        Lower quality = smaller file size (JPG and WebP only)
                     </p>
                 </div>
 
@@ -96,7 +220,7 @@ import Layout from "../../layouts/Layout.astro";
         </section>
 
         <!-- Results -->
-        <section id="results" class="hidden">
+        <section id="results" class="hidden" aria-live="polite">
             <div class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
                 <h2 class="text-xl font-semibold mb-4">Conversion Result</h2>
 
@@ -180,56 +304,57 @@ import Layout from "../../layouts/Layout.astro";
         </section>
     </div>
 
-    <!-- SEO Content (800+ words) -->
+    <!-- SEO Content -->
     <section class="max-w-3xl mx-auto mt-16">
         <h2 class="text-2xl font-bold mb-4">About This Image Converter</h2>
         <p class="text-gray-700 mb-4">
             This free online image converter lets you change image formats
             between JPG, PNG, and WebP instantly. It runs entirely in your
-            browser — your images never leave your device. Whether you need to
-            convert a PNG screenshot to JPG to save space, turn a JPG photo into
-            WebP for a faster website, or extract a transparent PNG from a WebP
-            file, this tool gets it done in seconds.
+            browser, so your images never leave your device. Whether you need to
+            convert a PNG screenshot to JPG, turn a JPG photo into WebP for a
+            faster website, or change a downloaded WebP picture into a JPG that
+            a form will accept, this tool gets it done in seconds.
         </p>
         <p class="text-gray-700 mb-4">
             Most image converters require an upload, a download, and sometimes
             an account. This one skips all of that. Drop your image, choose the
-            output format, and download the result — no signup, no software, no
-            privacy concerns.
+            output format, and download the result, with no signup and no
+            software.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
-            <li>Click or tap the upload area to choose an image</li>
+            <li>
+                Click or tap the upload area (or drop a file) to choose an image
+            </li>
             <li>
                 Choose the format you want to convert to (JPG, PNG, or WebP)
             </li>
             <li>Adjust quality if converting to JPG or WebP</li>
             <li>Click "Convert Image"</li>
-            <li>Preview the result and download</li>
+            <li>Preview the result, compare the file sizes, and download</li>
         </ol>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Instant conversion:</strong> Results in under a second, no
-                upload or wait.
+                <strong>Instant conversion:</strong> Results in moments, with no upload
+                and no waiting.
             </li>
             <li>
-                <strong>All major formats:</strong> JPG, PNG, and WebP — the three
-                formats that matter for the modern web.
+                <strong>The three formats most sites use:</strong> JPG, PNG, and WebP.
             </li>
             <li>
                 <strong>Quality control:</strong> Adjust the quality slider for JPG
                 and WebP to balance file size and visual quality.
             </li>
             <li>
-                <strong>Before/after preview:</strong> See exactly what you're getting
-                before downloading.
+                <strong>Before/after preview:</strong> See exactly what you're getting,
+                and the file size change, before downloading.
             </li>
             <li>
                 <strong>Privacy first:</strong> Everything runs in your browser. No
-                uploads, no tracking.
+                uploads.
             </li>
             <li>
                 <strong>Free with no limits:</strong> Convert as many images as you
@@ -245,66 +370,97 @@ import Layout from "../../layouts/Layout.astro";
         <p class="text-gray-700 mb-4">
             The most widely supported image format. JPG uses <strong
                 >lossy compression</strong
-            > — it discards some data to reduce file size. This works well for photos,
-            where small losses aren't noticeable. But it's a poor choice for images
-            with sharp text, logos, or transparency (JPG doesn't support transparency
-            at all — transparent areas become white).
+            >: it discards some data to reduce file size. This works well for
+            photos, where small losses aren't noticeable. It is a poor choice
+            for images with sharp text, logos, or transparency. JPG doesn't
+            support transparency at all, so transparent areas become white.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">PNG</h4>
         <p class="text-gray-700 mb-4">
-            PNG uses <strong>lossless compression</strong> — no data is discarded.
-            It supports transparency, which makes it perfect for logos, icons, and
-            images with text. The downside: PNG files are often 3–5x larger than JPG
-            files for the same photo. Use PNG when quality and transparency matter
-            more than file size.
+            PNG uses <strong>lossless compression</strong>, so no detail is
+            discarded. It supports transparency, which makes it a good fit for
+            logos, icons, and images with text. The downside is size: for
+            photos, a PNG is often several times larger than the same picture as
+            a JPG. Use PNG when quality and transparency matter more than file
+            size.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">WebP</h4>
         <p class="text-gray-700 mb-4">
-            WebP is Google's modern image format. It offers <strong
-                >better compression than JPG</strong
-            > (typically 25–35% smaller at the same quality), supports transparency
-            like PNG, and is supported by every modern browser (Chrome, Firefox, Safari,
-            Edge). For web use in 2026, WebP is almost always the best choice.
+            WebP is a modern image format developed by Google. Google reports
+            that lossy WebP files are roughly 25–34% smaller than comparable JPG
+            files, and WebP also supports transparency like PNG. All current
+            major browsers can display it. It is a strong choice for websites,
+            although some older apps and forms still don't accept it.
         </p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">Common Conversions</h3>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>PNG to JPG:</strong> Makes screenshots and photos smaller.
+                Transparent areas become white, and sharp text can look slightly soft.
+            </li>
+            <li>
+                <strong>JPG to PNG:</strong> Needed when a tool asks for PNG. It does
+                not improve quality, and the file gets larger.
+            </li>
+            <li>
+                <strong>WebP to JPG:</strong> The fix for downloaded pictures that
+                an app or form won't accept.
+            </li>
+            <li>
+                <strong>WebP to PNG:</strong> Keeps transparency in a format that
+                works almost everywhere.
+            </li>
+            <li>
+                <strong>JPG to WebP:</strong> Usually gives a smaller file for a website.
+            </li>
+            <li>
+                <strong>PNG to WebP:</strong> Often much smaller than the PNG, and
+                keeps transparency.
+            </li>
+        </ul>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
 
         <h4 class="font-semibold mt-4 mb-2">1. Making a Website Faster</h4>
         <p class="text-gray-700 mb-4">
-            Converting images to WebP is one of the fastest ways to speed up a
-            website. A hero image that's 500 KB as JPG becomes ~350 KB as WebP —
-            with the same visual quality. Across dozens of images, that adds up
-            to seconds of load time saved.
+            Converting images to WebP is one of the quickest ways to shrink a
+            website's images. Smaller images load faster, especially across
+            dozens of images on a page. The tool shows the exact size change for
+            every image you convert.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
-            2. Saving Space on Your Phone or Computer
+            2. Meeting a Form's Format Requirement
         </h4>
         <p class="text-gray-700 mb-4">
-            PNG screenshots are often 5–10x larger than they need to be.
-            Converting them to JPG reduces file size by 80–90% with almost no
-            visible quality loss (screenshots compress very efficiently as JPG).
+            Many online forms and portals accept only JPG. Convert your PNG or
+            WebP picture to JPG here, then reduce its size with the <a
+                href="/tools/image-compressor/"
+                class="text-blue-600 hover:underline font-medium"
+                >Image Compressor</a
+            > if the form has a size limit.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
-            3. Preparing Images for Social Media
+            3. Saving Space on Your Phone or Computer
         </h4>
         <p class="text-gray-700 mb-4">
-            Different platforms prefer different formats. Instagram and Facebook
-            accept JPG and PNG. Some tools require PNG for transparent logos.
-            Converting to the right format before upload avoids quality loss
-            from the platform's own compression.
+            Screenshots of photos or busy content are often much smaller as JPG.
+            Screenshots of plain text and flat colors may not shrink much, and
+            JPG can blur sharp text, so compare the result before you delete the
+            original.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
-            4. Converting Screenshots for Documentation
+            4. Preparing Images for Social Media and Documents
         </h4>
         <p class="text-gray-700 mb-4">
-            If you're writing documentation or a tutorial, screenshots work well
-            as either PNG (crisp, larger) or JPG (smaller, slightly soft text).
-            Convert as needed.
+            Different platforms and apps accept different formats. Convert to
+            the format a platform asks for before you upload, and check its
+            current requirements.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
@@ -312,95 +468,54 @@ import Layout from "../../layouts/Layout.astro";
         </h4>
         <p class="text-gray-700 mb-4">
             If you have a PNG with transparency and need a JPG, converting here
-            will fill transparent areas with white — which is what most tools
-            do. This is useful when a platform doesn't accept PNG.
+            fills the transparent areas with white. This is useful when a
+            platform doesn't accept PNG.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">6. Preparing Images for a CMS</h4>
         <p class="text-gray-700 mb-4">
-            Some content management systems (WordPress, Shopify) automatically
-            create WebP versions of uploaded images. But if yours doesn't, or if
-            you want to control the quality, converting to WebP before upload
-            gives you more control.
+            Some content management systems create WebP versions of uploaded
+            images automatically. If yours doesn't, or you want to control the
+            quality, converting to WebP before you upload gives you more
+            control.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
         <p class="text-gray-700 mb-4">
-            Here's what happens when you convert a typical PNG screenshot to
-            WebP:
+            Say a job portal rejects your picture because it is a WebP file:
         </p>
-        <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li><strong>Original:</strong> PNG, 1920 × 1080 pixels, 2.4 MB</li>
-            <li><strong>Target format:</strong> WebP at 90% quality</li>
-            <li><strong>New file size:</strong> ~280 KB</li>
-            <li><strong>Size savings:</strong> 88%</li>
-        </ul>
+        <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+            <li>Drop the WebP picture on the upload area.</li>
+            <li>
+                Choose "JPG (JPEG)" under "Convert to" and keep quality at 90%.
+            </li>
+            <li>Click "Convert Image".</li>
+            <li>
+                Compare the two sizes shown above the previews. The tool tells
+                you whether the file got smaller or larger.
+            </li>
+            <li>
+                Download the JPG. If the portal also has a size limit, run it
+                through the Image Compressor.
+            </li>
+        </ol>
         <p class="text-gray-700 mt-4 mb-4">
-            That's the difference between an image that takes 3 seconds to load
-            and one that loads instantly — with no visible quality loss on the
-            screenshot's text or UI elements.
+            The exact sizes depend on your picture, which is why the tool shows
+            them for every conversion instead of promising a fixed saving.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Which format should I use?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    Use JPG for photos (smaller file size), PNG for images with
-                    transparency or text, and WebP for the best balance of
-                    quality and size on modern browsers.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Does converting affect image quality?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    JPG and WebP are lossy formats — they discard some data to
-                    reduce size. PNG is lossless. Use a high quality setting
-                    (90%+) to preserve visual quality.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Are my images uploaded to a server?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    No. All conversion happens in your browser. Your images
-                    never leave your device.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    Can I convert to a format other than JPG, PNG, or WebP?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    This tool supports the three most important formats for web
-                    use. For other formats like BMP, TIFF, or HEIC, you'll need
-                    a different tool.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">
-                    What happens to transparent areas when converting to JPG?
-                </h4>
-                <p class="text-gray-700 mt-1">
-                    JPG doesn't support transparency, so transparent areas are
-                    filled with white. If you need to keep transparency, convert
-                    to PNG or WebP instead.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-gray-900">Is this tool free?</h4>
-                <p class="text-gray-700 mt-1">
-                    Yes, completely free with no signup, no limits, and no
-                    watermarks.
-                </p>
-            </div>
+            {
+                faqs.map((f) => (
+                    <div>
+                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <p class="text-gray-700 mt-1">{f.a}</p>
+                    </div>
+                ))
+            }
         </div>
     </section>
 
@@ -414,7 +529,7 @@ import Layout from "../../layouts/Layout.astro";
             >
                 <h3 class="font-semibold mb-1">Image Compressor</h3>
                 <p class="text-sm text-gray-600">
-                    Reduce image file size without losing quality.
+                    Reduce image file size by quality or to a target size.
                 </p>
             </a>
             <a
@@ -461,14 +576,32 @@ import Layout from "../../layouts/Layout.astro";
     </section>
 
     <script>
+        const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+        const EXTENSIONS: Record<string, string> = {
+            "image/jpeg": "jpg",
+            "image/png": "png",
+            "image/webp": "webp",
+        };
+
+        const MAX_MB = Number(
+            document.getElementById("calc-config")!.dataset.maxMb,
+        );
+
         const dropZone = document.getElementById("drop-zone") as HTMLDivElement;
+        const dropText = document.getElementById("drop-text")!;
+        const dropHint = document.getElementById("drop-hint")!;
         const fileInput = document.getElementById(
             "file-input",
         ) as HTMLInputElement;
+        const errorBox = document.getElementById("error")!;
         const optionsSection = document.getElementById("options-section")!;
         const formatSelect = document.getElementById(
             "format",
         ) as HTMLSelectElement;
+        const webpOption = document.getElementById(
+            "webp-option",
+        ) as HTMLOptionElement;
+        const formatNote = document.getElementById("format-note")!;
         const qualitySection = document.getElementById("quality-section")!;
         const qualitySlider = document.getElementById(
             "quality",
@@ -480,9 +613,26 @@ import Layout from "../../layouts/Layout.astro";
             "download-btn",
         ) as HTMLAnchorElement;
         const resetBtn = document.getElementById("reset-btn")!;
+        const previewOriginal = document.getElementById(
+            "preview-original",
+        ) as HTMLImageElement;
+        const previewConverted = document.getElementById(
+            "preview-converted",
+        ) as HTMLImageElement;
 
         let selectedFile: File | null = null;
         let originalImage: HTMLImageElement | null = null;
+        let originalUrl: string | null = null;
+        let convertedUrl: string | null = null;
+
+        function showError(message: string) {
+            errorBox.textContent = message;
+            errorBox.classList.remove("hidden");
+        }
+
+        function clearError() {
+            errorBox.classList.add("hidden");
+        }
 
         function formatBytes(bytes: number): string {
             if (bytes < 1024) return bytes + " B";
@@ -497,32 +647,49 @@ import Layout from "../../layouts/Layout.astro";
             return mime;
         }
 
-        function updateQualityVisibility() {
+        // Some browsers (notably older Safari) cannot create WebP files: they
+        // silently give back a PNG instead, so check before offering it.
+        function canEncode(mime: string): boolean {
+            const c = document.createElement("canvas");
+            c.width = 1;
+            c.height = 1;
+            return c.toDataURL(mime).startsWith(`data:${mime}`);
+        }
+        if (!canEncode("image/webp")) {
+            webpOption.disabled = true;
+            webpOption.textContent = "WebP (not supported by this browser)";
+        }
+
+        function updateOptionsUI() {
             const fmt = formatSelect.value;
-            if (fmt === "image/png") {
-                qualitySection.classList.add("hidden");
+            qualitySection.classList.toggle("hidden", fmt === "image/png");
+            if (selectedFile && selectedFile.type === fmt) {
+                formatNote.textContent = `This image is already a ${getFormatLabel(fmt)}. Converting it again re-saves it, which can lower the quality slightly.`;
+                formatNote.classList.remove("hidden");
             } else {
-                qualitySection.classList.remove("hidden");
+                formatNote.classList.add("hidden");
             }
         }
 
-        formatSelect.addEventListener("change", updateQualityVisibility);
-
+        formatSelect.addEventListener("change", updateOptionsUI);
         qualitySlider.addEventListener("input", () => {
             qualityValue.textContent = qualitySlider.value;
         });
 
         dropZone.addEventListener("click", () => fileInput.click());
-
+        dropZone.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInput.click();
+            }
+        });
         dropZone.addEventListener("dragover", (e) => {
             e.preventDefault();
             dropZone.classList.add("border-blue-500", "bg-blue-50");
         });
-
         dropZone.addEventListener("dragleave", () => {
             dropZone.classList.remove("border-blue-500", "bg-blue-50");
         });
-
         dropZone.addEventListener("drop", (e) => {
             e.preventDefault();
             dropZone.classList.remove("border-blue-500", "bg-blue-50");
@@ -537,91 +704,116 @@ import Layout from "../../layouts/Layout.astro";
         });
 
         function handleFile(file: File) {
-            if (!file.type.startsWith("image/")) {
-                alert("Please select an image file (JPG, PNG, or WebP).");
-                return;
-            }
-            if (file.size > 20 * 1024 * 1024) {
-                alert(
-                    "File size too large. Please select an image under 20 MB.",
+            clearError();
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                showError(
+                    "Please choose a JPG, PNG, or WebP image. Other formats such as HEIC, GIF, or BMP are not supported.",
                 );
                 return;
             }
-            selectedFile = file;
+            if (file.size > MAX_MB * 1024 * 1024) {
+                showError(
+                    `That file is larger than ${MAX_MB} MB. Please choose a smaller image.`,
+                );
+                return;
+            }
+
+            if (originalUrl) URL.revokeObjectURL(originalUrl);
+            originalUrl = URL.createObjectURL(file);
+
             const img = new Image();
             img.onload = () => {
+                selectedFile = file;
                 originalImage = img;
                 optionsSection.classList.remove("hidden");
-                updateQualityVisibility();
-                dropZone.querySelector("p")!.textContent =
-                    `Selected: ${file.name}`;
+                results.classList.add("hidden");
+                dropText.textContent = `Selected: ${file.name}`;
+                dropHint.textContent = `${formatBytes(file.size)}. Click to choose a different image.`;
+                updateOptionsUI();
             };
-            img.src = URL.createObjectURL(file);
+            img.onerror = () => {
+                showError(
+                    "That image could not be read. Please try another file.",
+                );
+            };
+            img.src = originalUrl;
         }
 
         convertBtn.addEventListener("click", () => {
             if (!selectedFile || !originalImage) return;
+            clearError();
+            const file = selectedFile;
 
             const targetFormat = formatSelect.value;
-            const quality = parseInt(qualitySlider.value) / 100;
+            const quality = parseInt(qualitySlider.value, 10) / 100;
 
             const canvas = document.createElement("canvas");
             canvas.width = originalImage.naturalWidth;
             canvas.height = originalImage.naturalHeight;
-            const ctx = canvas.getContext("2d")!;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) {
+                showError(
+                    "Your browser could not prepare this image. Try a smaller image or a different browser.",
+                );
+                return;
+            }
 
-            // Fill white background for JPG (no transparency support)
+            // JPG has no transparency, so fill the background with white
             if (targetFormat === "image/jpeg") {
                 ctx.fillStyle = "#ffffff";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
-
             ctx.drawImage(originalImage, 0, 0);
 
             canvas.toBlob(
                 (blob) => {
-                    if (!blob) return;
-                    const convertedUrl = URL.createObjectURL(blob);
+                    if (!blob) {
+                        showError(
+                            "Could not convert this image. It may be too large for your browser. Try shrinking it first with the Image Resizer.",
+                        );
+                        return;
+                    }
+                    // The browser must really have produced the chosen format
+                    if (blob.type !== targetFormat) {
+                        showError(
+                            `Your browser could not create a ${getFormatLabel(targetFormat)} file. Try another format, or use a recent version of Chrome, Edge, or Firefox.`,
+                        );
+                        return;
+                    }
+
+                    if (convertedUrl) URL.revokeObjectURL(convertedUrl);
+                    convertedUrl = URL.createObjectURL(blob);
 
                     document.getElementById("original-format")!.textContent =
-                        getFormatLabel(selectedFile!.type);
+                        getFormatLabel(file.type);
                     document.getElementById("new-format")!.textContent =
                         getFormatLabel(targetFormat);
-
                     document.getElementById("original-size")!.textContent =
-                        formatBytes(selectedFile!.size);
+                        formatBytes(file.size);
                     document.getElementById("new-size")!.textContent =
                         formatBytes(blob.size);
 
                     const savedBox = document.getElementById("size-saved")!;
-                    savedBox.classList.remove("hidden");
-                    const diff = selectedFile!.size - blob.size;
+                    const diff = file.size - blob.size;
                     if (diff >= 0) {
                         savedBox.textContent = `✓ File size reduced by ${formatBytes(diff)}`;
                         savedBox.className =
                             "mb-6 p-3 rounded-lg text-center text-sm font-medium bg-green-50 text-green-700 border border-green-200";
                     } else {
-                        savedBox.textContent = `File size increased by ${formatBytes(Math.abs(diff))}`;
+                        const hint =
+                            targetFormat === "image/png"
+                                ? " PNG is lossless, so photos usually get larger as PNG. Choose JPG or WebP for a smaller file."
+                                : " Try a lower quality setting.";
+                        savedBox.textContent = `File size increased by ${formatBytes(Math.abs(diff))}.${hint}`;
                         savedBox.className =
                             "mb-6 p-3 rounded-lg text-center text-sm font-medium bg-yellow-50 text-yellow-700 border border-yellow-200";
                     }
 
-                    (
-                        document.getElementById(
-                            "preview-original",
-                        ) as HTMLImageElement
-                    ).src = URL.createObjectURL(selectedFile!);
-                    (
-                        document.getElementById(
-                            "preview-converted",
-                        ) as HTMLImageElement
-                    ).src = convertedUrl;
+                    previewOriginal.src = originalUrl!;
+                    previewConverted.src = convertedUrl;
 
-                    const ext =
-                        targetFormat === "image/jpeg"
-                            ? "jpg"
-                            : targetFormat.split("/")[1];
-                    const baseName = selectedFile!.name.replace(/\.[^.]+$/, "");
+                    const ext = EXTENSIONS[targetFormat] || "img";
+                    const baseName = file.name.replace(/\.[^.]+$/, "");
                     downloadBtn.href = convertedUrl;
                     downloadBtn.download = `${baseName}.${ext}`;
 
@@ -637,66 +829,25 @@ import Layout from "../../layouts/Layout.astro";
             selectedFile = null;
             originalImage = null;
             fileInput.value = "";
+            if (originalUrl) URL.revokeObjectURL(originalUrl);
+            if (convertedUrl) URL.revokeObjectURL(convertedUrl);
+            originalUrl = null;
+            convertedUrl = null;
+            clearError();
             results.classList.add("hidden");
             optionsSection.classList.add("hidden");
-            dropZone.querySelector("p")!.textContent =
-                "Click or tap here to choose an image";
+            dropText.textContent = "Click, tap, or drop an image here";
+            dropHint.textContent = `JPG, PNG, or WebP, up to ${MAX_MB} MB`;
         });
     </script>
 
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Image Converter",
-            applicationCategory: "MultimediaApplication",
-            operatingSystem: "Any",
-            description:
-                "Free online image converter. Convert between JPG, PNG, and WebP formats instantly in your browser.",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        })}
+        set:html={JSON.stringify(webAppSchema)}
     />
-
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "Which format should I use?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Use JPG for photos (smaller file size), PNG for images with transparency or text, and WebP for the best balance of quality and size on modern browsers.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Does converting affect image quality?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "JPG and WebP are lossy formats — they discard some data to reduce size. PNG is lossless. Use a high quality setting (90%+) to preserve visual quality.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Are my images uploaded to a server?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "No. All conversion happens in your browser. Your images never leave your device.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is this tool free?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes, completely free with no signup, no limits, and no watermarks.",
-                    },
-                },
-            ],
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>
