@@ -1,10 +1,23 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { toolCategories, allTools } from "../data/tools";
 
+const origin = "https://toolsvibe.online";
+const pageUrl = `${origin}/about/`;
+
+// Personal details in one place, so they are easy to change
+const FOUNDER = "Khuram Shahzad";
+const CONTACT_EMAIL = "khurammirza354@gmail.com";
+const GITHUB_URL = "https://github.com/khuram354";
+const FACEBOOK_URL = "https://facebook.com/toolsvibe.online";
+const PORTFOLIO_URL = "https://khuram354.github.io/portfolio-v1/";
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
 const faqs = [
     {
         q: "Who runs ToolsVibe?",
-        a: "ToolsVibe is an independent project built by Khuram Shahzad and a small team of contributors from Pakistan. It is not backed by any large corporation and relies on minimal, non-intrusive ads to keep the site running.",
+        a: `ToolsVibe is an independent project built by ${FOUNDER} and a small team of contributors from Pakistan. It is not backed by any large corporation.`,
     },
     {
         q: "Is ToolsVibe really free?",
@@ -12,24 +25,91 @@ const faqs = [
     },
     {
         q: "How do you protect my privacy?",
-        a: "All tools run entirely in your browser. Your text, files, and data never leave your device. We do not store, sell, or share any user data.",
+        a: "The tools process what you type, paste, or upload in your browser, so that content never leaves your device. We use Google Analytics to understand how the site is used, and advertising partners may set cookies on pages that show ads. We do not sell personal data. Our Privacy Policy explains this in full.",
+    },
+    {
+        q: "Are the tax and Zakat calculators reliable?",
+        a: "They give estimates based on published figures such as FBR tax slabs, and the pages show the tax year and when the figures were last reviewed. Rules and prices change, so the results are not professional advice. Confirm important figures with FBR or a tax professional, and ask a qualified scholar about Zakat rulings.",
     },
     {
         q: "Can I use ToolsVibe tools for commercial work?",
-        a: "Yes. Our tools are free for personal and commercial use. Students, writers, developers, and businesses all use ToolsVibe regularly.",
+        a: "Yes. You can use the tools, and the files and results you create with them, for personal or commercial work. We do not claim any rights over your content.",
     },
 ];
+
+const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "About ToolsVibe",
+    url: pageUrl,
+    description:
+        "ToolsVibe is a free collection of browser-based tools, including Pakistan tax and Zakat calculators and image tools, built by Khuram Shahzad.",
+    isPartOf: {
+        "@type": "WebSite",
+        "@id": `${origin}/#website`,
+        name: "ToolsVibe",
+        url: `${origin}/`,
+    },
+    mainEntity: {
+        "@type": "Organization",
+        "@id": `${origin}/#organization`,
+        name: "ToolsVibe",
+        url: `${origin}/`,
+        logo: `${origin}/apple-touch-icon.png`,
+        founder: {
+            "@type": "Person",
+            name: FOUNDER,
+            url: PORTFOLIO_URL,
+            sameAs: [GITHUB_URL],
+        },
+        sameAs: [FACEBOOK_URL],
+    },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: `${origin}/`,
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "About",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
-    title="About — Free Online Tools by ToolsVibe"
-    description="Learn about ToolsVibe, a free collection of fast, privacy-friendly online tools for writing, development, finance, and everyday tasks."
+    title="About ToolsVibe: Free, Privacy-First Online Tools from Pakistan"
+    description="ToolsVibe is a free collection of browser-based tools, including Pakistan tax and Zakat calculators and image tools. Built by Khuram Shahzad."
 >
     <article class="max-w-3xl mx-auto">
         <header class="mb-10">
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <span>About</span>
+            </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-4">About ToolsVibe</h1>
             <p class="text-lg text-gray-600">
-                A free collection of fast, privacy-friendly online tools — built
+                A free collection of fast, privacy-friendly online tools, built
                 for people who value their time and their data.
             </p>
         </header>
@@ -37,30 +117,31 @@ const faqs = [
         <section class="space-y-6 text-gray-700 leading-relaxed">
             <p>
                 ToolsVibe is a free collection of online tools built for speed,
-                simplicity, and privacy. Every tool runs entirely in your
-                browser — nothing is uploaded to a server, and no signup is
-                required.
+                simplicity, and privacy. The tools run in your browser, so what
+                you type, paste, or upload is processed on your own device and
+                is not sent to our servers. No signup is required.
             </p>
             <p>
-                ToolsVibe was started because tool websites are cluttered with
-                ads, popups, and forced account creation. There had to be
-                something different: clean, fast tools that just work.
+                ToolsVibe was started because tool websites are often cluttered
+                with ads, popups, and forced account creation. We wanted
+                something different: clean, fast tools that just work, including
+                calculators made for users in Pakistan.
             </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">Who Runs ToolsVibe?</h2>
             <p>
                 ToolsVibe is developed and maintained by <strong
-                    >Khuram Shahzad</strong
+                    >{FOUNDER}</strong
                 >, a web developer from Pakistan, along with a small team of
                 contributors. The project started as a personal experiment to
-                build fast, ad-light tools for users in Pakistan and around the
+                build fast, light tools for users in Pakistan and around the
                 world.
             </p>
 
             <h3 class="text-xl font-semibold mt-6 mb-3">Client Work</h3>
             <p class="mb-3">
-                Alongside ToolsVibe, Khuram Shahzad builds production websites
-                for real businesses. One recent project:
+                Alongside ToolsVibe, {FOUNDER} builds production websites for real
+                businesses. One recent project:
             </p>
             <ul class="list-disc pl-6 space-y-2">
                 <li>
@@ -81,7 +162,7 @@ const faqs = [
                 <li>
                     <strong>Portfolio:</strong>{" "}
                     <a
-                        href="https://khuram354.github.io/portfolio-v1/"
+                        href={PORTFOLIO_URL}
                         target="_blank"
                         rel="noopener"
                         class="text-blue-600 hover:underline"
@@ -92,7 +173,7 @@ const faqs = [
                 <li>
                     <strong>GitHub:</strong>{" "}
                     <a
-                        href="https://github.com/khuram354"
+                        href={GITHUB_URL}
                         target="_blank"
                         rel="noopener"
                         class="text-blue-600 hover:underline"
@@ -103,7 +184,7 @@ const faqs = [
                 <li>
                     <strong>Facebook:</strong>{" "}
                     <a
-                        href="https://facebook.com/toolsvibe.online/"
+                        href={FACEBOOK_URL}
                         target="_blank"
                         rel="noopener"
                         class="text-blue-600 hover:underline"
@@ -114,207 +195,97 @@ const faqs = [
                 <li>
                     <strong>Email:</strong>{" "}
                     <a
-                        href="https://mail.google.com/mail/?view=cm&to=khurammirza354@gmail.com"
-                        target="_blank"
-                        rel="noopener"
+                        href={`mailto:${CONTACT_EMAIL}`}
                         class="text-blue-600 hover:underline"
                     >
-                        khurammirza354@gmail.com
+                        {CONTACT_EMAIL}
                     </a>
                 </li>
             </ul>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">Our Mission</h2>
             <p>
-                The goal is simple: build the fastest, most private online tools
-                on the web. No distractions, no data collection, no hidden fees.
-                Just tools that do one thing well — and do it in your browser.
+                The goal is simple: build fast, private online tools that are
+                easy to use. No distractions, no signups, no hidden fees. Just
+                tools that do one thing well, and do it in your browser. We
+                never collect what you type or upload into a tool.
             </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">What We Offer</h2>
             <p>
-                ToolsVibe currently offers 15 free tools, with more added
-                regularly:
+                ToolsVibe currently offers {allTools.length} free tools, with more
+                added regularly. You can also see them all on the <a
+                    href="/tools/"
+                    class="text-blue-600 hover:underline font-medium"
+                    >Tools page</a
+                >.
             </p>
 
-            <h3 class="text-xl font-semibold mt-6 mb-3">
-                Writing & Text Tools
-            </h3>
-            <ul class="list-disc pl-6 space-y-2">
-                <li>
-                    <a
-                        href="/tools/word-counter/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Word Counter
-                    </a>{" "}
-                    — count words, characters, sentences, and estimate reading time.
-                </li>
-            </ul>
-
-            <h3 class="text-xl font-semibold mt-6 mb-3">Utility Tools</h3>
-            <ul class="list-disc pl-6 space-y-2">
-                <li>
-                    <a
-                        href="/tools/qr-generator/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        QR Code Generator
-                    </a>{" "}
-                    — create custom QR codes for any text or URL.
-                </li>
-                <li>
-                    <a
-                        href="/tools/password-generator/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Password Generator
-                    </a>{" "}
-                    — create strong random passwords.
-                </li>
-                <li>
-                    <a
-                        href="/tools/unit-converter/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Unit Converter
-                    </a>{" "}
-                    — length, weight, temperature, area, volume, speed, and time.
-                </li>
-                <li>
-                    <a
-                        href="/tools/age-calculator/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Age Calculator
-                    </a>{" "}
-                    — exact age in years, months, days, plus next birthday countdown.
-                </li>
-                <li>
-                    <a
-                        href="/tools/percentage-calculator/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Percentage Calculator
-                    </a>{" "}
-                    — solve percentage problems, discounts, and percentage change.
-                </li>
-            </ul>
-
-            <h3 class="text-xl font-semibold mt-6 mb-3">Developer Tools</h3>
-            <ul class="list-disc pl-6 space-y-2">
-                <li>
-                    <a
-                        href="/tools/json-formatter/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        JSON Formatter
-                    </a>{" "}
-                    — format, validate, and beautify JSON data.
-                </li>
-            </ul>
-
-            <h3 class="text-xl font-semibold mt-6 mb-3">
-                Finance & Tax Tools (Pakistan)
-            </h3>
-            <ul class="list-disc pl-6 space-y-2">
-                <li>
-                    <a
-                        href="/tools/salary-tax-calculator/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Salary Tax Calculator
-                    </a>{" "}
-                    — calculate take-home salary and FBR tax for Tax Year 2027.
-                </li>
-                <li>
-                    <a
-                        href="/tools/freelancer-tax-calculator/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Freelancer Tax Calculator
-                    </a>{" "}
-                    — tax on IT export income and local freelance income.
-                </li>
-                <li>
-                    <a
-                        href="/tools/zakat-calculator/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Zakat Calculator
-                    </a>{" "}
-                    — calculate Zakat on cash, gold, silver, and investments.
-                </li>
-                <li>
-                    <a
-                        href="/tools/emi-calculator/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        EMI Calculator
-                    </a>{" "}
-                    — monthly loan EMI, total interest, and yearly breakdown.
-                </li>
-            </ul>
-
-            <h3 class="text-xl font-semibold mt-6 mb-3">Image Tools</h3>
-            <ul class="list-disc pl-6 space-y-2">
-                <li>
-                    <a
-                        href="/tools/image-compressor/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Image Compressor
-                    </a>{" "}
-                    — reduce JPG, PNG, and WebP file sizes.
-                </li>
-                <li>
-                    <a
-                        href="/tools/image-resizer/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Image Resizer
-                    </a>{" "}
-                    — resize images with aspect ratio control.
-                </li>
-                <li>
-                    <a
-                        href="/tools/image-cropper/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Image Cropper
-                    </a>{" "}
-                    — crop images to any size or aspect ratio.
-                </li>
-                <li>
-                    <a
-                        href="/tools/image-converter/"
-                        class="text-blue-600 hover:underline font-medium"
-                    >
-                        Image Converter
-                    </a>{" "}
-                    — convert between JPG, PNG, and WebP formats.
-                </li>
-            </ul>
+            {
+                toolCategories.map((category) => (
+                    <div>
+                        <h3 class="text-xl font-semibold mt-6 mb-3">
+                            {category.name}
+                        </h3>
+                        <ul class="list-disc pl-6 space-y-2">
+                            {category.tools.map((tool) => (
+                                <li>
+                                    <a
+                                        href={tool.href}
+                                        class="text-blue-600 hover:underline font-medium"
+                                    >
+                                        {tool.name}
+                                    </a>{" "}
+                                    — {tool.description}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))
+            }
 
             <h2 class="text-2xl font-bold mt-8 mb-3">Our Principles</h2>
             <ul class="list-disc pl-6 space-y-2">
                 <li>
-                    <strong>Privacy first:</strong> your data never leaves your browser.
-                    No uploads, no server processing, no tracking beyond basic analytics.
+                    <strong>Privacy first:</strong> what you enter into a tool is
+                    processed in your browser and is never uploaded to our servers.
+                    We do use Google Analytics to understand how the site is used,
+                    and we explain this in our <a
+                        href="/privacy/"
+                        class="text-blue-600 hover:underline">Privacy Policy</a
+                    >.
                 </li>
                 <li>
-                    <strong>Free forever:</strong> no paywalls, no forced signups,
+                    <strong>Free to use:</strong> no paywalls, no forced signups,
                     no premium tiers.
                 </li>
                 <li>
-                    <strong>Fast and simple:</strong> built with modern web technology
-                    for instant load times on any device.
+                    <strong>Fast and simple:</strong> built to load quickly on any
+                    device, including slower connections.
                 </li>
                 <li>
                     <strong>Focused:</strong> each tool does one thing, and does it
                     well.
                 </li>
+                <li>
+                    <strong>Honest about results:</strong> estimates are shown as
+                    estimates, and the tools say when they could not do what you asked.
+                </li>
             </ul>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                Accuracy of the Tax and Zakat Calculators
+            </h2>
+            <p>
+                Our Pakistan tax and Zakat calculators use published figures,
+                such as FBR tax slabs and the Nisab for Zakat. The tax
+                calculators show the tax year and when their figures were last
+                reviewed, and the Zakat calculator shows the date of its example
+                gold and silver prices. Tax rules and prices change, so please
+                treat the results as estimates and not as professional advice.
+                Confirm important figures with FBR or a tax professional, and
+                ask a qualified scholar about Zakat rulings.
+            </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">Technology</h2>
             <p>
@@ -327,9 +298,9 @@ const faqs = [
                 >
                     Astro
                 </a>
-                , a modern web framework that ships zero JavaScript by default. That
-                means pages load almost instantly and work smoothly even on slower
-                connections.
+                , a modern web framework that ships no JavaScript to the page unless
+                it is needed. That helps pages stay light and work smoothly even on
+                slower connections.
             </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">Get in Touch</h2>
@@ -343,7 +314,14 @@ const faqs = [
                 <a href="/blog/" class="text-blue-600 hover:underline">blog</a>{
                     " "
                 }
-                for guides and tips.
+                for guides and tips. You can also read our{" "}
+                <a href="/privacy/" class="text-blue-600 hover:underline"
+                    >Privacy Policy</a
+                >{" "}
+                and{" "}
+                <a href="/terms/" class="text-blue-600 hover:underline"
+                    >Terms of Service</a
+                >.
             </p>
         </section>
 
@@ -365,76 +343,11 @@ const faqs = [
             </div>
         </section>
     </article>
-    <!-- Structured Data for SEO -->
+
+    <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} />
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "AboutPage",
-            name: "About — ToolsVibe",
-            url: "https://toolsvibe.online/about/",
-            description:
-                "Learn about ToolsVibe, a free collection of fast, privacy-friendly online tools for writing, development, finance, and everyday tasks.",
-            isPartOf: {
-                "@type": "WebSite",
-                name: "ToolsVibe",
-                url: "https://toolsvibe.online/",
-            },
-            mainEntity: {
-                "@type": "Organization",
-                name: "ToolsVibe",
-                url: "https://toolsvibe.online/",
-                founder: {
-                    "@type": "Person",
-                    name: "Khuram Shahzad",
-                },
-                sameAs: [
-                    "https://github.com/khuram354",
-                    "https://facebook.com/toolsvibe.online",
-                ],
-            },
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
-    <!-- Structured Data for FAQ -->
-    <script
-        type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "Who runs ToolsVibe?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "ToolsVibe is an independent project built by Khuram Shahzad and a small team of contributors from Pakistan. It is not backed by any large corporation and relies on minimal, non-intrusive ads to keep the site running.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Is ToolsVibe really free?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes. Every tool on ToolsVibe is free to use with no hidden charges, no premium tiers, and no forced signups. We fund the site through minimal, non-intrusive advertising.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "How do you protect my privacy?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "All tools run entirely in your browser. Your text, files, and data never leave your device. We do not store, sell, or share any user data.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Can I use ToolsVibe tools for commercial work?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes. Our tools are free for personal and commercial use. Students, writers, developers, and businesses all use ToolsVibe regularly.",
-                    },
-                },
-            ],
-        })}
-    />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>
