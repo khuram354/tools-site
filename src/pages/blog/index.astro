@@ -1,20 +1,62 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { blogPosts as posts } from "../../data/blog-data/blog-posts";
+import {
+    blogPosts as posts,
+    blogCategories,
+    getPostsByCategory,
+} from "../../data/blog-data/blog-posts";
+import { allTools } from "../../data/tools";
 
-const categories = [
-    "All",
-    "Word Counter",
-    "QR Codes",
-    "JSON",
-    "Productivity",
-    "Image Tools",
+const origin = "https://toolsvibe.online";
+const pageUrl = `${origin}/blog/`;
+
+// The guides shown first in "Start here". Change these links to feature
+// other posts.
+const FEATURED_HREFS = [
+    "/blog/freelancing-tax-pakistan/",
+    "/blog/salary-tax-pakistan/",
+    "/blog/how-to-calculate-zakat-gold/",
+];
+const featured = FEATURED_HREFS.flatMap((href) =>
+    posts.filter((p) => p.href === href),
+);
+
+// Category buttons: built from the data file, so a new category or post
+// appears here by itself and the counts are always right.
+const categoryButtons = [
+    { id: "all", label: "All", count: posts.length },
+    ...blogCategories.map((c) => ({
+        id: c.id,
+        label: c.label,
+        count: getPostsByCategory(c.id).length,
+    })),
 ];
 
+// One section of text per category, with links to the matching tools
+const sections = blogCategories.map((c) => ({
+    ...c,
+    count: getPostsByCategory(c.id).length,
+    tools: c.toolHrefs.map((href) => ({
+        href,
+        name: allTools.find((t) => t.href === href)?.name ?? href,
+    })),
+}));
+
+const CHIP_BASE =
+    "px-4 py-2 rounded-full text-sm font-medium transition border ";
+const CHIP_ON = "bg-blue-600 text-white border-blue-600";
+const CHIP_OFF = "bg-white text-gray-700 border-gray-200 hover:border-blue-300";
+
+// One source of truth: shown on the page AND used for the FAQ schema,
+// so the visible text and the structured data always match.
 const faqs = [
     {
         q: "How often do you publish new articles?",
-        a: "We publish new guides and tutorials every week. Topics cover our tools, productivity tips, and developer guides.",
+        a: "We publish new guides and tutorials regularly. Topics cover Pakistan tax and Zakat, image tools, QR codes, word counting, and JSON.",
+    },
+    {
+        q: "Are your tax and Zakat guides professional advice?",
+        a: "No. They are general guides to help you understand the rules, and our calculators give estimates. Tax rates and rules change, so check the figures with FBR or a qualified tax professional before you file, and ask a qualified scholar about Zakat rulings.",
     },
     {
         q: "Can I suggest a topic for a future article?",
@@ -29,65 +71,185 @@ const faqs = [
         a: "We are not accepting guest posts at the moment, but we may open this up in the future.",
     },
 ];
+
+const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "ToolsVibe Blog",
+    url: pageUrl,
+    description:
+        "Guides and tutorials on Pakistan salary and freelancer tax, Zakat, image tools, QR codes, word counting, and JSON.",
+    publisher: {
+        "@type": "Organization",
+        name: "ToolsVibe",
+        url: `${origin}/`,
+        logo: {
+            "@type": "ImageObject",
+            url: `${origin}/apple-touch-icon.png`,
+        },
+    },
+    blogPost: posts.map((p) => ({
+        "@type": "BlogPosting",
+        headline: p.title,
+        url: new URL(p.href, origin).href,
+        datePublished: p.isoDate,
+        description: p.description,
+    })),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: `${origin}/`,
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blog",
+            item: pageUrl,
+        },
+    ],
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
 ---
 
 <Layout
-    title="Blog: Word Counter, QR Code & JSON Guides | ToolsVibe"
-    description="Read guides, tips, and tutorials about online tools, productivity, word counting, QR codes, JSON, and more."
+    title="ToolsVibe Blog: Pakistan Tax, Image, QR Code & JSON Guides"
+    description="Guides and tutorials on Pakistan salary and freelancer tax, Zakat, image resizing and compression, QR codes, word counting, and JSON."
 >
     <div class="max-w-4xl mx-auto">
         <header class="mb-10">
+            <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+                <a href="/" class="hover:underline">Home</a>
+                <span aria-hidden="true">/</span>
+                <span>Blog</span>
+            </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">Blog</h1>
             <p class="text-gray-600 max-w-2xl">
-                Guides, tips, and tutorials about online tools, productivity,
-                and writing.
+                Guides, tips, and tutorials on Pakistan tax and Zakat, image
+                tools, QR codes, word counting, and JSON.
             </p>
         </header>
 
-        <!-- Category Filter -->
-        <div class="flex flex-wrap gap-2 mb-8">
-            {
-                categories.map((cat, i) => (
-                    <button
-                        class:list={[
-                            "px-4 py-2 rounded-full text-sm font-medium transition",
-                            i === 0
-                                ? "bg-blue-600 text-white"
-                                : "bg-white text-gray-700 border border-gray-200 hover:border-blue-300",
-                        ]}
-                        data-category={cat}
-                    >
-                        {cat}
-                    </button>
-                ))
-            }
+        <!-- Start here -->
+        {
+            featured.length > 0 && (
+                <section class="mb-10" aria-labelledby="start-here">
+                    <h2 id="start-here" class="text-xl font-bold mb-4">
+                        Start here: Pakistan tax and Zakat guides
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {featured.map((post) => (
+                            <a
+                                href={post.href}
+                                class="block p-4 bg-blue-50 border border-blue-200 rounded-xl hover:shadow-md hover:border-blue-400 transition"
+                            >
+                                <h3 class="font-semibold leading-snug mb-2">
+                                    {post.title}
+                                </h3>
+                                <time
+                                    datetime={post.isoDate}
+                                    class="text-xs text-gray-600"
+                                >
+                                    {post.date}
+                                </time>
+                            </a>
+                        ))}
+                    </div>
+                </section>
+            )
+        }
+
+        <!-- Search and category filter -->
+        <div id="filters" class="scroll-mt-24 mb-8">
+            <label for="search" class="sr-only">Search guides</label>
+            <input
+                type="search"
+                id="search"
+                placeholder="Search guides..."
+                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <div
+                class="flex flex-wrap gap-2 mt-4"
+                role="group"
+                aria-label="Filter guides by category"
+            >
+                {
+                    categoryButtons.map((c, i) => (
+                        <button
+                            type="button"
+                            data-filter={c.id}
+                            aria-pressed={i === 0 ? "true" : "false"}
+                            class={CHIP_BASE + (i === 0 ? CHIP_ON : CHIP_OFF)}
+                        >
+                            {c.label}
+                            <span class="opacity-70">({c.count})</span>
+                        </button>
+                    ))
+                }
+            </div>
+            <p
+                id="result-count"
+                class="text-sm text-gray-500 mt-3"
+                aria-live="polite"
+            >
+                Showing all {posts.length} guides
+            </p>
         </div>
 
         <!-- Posts Grid -->
         <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {
                 posts.map((post) => (
-                    <a
-                        href={post.href}
-                        data-category={post.category}
-                        class="post-card block p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+                    <article
+                        class="post-card"
+                        data-category={post.categoryId}
+                        data-search={`${post.title} ${post.description}`.toLowerCase()}
                     >
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-medium px-2 py-1 bg-blue-50 text-blue-700 rounded">
-                                {post.category}
-                            </span>
-                            <span class="text-xs text-gray-500">
-                                {post.date}
-                            </span>
-                        </div>
-                        <h2 class="text-lg font-semibold mb-2 leading-snug">
-                            {post.title}
-                        </h2>
-                        <p class="text-gray-600 text-sm">{post.description}</p>
-                    </a>
+                        <a
+                            href={post.href}
+                            class="block h-full p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+                        >
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-medium px-2 py-1 bg-blue-50 text-blue-700 rounded">
+                                    {post.category}
+                                </span>
+                                <time
+                                    datetime={post.isoDate}
+                                    class="text-xs text-gray-500"
+                                >
+                                    {post.date}
+                                </time>
+                            </div>
+                            <h2 class="text-lg font-semibold mb-2 leading-snug">
+                                {post.title}
+                            </h2>
+                            <p class="text-gray-600 text-sm">
+                                {post.description}
+                            </p>
+                        </a>
+                    </article>
                 ))
             }
         </div>
+        <p id="no-results" class="hidden text-center text-gray-600 mt-8">
+            No guides match your search. Try a different word or choose another
+            category.
+        </p>
 
         <!-- SEO Content -->
         <section class="mt-20 max-w-3xl mx-auto">
@@ -95,62 +257,49 @@ const faqs = [
                 Guides & Tutorials for Everyday Tools
             </h2>
             <p class="text-gray-700 mb-4">
-                The ToolsVibe blog covers practical guides on using our tools
-                effectively, plus broader topics like productivity, writing, and
-                development. Every article is written to be clear, actionable,
-                and beginner-friendly.
+                The ToolsVibe blog has practical guides that go with our free
+                tools: how to work out your salary or freelancer tax in
+                Pakistan, how to calculate Zakat on gold, how to resize and
+                compress images, how QR codes work, and how to count words or
+                fix JSON. Each guide is written to be clear and
+                beginner-friendly, with examples you can try.
             </p>
-
             <p class="text-gray-700 mb-4">
-                Looking for a specific tool? Try our{" "}
-                <a
-                    href="/tools/word-counter/"
+                Looking for a tool instead? <a
+                    href="/tools/"
                     class="text-blue-600 hover:underline font-medium"
-                    >Word Counter</a
-                >,{" "}
-                <a
-                    href="/tools/qr-generator/"
-                    class="text-blue-600 hover:underline font-medium"
-                    >QR Code Generator</a
-                >, or{" "}
-                <a
-                    href="/tools/json-formatter/"
-                    class="text-blue-600 hover:underline font-medium"
-                    >JSON Formatter</a
-                >{" "}
-                — all free, no signup required.
+                    >Browse all {allTools.length} free tools</a
+                >. They all run in your browser, with no signup.
             </p>
 
-            <h3 class="text-xl font-semibold mt-8 mb-3">Word Counter Guides</h3>
-            <p class="text-gray-700 mb-4">
-                Learn how to count words in Google Docs, Microsoft Word, and
-                other platforms. Our guides cover shortcuts, workarounds, and
-                tips for essays, blog posts, and social media content.
-            </p>
-
-            <h3 class="text-xl font-semibold mt-8 mb-3">QR Code Guides</h3>
-            <p class="text-gray-700 mb-4">
-                Discover how QR codes work, how to scan them on iPhone and
-                Android, and how to create your own for business cards, menus,
-                Wi-Fi access, and more.
-            </p>
-
-            <h3 class="text-xl font-semibold mt-8 mb-3">
-                JSON & Developer Topics
-            </h3>
-            <p class="text-gray-700 mb-4">
-                Beginner-friendly introductions to JSON, common errors and
-                fixes, and how to format and validate JSON efficiently using
-                online tools.
-            </p>
-
-            <h3 class="text-xl font-semibold mt-8 mb-3">
-                Productivity & Tools
-            </h3>
-            <p class="text-gray-700">
-                Tips and recommendations for free online tools, workflows, and
-                productivity techniques for students, writers, and developers.
-            </p>
+            {
+                sections.map((s) => (
+                    <div>
+                        <h3 class="text-xl font-semibold mt-8 mb-3">
+                            <a href={`/blog/#${s.id}`} class="hover:underline">
+                                {s.label} Guides
+                            </a>
+                        </h3>
+                        <p class="text-gray-700 mb-2">
+                            {s.description} ({s.count} guides)
+                        </p>
+                        <p class="text-sm text-gray-600">
+                            Related tools:{" "}
+                            {s.tools.map((t, i) => (
+                                <>
+                                    <a
+                                        href={t.href}
+                                        class="text-blue-600 hover:underline font-medium"
+                                    >
+                                        {t.name}
+                                    </a>
+                                    {i < s.tools.length - 1 ? ", " : ""}
+                                </>
+                            ))}
+                        </p>
+                    </div>
+                ))
+            }
         </section>
 
         <!-- FAQ -->
@@ -174,106 +323,92 @@ const faqs = [
         </section>
     </div>
 
-    <!-- Filter Script -->
+    <!-- Search and filter script -->
     <script>
-        const buttons =
-            document.querySelectorAll<HTMLButtonElement>("[data-category]");
-        const posts =
-            document.querySelectorAll<HTMLAnchorElement>(".post-card");
+        const CHIP_BASE =
+            "px-4 py-2 rounded-full text-sm font-medium transition border ";
+        const CHIP_ON = "bg-blue-600 text-white border-blue-600";
+        const CHIP_OFF =
+            "bg-white text-gray-700 border-gray-200 hover:border-blue-300";
+
+        const buttons = document.querySelectorAll<HTMLButtonElement>(
+            "button[data-filter]",
+        );
+        const cards = document.querySelectorAll<HTMLElement>(".post-card");
+        const search = document.getElementById("search") as HTMLInputElement;
+        const resultCount = document.getElementById("result-count")!;
+        const noResults = document.getElementById("no-results")!;
+        const filters = document.getElementById("filters")!;
+
+        const TOTAL = cards.length;
+        let activeFilter = "all";
+
+        function isFilterId(id: string): boolean {
+            return Array.from(buttons).some((b) => b.dataset.filter === id);
+        }
+
+        function apply() {
+            const q = search.value.trim().toLowerCase();
+            let shown = 0;
+            cards.forEach((card) => {
+                const inCategory =
+                    activeFilter === "all" ||
+                    card.dataset.category === activeFilter;
+                const inSearch = !q || (card.dataset.search ?? "").includes(q);
+                const show = inCategory && inSearch;
+                card.classList.toggle("hidden", !show);
+                if (show) shown++;
+            });
+            resultCount.textContent =
+                shown === TOTAL
+                    ? `Showing all ${TOTAL} guides`
+                    : `Showing ${shown} of ${TOTAL} guides`;
+            noResults.classList.toggle("hidden", shown !== 0);
+        }
+
+        function setFilter(id: string, updateHash: boolean) {
+            activeFilter = isFilterId(id) ? id : "all";
+            buttons.forEach((b) => {
+                const on = b.dataset.filter === activeFilter;
+                b.className = CHIP_BASE + (on ? CHIP_ON : CHIP_OFF) + " ";
+                b.setAttribute("aria-pressed", on ? "true" : "false");
+            });
+            if (updateHash) {
+                // Keeps the address shareable, e.g. /blog/#pakistan-tax
+                history.replaceState(
+                    null,
+                    "",
+                    activeFilter === "all"
+                        ? location.pathname + location.search
+                        : "#" + activeFilter,
+                );
+            }
+            apply();
+        }
 
         buttons.forEach((btn) => {
-            btn.addEventListener("click", () => {
-                const category = btn.dataset.category;
-
-                buttons.forEach((b) => {
-                    b.classList.remove("bg-blue-600", "text-white");
-                    b.classList.add(
-                        "bg-white",
-                        "text-gray-700",
-                        "border",
-                        "border-gray-200",
-                    );
-                });
-                btn.classList.remove(
-                    "bg-white",
-                    "text-gray-700",
-                    "border",
-                    "border-gray-200",
-                );
-                btn.classList.add("bg-blue-600", "text-white");
-
-                posts.forEach((post) => {
-                    const postCategory = post.dataset.category;
-                    if (category === "All" || postCategory === category) {
-                        post.style.display = "block";
-                    } else {
-                        post.style.display = "none";
-                    }
-                });
-            });
+            btn.addEventListener("click", () =>
+                setFilter(btn.dataset.filter!, true),
+            );
         });
+        search.addEventListener("input", apply);
+
+        // Open the category named in the address (/blog/#pakistan-tax)
+        function applyHash() {
+            const id = location.hash.slice(1);
+            if (id && isFilterId(id)) {
+                setFilter(id, false);
+                filters.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+        window.addEventListener("hashchange", applyHash);
+        applyHash();
     </script>
 
-    <!-- Blog Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} />
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Blog",
-            name: "ToolsVibe Blog",
-            url: "https://toolsvibe.online/blog/",
-            description:
-                "Guides, tips, and tutorials about online tools, productivity, word counting, QR codes, JSON, and more.",
-            publisher: {
-                "@type": "Organization",
-                name: "ToolsVibe",
-                logo: {
-                    "@type": "ImageObject",
-                    url: "https://toolsvibe.online/og-image.png",
-                },
-            },
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
-    <!-- FAQPage Schema -->
-    <script
-        type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "How often do you publish new articles?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "We publish new guides and tutorials every week. Topics cover our tools, productivity tips, and developer guides.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Can I suggest a topic for a future article?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes. We welcome suggestions. Visit our contact page and let us know what you would like to read about.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Are your guides beginner-friendly?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Most of our guides are written for beginners, with step-by-step instructions. Developer-focused articles assume basic technical knowledge.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Do you accept guest posts?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "We are not accepting guest posts at the moment, but we may open this up in the future.",
-                    },
-                },
-            ],
-        })}
-    />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>
