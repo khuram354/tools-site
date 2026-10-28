@@ -96,9 +96,9 @@ const rawPosts: RawPost[] = [
     category: "pakistan-tax",
   },
   {
-    title: "QR Code Generator: Free, Custom & Bulk Options (2026)",
+    title: "How to Create a QR Code: Step-by-Step Guide",
     description:
-      "Use a free QR code generator to make codes for links, text and WiFi. Add a logo, go bulk or offline, and avoid scanning mistakes. Step-by-step guide.",
+      "Learn how to create a QR code for links, text, WiFi, and business cards. Step-by-step tutorial with logo options, bulk creation, and offline tips.",
     href: "/blog/qr-code-generator/",
     isoDate: "2026-10-21",
     category: "qr-codes",
@@ -120,9 +120,9 @@ const rawPosts: RawPost[] = [
     category: "image-tools",
   },
   {
-    title: "Salary Tax Calculator Pakistan 2026-27 — Free Online Tool",
+    title: "How to Use the Salary Tax Calculator: A Worked Example",
     description:
-      "Free salary tax calculator for Pakistan. Calculate your monthly take-home salary, FBR income tax, and EOBI deductions for Tax Year 2027 (FY 2026-27) instantly.",
+      "Step-by-step guide to using our Pakistan salary tax calculator. Includes a worked example, FBR tax slabs for 2026-27, and salary slip tips.",
     href: "/blog/salary-tax-calculator-pakistan/",
     isoDate: "2026-10-17",
     category: "pakistan-tax",
@@ -168,9 +168,9 @@ const rawPosts: RawPost[] = [
     category: "pakistan-tax",
   },
   {
-    title: "How to Calculate Salary Tax in Pakistan (2026-27 Guide)",
+    title: "Salary Tax Slabs in Pakistan 2026-27: Complete Breakdown",
     description:
-      "Learn how to calculate your salary tax in Pakistan for Tax Year 2027 (FY 2026-27). Includes FBR tax slabs, step-by-step calculation, and a free online tax calculator.",
+      "Salary tax slabs in Pakistan for Tax Year 2027, explained. See FBR rates, a step-by-step calculation, and check your salary slip against the numbers.",
     href: "/blog/salary-tax-pakistan/",
     isoDate: "2026-10-11",
     category: "pakistan-tax",
@@ -224,9 +224,9 @@ const rawPosts: RawPost[] = [
     category: "word-counter",
   },
   {
-    title: "How to Count Words Accurately (2026 Guide)",
+    title: "How to Count Words in Microsoft Word, Google Docs, and Online",
     description:
-      "Learn how to count words accurately for essays, blogs, and social media. Free online word counter tool included.",
+      "Learn how to count words in Microsoft Word, Google Docs, and online tools. Covers manual methods, word limits, and a personal workflow for hitting targets.",
     href: "/blog/how-to-count-words/",
     isoDate: "2026-10-02",
     category: "word-counter",
