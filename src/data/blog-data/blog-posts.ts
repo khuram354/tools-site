@@ -112,7 +112,7 @@ const rawPosts: RawPost[] = [
     category: "pakistan-tax",
   },
   {
-    title: "How to Resize an Image for Instagram (2026 Guide)",
+    title: "How to Resize an Image for Instagram",
     description:
       "Learn how to resize images for Instagram. Covers post, story, and reel dimensions, safe zones, and a free browser-based tool.",
     href: "/blog/how-to-resize-image-instagram/",
@@ -128,7 +128,7 @@ const rawPosts: RawPost[] = [
     category: "pakistan-tax",
   },
   {
-    title: "How to Resize Images in WordPress (Free Guide 2026)",
+    title: "How to Resize Images in WordPress Without Plugins",
     description:
       "Learn how to resize images in WordPress without plugins, using the free browser-based tool. Fix blurry images, slow pages, and wrong dimensions.",
     href: "/blog/resize-images-wordpress/",
@@ -136,7 +136,7 @@ const rawPosts: RawPost[] = [
     category: "image-tools",
   },
   {
-    title: "How to Compress Images for Discord (Free Guide 2026)",
+    title: "How to Compress Images for Discord",
     description:
       "Learn how to compress images for Discord to fit the 8MB upload limit. Free browser-based tool, no signup, works on any device.",
     href: "/blog/compress-images-discord/",
@@ -144,7 +144,7 @@ const rawPosts: RawPost[] = [
     category: "image-tools",
   },
   {
-    title: "How to Bulk Resize Images Online (Free Guide 2026)",
+    title: "How to Bulk Resize Images Online",
     description:
       "Learn how to bulk resize images online for free. Resize multiple photos at once for e-commerce, social media, and websites without losing quality.",
     href: "/blog/bulk-resize-images/",
@@ -152,7 +152,7 @@ const rawPosts: RawPost[] = [
     category: "image-tools",
   },
   {
-    title: "How to Compress Images for Website (2026 Guide)",
+    title: "How to Compress Images for Website Without Losing Quality",
     description:
       "Learn how to compress images for your website without losing quality. Includes tools, formats, and best practices for faster page loads.",
     href: "/blog/compress-images-for-website/",
@@ -176,7 +176,7 @@ const rawPosts: RawPost[] = [
     category: "pakistan-tax",
   },
   {
-    title: "JSON vs XML: What's the Difference? (2026 Guide)",
+    title: "JSON vs XML: What's the Difference?",
     description:
       "JSON vs XML compared: syntax, size, speed, use cases, and which one you should use. Includes real examples and a free JSON formatter tool.",
     href: "/blog/json-vs-xml/",
@@ -184,7 +184,7 @@ const rawPosts: RawPost[] = [
     category: "json",
   },
   {
-    title: "10 Common JSON Errors and How to Fix Them (2026 Guide)",
+    title: "10 Common JSON Errors and How to Fix Them",
     description:
       "Learn the most common JSON syntax errors developers make and how to fix them fast. Includes real examples and a free online JSON validator.",
     href: "/blog/common-json-errors/",
@@ -192,7 +192,7 @@ const rawPosts: RawPost[] = [
     category: "json",
   },
   {
-    title: "How to Count Words for Twitter/X Posts (2026 Character Limit Guide)",
+    title: "How to Count Words for Twitter/X Posts",
     description:
       "Learn the exact character limit for Twitter/X posts, how to count characters before posting, and how to avoid the over-limit warning.",
     href: "/blog/twitter-character-count/",
@@ -200,7 +200,7 @@ const rawPosts: RawPost[] = [
     category: "word-counter",
   },
   {
-    title: "How to Scan a QR Code on Android (2026 Guide)",
+    title: "How to Scan a QR Code on Android",
     description:
       "Learn how to scan QR codes on Android using Google Lens, the Camera app, or Quick Settings. Includes troubleshooting tips.",
     href: "/blog/scan-qr-code-android/",
@@ -208,7 +208,7 @@ const rawPosts: RawPost[] = [
     category: "qr-codes",
   },
   {
-    title: "How to Scan a QR Code on iPhone (2026 Guide)",
+    title: "How to Scan a QR Code on iPhone",
     description:
       "Learn how to scan QR codes on iPhone using the Camera app, Control Center, or Photos app. Step-by-step guide.",
     href: "/blog/scan-qr-code-iphone/",
@@ -216,7 +216,7 @@ const rawPosts: RawPost[] = [
     category: "qr-codes",
   },
   {
-    title: "How to Count Words Across All Tabs in Google Docs (2026)",
+    title: "How to Count Words Across All Tabs in Google Docs",
     description:
       "Google Docs shows word count for one tab only. Learn how to count words across all tabs with a simple workaround.",
     href: "/blog/word-count-google-docs-all-tabs/",
@@ -232,7 +232,7 @@ const rawPosts: RawPost[] = [
     category: "word-counter",
   },
   {
-    title: "What is a QR Code and How Does It Work? (Complete 2026 Guide)",
+    title: "What is a QR Code and How Does It Work?",
     description:
       "Learn what QR codes are, how they work, and how to create your own free QR code online.",
     href: "/blog/what-is-qr-code/",
@@ -240,7 +240,7 @@ const rawPosts: RawPost[] = [
     category: "qr-codes",
   },
   {
-    title: "JSON Explained: A Beginner's Guide (2026)",
+    title: "JSON Explained: A Beginner's Guide",
     description:
       "Learn what JSON is, why developers use it, and how to format JSON online for free.",
     href: "/blog/json-explained/",
