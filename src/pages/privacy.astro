@@ -1,249 +1,409 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-const lastUpdated = "October 12, 2026";
+const origin = "https://toolsvibe.online";
+const pageUrl = `${origin}/privacy/`;
+
+// ---------------------------------------------------------------------------
+// EDIT THESE when the policy or the site changes.
+// ---------------------------------------------------------------------------
+// Set this to the date you last changed the policy. The page shows it.
+const LAST_UPDATED_ISO = "2026-10-29";
+const OPERATOR = "Khuram Shahzad";
+const CONTACT_EMAIL = "khurammirza354@gmail.com";
+
+// Set to true ONLY after you have added a cookie consent banner (a consent
+// management platform) that asks visitors in the EEA, the UK and Switzerland
+// for their choice before analytics and advertising cookies are set. This
+// switch adds a paragraph that says so. Do not turn it on before the banner
+// really exists, because the policy must describe what the site does.
+const HAS_CONSENT_BANNER = false;
+// ---------------------------------------------------------------------------
+
+const lastUpdated = new Date(
+    `${LAST_UPDATED_ISO}T00:00:00Z`,
+).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+});
+
+const pageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Privacy Policy — ToolsVibe",
+    url: pageUrl,
+    description:
+        "How ToolsVibe handles your data: tools run in your browser, what Google Analytics and advertising collect, cookies, and how to contact us about privacy.",
+    isPartOf: {
+        "@type": "WebSite",
+        "@id": `${origin}/#website`,
+        name: "ToolsVibe",
+        url: `${origin}/`,
+    },
+    dateModified: LAST_UPDATED_ISO,
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: `${origin}/`,
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Privacy Policy",
+            item: pageUrl,
+        },
+    ],
+};
+
+const LINK = "text-blue-600 hover:underline";
 ---
 
 <Layout
     title="Privacy Policy — ToolsVibe"
-    description="Read the ToolsVibe privacy policy to learn how we handle data, cookies, and advertising."
+    description="How ToolsVibe handles your data: tools run in your browser, what Google Analytics and advertising collect, cookies, and how to contact us about privacy."
 >
     <article class="max-w-3xl mx-auto">
+        <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+            <a href="/" class="hover:underline">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Privacy Policy</span>
+        </nav>
         <h1 class="text-3xl md:text-4xl font-bold mb-4">Privacy Policy</h1>
         <p class="text-sm text-gray-500 mb-8">Last updated: {lastUpdated}</p>
 
+        <!-- Short version -->
+        <section
+            class="mb-10 p-5 bg-blue-50 border border-blue-200 rounded-xl"
+            aria-labelledby="short-version"
+        >
+            <h2 id="short-version" class="text-lg font-semibold mb-3">
+                The short version
+            </h2>
+            <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                <li>
+                    What you type, paste, or upload into our tools is processed
+                    in your browser. It is not sent to our servers.
+                </li>
+                <li>
+                    We use Google Analytics to see how the site is used, and ads
+                    may be shown by Google AdSense. Both use cookies.
+                </li>
+                <li>We do not sell your personal information.</li>
+                <li>
+                    You can contact us about privacy at <a
+                        href={`mailto:${CONTACT_EMAIL}`}
+                        class={LINK}>{CONTACT_EMAIL}</a
+                    >.
+                </li>
+            </ul>
+        </section>
+
         <section class="space-y-6 text-gray-700 leading-relaxed">
             <p>
-                At ToolsVibe, accessible from <a
-                    href="https://toolsvibe.online/"
-                    class="text-blue-600 hover:underline"
-                    >https://toolsvibe.online</a
-                >, the privacy of our visitors is one of our main priorities.
-                This Privacy Policy explains what information we collect, how we
-                use it, and your rights regarding your data.
+                This Privacy Policy explains what information ToolsVibe (<a
+                    href={`${origin}/`}
+                    class={LINK}>{origin}</a
+                >) collects, how we use it, and the choices you have.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">1. Who We Are</h2>
+            <p>
+                ToolsVibe is operated by {OPERATOR}, an independent developer
+                based in Pakistan. If you have a question about this policy or
+                your data, email <a
+                    href={`mailto:${CONTACT_EMAIL}`}
+                    class={LINK}>{CONTACT_EMAIL}</a
+                > or use our <a href="/contact/" class={LINK}>contact page</a>.
             </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">
-                1. Information We Collect
+                2. What Stays on Your Device
             </h2>
             <p>
-                Our tools run entirely in your browser. Text, JSON data, and QR
-                code content you enter are <strong
-                    >never sent to our servers</strong
-                > and never stored by us.
-            </p>
-            <p>
-                Like most websites, we may collect non-personal information
-                automatically, such as browser type, device type, pages visited,
-                and time spent on the site. This data is used only to improve
-                our service.
-            </p>
-            <p>
-                We do not collect personal information such as names, email
-                addresses, or phone numbers unless you voluntarily provide them
-                (for example, through our contact form).
+                Our tools run in your browser. Text, JSON, the numbers you enter
+                into calculators, QR code content, generated passwords, and the
+                images or files you choose are processed on your own device.
+                They are <strong>not uploaded to our servers</strong>, so we
+                cannot see them and we do not store them.
             </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">
-                2. Cookies and Web Beacons
+                3. Information We Collect
             </h2>
+            <h3 class="text-xl font-semibold mt-4 mb-2">
+                Usage data (Google Analytics)
+            </h3>
             <p>
-                ToolsVibe uses cookies to store information about visitor
-                preferences and to record which pages the visitor accessed. You
-                can disable cookies through your browser settings at any time.
-                However, disabling cookies may affect your experience on our
-                website.
+                We use Google Analytics to understand how the site is used. It
+                reports things such as which pages are visited, how visitors
+                arrive, the approximate location (such as country or city),
+                browser and device type, and how long visits last. Google
+                Analytics uses cookies and similar technologies and gives each
+                browser a random identifier, not your name. Google states that
+                Google Analytics 4 does not log or store individual IP
+                addresses.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-4 mb-2">Advertising data</h3>
+            <p>
+                On pages that show ads, Google and its advertising partners may
+                collect information through cookies and similar technologies, as
+                described in section 5.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-4 mb-2">Server logs</h3>
+            <p>
+                Our hosting provider may keep standard server logs, such as your
+                IP address, the page you asked for, and the time of the request,
+                for security and to keep the site running.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-4 mb-2">
+                Messages you send us
+            </h3>
+            <p>
+                If you contact us, for example by email or through our contact
+                page, we receive the details you choose to give us, such as your
+                name, email address, and message. We use them only to reply and
+                to deal with your request.
+            </p>
+            <p>
+                We do not ask for personal information such as your name, email
+                address, or phone number in order to use the tools.
             </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">
-                3. Google AdSense and Third-Party Advertising
+                4. Cookies and Similar Technologies
             </h2>
             <p>
-                We may use third-party advertising companies, including <strong
-                    >Google AdSense</strong
-                >, to serve ads when you visit our website. These companies may
-                use information about your visits to this and other websites to
-                provide advertisements about goods and services that may
-                interest you.
+                The tools themselves do not use cookies to store what you enter.
+                The cookies on ToolsVibe come from analytics and advertising
+                services:
             </p>
-            <ul class="list-disc pl-6 space-y-2">
-                <li>
-                    Google, as a third-party vendor, uses cookies (including the <strong
-                        >DART cookie</strong
-                    >) to serve ads based on your visits to this site and other
-                    sites on the internet.
-                </li>
-                <li>
-                    Google's use of advertising cookies enables it and its
-                    partners to serve ads to you based on your visit to our site
-                    and/or other sites on the internet.
-                </li>
-                <li>
-                    You may opt out of personalized advertising by visiting{" "}
-                    <a
-                        href="https://www.google.com/settings/ads"
-                        class="text-blue-600 hover:underline"
-                        target="_blank"
-                        rel="noopener"
-                    >
-                        Google Ads Settings
-                    </a>.
-                </li>
-                <li>
-                    You can also opt out of some third-party vendors' use of
-                    cookies for personalized advertising by visiting{" "}
-                    <a
-                        href="https://www.aboutads.info"
-                        class="text-blue-600 hover:underline"
-                        target="_blank"
-                        rel="noopener"
-                    >
-                        aboutads.info
-                    </a>.
-                </li>
-            </ul>
-            <p>
-                We may also work with other third-party ad networks. You can
-                find a list of these networks and their privacy policies through
-                the resources mentioned above.
-            </p>
-
-            <h2 class="text-2xl font-bold mt-8 mb-3">
-                4. Third-Party Privacy Policies
-            </h2>
-            <p>
-                Our Privacy Policy does not apply to other advertisers or
-                websites. We advise you to consult the respective privacy
-                policies of any third-party ad servers for more detailed
-                information.
-            </p>
-            <p>
-                These third-party ad servers may have their own policies
-                regarding how to opt out of certain options. You can find a
-                complete list of these policies and their links at{" "}
-                <a
-                    href="https://www.aboutads.info"
-                    class="text-blue-600 hover:underline"
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border border-gray-200 rounded-lg">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="text-left p-3 font-semibold border-b"
+                                >Cookie</th
+                            >
+                            <th class="text-left p-3 font-semibold border-b"
+                                >Set by</th
+                            >
+                            <th class="text-left p-3 font-semibold border-b"
+                                >Purpose</th
+                            >
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-3 border-b"
+                                ><code>_ga</code>, <code>_ga_*</code></td
+                            >
+                            <td class="p-3 border-b">Google Analytics</td>
+                            <td class="p-3 border-b"
+                                >Tells visitors apart and measures how the site
+                                is used. These usually last up to two years.</td
+                            >
+                        </tr>
+                        <tr>
+                            <td class="p-3">Advertising cookies</td>
+                            <td class="p-3">Google and its partners</td>
+                            <td class="p-3"
+                                >Serve and measure ads, and may personalize them
+                                based on your visits to this and other sites,
+                                where ads are shown.</td
+                            >
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-3">
+                You can block or delete cookies in your browser settings at any
+                time. If you do, parts of some websites may not work as
+                expected, though our tools will keep working. You can also stop
+                Google Analytics from measuring your visits with the <a
+                    href="https://tools.google.com/dlpage/gaoptout"
+                    class={LINK}
                     target="_blank"
-                    rel="noopener"
-                >
-                    aboutads.info
-                </a>.
-            </p>
-
-            <h2 class="text-2xl font-bold mt-8 mb-3">
-                5. Your Data Protection Rights (GDPR & CCPA)
-            </h2>
-            <p>
-                If you are a resident of the European Economic Area (EEA), you
-                have certain data protection rights under the <strong
-                    >General Data Protection Regulation (GDPR)</strong
-                >. If you are a California resident, you have rights under the{
-                    " "
-                }
-                <strong>California Consumer Privacy Act (CCPA)</strong>.
-            </p>
-            <p>These rights include:</p>
-            <ul class="list-disc pl-6 space-y-2">
-                <li>
-                    <strong>The right to access:</strong> You can request copies of
-                    your personal data.
-                </li>
-                <li>
-                    <strong>The right to rectification:</strong> You can request that
-                    we correct any information you believe is inaccurate.
-                </li>
-                <li>
-                    <strong>The right to erasure:</strong> You can request that we
-                    erase your personal data, under certain conditions.
-                </li>
-                <li>
-                    <strong>The right to restrict processing:</strong> You can request
-                    that we restrict the processing of your personal data, under certain
-                    conditions.
-                </li>
-                <li>
-                    <strong>The right to object to processing:</strong> You can object
-                    to our processing of your personal data, under certain conditions.
-                </li>
-                <li>
-                    <strong>The right to data portability:</strong> You can request
-                    that we transfer the data we have collected to another organization,
-                    or directly to you, under certain conditions.
-                </li>
-                <li>
-                    <strong>The right to opt out:</strong> California residents have
-                    the right to opt out of the sale or sharing of their personal
-                    information.
-                </li>
-            </ul>
-            <p>
-                If you make a request, we have one month to respond to you. If
-                you would like to exercise any of these rights, please contact
-                us through our{" "}
-                <a href="/contact/" class="text-blue-600 hover:underline"
-                    >contact page</a
+                    rel="noopener">Google Analytics opt-out browser add-on</a
                 >.
             </p>
+            {
+                HAS_CONSENT_BANNER && (
+                    <p>
+                        If you are in the European Economic Area, the United
+                        Kingdom, or Switzerland, you will see a message asking
+                        for your choice before analytics and advertising cookies
+                        are set. You can change or withdraw your choice at any
+                        time using the privacy settings link on this site.
+                    </p>
+                )
+            }
 
-            <h2 class="text-2xl font-bold mt-8 mb-3">6. Cookies Consent</h2>
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                5. Advertising (Google AdSense)
+            </h2>
             <p>
-                By using our website, you consent to our use of cookies as
-                described in this Privacy Policy. You can withdraw your consent
-                at any time by clearing cookies from your browser or adjusting
-                your browser settings.
+                Our site may show ads served by <strong>Google AdSense</strong>.
+                Google and its partners may use cookies and similar technologies
+                to show ads based on your visits to this and other websites, and
+                to measure how ads perform. You can read how Google uses
+                information from sites that use its services at <a
+                    href="https://policies.google.com/technologies/partner-sites"
+                    class={LINK}
+                    target="_blank"
+                    rel="noopener"
+                    >policies.google.com/technologies/partner-sites</a
+                >.
             </p>
+            <ul class="list-disc pl-6 space-y-2">
+                <li>
+                    You can manage personalized advertising in <a
+                        href="https://adssettings.google.com"
+                        class={LINK}
+                        target="_blank"
+                        rel="noopener">Google Ads Settings</a
+                    >.
+                </li>
+                <li>
+                    You can opt out of some third-party vendors' use of cookies
+                    for personalized advertising at <a
+                        href="https://www.aboutads.info"
+                        class={LINK}
+                        target="_blank"
+                        rel="noopener">aboutads.info</a
+                    >.
+                </li>
+            </ul>
             <p>
-                If you are located in the European Economic Area (EEA), we will
-                obtain your consent before placing any non-essential cookies on
-                your device, in accordance with GDPR requirements.
+                We do not control how advertising partners use their cookies.
+                Their own privacy policies apply to the information they
+                collect.
             </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">
-                7. Children's Information
+                6. How We Use Information
             </h2>
+            <ul class="list-disc pl-6 space-y-2">
+                <li>To run, maintain, and secure the website</li>
+                <li>
+                    To understand which tools and pages are used, so we can fix
+                    problems and improve them
+                </li>
+                <li>To show advertising that helps pay for the site</li>
+                <li>To reply to messages you send us</li>
+            </ul>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">7. Sharing Information</h2>
             <p>
-                ToolsVibe does not knowingly collect any personal identifiable
-                information from children under the age of 13. If you believe
-                your child provided this kind of information on our website,
-                please contact us immediately and we will do our best to
-                promptly remove such information from our records.
+                We do not sell your personal information. We share information
+                only with service providers that help us run the site, such as
+                Google (for analytics and advertising) and our hosting provider,
+                and where the law requires it.
+            </p>
+            <p>
+                Some privacy laws, such as those in California, treat sharing
+                information with advertising partners as "sharing" or "selling"
+                for advertising purposes. Where this applies, you can use the
+                opt-out options in section 5 or contact us.
             </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">
-                8. Updates to This Policy
+                8. How Long We Keep Information and Where It Goes
             </h2>
             <p>
-                We may update this Privacy Policy from time to time. Any changes
-                will be posted on this page with an updated "Last updated" date.
+                Google Analytics data is kept for the period set in our Google
+                Analytics account. Messages you send us are kept for as long as
+                we need them to deal with your request. Google and our hosting
+                provider may process information in countries other than your
+                own, including the United States, under their own safeguards.
             </p>
 
-            <h2 class="text-2xl font-bold mt-8 mb-3">9. Contact Us</h2>
+            <h2 class="text-2xl font-bold mt-8 mb-3">9. Your Rights</h2>
             <p>
-                If you have questions about this Privacy Policy, please visit
-                our{" "}
-                <a href="/contact/" class="text-blue-600 hover:underline"
+                Depending on where you live, for example in the European
+                Economic Area, the United Kingdom, or California, you may have
+                rights over your personal information. These can include the
+                right to ask for a copy of it, to have it corrected or deleted,
+                to restrict or object to how it is used, to move it elsewhere,
+                to withdraw consent you have given, and to complain to your data
+                protection authority.
+            </p>
+            <p>
+                Because what you enter into the tools never reaches us, we have
+                nothing from the tools to give you or delete. For analytics and
+                advertising data held by Google, you can use the tools in
+                sections 4 and 5. For anything else, contact us at <a
+                    href={`mailto:${CONTACT_EMAIL}`}
+                    class={LINK}>{CONTACT_EMAIL}</a
+                > or through our <a href="/contact/" class={LINK}
                     >contact page</a
+                >, and we will aim to reply within one month.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">10. Children's Privacy</h2>
+            <p>
+                ToolsVibe is not directed at children under 13, and we do not
+                knowingly collect personal information from them. If you believe
+                a child has given us personal information, please contact us and
+                we will delete it.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">11. Security</h2>
+            <p>
+                We serve the website over HTTPS, and our tools process your
+                content in your browser instead of sending it to us. No method
+                of transmission or storage is completely secure, so we cannot
+                promise absolute security.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                12. Links to Other Websites
+            </h2>
+            <p>
+                Some pages link to other websites, for example gold and silver
+                price sites, government websites such as FBR, and social media.
+                This policy does not apply to them, and we are not responsible
+                for their privacy practices. Please read their policies.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">
+                13. Changes to This Policy
+            </h2>
+            <p>
+                We may update this Privacy Policy from time to time. We will
+                post the new version on this page and change the "Last updated"
+                date at the top.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-3">14. Contact Us</h2>
+            <p>
+                Questions about this policy? Email <a
+                    href={`mailto:${CONTACT_EMAIL}`}
+                    class={LINK}>{CONTACT_EMAIL}</a
+                > or visit our <a href="/contact/" class={LINK}>contact page</a
+                >. You can also read our <a href="/terms/" class={LINK}
+                    >Terms of Service</a
+                > and learn more <a href="/about/" class={LINK}
+                    >about ToolsVibe</a
                 >.
             </p>
         </section>
     </article>
-    <!-- Structured Data for SEO -->
+
+    <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            name: "Privacy Policy — ToolsVibe",
-            url: "https://toolsvibe.online/privacy/",
-            description:
-                "Read the ToolsVibe privacy policy to learn how we handle data, cookies, and advertising.",
-            isPartOf: {
-                "@type": "WebSite",
-                name: "ToolsVibe",
-                url: "https://toolsvibe.online/",
-            },
-            dateModified: "2026-10-12",
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
 </Layout>

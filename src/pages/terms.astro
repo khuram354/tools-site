@@ -1,7 +1,55 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-const lastUpdated = "October 16, 2026";
+const origin = "https://toolsvibe.online";
+const pageUrl = `${origin}/terms/`;
+
+const LAST_UPDATED_ISO = "2026-10-29";
+const lastUpdated = new Date(
+    `${LAST_UPDATED_ISO}T00:00:00Z`,
+).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+});
+
+// 1. WebPage Schema
+const pageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Terms of Service — ToolsVibe",
+    url: pageUrl,
+    description:
+        "Read the ToolsVibe terms of service for using our free online tools, including calculator disclaimers and usage rules.",
+    isPartOf: {
+        "@type": "WebSite",
+        "@id": `${origin}/#website`,
+        name: "ToolsVibe",
+        url: `${origin}/`,
+    },
+    dateModified: LAST_UPDATED_ISO,
+};
+
+// 2. Breadcrumb Schema
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: `${origin}/`,
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Terms of Service",
+            item: pageUrl,
+        },
+    ],
+};
 ---
 
 <Layout
@@ -9,6 +57,13 @@ const lastUpdated = "October 16, 2026";
     description="Read the ToolsVibe terms of service for using our free online tools, including calculator disclaimers and usage rules."
 >
     <article class="max-w-3xl mx-auto">
+        <!-- Breadcrumb UI -->
+        <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
+            <a href="/" class="hover:underline">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Terms of Service</span>
+        </nav>
+
         <h1 class="text-3xl md:text-4xl font-bold mb-4">Terms of Service</h1>
         <p class="text-sm text-gray-500 mb-8">Last updated: {lastUpdated}</p>
 
@@ -107,10 +162,12 @@ const lastUpdated = "October 16, 2026";
                 7. Third-Party Links and Ads
             </h2>
             <p>
-                Our website may contain links to third-party websites and
-                display third-party advertisements. We are not responsible for
-                the content, privacy practices, or accuracy of any third-party
-                site.
+                Our website may contain links to third-party websites. We are
+                not responsible for the content, privacy practices, or accuracy
+                of any third-party site. In the future, we may display
+                advertisements from third-party networks (such as Google
+                AdSense) to fund the site. Any such ads will be covered by our
+                Privacy Policy.
             </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">
@@ -132,22 +189,11 @@ const lastUpdated = "October 16, 2026";
             </p>
         </section>
     </article>
-    <!-- Structured Data for SEO -->
+
+    <!-- Structured Data injected cleanly at the bottom -->
+    <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
     <script
         type="application/ld+json"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            name: "Terms of Service — ToolsVibe",
-            url: "https://toolsvibe.online/terms/",
-            description:
-                "Read the ToolsVibe terms of service for using our free online tools, including calculator disclaimers and usage rules.",
-            isPartOf: {
-                "@type": "WebSite",
-                name: "ToolsVibe",
-                url: "https://toolsvibe.online/",
-            },
-            dateModified: "2026-10-16",
-        })}
+        set:html={JSON.stringify(breadcrumbSchema)}
     />
 </Layout>
