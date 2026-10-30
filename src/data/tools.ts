@@ -67,6 +67,21 @@ export const toolCategories: ToolCategory[] = [
         ],
     },
     {
+        id: "pdf-tools",
+        name: "PDF Tools",
+        description:
+            "Secure, browser-based PDF tools. Your files never leave your device.",
+        tools: [
+            {
+                name: "Secure PDF Redaction",
+                description:
+                    "Permanently remove sensitive text and images from your PDFs without uploading them to a server.",
+                href: "/tools/pdf-redaction/",
+                icon: "pdf",
+            },
+        ],
+    },
+    {
         id: "image",
         name: "Image Tools",
         description:

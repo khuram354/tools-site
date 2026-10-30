@@ -20,6 +20,8 @@
     "astro-critters": "^2.2.1",
     "browser-image-compression": "^2.0.2",
     "cropperjs": "^1.6.2",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.4.299",
     "qrcode": "^1.5.4",
     "tailwindcss": "^4.3.3"
   },
