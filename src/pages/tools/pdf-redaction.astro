@@ -549,7 +549,7 @@ const breadcrumbSchema = {
             const delBtn = document.createElement("button");
             delBtn.innerHTML = "×";
             delBtn.className =
-                "absolute -top-4 -right-4 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-md hover:bg-red-600 transition hidden group-hover:flex z-10";
+                "absolute -top-3 -left-3 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md hover:bg-red-600 transition sm:hidden sm:group-hover:flex z-10";
             delBtn.title = "Delete box";
             delBtn.addEventListener("mousedown", (e) => e.stopPropagation());
             delBtn.addEventListener("touchstart", (e) => e.stopPropagation());
@@ -562,7 +562,7 @@ const breadcrumbSchema = {
 
             const resizeHandle = document.createElement("div");
             resizeHandle.className =
-                "absolute bottom-0 right-0 w-5 h-5 bg-blue-500 cursor-se-resize z-10 rounded-tl-sm";
+                "absolute bottom-0 right-0 w-4 h-4 bg-blue-500 cursor-se-resize z-10 rounded-tl-sm";
 
             // Attach event listeners for resize
             const handleResizeStart = (clientX: number, clientY: number) => {
