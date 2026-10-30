@@ -357,6 +357,13 @@ const breadcrumbSchema = {
                 actualScales = new Array(pdfDoc.numPages);
                 currentMobilePage = 0;
 
+                // Workspace ko pehle show karein taake width calculate ho jaye
+                workspace.classList.remove("hidden");
+                dropZone.classList.add("hidden");
+
+                // Browser ko thoda waqt dein layout draw karne ka
+                await new Promise((r) => setTimeout(r, 150));
+
                 if (isMobile()) {
                     await renderMobilePage(0);
                 } else {
@@ -365,15 +372,15 @@ const breadcrumbSchema = {
                         await new Promise((r) => setTimeout(r, 10));
                     }
                 }
-
-                workspace.classList.remove("hidden");
-                dropZone.classList.add("hidden");
             } catch (err) {
                 console.error(err);
                 showError(
                     "Failed to load PDF. The file might be corrupted or password-protected.",
                 );
                 dropText.textContent = "Click or drag a PDF here";
+                // Agar error aaye toh workspace wapas hide kar dein
+                workspace.classList.add("hidden");
+                dropZone.classList.remove("hidden");
             }
         }
 
@@ -386,7 +393,12 @@ const breadcrumbSchema = {
             nextBtn.disabled = pageIndex === pdfDoc.numPages - 1;
 
             const page = await pdfDoc.getPage(pageIndex + 1);
-            const containerWidth = pdfContainer.clientWidth;
+
+            // Force screen se width lene ke bajaye container se lein
+            let containerWidth = pdfContainer.clientWidth;
+            // Agar container ki width 0 ho (display:none tha), toh screen se lein
+            if (containerWidth === 0) containerWidth = window.innerWidth - 40;
+
             const unscaledViewport = page.getViewport({ scale: 1 });
 
             // Fit to screen width minus padding
