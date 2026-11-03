@@ -44,6 +44,8 @@ const siteSchema = {
             url: new URL("/", Astro.site).href,
             name: "ToolsVibe",
             inLanguage: "en",
+            datePublished: "2026-10-04",
+            dateModified: new Date().toISOString(),
         },
         {
             "@type": "Organization",
@@ -51,6 +53,16 @@ const siteSchema = {
             name: "ToolsVibe",
             url: new URL("/", Astro.site).href,
             logo: new URL("/apple-touch-icon.png", Astro.site).href,
+            founder: {
+                "@type": "Person",
+                name: "Khuram Shahzad",
+                url: new URL("/about/", Astro.site).href,
+                sameAs: ["https://github.com/khuram354"],
+            },
+            sameAs: [
+                "https://github.com/khuram354",
+                "https://facebook.com/toolsvibe.online",
+            ],
         },
     ],
 };

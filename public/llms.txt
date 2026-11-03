@@ -1,0 +1,16 @@
+# ToolsVibe
+ToolsVibe is a free online tools platform offering Pakistan-specific tax calculators (salary, freelancer, Zakat, EMI) and general utilities (image tools, QR generator, JSON formatter, word counter, PDF tools).
+
+## Main Pages
+- Homepage: https://toolsvibe.online/
+- All Tools: https://toolsvibe.online/tools/
+- Blog: https://toolsvibe.online/blog/
+- About: https://toolsvibe.online/about/
+
+## Key Tools
+- Salary Tax Calculator: https://toolsvibe.online/tools/salary-tax-calculator/
+- Freelancer Tax Calculator: https://toolsvibe.online/tools/freelancer-tax-calculator/
+- Zakat Calculator: https://toolsvibe.online/tools/zakat-calculator/
+- Image Compressor: https://toolsvibe.online/tools/image-compressor/
+- QR Code Generator: https://toolsvibe.online/tools/qr-generator/
+- PDF Redaction: https://toolsvibe.online/tools/pdf-redaction/
