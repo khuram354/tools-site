@@ -83,10 +83,20 @@ const breadcrumbSchema = {
         },
     ],
 };
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+};
 ---
 
 <Layout title={title} description={description}>
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-4xl mx-auto">
         <header class="mb-12 text-center">
             <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
                 <a href="/" class="hover:underline">Home</a>
@@ -300,4 +310,5 @@ const breadcrumbSchema = {
         type="application/ld+json"
         set:html={JSON.stringify(breadcrumbSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>
