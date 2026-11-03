@@ -38,11 +38,11 @@ const lastReviewed = new Date(`${LAST_UPDATED}T00:00:00Z`).toLocaleDateString(
     { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" },
 );
 
-// The worked example is calculated with the SAME function as the calculator,
-// so the numbers shown on the page can never disagree with the tool.
 const exampleMonthlyGross = 150000;
 const exampleYearlyGross = exampleMonthlyGross * 12;
-const exampleYearlyTax = calculateAnnualTax(exampleYearlyGross).tax;
+// Extract both tax and slab from the calculation
+const { tax: exampleYearlyTax, slab: exampleSlab } =
+    calculateAnnualTax(exampleYearlyGross);
 const exampleMonthlyTax = exampleYearlyTax / 12;
 const exampleNetMonthly =
     exampleMonthlyGross - exampleMonthlyTax - EOBI_EMPLOYEE_CONTRIBUTION;
@@ -535,7 +535,8 @@ const breadcrumbSchema = {
                 {formatPKR(EOBI_EMPLOYEE_CONTRIBUTION)}/month
             </li>
             <li>
-                <strong>Tax slab:</strong> 1,200,001 – 2,200,000 (PKR 6,000 + 11%)
+                <strong>Tax slab:</strong>
+                {exampleSlab?.description}
             </li>
             <li>
                 <strong>Yearly tax:</strong>
