@@ -24,7 +24,13 @@ const {
     modifiedTime,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// Ensure canonical URL always has a trailing slash (unless it's a file like .png or .xml)
+const rawPath = Astro.url.pathname;
+const path =
+    rawPath.endsWith("/") || /\.[a-z0-9]+$/i.test(rawPath)
+        ? rawPath
+        : rawPath + "/";
+const canonicalURL = new URL(path, Astro.site);
 const imageURL = new URL(image, Astro.site);
 
 // Site-wide entity data, output on the homepage only.
