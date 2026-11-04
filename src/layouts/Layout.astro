@@ -33,8 +33,6 @@ const path =
 const canonicalURL = new URL(path, Astro.site);
 const imageURL = new URL(image, Astro.site);
 
-// Site-wide entity data, output on the homepage only.
-const isHome = Astro.url.pathname === "/";
 const siteSchema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -158,14 +156,10 @@ const popularTools = [
         <meta name="twitter:url" content={canonicalURL} />
         <meta name="twitter:image" content={imageURL} />
 
-        {
-            isHome && (
-                <script
-                    type="application/ld+json"
-                    set:html={JSON.stringify(siteSchema)}
-                />
-            )
-        }
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(siteSchema)}
+        />
 
         <!-- Google Analytics (GA4) - Runs in Web Worker via Partytown -->
         <script type="text/partytown">
