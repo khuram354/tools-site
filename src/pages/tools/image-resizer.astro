@@ -7,12 +7,32 @@ const MAX_MB = 20;
 const MAX_SIDE = 10000;
 
 const PRESETS = [
-    { kind: "percent", value: 25, label: "25%" },
+    {
+        kind: "width",
+        value: 1080,
+        height: 1350,
+        label: "Instagram Post 1080×1350",
+    },
+    {
+        kind: "width",
+        value: 1080,
+        height: 1080,
+        label: "Instagram Square 1080×1080",
+    },
+    {
+        kind: "width",
+        value: 1080,
+        height: 1920,
+        label: "Instagram Story 1080×1920",
+    },
+    {
+        kind: "width",
+        value: 320,
+        height: 320,
+        label: "Instagram Profile 320×320",
+    },
     { kind: "percent", value: 50, label: "50%" },
-    { kind: "percent", value: 75, label: "75%" },
-    { kind: "width", value: 1920, label: "1920 px wide" },
-    { kind: "width", value: 1280, label: "1280 px wide" },
-    { kind: "width", value: 800, label: "800 px wide" },
+    { kind: "percent", value: 25, label: "25%" },
 ];
 const presetNames = PRESETS.map((p) => p.label);
 
@@ -21,10 +41,30 @@ const exH = Math.round((ex.targetW * ex.h) / ex.w);
 const ratioEx = { w: 1920, h: 1080, targetW: 1280 };
 const ratioExH = Math.round((ratioEx.targetW * ratioEx.h) / ratioEx.w);
 
+const INSTAGRAM_SIZES = [
+    { type: "Square post", size: "1080 × 1080 px", ratio: "1:1" },
+    { type: "Portrait post", size: "1080 × 1350 px", ratio: "4:5" },
+    { type: "Landscape post", size: "1080 × 566 px", ratio: "1.91:1" },
+    { type: "Story / Reel", size: "1080 × 1920 px", ratio: "9:16" },
+    { type: "Profile picture", size: "320 × 320 px", ratio: "1:1" },
+];
+
 const BTN =
-    "preset-btn px-3 py-2.5 text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition";
+    "preset-btn px-3 py-2.5 text-xs sm:text-sm font-medium bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition";
 
 const faqs = [
+    {
+        q: "How do I resize an image for Instagram?",
+        a: "Open this Instagram image resizer, upload your photo, then click one of the Instagram presets (1080 × 1350 for feed posts, 1080 × 1080 for squares, 1080 × 1920 for stories). Keep 'Maintain aspect ratio' checked so the photo is not stretched, then click Resize Image and download. The whole process runs in your browser, with no upload to a server.",
+    },
+    {
+        q: "What size should an Instagram post be?",
+        a: "Instagram recommends 1080 × 1350 px (4:5 portrait) for feed posts, because it takes up the most screen space. Square posts are 1080 × 1080 px, landscape posts are 1080 × 566 px, stories and reels are 1080 × 1920 px, and profile pictures are 320 × 320 px.",
+    },
+    {
+        q: "Will resizing for Instagram crop my photo?",
+        a: "This tool resizes the whole image, so nothing gets cropped. If your photo's shape does not match the Instagram size you want (for example, a 4:3 photo that you want as a 4:5 portrait), crop it first with the Image Cropper, then resize here. That way you control which part of the photo is kept.",
+    },
     {
         q: "Are my images uploaded to a server?",
         a: "No. All resizing happens in your browser using JavaScript. Your images never leave your device.",
@@ -36,10 +76,6 @@ const faqs = [
     {
         q: "Does resizing affect image quality?",
         a: "Making an image smaller keeps it sharp when done well, and this tool scales large reductions in steps to avoid jagged edges. Enlarging an image makes it look blurry, because the tool has to stretch the pixels it has. You can't add detail that isn't there. JPG and WebP files are saved again after resizing, which has a small effect on quality.",
-    },
-    {
-        q: "How do I resize an image to an exact size like 1080 × 1080?",
-        a: "If your photo is not square, resizing to a square would stretch it. First crop it to a square with the Image Cropper (choose 1:1), then enter 1080 for the width here, and the height follows. If you really want to force a different shape, untick Maintain aspect ratio and enter both numbers, but expect the picture to look stretched.",
     },
     {
         q: "Can I make an image a specific file size, like 100 KB?",
@@ -54,10 +90,6 @@ const faqs = [
         a: "No. The output format matches the input format: JPG stays JPG, PNG stays PNG, and WebP stays WebP. If you need to change the format, use the Image Converter.",
     },
     {
-        q: "Does the resized image keep camera and location data?",
-        a: "Usually not. The image is drawn onto a canvas and saved again in your browser, which normally drops metadata such as camera details and GPS location. Check the downloaded file if this matters to you.",
-    },
-    {
         q: "What is the largest size I can resize to?",
         a: `Up to ${MAX_SIDE.toLocaleString("en-US")} pixels on each side, for files up to ${MAX_MB} MB. Very large sizes can fail on phones whose browsers limit how big an image can be processed. If that happens, choose a smaller size.`,
     },
@@ -70,14 +102,15 @@ const faqs = [
 const webAppSchema = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Image Resizer",
+    name: "Instagram Image Resizer",
+    alternateName: "Image Resizer",
     url: pageUrl,
     applicationCategory: "MultimediaApplication",
     operatingSystem: "Any",
     browserRequirements: "Requires JavaScript",
     isAccessibleForFree: true,
     description:
-        "Free online image resizer. Resize JPG, PNG, and WebP images to an exact width and height or a percentage, with aspect ratio control, in your browser.",
+        "Free image resizer for Instagram posts, stories, reels and profile pictures. Resize JPG, PNG and WebP to exact sizes like 1080×1080 or 1080×1350, with aspect ratio control, in your browser.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
 };
 
@@ -118,8 +151,8 @@ const breadcrumbSchema = {
 ---
 
 <Layout
-    title="Image Resizer: Resize JPG, PNG & WebP Online"
-    description="Free image resizer. Set an exact width and height or a percentage, keep the aspect ratio, and download JPG, PNG or WebP. Runs in your browser, no upload."
+    title="Image Resizer — Resize Images for Instagram, Web & Forms (Free)"
+    description="Free image resizer for Instagram posts, stories and profile pictures. Set exact sizes like 1080×1080 or 1080×1350, keep the aspect ratio, and download JPG, PNG or WebP. No upload, runs in your browser."
 >
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
@@ -132,8 +165,10 @@ const breadcrumbSchema = {
             </nav>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">Image Resizer</h1>
             <p class="text-gray-600 mb-2">
-                Resize JPG, PNG, and WebP images to any dimension or percentage.
-                Maintain the aspect ratio or set a custom width and height.
+                Resize JPG, PNG and WebP images to any dimension — including
+                Instagram post, story and profile picture sizes. Set an exact
+                width and height, or use an Instagram preset, and download in
+                seconds.
             </p>
             <p class="text-xs text-gray-500">
                 Works entirely in your browser. Your images never leave your
@@ -248,7 +283,9 @@ const breadcrumbSchema = {
 
                 <!-- Presets -->
                 <div class="mt-4">
-                    <p class="text-sm font-medium mb-3">Quick Presets:</p>
+                    <p class="text-sm font-medium mb-3">
+                        Quick Presets (Instagram sizes included):
+                    </p>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                         {
                             PRESETS.map((p) => (
@@ -261,6 +298,11 @@ const breadcrumbSchema = {
                                     }
                                     data-width={
                                         p.kind === "width" ? p.value : undefined
+                                    }
+                                    data-height={
+                                        p.kind === "width"
+                                            ? (p as any).height
+                                            : undefined
                                     }
                                     class={BTN}
                                 >
@@ -390,46 +432,94 @@ const breadcrumbSchema = {
         <h2 class="text-2xl font-bold mb-4">About This Image Resizer</h2>
         <p class="text-gray-700 mb-4">
             This free online image resizer lets you change the dimensions of
-            JPG, PNG, and WebP images in seconds. It runs entirely in your
-            browser, so your images are never uploaded to any server. Whether
-            you need to shrink a photo for a website, resize an image for social
-            media, or prepare a picture for a form with dimension requirements,
-            this tool gets it done.
+            JPG, PNG and WebP images in seconds — including the exact sizes
+            Instagram needs. It runs entirely in your browser, so your images
+            are never uploaded to any server. Whether you need to resize a photo
+            for an Instagram post, shrink an image for a website, or prepare a
+            picture for a form with dimension requirements, this tool gets it
+            done.
         </p>
         <p class="text-gray-700 mb-4">
             Most image resizing tools require an upload, a download, and
             sometimes an account. This one skips all of that. Drop your image,
-            set your dimensions, and download the result, all without leaving
-            the page.
+            pick a size or an Instagram preset, and download the result — all
+            without leaving the page.
         </p>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">How to Use</h3>
+        <h2 class="text-2xl font-bold mt-8 mb-4">
+            Instagram Image Sizes (2026)
+        </h2>
+        <p class="text-gray-700 mb-4">
+            If you are resizing a photo for Instagram, these are the sizes the
+            platform currently recommends. The presets above set these for you
+            in one click — pick the one that matches your post type, and the
+            width and height are filled in automatically.
+        </p>
+        <div class="overflow-x-auto mt-4 mb-4">
+            <table class="w-full text-sm border border-gray-200 rounded-lg">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="text-left p-3 font-semibold border-b"
+                            >Post Type</th
+                        >
+                        <th class="text-left p-3 font-semibold border-b"
+                            >Recommended Size</th
+                        >
+                        <th class="text-left p-3 font-semibold border-b"
+                            >Aspect Ratio</th
+                        >
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        INSTAGRAM_SIZES.map((s) => (
+                            <tr>
+                                <td class="p-3 border-b">{s.type}</td>
+                                <td class="p-3 border-b">{s.size}</td>
+                                <td class="p-3 border-b">{s.ratio}</td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </div>
+        <p class="text-gray-700 mb-4">
+            For a full walkthrough of every Instagram format — including the
+            safe zones for stories and reels, and the mistakes that make photos
+            look blurry — read our
+            <a
+                href="/blog/how-to-resize-image-instagram/"
+                class="text-blue-600 hover:underline font-medium"
+                >Instagram image sizing guide</a
+            >.
+        </p>
+
+        <h2 class="text-2xl font-bold mt-8 mb-4">How to Use</h2>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2">
             <li>
                 Click or tap the upload area (or drop a file) to choose an image
             </li>
             <li>
-                Enter your desired width and height, or use a quick preset ({
-                    presetNames.join(", ")
-                })
+                Enter your desired width and height, or click an Instagram
+                preset ({presetNames.join(", ")})
             </li>
             <li>Keep "Maintain aspect ratio" checked to avoid distortion</li>
             <li>Click "Resize Image"</li>
             <li>Preview the result and download</li>
         </ol>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
+        <h2 class="text-2xl font-bold mt-8 mb-4">Why Use This Tool?</h2>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
+            <li>
+                <strong>Instagram presets:</strong> 1080 × 1350, 1080 × 1080, 1080
+                × 1920 and 320 × 320 with one click.
+            </li>
             <li>
                 <strong>Fast resizing:</strong> No upload, no queue, no wait.
             </li>
             <li>
                 <strong>Aspect ratio lock:</strong> Prevent stretched or squished
                 images with one checkbox.
-            </li>
-            <li>
-                <strong>Quick presets:</strong>
-                {presetNames.join(", ")}, for common sizes with one click.
             </li>
             <li>
                 <strong>Sharp results:</strong> Large reductions are scaled in steps,
@@ -449,35 +539,36 @@ const breadcrumbSchema = {
             </li>
         </ul>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
+        <h2 class="text-2xl font-bold mt-8 mb-4">Common Use Cases</h2>
 
-        <h4 class="font-semibold mt-4 mb-2">
-            1. Preparing Images for a Website
-        </h4>
+        <h3 class="font-semibold mt-4 mb-2">
+            1. Resizing Photos for Instagram
+        </h3>
         <p class="text-gray-700 mb-4">
-            Large images slow down websites. If your hero image is 4000 pixels
-            wide but displays at 1200 pixels, resize it first. Set the exact
-            width your site needs and you avoid sending pixels nobody sees.
-        </p>
-
-        <h4 class="font-semibold mt-4 mb-2">
-            2. Meeting Social Media Requirements
-        </h4>
-        <p class="text-gray-700 mb-4">
-            Each platform has its own sizes. Commonly used ones are 1080 × 1080
-            for square Instagram posts, 1080 × 1920 for Stories, and 1584 × 396
-            for a LinkedIn banner. Platforms change their recommendations from
-            time to time, so check the current guidance before you upload. If
-            the shape differs from your photo, crop it first with the <a
+            Instagram shows photos at up to 1080 pixels wide, so uploading a
+            photo at the right size keeps it sharp and avoids unexpected crops.
+            Use the presets above for feed posts, squares, stories and profile
+            pictures. If your photo's shape differs from the target size, crop
+            it first with the
+            <a
                 href="/tools/image-cropper/"
                 class="text-blue-600 hover:underline font-medium"
                 >Image Cropper</a
             >.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">
+        <h3 class="font-semibold mt-4 mb-2">
+            2. Preparing Images for a Website
+        </h3>
+        <p class="text-gray-700 mb-4">
+            Large images slow down websites. If your hero image is 4000 pixels
+            wide but displays at 1200 pixels, resize it first. Set the exact
+            width your site needs and you avoid sending pixels nobody sees.
+        </p>
+
+        <h3 class="font-semibold mt-4 mb-2">
             3. Uploading to Forms and Job Portals
-        </h4>
+        </h3>
         <p class="text-gray-700 mb-4">
             Many forms ask for a photo of a particular size in pixels. The sizes
             differ from form to form, so follow the instructions on the one you
@@ -485,22 +576,23 @@ const breadcrumbSchema = {
             Compressor afterwards if there is also a file size limit.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">
+        <h3 class="font-semibold mt-4 mb-2">
             4. Reducing File Size Before Sharing
-        </h4>
+        </h3>
         <p class="text-gray-700 mb-4">
             Smaller dimensions usually mean a smaller file, although the saving
             depends on the image. For a bigger reduction, use the "resize, then
-            compress" workflow: resize here, then use our <a
+            compress" workflow: resize here, then use our
+            <a
                 href="/tools/image-compressor/"
                 class="text-blue-600 hover:underline font-medium"
                 >Image Compressor</a
             >.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">
+        <h3 class="font-semibold mt-4 mb-2">
             5. Preparing Product Photos for E-commerce
-        </h4>
+        </h3>
         <p class="text-gray-700 mb-4">
             Store platforms have their own image guidance. Shopify, for example,
             suggests square product images of up to 2048 × 2048 pixels, Amazon
@@ -509,16 +601,16 @@ const breadcrumbSchema = {
             platform's current rules, then set the size here.
         </p>
 
-        <h4 class="font-semibold mt-4 mb-2">
+        <h3 class="font-semibold mt-4 mb-2">
             6. Making Thumbnails from Larger Images
-        </h4>
+        </h3>
         <p class="text-gray-700 mb-4">
             Need a small thumbnail from a large photo? The aspect ratio lock
             prevents the image from being squished. Use a percentage preset for
             a quick scaled-down version, or set custom dimensions.
         </p>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
+        <h2 class="text-2xl font-bold mt-8 mb-4">A Worked Example</h2>
         <p class="text-gray-700 mb-4">
             Here's what the tool works out for a typical phone photo:
         </p>
@@ -543,9 +635,9 @@ const breadcrumbSchema = {
             promising a fixed number.
         </p>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">
+        <h2 class="text-2xl font-bold mt-8 mb-4">
             What "Maintain Aspect Ratio" Does
-        </h3>
+        </h2>
         <p class="text-gray-700 mb-4">
             Aspect ratio is the relationship between width and height. A {
                 ratioEx.w
@@ -561,14 +653,12 @@ const breadcrumbSchema = {
             it, crop it first.
         </p>
 
-        <h3 class="text-xl font-semibold mt-6 mb-3">
-            Frequently Asked Questions
-        </h3>
+        <h2 class="text-2xl font-bold mt-8 mb-4">Frequently Asked Questions</h2>
         <div class="space-y-4 mt-3">
             {
                 faqs.map((f) => (
                     <div>
-                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                        <h3 class="font-semibold text-gray-900">{f.q}</h3>
                         <p class="text-gray-700 mt-1">{f.a}</p>
                     </div>
                 ))
@@ -611,6 +701,17 @@ const breadcrumbSchema = {
 
         <h2 class="text-2xl font-bold mb-6">Related Guides</h2>
         <div class="space-y-3">
+            <a
+                href="/blog/how-to-resize-image-instagram/"
+                class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
+            >
+                <h3 class="font-medium">
+                    Instagram Image Sizing Guide: Post, Story & Reel Sizes
+                </h3>
+                <p class="text-sm text-gray-600">
+                    Exact dimensions, safe zones, and common mistakes.
+                </p>
+            </a>
             <a
                 href="/blog/bulk-resize-images/"
                 class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
@@ -755,7 +856,9 @@ const breadcrumbSchema = {
         });
 
         // Presets: percent presets scale both sides, width presets set the
-        // width and work out the height from the original shape.
+        // width and work out the height from the original shape — except
+        // fixed-height presets (Instagram sizes), which set both numbers and
+        // let the user crop first if the shape differs.
         presetBtns.forEach((btn) => {
             btn.addEventListener("click", () => {
                 if (!originalWidth || !originalHeight) return;
@@ -770,7 +873,11 @@ const breadcrumbSchema = {
                 } else if (btn.dataset.width) {
                     const w = parseInt(btn.dataset.width, 10);
                     widthInput.value = String(w);
-                    heightInput.value = String(heightFor(w));
+                    if (btn.dataset.height) {
+                        heightInput.value = btn.dataset.height;
+                    } else {
+                        heightInput.value = String(heightFor(w));
+                    }
                 }
                 updateEnlargeNote();
             });

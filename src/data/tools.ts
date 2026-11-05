@@ -88,18 +88,18 @@ export const toolCategories: ToolCategory[] = [
             "Compress, resize, crop, and convert images in your browser.",
         tools: [
             {
+                name: "Image Resizer",
+                description:
+                    "Resize images for Instagram, websites and forms — set exact sizes like 1080×1350 or 1080×1080.",
+                href: "/tools/image-resizer/",
+                icon: "image-resize",
+            },
+            {
                 name: "Image Compressor",
                 description:
                     "Compress JPG, PNG, and WebP images to reduce file size.",
                 href: "/tools/image-compressor/",
                 icon: "image-compress",
-            },
-            {
-                name: "Image Resizer",
-                description:
-                    "Resize images to any dimension with aspect ratio control.",
-                href: "/tools/image-resizer/",
-                icon: "image-resize",
             },
             {
                 name: "Image Cropper",

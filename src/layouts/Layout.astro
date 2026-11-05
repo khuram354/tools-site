@@ -43,7 +43,7 @@ const siteSchema = {
             name: "ToolsVibe",
             inLanguage: "en",
             datePublished: "2026-10-04",
-            dateModified: new Date().toISOString(),
+            dateModified: "2026-11-05",
         },
         {
             "@type": "Organization",
@@ -51,6 +51,8 @@ const siteSchema = {
             name: "ToolsVibe",
             url: new URL("/", Astro.site).href,
             logo: new URL("/apple-touch-icon.png", Astro.site).href,
+            description:
+                "Free online tools for images, text, developers, and Pakistan tax and Zakat calculations. All tools run in your browser.",
             founder: {
                 "@type": "Person",
                 name: "Khuram Shahzad",
@@ -75,6 +77,7 @@ const siteSchema = {
 const popularTools = [
     { name: "All Tools", href: "/tools/" },
     { name: "PDF Redaction", href: "/tools/pdf-redaction/" },
+    { name: "Instagram Image Resizer", href: "/tools/image-resizer/" },
     { name: "Word Counter", href: "/tools/word-counter/" },
     { name: "Image Compressor", href: "/tools/image-compressor/" },
     { name: "QR Code Generator", href: "/tools/qr-generator/" },
@@ -88,7 +91,6 @@ const popularTools = [
     },
     { name: "Image Converter", href: "/tools/image-converter/" },
     { name: "Image Cropper", href: "/tools/image-cropper/" },
-    { name: "Image Resizer", href: "/tools/image-resizer/" },
     { name: "Salary Tax Calculator", href: "/tools/salary-tax-calculator/" },
     { name: "Zakat Calculator", href: "/tools/zakat-calculator/" },
     { name: "JSON Formatter", href: "/tools/json-formatter/" },

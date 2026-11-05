@@ -112,9 +112,9 @@ const rawPosts: RawPost[] = [
     category: "pakistan-tax",
   },
   {
-    title: "How to Resize an Image for Instagram",
+    title: "Instagram Image Sizing Guide: Post, Story & Reel Sizes.",
     description:
-      "Learn how to resize images for Instagram. Covers post, story, and reel dimensions, safe zones, and a free browser-based tool.",
+      "Complete Instagram image size guide for 2026: square posts, portrait posts, stories, reels and profile pictures. Exact dimensions, aspect ratios, and safe zones.",
     href: "/blog/how-to-resize-image-instagram/",
     isoDate: "2026-10-20",
     category: "image-tools",
