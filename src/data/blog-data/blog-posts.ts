@@ -73,6 +73,7 @@ export interface BlogPost {
   description: string;
   href: string;
   isoDate: string; // "2026-10-23", for schema, <time datetime>, and sorting
+  updatedDate?: string; // optional, only when the real last-updated date is known
   date: string; // "October 23, 2026", for display
   category: string; // the category label, e.g. "Image Tools"
   categoryId: BlogCategoryId;
@@ -83,6 +84,7 @@ interface RawPost {
   description: string;
   href: string;
   isoDate: string;
+  updatedDate?: string; // optional, only when the real last-updated date is known
   category: BlogCategoryId;
 }
 
@@ -96,9 +98,9 @@ const rawPosts: RawPost[] = [
     category: "pakistan-tax",
   },
   {
-    title: "How to Create a QR Code: Step-by-Step Guide",
+    title: "QR Codes Explained: Types, Design, and Best Practices",
     description:
-      "Learn how to create a QR code for links, text, WiFi, and business cards. Step-by-step tutorial with logo options, bulk creation, and offline tips.",
+      "Everything you need to know about QR codes: static vs dynamic, error correction, logos, printing tips, and security. A complete guide.",
     href: "/blog/qr-code-generator/",
     isoDate: "2026-10-21",
     category: "qr-codes",
@@ -120,9 +122,9 @@ const rawPosts: RawPost[] = [
     category: "image-tools",
   },
   {
-    title: "How to Use the Salary Tax Calculator: A Worked Example",
+    title: "Pakistan Salary Tax Calculator: How to Use It (Example)",
     description:
-      "Step-by-step guide to using our Pakistan salary tax calculator. Includes a worked example, FBR tax slabs for 2026-27, and salary slip tips.",
+      "Step-by-step guide to using our free Pakistan salary tax calculator. See a worked example, FBR slabs for 2026-27, and how to check your salary slip.",
     href: "/blog/salary-tax-calculator-pakistan/",
     isoDate: "2026-10-17",
     category: "pakistan-tax",
@@ -144,17 +146,17 @@ const rawPosts: RawPost[] = [
     category: "image-tools",
   },
   {
-    title: "How to Bulk Resize Images Online",
+    title: "Bulk Resize Images: Change Dimensions for Many Photos",
     description:
-      "Learn how to bulk resize images online for free. Resize multiple photos at once for e-commerce, social media, and websites without losing quality.",
+      "Resize dozens of images at once for e-commerce, social media, and websites. Free, browser-based, and no quality loss.",
     href: "/blog/bulk-resize-images/",
     isoDate: "2026-10-16",
     category: "image-tools",
   },
   {
-    title: "How to Compress Images for Website Without Losing Quality",
+    title: "Compress Images for Your Website: Quality vs File Size",
     description:
-      "Learn how to compress images for your website without losing quality. Includes tools, formats, and best practices for faster page loads.",
+      "Learn how to compress images for faster websites without ruining quality. Covers formats, tools, and the quality-size trade-off.",
     href: "/blog/compress-images-for-website/",
     isoDate: "2026-10-15",
     category: "image-tools",
@@ -168,9 +170,9 @@ const rawPosts: RawPost[] = [
     category: "pakistan-tax",
   },
   {
-    title: "Salary Tax Slabs in Pakistan 2026-27: Complete Breakdown",
+    title: "FBR Salary Tax Slabs 2026-27 Explained (With Examples)",
     description:
-      "Salary tax slabs in Pakistan for Tax Year 2027, explained. See FBR rates, a step-by-step calculation, and check your salary slip against the numbers.",
+      "Understand how FBR salary tax slabs work in Pakistan for Tax Year 2027. See each slab, its rate, and a plain-English explanation.",
     href: "/blog/salary-tax-pakistan/",
     isoDate: "2026-10-11",
     category: "pakistan-tax",
@@ -273,6 +275,7 @@ export const blogPosts: BlogPost[] = rawPosts
       description: p.description,
       href: p.href,
       isoDate: p.isoDate,
+      updatedDate: p.updatedDate,
       date: formatDate(p.isoDate),
       category: cat.label,
       categoryId: p.category,

@@ -6,6 +6,7 @@ export interface Tool {
     description: string;
     href: string;
     icon: string;
+    updatedDate?: string;
 }
 
 export interface ToolCategory {
