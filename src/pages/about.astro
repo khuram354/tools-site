@@ -7,9 +7,9 @@ const pageUrl = `${origin}/about/`;
 
 // Personal details in one place, so they are easy to change
 const FOUNDER = "Khuram Shahzad";
-const CONTACT_EMAIL = "khurammirza354@gmail.com";
-const GITHUB_URL = "https://github.com/khuram354";
-const FACEBOOK_URL = "https://facebook.com/toolsvibe.online";
+const CONTACT_EMAIL = "khurammirza354@gmail.com/";
+const GITHUB_URL = "https://github.com/khuram354/";
+const FACEBOOK_URL = "https://facebook.com/toolsvibe.online/";
 const PORTFOLIO_URL = "https://khuram354.github.io/portfolio-v1/";
 
 // One source of truth: shown on the page AND used for the FAQ schema,
@@ -43,26 +43,14 @@ const aboutSchema = {
     name: "About ToolsVibe",
     url: pageUrl,
     description:
-        "ToolsVibe is a free collection of browser-based tools, including Pakistan tax and Zakat calculators and image tools, built by Khuram Shahzad.",
+        "ToolsVibe is a free collection of browser-based tools, including Pakistan tax and Zakat calculators, PDF tools and image tools. Built by Khuram Shahzad.",
     isPartOf: {
         "@type": "WebSite",
         "@id": `${origin}/#website`,
-        name: "ToolsVibe",
-        url: `${origin}/`,
     },
     mainEntity: {
         "@type": "Organization",
         "@id": `${origin}/#organization`,
-        name: "ToolsVibe",
-        url: `${origin}/`,
-        logo: `${origin}/apple-touch-icon.png`,
-        founder: {
-            "@type": "Person",
-            name: FOUNDER,
-            url: PORTFOLIO_URL,
-            sameAs: [GITHUB_URL],
-        },
-        sameAs: [FACEBOOK_URL],
     },
 };
 
@@ -97,8 +85,8 @@ const breadcrumbSchema = {
 ---
 
 <Layout
-    title="About ToolsVibe: Free, Privacy-First Online Tools from Pakistan"
-    description="ToolsVibe is a free collection of browser-based tools, including Pakistan tax and Zakat calculators and image tools. Built by Khuram Shahzad."
+    title="About ToolsVibe: Free, Privacy-First Tools from Pakistan"
+    description="ToolsVibe is a free collection of browser-based tools, including Pakistan tax and Zakat calculators, PDF tools and image tools. Built by Khuram Shahzad."
 >
     <article class="max-w-3xl mx-auto">
         <header class="mb-10">

@@ -116,7 +116,7 @@ const rawPosts: RawPost[] = [
   {
     title: "Instagram Image Sizing Guide: Post, Story & Reel Sizes.",
     description:
-      "Complete Instagram image size guide for 2026: square posts, portrait posts, stories, reels and profile pictures. Exact dimensions, aspect ratios, and safe zones.",
+      "Complete Instagram image size guide: square posts, portrait posts, stories, reels and profile pictures. Exact dimensions, aspect ratios, and safe zones.",
     href: "/blog/how-to-resize-image-instagram/",
     isoDate: "2026-10-20",
     category: "image-tools",
@@ -196,23 +196,23 @@ const rawPosts: RawPost[] = [
   {
     title: "How to Count Words for Twitter/X Posts",
     description:
-      "Learn the exact character limit for Twitter/X posts, how to count characters before posting, and how to avoid the over-limit warning.",
+      "Learn the exact character limit for Twitter/X posts, how to count characters before posting, and how to avoid the dreaded 'over limit' warning.",
     href: "/blog/twitter-character-count/",
     isoDate: "2026-10-08",
     category: "word-counter",
   },
   {
-    title: "How to Scan a QR Code on Android",
+    title: "How to Scan a QR Code on Android: Camera, Lens & Tips",
     description:
-      "Learn how to scan QR codes on Android using Google Lens, the Camera app, or Quick Settings. Includes troubleshooting tips.",
+      "Learn how to scan QR codes on Android using Google Lens, the Camera app, or Quick Settings. Includes troubleshooting tips and safety warnings.",
     href: "/blog/scan-qr-code-android/",
     isoDate: "2026-10-08",
     category: "qr-codes",
   },
   {
-    title: "How to Scan a QR Code on iPhone",
+    title: "How to Scan a QR Code on iPhone: Camera, Photos & Tips",
     description:
-      "Learn how to scan QR codes on iPhone using the Camera app, Control Center, or Photos app. Step-by-step guide.",
+      "Learn how to scan QR codes on iPhone using the Camera app, Control Center, or Photos app. Includes troubleshooting tips, safety warnings, and a complete guide",
     href: "/blog/scan-qr-code-iphone/",
     isoDate: "2026-10-05",
     category: "qr-codes",
@@ -220,7 +220,7 @@ const rawPosts: RawPost[] = [
   {
     title: "How to Count Words Across All Tabs in Google Docs",
     description:
-      "Google Docs shows word count for one tab only. Learn how to count words across all tabs with a simple workaround.",
+      "Google Docs shows word count for one tab only. Learn how to count words across all tabs in Google Docs with working methods, including a faster online tool.",
     href: "/blog/word-count-google-docs-all-tabs/",
     isoDate: "2026-10-05",
     category: "word-counter",
@@ -236,15 +236,15 @@ const rawPosts: RawPost[] = [
   {
     title: "What is a QR Code and How Does It Work?",
     description:
-      "Learn what QR codes are, how they work, and how to create your own free QR code online.",
+      "Learn QR codes, how they work, where they came from, and how to create your own free QR code. Includes real-world uses, safety tips with a complete guide.",
     href: "/blog/what-is-qr-code/",
     isoDate: "2026-10-02",
     category: "qr-codes",
   },
   {
-    title: "JSON Explained: A Beginner's Guide",
+    title: "JSON Explained: A Beginner's Guide to Syntax & Tools",
     description:
-      "Learn what JSON is, why developers use it, and how to format JSON online for free.",
+      "Learn what JSON is, why developers use it, essential JSON syntax rules, common mistakes to avoid, and how to format and validate JSON online for free.",
     href: "/blog/json-explained/",
     isoDate: "2026-10-02",
     category: "json",

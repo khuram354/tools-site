@@ -83,16 +83,6 @@ const breadcrumbSchema = {
         },
     ],
 };
-
-const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-};
 ---
 
 <Layout title={title} description={description}>
@@ -406,5 +396,5 @@ const faqSchema = {
         type="application/ld+json"
         set:html={JSON.stringify(breadcrumbSchema)}
     />
-    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
 </Layout>

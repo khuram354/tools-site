@@ -78,7 +78,7 @@ const blogSchema = {
     name: "ToolsVibe Blog",
     url: pageUrl,
     description:
-        "Guides and tutorials on Pakistan salary and freelancer tax, Zakat, image tools, QR codes, word counting, and JSON.",
+        "Guides and tutorials on Pakistan salary and Pakistani freelancer tax, Zakat, image resizing and compression, QR codes, word counting, and JSON.",
     publisher: {
         "@type": "Organization",
         name: "ToolsVibe",
@@ -115,21 +115,11 @@ const breadcrumbSchema = {
         },
     ],
 };
-
-const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-};
 ---
 
 <Layout
-    title="ToolsVibe Blog: Pakistan Tax, Image, QR Code & JSON Guides"
-    description="Guides and tutorials on Pakistan salary and freelancer tax, Zakat, image resizing and compression, QR codes, word counting, and JSON."
+    title="ToolsVibe Blog: Pakistan Tax, Image, QR & JSON Guides"
+    description="Guides and tutorials on Pakistan salary and Pakistani freelancer tax, Zakat, image resizing and compression, QR codes, word counting, and JSON."
 >
     <div class="max-w-4xl mx-auto">
         <header class="mb-10">
@@ -428,5 +418,5 @@ const faqSchema = {
         type="application/ld+json"
         set:html={JSON.stringify(breadcrumbSchema)}
     />
-    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  
 </Layout>
