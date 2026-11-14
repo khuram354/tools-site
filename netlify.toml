@@ -29,3 +29,10 @@
   to = "https://toolsvibe.online/:splat"
   status = 301
   force = true
+
+# Redirect deleted salary-tax-calculator blog to the tool
+[[redirects]]
+  from = "/blog/salary-tax-calculator-pakistan/*"
+  to = "/tools/salary-tax-calculator/"
+  status = 301
+  force = true

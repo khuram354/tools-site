@@ -122,14 +122,6 @@ const rawPosts: RawPost[] = [
     category: "image-tools",
   },
   {
-    title: "Pakistan Salary Tax Calculator: How to Use It (Example)",
-    description:
-      "Step-by-step guide to using our free Pakistan salary tax calculator. See a worked example, FBR slabs for 2026-27, and how to check your salary slip.",
-    href: "/blog/salary-tax-calculator-pakistan/",
-    isoDate: "2026-10-17",
-    category: "pakistan-tax",
-  },
-  {
     title: "How to Resize Images in WordPress Without Plugins",
     description:
       "Learn how to resize images in WordPress without plugins, using the free browser-based tool. Fix blurry images, slow pages, and wrong dimensions.",
