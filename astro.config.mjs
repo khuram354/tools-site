@@ -5,14 +5,8 @@ import sitemap from "@astrojs/sitemap";
 import critters from "astro-critters";
 import compress from "@playform/compress";
 import partytown from "@astrojs/partytown";
-import { blogPosts } from "./src/data/blog-data/blog-posts.ts";
 import { allTools } from "./src/data/tools.ts";
 import { LAST_UPDATED as SALARY_TAX_UPDATED } from "./src/data/tax-data/pakistan-salaried.ts";
-
-// Build time par lookup maps (ek baar bante hain)
-const blogDateMap = new Map(
-    blogPosts.map((p) => [p.href, p.updatedDate ?? p.isoDate]),
-);
 
 const toolDateMap = new Map(
     allTools.filter((t) => t.updatedDate).map((t) => [t.href, t.updatedDate]),
@@ -34,8 +28,7 @@ export default defineConfig({
             filter: (page) => !page.includes("/404"),
             serialize(item) {
                 const pathname = new URL(item.url).pathname;
-                const date =
-                    blogDateMap.get(pathname) ?? toolDateMap.get(pathname);
+                const date = toolDateMap.get(pathname);
 
                 if (date) {
                     item.lastmod = `${date}T00:00:00.000Z`;

@@ -5,7 +5,6 @@ ToolsVibe is a free online tools platform offering Pakistan-specific tax calcula
 ## Main Pages
 - [Homepage](https://toolsvibe.online/)
 - [All Tools](https://toolsvibe.online/tools/)
-- [Blog](https://toolsvibe.online/blog/)
 - [About](https://toolsvibe.online/about/)
 
 ## Key Tools

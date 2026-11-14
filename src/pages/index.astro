@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getLatestPosts } from "../data/blog-data/blog-posts";
 import { toolCategories, allTools } from "../data/tools";
 
 // Icons for the cards on this page (same drawings as the /tools/ page).
@@ -53,8 +52,6 @@ const features = [
         description: "Built with modern web technology.",
     },
 ];
-
-const recentPosts = getLatestPosts(3);
 
 const faqs = [
     {
@@ -174,23 +171,6 @@ const faqs = [
                         </a>
                     ))}
                 </div>
-                <p class="text-center text-sm text-gray-600 mt-6">
-                    New to this? Read our guides to{" "}
-                    <a
-                        href="/blog/freelancing-tax-pakistan/"
-                        class="text-blue-600 hover:underline"
-                    >
-                        freelancing tax in Pakistan
-                    </a>{" "}
-                    and{" "}
-                    <a
-                        href="/blog/how-to-calculate-zakat-gold/"
-                        class="text-blue-600 hover:underline"
-                    >
-                        calculating Zakat on gold
-                    </a>
-                    .
-                </p>
             </section>
         )
     }
@@ -326,37 +306,6 @@ const faqs = [
             >, and our Zakat tools follow guidance from recognized Islamic
             scholars.
         </p>
-    </section>
-
-    <!-- Latest from the Blog -->
-    <section class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 mt-20">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold">Latest from the Blog</h2>
-            <a
-                href="/blog/"
-                class="text-blue-600 hover:underline text-sm font-medium"
-                >View all →</a
-            >
-        </div>
-        <div class="space-y-3">
-            {
-                recentPosts.map((post) => (
-                    <a
-                        href={post.href}
-                        class="block p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition"
-                    >
-                        <div class="flex items-center justify-between gap-3">
-                            <h3 class="font-medium leading-snug">
-                                {post.title}
-                            </h3>
-                            <span class="text-xs text-gray-500 whitespace-nowrap">
-                                {post.date}
-                            </span>
-                        </div>
-                    </a>
-                ))
-            }
-        </div>
     </section>
 
     <!-- FAQ -->

@@ -30,9 +30,9 @@
   status = 301
   force = true
 
-# Redirect deleted salary-tax-calculator blog to the tool
+# Redirect all deleted blog URLs to the tools index
 [[redirects]]
-  from = "/blog/salary-tax-calculator-pakistan/*"
-  to = "/tools/salary-tax-calculator/"
+  from = "/blog/*"
+  to = "/tools/"
   status = 301
   force = true
