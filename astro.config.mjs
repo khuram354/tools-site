@@ -4,16 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import critters from "astro-critters";
 import compress from "@playform/compress";
-import partytown from "@astrojs/partytown";
-import { allTools } from "./src/data/tools.ts";
-import { LAST_UPDATED as SALARY_TAX_UPDATED } from "./src/data/tax-data/pakistan-salaried.ts";
-
-const toolDateMap = new Map(
-    allTools.filter((t) => t.updatedDate).map((t) => [t.href, t.updatedDate]),
-);
-
-// Salary tax calculator ki pakki date (data file se)
-toolDateMap.set("/tools/salary-tax-calculator/", SALARY_TAX_UPDATED);
 
 // https://astro.build/config
 export default defineConfig({
@@ -26,18 +16,6 @@ export default defineConfig({
     integrations: [
         sitemap({
             filter: (page) => !page.includes("/404"),
-            serialize(item) {
-                const pathname = new URL(item.url).pathname;
-                const date = toolDateMap.get(pathname);
-
-                if (date) {
-                    item.lastmod = `${date}T00:00:00.000Z`;
-                } else {
-                    // Pakki date nahi → lastmod omit (false date se behtar)
-                    delete item.lastmod;
-                }
-                return item;
-            },
         }),
         critters(),
         compress({
@@ -46,11 +24,6 @@ export default defineConfig({
             JavaScript: true,
             SVG: false,
             Image: false,
-        }),
-        partytown({
-            config: {
-                forward: ["dataLayer.push", "gtag"],
-            },
         }),
     ],
 });

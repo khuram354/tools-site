@@ -137,9 +137,13 @@ const breadcrumbSchema = {
     <div class="max-w-4xl mx-auto">
         <header class="mb-8">
             <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
-                <a href="/" class="hover:underline">Home</a>
+                <a href="/" class="hover:underline">
+                    Home
+                </a>
                 <span aria-hidden="true">/</span>
-                <a href="/tools/" class="hover:underline">Tools</a>
+                <a href="/tools/" class="hover:underline">
+                    Tools
+                </a>
                 <span aria-hidden="true">/</span>
                 <span>Salary Tax Calculator</span>
             </nav>
@@ -185,16 +189,19 @@ const breadcrumbSchema = {
                     />
                 </div>
                 <div>
-                    <label for="tax-year" class="block text-sm font-medium mb-2"
-                        >Tax Year</label
+                    <label
+                        for="tax-year"
+                        class="block text-sm font-medium mb-2"
                     >
+                        Tax Year
+                    </label>
                     <select
                         id="tax-year"
                         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="2026-27" selected
-                            >Tax Year 2027 (FY 2026-27)</option
-                        >
+                        <option value="2026-27" selected>
+                            Tax Year 2027 (FY 2026-27)
+                        </option>
                     </select>
                 </div>
             </div>
@@ -207,11 +214,10 @@ const breadcrumbSchema = {
                         class="rounded"
                         checked
                     />
-                    <span
-                        >Include EOBI deduction (PKR {
-                            EOBI_EMPLOYEE_CONTRIBUTION
-                        }/month, if your employer is registered with EOBI)</span
-                    >
+                    <span>
+                        Include EOBI deduction (PKR {EOBI_EMPLOYEE_CONTRIBUTION}
+                        /month, if your employer is registered with EOBI)
+                    </span>
                 </label>
                 <p class="text-xs text-gray-500 mt-1 ml-6">
                     The employee share is 1% of the minimum wage, so the exact
@@ -219,8 +225,11 @@ const breadcrumbSchema = {
                 </p>
             </div>
 
-            <p id="error" role="alert" class="hidden mt-4 text-sm text-red-600">
-            </p>
+            <p
+                id="error"
+                role="alert"
+                class="hidden mt-4 text-sm text-red-600"
+            ></p>
 
             <button
                 id="calculate-btn"
@@ -231,19 +240,18 @@ const breadcrumbSchema = {
         </section>
 
         <p class="text-sm text-gray-500 mb-6">
-            <strong>Note:</strong> These slabs apply to individuals whose salary makes
-            up more than 75% of their income. If salary is less than 75% of your income,
-            non-salaried slabs apply. This estimate applies the slabs to your gross
-            salary and does not include tax credits or deductions.
+            <strong>Note:</strong> These slabs apply to individuals whose salary
+            makes up more than 75% of their income. If salary is less than 75%
+            of your income, non-salaried slabs apply. This estimate applies the
+            slabs to your gross salary and does not include tax credits or
+            deductions.
         </p>
 
         <!-- Results Section -->
         <section id="results" class="hidden" aria-live="polite">
             <!-- Summary Cards -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div
-                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
-                >
+                <div class="bg-white p-4 rounded-xl border border-gray-200 text-center">
                     <div class="text-sm text-gray-500 mb-1">Monthly Tax</div>
                     <div
                         id="monthly-tax"
@@ -252,17 +260,13 @@ const breadcrumbSchema = {
                         PKR 0
                     </div>
                 </div>
-                <div
-                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
-                >
+                <div class="bg-white p-4 rounded-xl border border-gray-200 text-center">
                     <div class="text-sm text-gray-500 mb-1">Yearly Tax</div>
                     <div id="yearly-tax" class="text-xl font-bold text-red-600">
                         PKR 0
                     </div>
                 </div>
-                <div
-                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
-                >
+                <div class="bg-white p-4 rounded-xl border border-gray-200 text-center">
                     <div class="text-sm text-gray-500 mb-1">
                         Monthly Take-Home
                     </div>
@@ -273,9 +277,7 @@ const breadcrumbSchema = {
                         PKR 0
                     </div>
                 </div>
-                <div
-                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
-                >
+                <div class="bg-white p-4 rounded-xl border border-gray-200 text-center">
                     <div class="text-sm text-gray-500 mb-1">
                         Yearly Take-Home
                     </div>
@@ -294,70 +296,81 @@ const breadcrumbSchema = {
                 <table class="w-full text-sm">
                     <tbody class="divide-y divide-gray-100">
                         <tr>
-                            <td class="py-2 text-gray-600"
-                                >Monthly Gross Salary</td
-                            >
+                            <td class="py-2 text-gray-600">
+                                Monthly Gross Salary
+                            </td>
                             <td
                                 id="breakdown-gross-monthly"
-                                class="py-2 text-right font-medium">PKR 0</td
+                                class="py-2 text-right font-medium"
                             >
+                                PKR 0
+                            </td>
                         </tr>
                         <tr>
-                            <td class="py-2 text-gray-600"
-                                >Yearly Gross Salary</td
-                            >
+                            <td class="py-2 text-gray-600">
+                                Yearly Gross Salary
+                            </td>
                             <td
                                 id="breakdown-gross-yearly"
-                                class="py-2 text-right font-medium">PKR 0</td
+                                class="py-2 text-right font-medium"
                             >
+                                PKR 0
+                            </td>
                         </tr>
                         <tr>
-                            <td class="py-2 text-gray-600"
-                                >EOBI Deduction (Monthly)</td
-                            >
+                            <td class="py-2 text-gray-600">
+                                EOBI Deduction (Monthly)
+                            </td>
                             <td
                                 id="breakdown-eobi"
-                                class="py-2 text-right font-medium">PKR 0</td
+                                class="py-2 text-right font-medium"
                             >
+                                PKR 0
+                            </td>
                         </tr>
                         <tr>
-                            <td class="py-2 text-gray-600"
-                                >Taxable Annual Income</td
-                            >
+                            <td class="py-2 text-gray-600">
+                                Taxable Annual Income
+                            </td>
                             <td
                                 id="breakdown-taxable"
-                                class="py-2 text-right font-medium">PKR 0</td
+                                class="py-2 text-right font-medium"
                             >
+                                PKR 0
+                            </td>
                         </tr>
                         <tr>
-                            <td class="py-2 text-gray-600"
-                                >FBR Income Tax (Yearly)</td
-                            >
+                            <td class="py-2 text-gray-600">
+                                FBR Income Tax (Yearly)
+                            </td>
                             <td
                                 id="breakdown-tax-yearly"
                                 class="py-2 text-right font-medium text-red-600"
-                                >PKR 0</td
                             >
+                                PKR 0
+                            </td>
                         </tr>
                         <tr>
-                            <td class="py-2 text-gray-600"
-                                >FBR Income Tax (Monthly)</td
-                            >
+                            <td class="py-2 text-gray-600">
+                                FBR Income Tax (Monthly)
+                            </td>
                             <td
                                 id="breakdown-tax-monthly"
                                 class="py-2 text-right font-medium text-red-600"
-                                >PKR 0</td
                             >
+                                PKR 0
+                            </td>
                         </tr>
                         <tr class="bg-gray-50">
-                            <td class="py-3 font-semibold"
-                                >Net Monthly Take-Home</td
-                            >
+                            <td class="py-3 font-semibold">
+                                Net Monthly Take-Home
+                            </td>
                             <td
                                 id="breakdown-net"
                                 class="py-3 text-right font-bold text-green-600 text-lg"
-                                >PKR 0</td
                             >
+                                PKR 0
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -366,7 +379,9 @@ const breadcrumbSchema = {
             <!-- Slab Info -->
             <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 mb-6">
                 <h3 class="font-semibold mb-2">Your Tax Slab</h3>
-                <p id="slab-info" class="text-sm text-gray-700">—</p>
+                <p id="slab-info" class="text-sm text-gray-700">
+                    —
+                </p>
             </div>
 
             <!-- Tax Saving Tips -->
@@ -444,28 +459,31 @@ const breadcrumbSchema = {
         </h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Monthly tax:</strong> What gets deducted from your salary
-                each month
+                <strong>Monthly tax:</strong> What gets deducted from your
+                salary each month
             </li>
             <li>
-                <strong>Yearly tax:</strong> The total FBR income tax on your annual
-                income
+                <strong>Yearly tax:</strong> The total FBR income tax on your
+                annual income
             </li>
             <li>
-                <strong>Monthly take-home:</strong> Your net salary after tax and
-                EOBI
+                <strong>Monthly take-home:</strong> Your net salary after tax
+                and EOBI
             </li>
             <li>
-                <strong>Yearly take-home:</strong> Total amount you receive in a year
+                <strong>Yearly take-home:</strong> Total amount you receive in a
+                year
             </li>
             <li>
-                <strong>Taxable annual income:</strong> The base on which tax is calculated
+                <strong>Taxable annual income:</strong> The base on which tax is
+                calculated
             </li>
             <li>
                 <strong>Your tax slab:</strong> Which FBR bracket you fall into
             </li>
             <li>
-                <strong>Tax saving tips:</strong> General ways to reduce your tax
+                <strong>Tax saving tips:</strong> General ways to reduce your
+                tax
             </li>
         </ul>
 
@@ -479,45 +497,44 @@ const breadcrumbSchema = {
             <table class="w-full text-sm border border-gray-200 rounded-lg">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="text-left p-3 font-semibold border-b"
-                            >Annual Taxable Income (PKR)</th
-                        >
-                        <th class="text-left p-3 font-semibold border-b"
-                            >Tax Rate</th
-                        >
+                        <th class="text-left p-3 font-semibold border-b">
+                            Annual Taxable Income (PKR)
+                        </th>
+                        <th class="text-left p-3 font-semibold border-b">
+                            Tax Rate
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        slabRows.map((row, i) => (
-                            <tr>
-                                <td
-                                    class={
-                                        i < slabRows.length - 1
-                                            ? "p-3 border-b"
-                                            : "p-3"
-                                    }
-                                >
-                                    {row.range}
-                                </td>
-                                <td
-                                    class={
-                                        i < slabRows.length - 1
-                                            ? "p-3 border-b"
-                                            : "p-3"
-                                    }
-                                >
-                                    {row.rate}
-                                </td>
-                            </tr>
-                        ))
-                    }
+                    {slabRows.map((row, i) => (
+                        <tr>
+                            <td
+                                class={
+                                    i < slabRows.length - 1
+                                        ? "p-3 border-b"
+                                        : "p-3"
+                                }
+                            >
+                                {row.range}
+                            </td>
+                            <td
+                                class={
+                                    i < slabRows.length - 1
+                                        ? "p-3 border-b"
+                                        : "p-3"
+                                }
+                            >
+                                {row.rate}
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
         <p class="text-gray-700 mt-4">
-            <strong>Note:</strong> The 9% surcharge on salaried individuals has been
-            abolished for Tax Year 2027. Your tax is simply the slab calculation.
+            <strong>Note:</strong> The 9% surcharge on salaried individuals has
+            been abolished for Tax Year 2027. Your tax is simply the slab
+            calculation.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">A Worked Example</h3>
@@ -554,8 +571,8 @@ const breadcrumbSchema = {
 
         <h3 class="text-xl font-semibold mt-6 mb-3">What Is a Salary Slip?</h3>
         <p class="text-gray-700 mb-4">
-            A <strong>salary slip</strong> (also called pay slip or payslip) is a
-            document your employer gives you every month showing:
+            A <strong>salary slip</strong> (also called pay slip or payslip) is
+            a document your employer gives you every month showing:
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>Basic salary</li>
@@ -574,17 +591,18 @@ const breadcrumbSchema = {
         </h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Confusing monthly and annual slab:</strong> Your slab is decided
-                by your <em>annual</em> taxable income, not monthly.
+                <strong>Confusing monthly and annual slab:</strong> Your slab is
+                decided by your <em>annual</em> taxable income, not monthly.
             </li>
             <li>
-                <strong>Forgetting EOBI:</strong> If your employer is registered with
-                EOBI, your share is deducted every month (1% of the minimum wage)
-                and reduces your take-home.
+                <strong>Forgetting EOBI:</strong> If your employer is registered
+                with EOBI, your share is deducted every month (1% of the minimum
+                wage) and reduces your take-home.
             </li>
             <li>
-                <strong>Not checking your salary slip:</strong> Employers sometimes
-                miscalculate. Compare your salary slip against our calculator.
+                <strong>Not checking your salary slip:</strong> Employers
+                sometimes miscalculate. Compare your salary slip against our
+                calculator.
             </li>
         </ul>
 
@@ -592,21 +610,18 @@ const breadcrumbSchema = {
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            {
-                faqs.map((f) => (
-                    <div>
-                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
-                        <p class="text-gray-700 mt-1">{f.a}</p>
-                    </div>
-                ))
-            }
+            {faqs.map((f) => (
+                <div>
+                    <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                    <p class="text-gray-700 mt-1">{f.a}</p>
+                </div>
+            ))}
         </div>
 
-        <p
-            class="text-xs text-gray-500 mt-6 p-3 bg-gray-50 rounded-lg border border-gray-200"
-        >
-            <strong>Disclaimer:</strong> This calculator is for estimation only, not
-            tax advice. For final figures, consult FBR or a certified tax professional.
+        <p class="text-xs text-gray-500 mt-6 p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <strong>Disclaimer:</strong> This calculator is for estimation only,
+            not tax advice. For final figures, consult FBR or a certified tax
+            professional.
         </p>
     </section>
 
@@ -676,17 +691,16 @@ const breadcrumbSchema = {
 
         let lastCalculation: Calculation | null = null;
 
-        // Returns true when the input was valid and the results were updated.
-        // With showErrors = false (live typing) invalid input is ignored and
-        // the previous results stay on screen.
         function calculate(showErrors: boolean): boolean {
             const monthlyGross = parseFloat(salaryInput.value);
             if (!(monthlyGross > 0)) {
-                if (showErrors) {
-                    errorBox.textContent =
-                        "Please enter a valid monthly salary.";
-                    errorBox.classList.remove("hidden");
-                }
+                // Invalid input: hide stale results and clear copy state
+                results.classList.add("hidden");
+                lastCalculation = null;
+                errorBox.textContent = showErrors
+                    ? "Please enter a valid monthly salary."
+                    : "Enter a monthly salary to see results.";
+                errorBox.classList.remove("hidden");
                 return false;
             }
             errorBox.classList.add("hidden");

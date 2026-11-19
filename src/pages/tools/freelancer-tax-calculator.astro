@@ -125,9 +125,13 @@ const breadcrumbSchema = {
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
             <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
-                <a href="/" class="hover:underline">Home</a>
+                <a href="/" class="hover:underline">
+                    Home
+                </a>
                 <span aria-hidden="true">/</span>
-                <a href="/tools/" class="hover:underline">Tools</a>
+                <a href="/tools/" class="hover:underline">
+                    Tools
+                </a>
                 <span aria-hidden="true">/</span>
                 <span>Freelancer Tax Calculator</span>
             </nav>
@@ -144,12 +148,16 @@ const breadcrumbSchema = {
                 instant and private.
             </p>
             <p class="text-xs text-gray-500">
-                Last reviewed: October 25, 2026 · Source: Finance Act 2026 (<a
+                Last reviewed: October 25, 2026 · Source: Finance Act 2026 (
+                <a
                     href="https://www.fbr.gov.pk/"
                     target="_blank"
                     rel="noopener"
-                    class="underline">FBR</a
-                >)
+                    class="underline"
+                >
+                    FBR
+                </a>
+                )
             </p>
         </header>
 
@@ -161,13 +169,11 @@ const breadcrumbSchema = {
             <div class="space-y-5">
                 <!-- Income Type -->
                 <div>
-                    <label class="block text-sm font-medium mb-3"
-                        >Income Type</label
-                    >
+                    <label class="block text-sm font-medium mb-3">
+                        Income Type
+                    </label>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <label
-                            class="flex items-start gap-2 text-sm p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition border border-gray-200"
-                        >
+                        <label class="flex items-start gap-2 text-sm p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition border border-gray-200">
                             <input
                                 type="radio"
                                 name="income-type"
@@ -184,9 +190,7 @@ const breadcrumbSchema = {
                                 </div>
                             </div>
                         </label>
-                        <label
-                            class="flex items-start gap-2 text-sm p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition border border-gray-200"
-                        >
+                        <label class="flex items-start gap-2 text-sm p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition border border-gray-200">
                             <input
                                 type="radio"
                                 name="income-type"
@@ -207,19 +211,17 @@ const breadcrumbSchema = {
 
                 <!-- PSEB Registration -->
                 <div id="pseb-section">
-                    <label
-                        class="flex items-center gap-2 text-sm p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition border border-gray-200"
-                    >
+                    <label class="flex items-center gap-2 text-sm p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition border border-gray-200">
                         <input
                             type="checkbox"
                             id="pseb-registered"
                             class="rounded"
                             checked
                         />
-                        <span
-                            >Registered with PSEB (Pakistan Software Export
-                            Board)</span
-                        >
+                        <span>
+                            Registered with PSEB (Pakistan Software Export
+                            Board)
+                        </span>
                     </label>
                 </div>
 
@@ -242,8 +244,11 @@ const breadcrumbSchema = {
                     />
                 </div>
 
-                <p id="error" role="alert" class="hidden text-sm text-red-600">
-                </p>
+                <p
+                    id="error"
+                    role="alert"
+                    class="hidden text-sm text-red-600"
+                ></p>
 
                 <button
                     id="calculate-btn"
@@ -257,14 +262,14 @@ const breadcrumbSchema = {
         <!-- Results -->
         <section id="results" class="hidden" aria-live="polite">
             <!-- Main Result -->
-            <div
-                class="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-6 text-center"
-            >
+            <div class="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-6 text-center">
                 <p class="text-sm text-gray-600 mb-2">Annual Tax</p>
                 <p id="tax-result" class="text-4xl font-bold text-blue-700">
                     PKR 0
                 </p>
-                <p id="tax-sub" class="text-sm text-gray-600 mt-2">—</p>
+                <p id="tax-sub" class="text-sm text-gray-600 mt-2">
+                    —
+                </p>
                 <p class="text-xs text-gray-500 mt-3">
                     Estimate only. Confirm your final figures with FBR or a tax
                     professional.
@@ -277,47 +282,57 @@ const breadcrumbSchema = {
                 <table class="w-full text-sm">
                     <tbody class="divide-y divide-gray-100">
                         <tr>
-                            <td class="py-2 text-gray-600"
-                                >Gross Annual Income</td
-                            >
+                            <td class="py-2 text-gray-600">
+                                Gross Annual Income
+                            </td>
                             <td
                                 id="breakdown-gross"
-                                class="py-2 text-right font-medium">PKR 0</td
+                                class="py-2 text-right font-medium"
                             >
+                                PKR 0
+                            </td>
                         </tr>
                         <tr>
                             <td class="py-2 text-gray-600">Tax Rate Applied</td>
                             <td
                                 id="breakdown-rate"
-                                class="py-2 text-right font-medium">—</td
+                                class="py-2 text-right font-medium"
                             >
+                                —
+                            </td>
                         </tr>
                         <tr>
-                            <td class="py-2 text-gray-600">Applicable Regime</td
-                            >
+                            <td class="py-2 text-gray-600">
+                                Applicable Regime
+                            </td>
                             <td
                                 id="breakdown-regime"
-                                class="py-2 text-right font-medium">—</td
+                                class="py-2 text-right font-medium"
                             >
+                                —
+                            </td>
                         </tr>
                         <tr class="bg-gray-50">
-                            <td class="py-3 font-semibold">Total Tax Payable</td
-                            >
+                            <td class="py-3 font-semibold">
+                                Total Tax Payable
+                            </td>
                             <td
                                 id="breakdown-tax"
                                 class="py-3 text-right font-bold text-red-600 text-lg"
-                                >PKR 0</td
                             >
+                                PKR 0
+                            </td>
                         </tr>
                         <tr>
-                            <td class="py-2 text-gray-600"
-                                >Net Income (After Tax)</td
-                            >
+                            <td class="py-2 text-gray-600">
+                                Net Income (After Tax)
+                            </td>
                             <td
                                 id="breakdown-net"
                                 class="py-2 text-right font-bold text-green-600"
-                                >PKR 0</td
                             >
+                                PKR 0
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -377,12 +392,12 @@ const breadcrumbSchema = {
         </h4>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>0.25%</strong> — IT and IT-enabled services exporters registered
-                with PSEB
+                <strong>0.25%</strong> — IT and IT-enabled services exporters
+                registered with PSEB
             </li>
             <li>
-                <strong>1%</strong> — exporters not registered with PSEB (other service
-                exports are also taxed at 1%)
+                <strong>1%</strong> — exporters not registered with PSEB (other
+                service exports are also taxed at 1%)
             </li>
             <li>
                 Your bank deducts this tax when export proceeds are received,
@@ -406,21 +421,19 @@ const breadcrumbSchema = {
             <table class="w-full text-sm border border-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="text-left p-2 font-semibold"
-                            >Taxable income (PKR)</th
-                        >
+                        <th class="text-left p-2 font-semibold">
+                            Taxable income (PKR)
+                        </th>
                         <th class="text-left p-2 font-semibold">Tax</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    {
-                        slabRows.map((r) => (
-                            <tr>
-                                <td class="p-2">{r.range}</td>
-                                <td class="p-2">{r.tax}</td>
-                            </tr>
-                        ))
-                    }
+                    {slabRows.map((r) => (
+                        <tr>
+                            <td class="p-2">{r.range}</td>
+                            <td class="p-2">{r.tax}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
@@ -538,39 +551,46 @@ const breadcrumbSchema = {
             <strong>IT export income, PSEB-registered:</strong>
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li><strong>Annual income:</strong> PKR 2,400,000</li>
-            <li><strong>Tax rate:</strong> 0.25%</li>
-            <li><strong>Annual tax:</strong> PKR 6,000</li>
-            <li><strong>Monthly equivalent:</strong> PKR 500</li>
-            <li><strong>Net income (after tax):</strong> PKR 2,394,000</li>
+            <li>
+                <strong>Annual income:</strong> PKR 2,400,000
+            </li>
+            <li>
+                <strong>Tax rate:</strong> 0.25%
+            </li>
+            <li>
+                <strong>Annual tax:</strong> PKR 6,000
+            </li>
+            <li>
+                <strong>Monthly equivalent:</strong> PKR 500
+            </li>
+            <li>
+                <strong>Net income (after tax):</strong> PKR 2,394,000
+            </li>
         </ul>
         <p class="text-gray-700 mt-4 mb-4">
-            <strong>Local freelance income:</strong> the same PKR 2,400,000 of taxable
-            income falls in the 30% slab. Tax is PKR 170,000 plus 30% of the amount
-            over PKR 1,600,000, which comes to PKR 410,000, an effective rate of about
-            17.1%.
+            <strong>Local freelance income:</strong> the same PKR 2,400,000 of
+            taxable income falls in the 30% slab. Tax is PKR 170,000 plus 30% of
+            the amount over PKR 1,600,000, which comes to PKR 410,000, an
+            effective rate of about 17.1%.
         </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            {
-                faqs.map((f) => (
-                    <div>
-                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
-                        <p class="text-gray-700 mt-1">{f.a}</p>
-                    </div>
-                ))
-            }
+            {faqs.map((f) => (
+                <div>
+                    <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                    <p class="text-gray-700 mt-1">{f.a}</p>
+                </div>
+            ))}
         </div>
 
-        <p
-            class="text-sm text-gray-500 mt-6 p-3 bg-gray-50 rounded-lg border border-gray-200"
-        >
-            <strong>Disclaimer:</strong> This calculator is for estimation only, not
-            tax advice. Actual liability depends on expenses, deductions, surcharges,
-            and other income. For final figures, consult FBR or a certified tax professional.
+        <p class="text-sm text-gray-500 mt-6 p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <strong>Disclaimer:</strong> This calculator is for estimation only,
+            not tax advice. Actual liability depends on expenses, deductions,
+            surcharges, and other income. For final figures, consult FBR or a
+            certified tax professional.
         </p>
     </section>
 
@@ -673,17 +693,15 @@ const breadcrumbSchema = {
                 : "Annual Taxable Income after Business Expenses (PKR)";
         }
 
-        // Returns true when the input was valid and the results were updated.
-        // With showErrors = false (live typing) invalid input is ignored and
-        // the previous results stay on screen.
-        function calculate(showErrors: boolean): boolean {
+        function calculate(_showErrors: boolean): boolean {
             const income = parseFloat(annualIncome.value);
             if (!(income > 0)) {
-                if (showErrors) {
-                    errorBox.textContent =
-                        "Please enter a valid annual income.";
-                    errorBox.classList.remove("hidden");
-                }
+                // Invalid input: hide stale results and related boxes
+                results.classList.add("hidden");
+                incomeNote.classList.add("hidden");
+                document.getElementById("saving-tip")!.classList.add("hidden");
+                errorBox.textContent = "Please enter a valid annual income.";
+                errorBox.classList.remove("hidden");
                 return false;
             }
             errorBox.classList.add("hidden");

@@ -4,7 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
 
 const MAX_MB = 20;
-const MAX_SIDE = 10000;
+const MAX_SIDE = 4096; // safe on iOS canvas (4096×4096 limit)
 
 const PRESETS = [
     {
@@ -91,7 +91,7 @@ const faqs = [
     },
     {
         q: "What is the largest size I can resize to?",
-        a: `Up to ${MAX_SIDE.toLocaleString("en-US")} pixels on each side, for files up to ${MAX_MB} MB. Very large sizes can fail on phones whose browsers limit how big an image can be processed. If that happens, choose a smaller size.`,
+        a: `Up to ${MAX_SIDE.toLocaleString("en-US")} pixels on each side, for files up to ${MAX_MB} MB. Very large images are scaled down to ${MAX_SIDE} pixels on the longest side before resizing, so they do not exhaust memory on phones.`,
     },
     {
         q: "Is this tool free?",
@@ -157,13 +157,19 @@ const breadcrumbSchema = {
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
             <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
-                <a href="/" class="hover:underline">Home</a>
+                <a href="/" class="hover:underline">
+                    Home
+                </a>
                 <span aria-hidden="true">/</span>
-                <a href="/tools/" class="hover:underline">Tools</a>
+                <a href="/tools/" class="hover:underline">
+                    Tools
+                </a>
                 <span aria-hidden="true">/</span>
                 <span>Image Resizer</span>
             </nav>
-            <h1 class="text-3xl md:text-4xl font-bold mb-3">Free Instagram Image Resizer</h1>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                Free Instagram Image Resizer
+            </h1>
             <p class="text-gray-600 mb-2">
                 Resize JPG, PNG and WebP images to any dimension — including
                 Instagram post, story and profile picture sizes. Set an exact
@@ -181,8 +187,7 @@ const breadcrumbSchema = {
             data-max-mb={MAX_MB}
             data-max-side={MAX_SIDE}
             hidden
-        >
-        </div>
+        ></div>
 
         <!-- Upload Section -->
         <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
@@ -206,7 +211,13 @@ const breadcrumbSchema = {
                     class="mx-auto mb-3"
                     aria-hidden="true"
                 >
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"
+                    <rect
+                        x="3"
+                        y="3"
+                        width="18"
+                        height="18"
+                        rx="2"
+                        ry="2"
                     ></rect>
                     <circle cx="8.5" cy="8.5" r="1.5"></circle>
                     <polyline points="21 15 16 10 5 21"></polyline>
@@ -224,8 +235,11 @@ const breadcrumbSchema = {
                     class="hidden"
                 />
             </div>
-            <p id="error" role="alert" class="hidden mt-4 text-sm text-red-600">
-            </p>
+            <p
+                id="error"
+                role="alert"
+                class="hidden mt-4 text-sm text-red-600"
+            ></p>
 
             <!-- Dimensions Input -->
             <div id="dimensions-section" class="mt-6 hidden">
@@ -234,8 +248,9 @@ const breadcrumbSchema = {
                         <label
                             for="width"
                             class="block text-sm font-medium mb-2"
-                            >Width (px)</label
                         >
+                            Width (px)
+                        </label>
                         <input
                             type="number"
                             id="width"
@@ -248,8 +263,9 @@ const breadcrumbSchema = {
                         <label
                             for="height"
                             class="block text-sm font-medium mb-2"
-                            >Height (px)</label
                         >
+                            Height (px)
+                        </label>
                         <input
                             type="number"
                             id="height"
@@ -287,29 +303,25 @@ const breadcrumbSchema = {
                         Quick Presets (Instagram sizes included):
                     </p>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                        {
-                            PRESETS.map((p) => (
-                                <button
-                                    type="button"
-                                    data-percent={
-                                        p.kind === "percent"
-                                            ? p.value
-                                            : undefined
-                                    }
-                                    data-width={
-                                        p.kind === "width" ? p.value : undefined
-                                    }
-                                    data-height={
-                                        p.kind === "width"
-                                            ? (p as any).height
-                                            : undefined
-                                    }
-                                    class={BTN}
-                                >
-                                    {p.label}
-                                </button>
-                            ))
-                        }
+                        {PRESETS.map((p) => (
+                            <button
+                                type="button"
+                                data-percent={
+                                    p.kind === "percent" ? p.value : undefined
+                                }
+                                data-width={
+                                    p.kind === "width" ? p.value : undefined
+                                }
+                                data-height={
+                                    p.kind === "width"
+                                        ? (p as any).height
+                                        : undefined
+                                }
+                                class={BTN}
+                            >
+                                {p.label}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
@@ -373,8 +385,7 @@ const breadcrumbSchema = {
                     id="size-saved"
                     role="status"
                     class="hidden mb-6 p-3 rounded-lg text-center text-sm font-medium"
-                >
-                </div>
+                ></div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -459,27 +470,25 @@ const breadcrumbSchema = {
             <table class="w-full text-sm border border-gray-200 rounded-lg">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="text-left p-3 font-semibold border-b"
-                            >Post Type</th
-                        >
-                        <th class="text-left p-3 font-semibold border-b"
-                            >Recommended Size</th
-                        >
-                        <th class="text-left p-3 font-semibold border-b"
-                            >Aspect Ratio</th
-                        >
+                        <th class="text-left p-3 font-semibold border-b">
+                            Post Type
+                        </th>
+                        <th class="text-left p-3 font-semibold border-b">
+                            Recommended Size
+                        </th>
+                        <th class="text-left p-3 font-semibold border-b">
+                            Aspect Ratio
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        INSTAGRAM_SIZES.map((s) => (
-                            <tr>
-                                <td class="p-3 border-b">{s.type}</td>
-                                <td class="p-3 border-b">{s.size}</td>
-                                <td class="p-3 border-b">{s.ratio}</td>
-                            </tr>
-                        ))
-                    }
+                    {INSTAGRAM_SIZES.map((s) => (
+                        <tr>
+                            <td class="p-3 border-b">{s.type}</td>
+                            <td class="p-3 border-b">{s.size}</td>
+                            <td class="p-3 border-b">{s.ratio}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
@@ -501,31 +510,31 @@ const breadcrumbSchema = {
         <h2 class="text-2xl font-bold mt-8 mb-4">Why Use This Tool?</h2>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Instagram presets:</strong> 1080 × 1350, 1080 × 1080, 1080
-                × 1920 and 320 × 320 with one click.
+                <strong>Instagram presets:</strong> 1080 × 1350, 1080 × 1080,
+                1080 × 1920 and 320 × 320 with one click.
             </li>
             <li>
                 <strong>Fast resizing:</strong> No upload, no queue, no wait.
             </li>
             <li>
-                <strong>Aspect ratio lock:</strong> Prevent stretched or squished
-                images with one checkbox.
+                <strong>Aspect ratio lock:</strong> Prevent stretched or
+                squished images with one checkbox.
             </li>
             <li>
-                <strong>Sharp results:</strong> Large reductions are scaled in steps,
-                which keeps edges cleaner than a single big jump.
+                <strong>Sharp results:</strong> Large reductions are scaled in
+                steps, which keeps edges cleaner than a single big jump.
             </li>
             <li>
-                <strong>Before/after preview:</strong> See the new dimensions and
-                file size before downloading.
+                <strong>Before/after preview:</strong> See the new dimensions
+                and file size before downloading.
             </li>
             <li>
-                <strong>Privacy first:</strong> Everything runs in your browser. No
-                uploads.
+                <strong>Privacy first:</strong> Everything runs in your browser.
+                No uploads.
             </li>
             <li>
-                <strong>Free with no limits:</strong> Resize as many images as you
-                want.
+                <strong>Free with no limits:</strong> Resize as many images as
+                you want.
             </li>
         </ul>
 
@@ -543,8 +552,10 @@ const breadcrumbSchema = {
             <a
                 href="/tools/image-cropper/"
                 class="text-blue-600 hover:underline font-medium"
-                >Image Cropper</a
-            >.
+            >
+                Image Cropper
+            </a>
+            .
         </p>
 
         <h3 class="font-semibold mt-4 mb-2">
@@ -576,8 +587,10 @@ const breadcrumbSchema = {
             <a
                 href="/tools/image-compressor/"
                 class="text-blue-600 hover:underline font-medium"
-                >Image Compressor</a
-            >.
+            >
+                Image Compressor
+            </a>
+            .
         </p>
 
         <h3 class="font-semibold mt-4 mb-2">
@@ -629,10 +642,10 @@ const breadcrumbSchema = {
             What "Maintain Aspect Ratio" Does
         </h2>
         <p class="text-gray-700 mb-4">
-            Aspect ratio is the relationship between width and height. A {
-                ratioEx.w
-            } × {ratioEx.h} image has a 16:9 aspect ratio. If you change the width
-            to {ratioEx.targetW} and keep the ratio locked, the height adjusts to
+            Aspect ratio is the relationship between width and height. A{" "}
+            {ratioEx.w} × {ratioEx.h} image has a 16:9 aspect ratio. If you
+            change the width to {ratioEx.targetW} and keep the ratio locked, the
+            height adjusts to
             {ratioExH} automatically.
         </p>
         <p class="text-gray-700 mb-4">
@@ -645,14 +658,12 @@ const breadcrumbSchema = {
 
         <h2 class="text-2xl font-bold mt-8 mb-4">Frequently Asked Questions</h2>
         <div class="space-y-4 mt-3">
-            {
-                faqs.map((f) => (
-                    <div>
-                        <h3 class="font-semibold text-gray-900">{f.q}</h3>
-                        <p class="text-gray-700 mt-1">{f.a}</p>
-                    </div>
-                ))
-            }
+            {faqs.map((f) => (
+                <div>
+                    <h3 class="font-semibold text-gray-900">{f.q}</h3>
+                    <p class="text-gray-700 mt-1">{f.a}</p>
+                </div>
+            ))}
         </div>
     </section>
 
@@ -868,6 +879,8 @@ const breadcrumbSchema = {
 
         // EXIF orientation ko respect karta hai: phone se li gayi photos
         // sidhi aati hain. Purane browsers ke liye Image element fallback.
+        // Decode ke doran hi MAX_SIDE tak resize hota hai, taake bari
+        // tasveerein memory ko exhaust na karein.
         async function loadImageSource(file: File): Promise<{
             source: HTMLImageElement | ImageBitmap;
             width: number;
@@ -877,6 +890,9 @@ const breadcrumbSchema = {
                 try {
                     const bitmap = await createImageBitmap(file, {
                         imageOrientation: "from-image",
+                        resizeWidth: MAX_SIDE,
+                        resizeHeight: MAX_SIDE,
+                        resizeQuality: "high",
                     });
                     return {
                         source: bitmap,

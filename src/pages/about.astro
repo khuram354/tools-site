@@ -1,16 +1,17 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { toolCategories, allTools } from "../data/tools";
+import {
+    SITE_URL,
+    CONTACT_EMAIL,
+    FOUNDER,
+    GITHUB_URL,
+    FACEBOOK_URL,
+    PORTFOLIO_URL,
+} from "../data/site";
 
-const origin = "https://toolsvibe.online";
+const origin = SITE_URL;
 const pageUrl = `${origin}/about/`;
-
-// Personal details in one place, so they are easy to change
-const FOUNDER = "Khuram Shahzad";
-const CONTACT_EMAIL = "khurammirza354@gmail.com/";
-const GITHUB_URL = "https://github.com/khuram354/";
-const FACEBOOK_URL = "https://facebook.com/toolsvibe.online/";
-const PORTFOLIO_URL = "https://khuram354.github.io/portfolio-v1/";
 
 // One source of truth: shown on the page AND used for the FAQ schema,
 // so the visible text and the structured data always match.
@@ -25,7 +26,7 @@ const faqs = [
     },
     {
         q: "How do you protect my privacy?",
-        a: "The tools process what you type, paste, or upload in your browser, so that content never leaves your device. We use Google Analytics to understand how the site is used, and advertising partners may set cookies on pages that show ads. We do not sell personal data. Our Privacy Policy explains this in full.",
+        a: "The tools process what you type, paste, or upload in your browser, so that content never leaves your device. Advertising partners may set cookies on pages that show ads. We do not sell personal data. Our Privacy Policy explains this in full.",
     },
     {
         q: "Are the tax and Zakat calculators reliable?",
@@ -237,8 +238,7 @@ const breadcrumbSchema = {
                 <li>
                     <strong>Privacy first:</strong> what you enter into a tool is
                     processed in your browser and is never uploaded to our servers.
-                    We do use Google Analytics to understand how the site is used,
-                    and we explain this in our <a
+                    We explain this in our <a
                         href="/privacy/"
                         class="text-blue-600 hover:underline">Privacy Policy</a
                     >.
@@ -297,7 +297,7 @@ const breadcrumbSchema = {
                 our{" "}
                 <a href="/contact/" class="text-blue-600 hover:underline"
                     >contact page</a
-                >{" "}
+                >. You can also read our{" "}
                 <a href="/privacy/" class="text-blue-600 hover:underline"
                     >Privacy Policy</a
                 >{" "}

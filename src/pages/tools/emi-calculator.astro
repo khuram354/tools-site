@@ -89,9 +89,13 @@ const breadcrumbSchema = {
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
             <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
-                <a href="/" class="hover:underline">Home</a>
+                <a href="/" class="hover:underline">
+                    Home
+                </a>
                 <span aria-hidden="true">/</span>
-                <a href="/tools/" class="hover:underline">Tools</a>
+                <a href="/tools/" class="hover:underline">
+                    Tools
+                </a>
                 <span aria-hidden="true">/</span>
                 <span>EMI Calculator</span>
             </nav>
@@ -132,32 +136,37 @@ const breadcrumbSchema = {
                             type="button"
                             data-amount="500000"
                             class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
-                            >5 Lakh</button
                         >
+                            5 Lakh
+                        </button>
                         <button
                             type="button"
                             data-amount="1000000"
                             class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
-                            >10 Lakh</button
                         >
+                            10 Lakh
+                        </button>
                         <button
                             type="button"
                             data-amount="2000000"
                             class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
-                            >20 Lakh</button
                         >
+                            20 Lakh
+                        </button>
                         <button
                             type="button"
                             data-amount="5000000"
                             class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
-                            >50 Lakh</button
                         >
+                            50 Lakh
+                        </button>
                         <button
                             type="button"
                             data-amount="10000000"
                             class="amt-btn px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200 transition"
-                            >1 Crore</button
                         >
+                            1 Crore
+                        </button>
                     </div>
                 </div>
 
@@ -194,16 +203,17 @@ const breadcrumbSchema = {
                         value="5"
                         class="w-full"
                     />
-                    <div
-                        class="flex justify-between text-xs text-gray-500 mt-1"
-                    >
+                    <div class="flex justify-between text-xs text-gray-500 mt-1">
                         <span>1 year</span>
                         <span>30 years</span>
                     </div>
                 </div>
 
-                <p id="error" role="alert" class="hidden text-sm text-red-600">
-                </p>
+                <p
+                    id="error"
+                    role="alert"
+                    class="hidden text-sm text-red-600"
+                ></p>
 
                 <button
                     id="calculate-btn"
@@ -217,29 +227,25 @@ const breadcrumbSchema = {
         <!-- Results -->
         <section id="results" class="hidden" aria-live="polite">
             <!-- Main EMI -->
-            <div
-                class="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-6 text-center"
-            >
+            <div class="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-6 text-center">
                 <p class="text-sm text-gray-600 mb-2">Monthly EMI</p>
                 <p id="emi-result" class="text-4xl font-bold text-blue-700">
                     PKR 0
                 </p>
-                <p id="emi-sub" class="text-sm text-gray-600 mt-2">—</p>
+                <p id="emi-sub" class="text-sm text-gray-600 mt-2">
+                    —
+                </p>
             </div>
 
             <!-- Breakdown -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div
-                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
-                >
+                <div class="bg-white p-4 rounded-xl border border-gray-200 text-center">
                     <div class="text-xs text-gray-500 mb-1">Principal</div>
                     <div id="principal" class="text-lg font-bold text-gray-700">
                         —
                     </div>
                 </div>
-                <div
-                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
-                >
+                <div class="bg-white p-4 rounded-xl border border-gray-200 text-center">
                     <div class="text-xs text-gray-500 mb-1">Total Interest</div>
                     <div
                         id="total-interest"
@@ -248,9 +254,7 @@ const breadcrumbSchema = {
                         —
                     </div>
                 </div>
-                <div
-                    class="bg-white p-4 rounded-xl border border-gray-200 text-center"
-                >
+                <div class="bg-white p-4 rounded-xl border border-gray-200 text-center">
                     <div class="text-xs text-gray-500 mb-1">Total Payment</div>
                     <div
                         id="total-payment"
@@ -271,22 +275,22 @@ const breadcrumbSchema = {
                         id="principal-bar"
                         class="bg-blue-500 transition-all duration-500"
                         style="width: 0%"
-                    >
-                    </div>
+                    ></div>
                     <div
                         id="interest-bar"
                         class="bg-red-500 transition-all duration-500"
                         style="width: 0%"
-                    >
-                    </div>
+                    ></div>
                 </div>
                 <div class="flex flex-wrap gap-4 mt-3 text-xs">
-                    <span class="flex items-center gap-1"
-                        ><span class="w-3 h-3 bg-blue-500 rounded"></span> Principal</span
-                    >
-                    <span class="flex items-center gap-1"
-                        ><span class="w-3 h-3 bg-red-500 rounded"></span> Interest</span
-                    >
+                    <span class="flex items-center gap-1">
+                        <span class="w-3 h-3 bg-blue-500 rounded"></span>{" "}
+                        Principal
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <span class="w-3 h-3 bg-red-500 rounded"></span>{" "}
+                        Interest
+                    </span>
                 </div>
             </div>
 
@@ -297,17 +301,18 @@ const breadcrumbSchema = {
                     <table class="w-full text-sm">
                         <thead>
                             <tr class="border-b border-gray-200">
-                                <th class="text-left p-2 font-semibold">Year</th
-                                >
-                                <th class="text-right p-2 font-semibold"
-                                    >Principal Paid</th
-                                >
-                                <th class="text-right p-2 font-semibold"
-                                    >Interest Paid</th
-                                >
-                                <th class="text-right p-2 font-semibold"
-                                    >Balance</th
-                                >
+                                <th class="text-left p-2 font-semibold">
+                                    Year
+                                </th>
+                                <th class="text-right p-2 font-semibold">
+                                    Principal Paid
+                                </th>
+                                <th class="text-right p-2 font-semibold">
+                                    Interest Paid
+                                </th>
+                                <th class="text-right p-2 font-semibold">
+                                    Balance
+                                </th>
                             </tr>
                         </thead>
                         <tbody id="yearly-table"></tbody>
@@ -369,18 +374,21 @@ const breadcrumbSchema = {
         <p class="text-gray-700 mb-4">
             The amortized EMI formula used by most conventional banks is:
         </p>
-        <p
-            class="text-gray-700 mb-4 p-3 bg-gray-50 rounded-lg font-mono text-sm"
-        >
+        <p class="text-gray-700 mb-4 p-3 bg-gray-50 rounded-lg font-mono text-sm">
             EMI = P × r × (1+r)ⁿ ÷ ((1+r)ⁿ − 1)
         </p>
         <p class="text-gray-700 mb-4">Where:</p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li><strong>P</strong> = Principal loan amount</li>
             <li>
-                <strong>r</strong> = Monthly interest rate (annual rate ÷ 12 ÷ 100)
+                <strong>P</strong> = Principal loan amount
             </li>
-            <li><strong>n</strong> = Total number of monthly installments</li>
+            <li>
+                <strong>r</strong> = Monthly interest rate (annual rate ÷ 12 ÷
+                100)
+            </li>
+            <li>
+                <strong>n</strong> = Total number of monthly installments
+            </li>
         </ul>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
@@ -441,12 +449,24 @@ const breadcrumbSchema = {
             Here's what happens with a sample loan:
         </p>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
-            <li><strong>Loan amount:</strong> PKR 2,000,000</li>
-            <li><strong>Interest rate:</strong> 12% per year</li>
-            <li><strong>Tenure:</strong> 5 years (60 months)</li>
-            <li><strong>Monthly EMI:</strong> PKR 44,489</li>
-            <li><strong>Total interest:</strong> PKR 669,334</li>
-            <li><strong>Total payment:</strong> PKR 2,669,334</li>
+            <li>
+                <strong>Loan amount:</strong> PKR 2,000,000
+            </li>
+            <li>
+                <strong>Interest rate:</strong> 12% per year
+            </li>
+            <li>
+                <strong>Tenure:</strong> 5 years (60 months)
+            </li>
+            <li>
+                <strong>Monthly EMI:</strong> PKR 44,489
+            </li>
+            <li>
+                <strong>Total interest:</strong> PKR 669,334
+            </li>
+            <li>
+                <strong>Total payment:</strong> PKR 2,669,334
+            </li>
         </ul>
         <p class="text-gray-700 mt-4 mb-4">
             That's about 33% in interest on top of the principal. If the tenure
@@ -457,23 +477,23 @@ const breadcrumbSchema = {
         <h3 class="text-xl font-semibold mt-6 mb-3">Important Notes</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Processing fees:</strong> Many banks charge a one-time processing
-                fee, often a percentage of the loan amount. It is not included in
-                the calculation.
+                <strong>Processing fees:</strong> Many banks charge a one-time
+                processing fee, often a percentage of the loan amount. It is not
+                included in the calculation.
             </li>
             <li>
-                <strong>Insurance:</strong> Some banks require loan insurance, which
-                adds to your monthly cost.
+                <strong>Insurance:</strong> Some banks require loan insurance,
+                which adds to your monthly cost.
             </li>
             <li>
-                <strong>Prepayment penalties:</strong> Some loans have early repayment
-                penalties — check the terms.
+                <strong>Prepayment penalties:</strong> Some loans have early
+                repayment penalties — check the terms.
             </li>
             <li>
-                <strong>Rate changes:</strong> Floating-rate loans can change with
-                market conditions. In Pakistan, many floating-rate loans are priced
-                as KIBOR plus a bank spread, so your rate can change at each reset
-                date. This calculator assumes a fixed rate.
+                <strong>Rate changes:</strong> Floating-rate loans can change
+                with market conditions. In Pakistan, many floating-rate loans
+                are priced as KIBOR plus a bank spread, so your rate can change
+                at each reset date. This calculator assumes a fixed rate.
             </li>
         </ul>
 
@@ -481,14 +501,12 @@ const breadcrumbSchema = {
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            {
-                faqs.map((f) => (
-                    <div>
-                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
-                        <p class="text-gray-700 mt-1">{f.a}</p>
-                    </div>
-                ))
-            }
+            {faqs.map((f) => (
+                <div>
+                    <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                    <p class="text-gray-700 mt-1">{f.a}</p>
+                </div>
+            ))}
         </div>
     </section>
 
@@ -569,10 +587,7 @@ const breadcrumbSchema = {
             return { emi, totalPayment, totalInterest, months, monthlyRate };
         }
 
-        // Returns true when the inputs were valid and the results were updated.
-        // With showErrors = false (live typing) invalid input is simply ignored
-        // and the previous results stay on screen.
-        function calculate(showErrors: boolean): boolean {
+        function calculate(_showErrors: boolean): boolean {
             const principal = parseFloat(loanAmount.value);
             const rate = parseFloat(interestRate.value);
             const years = parseInt(tenureYears.value, 10);
@@ -587,10 +602,10 @@ const breadcrumbSchema = {
             }
 
             if (message) {
-                if (showErrors) {
-                    errorBox.textContent = message;
-                    errorBox.classList.remove("hidden");
-                }
+                // Invalid input: hide stale results
+                results.classList.add("hidden");
+                errorBox.textContent = message;
+                errorBox.classList.remove("hidden");
                 return false;
             }
             errorBox.classList.add("hidden");

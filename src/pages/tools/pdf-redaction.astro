@@ -3,6 +3,11 @@ import Layout from "../../layouts/Layout.astro";
 
 const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
 
+// Limits that protect memory on phones and low-end laptops.
+const MAX_MB = 20; // largest PDF the tool accepts
+const MAX_PAGES = 30; // largest page count accepted
+const MAX_RENDER_DIMENSION = 4096; // largest width/height rendered per page (iOS canvas limit)
+
 const faqs = [
     {
         q: "Is my PDF uploaded to a server?",
@@ -10,7 +15,11 @@ const faqs = [
     },
     {
         q: "What is the difference between a black box and true redaction?",
-        a: "This is the biggest mistake people make. Drawing a black box on a PDF only hides the text visually—anyone can just delete the box or copy-paste to see what is underneath. Our tool performs true redaction by flattening the page into an image and permanently burning the black boxes into the pixels. The text is deleted forever and cannot be recovered.",
+        a: "This is the biggest mistake people make. Drawing a black box on a PDF only hides the text visually — anyone can just delete the box or copy-paste to see what is underneath. Our tool performs true redaction by flattening the page into an image and permanently burning the black boxes into the pixels. The text is deleted forever and cannot be recovered.",
+    },
+    {
+        q: "Do redacted pages stay as text?",
+        a: `No. Redacted pages are converted to images, so the text on them is gone for good. That is what makes the redaction permanent, but it also means redacted pages are no longer searchable or selectable, and their file size may change. Pages you do not redact keep their original text. This tool accepts PDFs up to ${MAX_MB} MB and ${MAX_PAGES} pages.`,
     },
     {
         q: "Can I redact a scanned PDF without Adobe?",
@@ -78,9 +87,13 @@ const breadcrumbSchema = {
 >
     <div class="max-w-3xl mx-auto">
         <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
-            <a href="/" class="hover:underline">Home</a>
+            <a href="/" class="hover:underline">
+                Home
+            </a>
             <span aria-hidden="true">/</span>
-            <a href="/tools/" class="hover:underline">Tools</a>
+            <a href="/tools/" class="hover:underline">
+                Tools
+            </a>
             <span aria-hidden="true">/</span>
             <span>PDF Redaction</span>
         </nav>
@@ -112,9 +125,7 @@ const breadcrumbSchema = {
                 stroke-linejoin="round"
                 class="mx-auto mb-3"
             >
-                <path
-                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                ></path>
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
                 <line x1="16" y1="13" x2="8" y2="13"></line>
                 <line x1="16" y1="17" x2="8" y2="17"></line>
@@ -124,19 +135,21 @@ const breadcrumbSchema = {
                 Click or drag a PDF here
             </p>
             <p class="text-sm text-gray-500">
-                Only .pdf files are supported (Max 20MB)
+                Only .pdf files are supported (Max {MAX_MB} MB, up to{" "}
+                {MAX_PAGES} pages)
             </p>
             <input type="file" id="file-input" accept=".pdf" class="hidden" />
         </div>
 
-        <p id="error-msg" class="hidden text-red-600 text-sm mb-4" role="alert">
-        </p>
+        <p
+            id="error-msg"
+            class="hidden text-red-600 text-sm mb-4"
+            role="alert"
+        ></p>
 
         <!-- Workspace -->
         <div id="workspace" class="hidden">
-            <div
-                class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2"
-            >
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
                 <p class="text-sm text-gray-600 font-medium">
                     Draw boxes over the text you want to delete. Drag to move,
                     pull corners to resize.
@@ -157,17 +170,21 @@ const breadcrumbSchema = {
                 <button
                     id="prev-page-btn"
                     class="px-4 py-2 bg-gray-100 rounded text-gray-700 disabled:opacity-50"
-                    >← Prev</button
                 >
+                    ← Prev
+                </button>
                 <span
                     id="page-indicator"
-                    class="text-sm font-medium text-gray-700">Page 1 / 1</span
+                    class="text-sm font-medium text-gray-700"
                 >
+                    Page 1 / 1
+                </span>
                 <button
                     id="next-page-btn"
                     class="px-4 py-2 bg-gray-100 rounded text-gray-700 disabled:opacity-50"
-                    >Next →</button
                 >
+                    Next →
+                </button>
             </div>
 
             <!-- Multi-page Scroll Container -->
@@ -182,7 +199,7 @@ const breadcrumbSchema = {
             <div class="flex flex-wrap gap-3 mt-6">
                 <button
                     id="apply-btn"
-                    class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
+                    class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition disabled:opacity-50"
                 >
                     Apply Redactions & Download
                 </button>
@@ -232,29 +249,50 @@ const breadcrumbSchema = {
         <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>True Redaction (Not just a black box):</strong> We permanently
-                delete the underlying text layer. If you copy-paste or use a text
-                editor, the hidden information cannot be recovered.
+                <strong>True Redaction (Not just a black box):</strong> We
+                permanently delete the underlying text layer. If you copy-paste
+                or use a text editor, the hidden information cannot be
+                recovered.
             </li>
             <li>
-                <strong>100% Private:</strong> Your PDF is processed in your browser.
-                It is never uploaded to a server, which means no one can see your
-                documents but you.
+                <strong>100% Private:</strong> Your PDF is processed in your
+                browser. It is never uploaded to a server, which means no one
+                can see your documents but you.
             </li>
             <li>
-                <strong>No Adobe Subscription Needed:</strong> Adobe Acrobat Pro charges
-                a monthly fee to redact PDFs. This tool does it for free.
+                <strong>No Adobe Subscription Needed:</strong> Adobe Acrobat Pro
+                charges a monthly fee to redact PDFs. This tool does it for
+                free.
             </li>
             <li>
-                <strong>Works on Scanned PDFs:</strong> Because the page is converted
-                into an image, it works perfectly on scanned documents as well as
-                digital PDFs.
+                <strong>Works on Scanned PDFs:</strong> Because the page is
+                converted into an image, it works perfectly on scanned documents
+                as well as digital PDFs.
             </li>
             <li>
-                <strong>Mobile Friendly:</strong> Use it on your laptop, tablet, or
-                phone. Touch gestures are fully supported.
+                <strong>Mobile Friendly:</strong> Use it on your laptop, tablet,
+                or phone. Touch gestures are fully supported.
             </li>
         </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3">
+            What Happens to Redacted Pages
+        </h3>
+        <p class="text-gray-700 mb-4">
+            Redacted pages are converted to images with the black boxes burned
+            in. That is what makes the removal permanent: the original text and
+            images on those pages are gone, and even a PDF text extractor cannot
+            recover them. The trade-off is that a redacted page becomes an
+            image, so its text is no longer searchable, selectable, or
+            accessible to screen readers. Pages you do not redact keep their
+            original text and stay fully searchable.
+        </p>
+        <p class="text-gray-700 mb-4">
+            Each page is rendered at up to ${MAX_RENDER_DIMENSION} pixels on the
+            longest side. Very large pages, such as posters or engineering
+            drawings, are scaled to that limit so they do not exhaust memory on
+            phones.
+        </p>
 
         <h3 class="text-xl font-semibold mt-6 mb-3">Common Use Cases</h3>
 
@@ -321,18 +359,21 @@ const breadcrumbSchema = {
                 <strong>Step 1:</strong> You upload a 5-page bank statement PDF.
             </li>
             <li>
-                <strong>Step 2:</strong> On Page 1, you draw a box over your account
-                number.
+                <strong>Step 2:</strong> On Page 1, you draw a box over your
+                account number.
             </li>
             <li>
-                <strong>Step 3:</strong> On Page 3, you draw a box over a transaction
-                you want to keep private.
+                <strong>Step 3:</strong> On Page 3, you draw a box over a
+                transaction you want to keep private.
             </li>
-            <li><strong>Step 4:</strong> You click "Apply Redactions".</li>
             <li>
-                <strong>Result:</strong> The tool flattens pages 1 and 3 to images
-                with the black boxes permanently painted on. The other 3 pages remain
-                untouched. You download the new file and send it securely.
+                <strong>Step 4:</strong> You click "Apply Redactions".
+            </li>
+            <li>
+                <strong>Result:</strong> The tool flattens pages 1 and 3 to
+                images with the black boxes permanently painted on. The other 3
+                pages remain untouched. You download the new file and send it
+                securely.
             </li>
         </ul>
 
@@ -340,14 +381,12 @@ const breadcrumbSchema = {
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            {
-                faqs.map((f) => (
-                    <div>
-                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
-                        <p class="text-gray-700 mt-1">{f.a}</p>
-                    </div>
-                ))
-            }
+            {faqs.map((f) => (
+                <div>
+                    <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                    <p class="text-gray-700 mt-1">{f.a}</p>
+                </div>
+            ))}
         </div>
     </section>
 
@@ -388,6 +427,10 @@ const breadcrumbSchema = {
             "pdfjs-dist/legacy/build/pdf.worker.min.mjs",
             import.meta.url,
         ).toString();
+
+        const MAX_MB = 20;
+        const MAX_PAGES = 30;
+        const MAX_RENDER_DIMENSION = 4096;
 
         const dropZone = document.getElementById("drop-zone")!;
         const fileInput = document.getElementById(
@@ -446,8 +489,10 @@ const breadcrumbSchema = {
                 showError("Please select a valid PDF file.");
                 return;
             }
-            if (file.size > 20 * 1024 * 1024) {
-                showError("File is too large. Please select a PDF under 20MB.");
+            if (file.size > MAX_MB * 1024 * 1024) {
+                showError(
+                    `File is too large. Please select a PDF under ${MAX_MB} MB.`,
+                );
                 return;
             }
 
@@ -461,6 +506,16 @@ const breadcrumbSchema = {
                     data: arrayBuffer,
                     verbosity: 0,
                 }).promise;
+
+                if (pdfDoc.numPages > MAX_PAGES) {
+                    showError(
+                        `This PDF has ${pdfDoc.numPages} pages. Please use a PDF with ${MAX_PAGES} pages or fewer.`,
+                    );
+                    dropText.textContent = "Click or drag a PDF here";
+                    pdfDoc = null;
+                    currentPdfFile = null;
+                    return;
+                }
 
                 pdfContainer.innerHTML = "";
                 allRedactions = new Array(pdfDoc.numPages)
@@ -491,7 +546,6 @@ const breadcrumbSchema = {
                     "Failed to load PDF. The file might be corrupted or password-protected.",
                 );
                 dropText.textContent = "Click or drag a PDF here";
-                // Agar error aaye toh workspace wapas hide kar dein
                 workspace.classList.add("hidden");
                 dropZone.classList.remove("hidden");
             }
@@ -507,9 +561,7 @@ const breadcrumbSchema = {
 
             const page = await pdfDoc.getPage(pageIndex + 1);
 
-            // Force screen se width lene ke bajaye container se lein
             let containerWidth = pdfContainer.clientWidth;
-            // Agar container ki width 0 ho (display:none tha), toh screen se lein
             if (containerWidth === 0) containerWidth = window.innerWidth - 40;
 
             const unscaledViewport = page.getViewport({ scale: 1 });
@@ -584,17 +636,26 @@ const breadcrumbSchema = {
             }
         });
 
-        // --- Desktop Render (All pages) ---
+        // --- Desktop Render (All pages, one at a time) ---
         async function renderDesktopPage(pageNum: number) {
             const page = await pdfDoc.getPage(pageNum);
-            const scale = 1.5;
-            const viewport = page.getViewport({ scale });
+            const baseScale = 1.5;
+            const viewport = page.getViewport({ scale: baseScale });
 
-            pageViewports[pageNum - 1] = viewport;
-            actualScales[pageNum - 1] = scale;
+            // Cap the render at MAX_RENDER_DIMENSION so very large pages do
+            // not exhaust memory or exceed the iOS canvas limit.
+            const longestSide = Math.max(viewport.width, viewport.height);
+            const finalScale =
+                longestSide > MAX_RENDER_DIMENSION
+                    ? baseScale * (MAX_RENDER_DIMENSION / longestSide)
+                    : baseScale;
+            const cappedViewport = page.getViewport({ scale: finalScale });
 
-            const canvasWidth = Math.floor(viewport.width);
-            const canvasHeight = Math.floor(viewport.height);
+            pageViewports[pageNum - 1] = cappedViewport;
+            actualScales[pageNum - 1] = finalScale;
+
+            const canvasWidth = Math.floor(cappedViewport.width);
+            const canvasHeight = Math.floor(cappedViewport.height);
 
             const pageWrapper = document.createElement("div");
             pageWrapper.className = "relative shadow-lg bg-white mb-4";
@@ -615,9 +676,17 @@ const breadcrumbSchema = {
             pdfContainer.appendChild(pageWrapper);
 
             const context = canvas.getContext("2d")!;
-            await page.render({ canvasContext: context, viewport }).promise;
+            await page.render({
+                canvasContext: context,
+                viewport: cappedViewport,
+            }).promise;
 
-            attachOverlayEvents(overlay, pageNum - 1, viewport, scale);
+            attachOverlayEvents(
+                overlay,
+                pageNum - 1,
+                cappedViewport,
+                finalScale,
+            );
         }
 
         function showError(msg: string) {
@@ -634,10 +703,14 @@ const breadcrumbSchema = {
             fileInput.value = "";
             pdfContainer.innerHTML = "";
             allRedactions = [];
+            pageViewports = [];
+            actualScales = [];
             errorMsg.classList.add("hidden");
         });
 
-        // Create Box element (Reusable for both Mobile & Desktop)
+        // Create Box element (Reusable for both Mobile & Desktop).
+        // State for drag/resize is held in the closure of attachOverlayEvents,
+        // so no shared globals are needed here.
         function createBoxElement(
             x: number,
             y: number,
@@ -660,7 +733,7 @@ const breadcrumbSchema = {
             box.dataset.index = index.toString();
 
             const delBtn = document.createElement("button");
-            delBtn.innerHTML = "×";
+            delBtn.textContent = "×";
             delBtn.className =
                 "absolute -top-3 -left-3 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md hover:bg-red-600 transition sm:hidden sm:group-hover:flex z-10";
             delBtn.title = "Delete box";
@@ -677,29 +750,29 @@ const breadcrumbSchema = {
             resizeHandle.className =
                 "absolute bottom-0 right-0 w-4 h-4 bg-blue-500 cursor-se-resize z-10 rounded-tl-sm";
 
-            // Attach event listeners for resize
-            const handleResizeStart = (clientX: number, clientY: number) => {
-                const rect = overlay.getBoundingClientRect();
-                (window as any)._isResizing = true;
-                (window as any)._activeBoxElement = box;
-                (window as any)._activeBoxIndex = index;
-                (window as any)._resizeStartX = clientX - rect.left;
-                (window as any)._resizeStartY = clientY - rect.top;
-                (window as any)._initialW = parseFloat(box.style.width);
-                (window as any)._initialH = parseFloat(box.style.height);
-                (window as any)._pageIndex = pageIndex;
-                (window as any)._viewport = viewport;
-                (window as any)._currentScale = currentScale;
+            // The overlay dispatches custom events so the closure in
+            // attachOverlayEvents can drive resize/drag without globals.
+            const startResize = (clientX: number, clientY: number) => {
+                overlay.dispatchEvent(
+                    new CustomEvent("redact:resize-start", {
+                        detail: {
+                            box,
+                            index,
+                            clientX,
+                            clientY,
+                        },
+                    }),
+                );
             };
 
             resizeHandle.addEventListener("mousedown", (e) => {
                 e.stopPropagation();
-                handleResizeStart(e.clientX, e.clientY);
+                startResize(e.clientX, e.clientY);
             });
             resizeHandle.addEventListener("touchstart", (e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                handleResizeStart(e.touches[0].clientX, e.touches[0].clientY);
+                startResize(e.touches[0].clientX, e.touches[0].clientY);
             });
 
             box.appendChild(resizeHandle);
@@ -717,8 +790,18 @@ const breadcrumbSchema = {
             let startX = 0,
                 startY = 0;
             let currentBox: HTMLDivElement | null = null;
+
+            // Drag and resize state kept local to this overlay/page.
+            let draggingBox: HTMLDivElement | null = null;
+            let draggingIndex = -1;
             let dragOffsetX = 0,
                 dragOffsetY = 0;
+            let resizingBox: HTMLDivElement | null = null;
+            let resizingIndex = -1;
+            let resizeStartX = 0,
+                resizeStartY = 0;
+            let initialW = 0,
+                initialH = 0;
 
             function syncBoxData(el: HTMLDivElement, idx: number) {
                 const left = parseFloat(el.style.left);
@@ -736,6 +819,25 @@ const breadcrumbSchema = {
                 };
             }
 
+            // Resize started from a box's resize handle (via custom event)
+            overlay.addEventListener("redact:resize-start", (e: Event) => {
+                const detail = (
+                    e as CustomEvent<{
+                        box: HTMLDivElement;
+                        index: number;
+                        clientX: number;
+                        clientY: number;
+                    }>
+                ).detail;
+                const rect = overlay.getBoundingClientRect();
+                resizingBox = detail.box;
+                resizingIndex = detail.index;
+                resizeStartX = detail.clientX - rect.left;
+                resizeStartY = detail.clientY - rect.top;
+                initialW = parseFloat(detail.box.style.width);
+                initialH = parseFloat(detail.box.style.height);
+            });
+
             function handleStart(
                 clientX: number,
                 clientY: number,
@@ -744,12 +846,8 @@ const breadcrumbSchema = {
                 const rect = overlay.getBoundingClientRect();
 
                 if (target.classList.contains("bg-black/80")) {
-                    (window as any)._isDragging = true;
-                    (window as any)._activeBoxElement =
-                        target as HTMLDivElement;
-                    (window as any)._activeBoxIndex = parseInt(
-                        target.dataset.index || "-1",
-                    );
+                    draggingBox = target as HTMLDivElement;
+                    draggingIndex = parseInt(target.dataset.index || "-1");
                     dragOffsetX =
                         clientX -
                         rect.left -
@@ -758,7 +856,6 @@ const breadcrumbSchema = {
                         clientY -
                         rect.top -
                         parseFloat((target as HTMLDivElement).style.top);
-                    (window as any)._pageIndex = pageIndex;
                     return;
                 }
 
@@ -779,45 +876,23 @@ const breadcrumbSchema = {
             function handleMove(clientX: number, clientY: number) {
                 const rect = overlay.getBoundingClientRect();
 
-                if (
-                    (window as any)._isResizing &&
-                    (window as any)._activeBoxElement
-                ) {
+                if (resizingBox) {
                     const currentX = clientX - rect.left;
                     const currentY = clientY - rect.top;
-                    let newW =
-                        (window as any)._initialW +
-                        (currentX - (window as any)._resizeStartX);
-                    let newH =
-                        (window as any)._initialH +
-                        (currentY - (window as any)._resizeStartY);
-                    if (newW > 10)
-                        (window as any)._activeBoxElement.style.width =
-                            `${newW}px`;
-                    if (newH > 10)
-                        (window as any)._activeBoxElement.style.height =
-                            `${newH}px`;
-                    syncBoxData(
-                        (window as any)._activeBoxElement,
-                        (window as any)._activeBoxIndex,
-                    );
+                    const newW = initialW + (currentX - resizeStartX);
+                    const newH = initialH + (currentY - resizeStartY);
+                    if (newW > 10) resizingBox.style.width = `${newW}px`;
+                    if (newH > 10) resizingBox.style.height = `${newH}px`;
+                    syncBoxData(resizingBox, resizingIndex);
                     return;
                 }
 
-                if (
-                    (window as any)._isDragging &&
-                    (window as any)._activeBoxElement
-                ) {
+                if (draggingBox) {
                     const currentX = clientX - rect.left;
                     const currentY = clientY - rect.top;
-                    (window as any)._activeBoxElement.style.left =
-                        `${currentX - dragOffsetX}px`;
-                    (window as any)._activeBoxElement.style.top =
-                        `${currentY - dragOffsetY}px`;
-                    syncBoxData(
-                        (window as any)._activeBoxElement,
-                        (window as any)._activeBoxIndex,
-                    );
+                    draggingBox.style.left = `${currentX - dragOffsetX}px`;
+                    draggingBox.style.top = `${currentY - dragOffsetY}px`;
+                    syncBoxData(draggingBox, draggingIndex);
                     return;
                 }
 
@@ -843,14 +918,14 @@ const breadcrumbSchema = {
             }
 
             function handleEnd() {
-                if ((window as any)._isResizing) {
-                    (window as any)._isResizing = false;
-                    (window as any)._activeBoxElement = null;
+                if (resizingBox) {
+                    resizingBox = null;
+                    resizingIndex = -1;
                     return;
                 }
-                if ((window as any)._isDragging) {
-                    (window as any)._isDragging = false;
-                    (window as any)._activeBoxElement = null;
+                if (draggingBox) {
+                    draggingBox = null;
+                    draggingIndex = -1;
                     return;
                 }
                 if (!isDrawing || !currentBox) return;
@@ -962,40 +1037,60 @@ const breadcrumbSchema = {
                     }
 
                     const page = await pdfDoc.getPage(i + 1);
-                    const scale = 2;
-                    const viewport = page.getViewport({ scale });
+                    const baseScale = 2;
+                    const baseViewport = page.getViewport({ scale: baseScale });
+
+                    // Cap the render at MAX_RENDER_DIMENSION so very large
+                    // pages do not exhaust memory or exceed the iOS canvas limit.
+                    const longestSide = Math.max(
+                        baseViewport.width,
+                        baseViewport.height,
+                    );
+                    const finalScale =
+                        longestSide > MAX_RENDER_DIMENSION
+                            ? baseScale * (MAX_RENDER_DIMENSION / longestSide)
+                            : baseScale;
+                    const viewport = page.getViewport({ scale: finalScale });
 
                     const tempCanvas = document.createElement("canvas");
-                    tempCanvas.width = viewport.width;
-                    tempCanvas.height = viewport.height;
+                    tempCanvas.width = Math.floor(viewport.width);
+                    tempCanvas.height = Math.floor(viewport.height);
                     const ctx = tempCanvas.getContext("2d")!;
-                    await page.render({ canvasContext: ctx, viewport }).promise;
+                    await page.render({
+                        canvasContext: ctx,
+                        viewport,
+                    }).promise;
 
+                    // Draw the redaction boxes at the final scale.
                     ctx.fillStyle = "black";
                     pageBoxes.forEach((box) => {
                         ctx.fillRect(
-                            box.x * scale,
+                            box.x * finalScale,
                             (pageViewports[i].height / actualScales[i] -
                                 box.y -
                                 box.h) *
-                                scale,
-                            box.w * scale,
-                            box.h * scale,
+                                finalScale,
+                            box.w * finalScale,
+                            box.h * finalScale,
                         );
                     });
 
                     const imgDataUrl = tempCanvas.toDataURL("image/jpeg", 0.95);
                     const image = await newPdf.embedJpg(imgDataUrl);
                     const imgPage = newPdf.addPage([
-                        image.width / scale,
-                        image.height / scale,
+                        image.width / finalScale,
+                        image.height / finalScale,
                     ]);
                     imgPage.drawImage(image, {
                         x: 0,
                         y: 0,
-                        width: image.width / scale,
-                        height: image.height / scale,
+                        width: image.width / finalScale,
+                        height: image.height / finalScale,
                     });
+
+                    // Free the temporary canvas
+                    tempCanvas.width = 0;
+                    tempCanvas.height = 0;
                 }
 
                 const pdfBytes = await newPdf.save();

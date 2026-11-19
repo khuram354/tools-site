@@ -4,6 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 const pageUrl = new URL(Astro.url.pathname, "https://toolsvibe.online").href;
 
 const MAX_MB = 20; // largest file the tool accepts
+const MAX_DIMENSION = 4096; // largest width/height decoded, to protect memory
 
 // One source of truth: shown on the page AND used for the FAQ schema,
 // so the visible text and the structured data always match.
@@ -38,7 +39,7 @@ const faqs = [
     },
     {
         q: "Is there a limit on image size?",
-        a: `Files up to ${MAX_MB} MB are accepted. Very large photos, with tens of megapixels, can fail on phones whose browsers limit how big an image can be processed. If that happens, shrink the image first with the Image Resizer.`,
+        a: `Files up to ${MAX_MB} MB are accepted. Very large photos, with tens of megapixels, are scaled down to ${MAX_DIMENSION} pixels on the longest side before conversion, so they do not exhaust memory on phones. If you need the full original resolution, shrink the image first with the Image Resizer or use a desktop browser.`,
     },
     {
         q: "Can I convert to a format other than JPG, PNG, or WebP?",
@@ -107,9 +108,13 @@ const breadcrumbSchema = {
     <div class="max-w-3xl mx-auto">
         <header class="mb-8">
             <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
-                <a href="/" class="hover:underline">Home</a>
+                <a href="/" class="hover:underline">
+                    Home
+                </a>
                 <span aria-hidden="true">/</span>
-                <a href="/tools/" class="hover:underline">Tools</a>
+                <a href="/tools/" class="hover:underline">
+                    Tools
+                </a>
                 <span aria-hidden="true">/</span>
                 <span>Image Converter</span>
             </nav>
@@ -124,7 +129,12 @@ const breadcrumbSchema = {
             </p>
         </header>
 
-        <div id="calc-config" data-max-mb={MAX_MB} hidden></div>
+        <div
+            id="calc-config"
+            data-max-mb={MAX_MB}
+            data-max-dimension={MAX_DIMENSION}
+            hidden
+        ></div>
 
         <!-- Upload Section -->
         <section class="bg-white p-6 rounded-xl border border-gray-200 mb-6">
@@ -168,29 +178,32 @@ const breadcrumbSchema = {
                 />
             </div>
 
-            <p id="error" role="alert" class="hidden mt-4 text-sm text-red-600">
-            </p>
+            <p
+                id="error"
+                role="alert"
+                class="hidden mt-4 text-sm text-red-600"
+            ></p>
 
             <!-- Convert Options -->
             <div id="options-section" class="mt-6 hidden">
                 <div>
-                    <label for="format" class="block text-sm font-medium mb-2"
-                        >Convert to:</label
-                    >
+                    <label for="format" class="block text-sm font-medium mb-2">
+                        Convert to:
+                    </label>
                     <select
                         id="format"
                         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="image/jpeg">JPG (JPEG)</option>
                         <option value="image/png">PNG</option>
-                        <option value="image/webp" id="webp-option">WebP</option
-                        >
+                        <option value="image/webp" id="webp-option">
+                            WebP
+                        </option>
                     </select>
                     <p
                         id="format-note"
                         class="hidden mt-2 text-xs text-gray-600"
-                    >
-                    </p>
+                    ></p>
                 </div>
 
                 <div id="quality-section" class="mt-4">
@@ -282,8 +295,7 @@ const breadcrumbSchema = {
                 <div
                     id="size-saved"
                     class="hidden mb-6 p-3 rounded-lg text-center text-sm font-medium"
-                >
-                </div>
+                ></div>
 
                 <div class="flex flex-wrap gap-3">
                     <a
@@ -338,27 +350,28 @@ const breadcrumbSchema = {
         <h3 class="text-xl font-semibold mt-6 mb-3">Why Use This Tool?</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>Instant conversion:</strong> Results in moments, with no upload
-                and no waiting.
+                <strong>Instant conversion:</strong> Results in moments, with no
+                upload and no waiting.
             </li>
             <li>
-                <strong>The three formats most sites use:</strong> JPG, PNG, and WebP.
+                <strong>The three formats most sites use:</strong> JPG, PNG, and
+                WebP.
             </li>
             <li>
-                <strong>Quality control:</strong> Adjust the quality slider for JPG
-                and WebP to balance file size and visual quality.
+                <strong>Quality control:</strong> Adjust the quality slider for
+                JPG and WebP to balance file size and visual quality.
             </li>
             <li>
-                <strong>Before/after preview:</strong> See exactly what you're getting,
-                and the file size change, before downloading.
+                <strong>Before/after preview:</strong> See exactly what you're
+                getting, and the file size change, before downloading.
             </li>
             <li>
-                <strong>Privacy first:</strong> Everything runs in your browser. No
-                uploads.
+                <strong>Privacy first:</strong> Everything runs in your browser.
+                No uploads.
             </li>
             <li>
-                <strong>Free with no limits:</strong> Convert as many images as you
-                want.
+                <strong>Free with no limits:</strong> Convert as many images as
+                you want.
             </li>
         </ul>
 
@@ -368,12 +381,12 @@ const breadcrumbSchema = {
 
         <h4 class="font-semibold mt-4 mb-2">JPG (JPEG)</h4>
         <p class="text-gray-700 mb-4">
-            The most widely supported image format. JPG uses <strong
-                >lossy compression</strong
-            >: it discards some data to reduce file size. This works well for
-            photos, where small losses aren't noticeable. It is a poor choice
-            for images with sharp text, logos, or transparency. JPG doesn't
-            support transparency at all, so transparent areas become white.
+            The most widely supported image format. JPG uses{" "}
+            <strong>lossy compression</strong>: it discards some data to reduce
+            file size. This works well for photos, where small losses aren't
+            noticeable. It is a poor choice for images with sharp text, logos,
+            or transparency. JPG doesn't support transparency at all, so
+            transparent areas become white.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">PNG</h4>
@@ -398,27 +411,29 @@ const breadcrumbSchema = {
         <h3 class="text-xl font-semibold mt-6 mb-3">Common Conversions</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-2">
             <li>
-                <strong>PNG to JPG:</strong> Makes screenshots and photos smaller.
-                Transparent areas become white, and sharp text can look slightly soft.
+                <strong>PNG to JPG:</strong> Makes screenshots and photos
+                smaller. Transparent areas become white, and sharp text can look
+                slightly soft.
             </li>
             <li>
-                <strong>JPG to PNG:</strong> Needed when a tool asks for PNG. It does
-                not improve quality, and the file gets larger.
+                <strong>JPG to PNG:</strong> Needed when a tool asks for PNG. It
+                does not improve quality, and the file gets larger.
             </li>
             <li>
-                <strong>WebP to JPG:</strong> The fix for downloaded pictures that
-                an app or form won't accept.
+                <strong>WebP to JPG:</strong> The fix for downloaded pictures
+                that an app or form won't accept.
             </li>
             <li>
-                <strong>WebP to PNG:</strong> Keeps transparency in a format that
-                works almost everywhere.
+                <strong>WebP to PNG:</strong> Keeps transparency in a format
+                that works almost everywhere.
             </li>
             <li>
-                <strong>JPG to WebP:</strong> Usually gives a smaller file for a website.
+                <strong>JPG to WebP:</strong> Usually gives a smaller file for a
+                website.
             </li>
             <li>
-                <strong>PNG to WebP:</strong> Often much smaller than the PNG, and
-                keeps transparency.
+                <strong>PNG to WebP:</strong> Often much smaller than the PNG,
+                and keeps transparency.
             </li>
         </ul>
 
@@ -437,11 +452,14 @@ const breadcrumbSchema = {
         </h4>
         <p class="text-gray-700 mb-4">
             Many online forms and portals accept only JPG. Convert your PNG or
-            WebP picture to JPG here, then reduce its size with the <a
+            WebP picture to JPG here, then reduce its size with the{" "}
+            <a
                 href="/tools/image-compressor/"
                 class="text-blue-600 hover:underline font-medium"
-                >Image Compressor</a
-            > if the form has a size limit.
+            >
+                Image Compressor
+            </a>{" "}
+            if the form has a size limit.
         </p>
 
         <h4 class="font-semibold mt-4 mb-2">
@@ -508,14 +526,12 @@ const breadcrumbSchema = {
             Frequently Asked Questions
         </h3>
         <div class="space-y-4 mt-3">
-            {
-                faqs.map((f) => (
-                    <div>
-                        <h4 class="font-semibold text-gray-900">{f.q}</h4>
-                        <p class="text-gray-700 mt-1">{f.a}</p>
-                    </div>
-                ))
-            }
+            {faqs.map((f) => (
+                <div>
+                    <h4 class="font-semibold text-gray-900">{f.q}</h4>
+                    <p class="text-gray-700 mt-1">{f.a}</p>
+                </div>
+            ))}
         </div>
     </section>
 
@@ -561,9 +577,9 @@ const breadcrumbSchema = {
             "image/webp": "webp",
         };
 
-        const MAX_MB = Number(
-            document.getElementById("calc-config")!.dataset.maxMb,
-        );
+        const configEl = document.getElementById("calc-config")!;
+        const MAX_MB = Number(configEl.dataset.maxMb);
+        const MAX_DIMENSION = Number(configEl.dataset.maxDimension);
 
         const dropZone = document.getElementById("drop-zone") as HTMLDivElement;
         const dropText = document.getElementById("drop-text")!;
@@ -599,7 +615,7 @@ const breadcrumbSchema = {
         ) as HTMLImageElement;
 
         let selectedFile: File | null = null;
-        let originalImage: HTMLImageElement | null = null;
+        let originalImage: ImageBitmap | null = null;
         let originalUrl: string | null = null;
         let convertedUrl: string | null = null;
 
@@ -681,7 +697,7 @@ const breadcrumbSchema = {
             }
         });
 
-        function handleFile(file: File) {
+        async function handleFile(file: File) {
             clearError();
             if (!ALLOWED_TYPES.includes(file.type)) {
                 showError(
@@ -699,22 +715,31 @@ const breadcrumbSchema = {
             if (originalUrl) URL.revokeObjectURL(originalUrl);
             originalUrl = URL.createObjectURL(file);
 
-            const img = new Image();
-            img.onload = () => {
+            // Release the previous bitmap before decoding a new one.
+            if (originalImage) {
+                originalImage.close();
+                originalImage = null;
+            }
+
+            // Decode with a size cap so very large images do not exhaust memory.
+            try {
+                const bitmap = await createImageBitmap(file, {
+                    resizeWidth: MAX_DIMENSION,
+                    resizeHeight: MAX_DIMENSION,
+                    resizeQuality: "high",
+                });
                 selectedFile = file;
-                originalImage = img;
+                originalImage = bitmap;
                 optionsSection.classList.remove("hidden");
                 results.classList.add("hidden");
                 dropText.textContent = `Selected: ${file.name}`;
                 dropHint.textContent = `${formatBytes(file.size)}. Click to choose a different image.`;
                 updateOptionsUI();
-            };
-            img.onerror = () => {
+            } catch {
                 showError(
                     "That image could not be read. Please try another file.",
                 );
-            };
-            img.src = originalUrl;
+            }
         }
 
         convertBtn.addEventListener("click", () => {
@@ -725,9 +750,17 @@ const breadcrumbSchema = {
             const targetFormat = formatSelect.value;
             const quality = parseInt(qualitySlider.value, 10) / 100;
 
+            // Keep the canvas within MAX_DIMENSION. createImageBitmap already
+            // caps the decoded size, but this is a second guard for older browsers.
+            const srcW = originalImage.width;
+            const srcH = originalImage.height;
+            const scale = Math.min(1, MAX_DIMENSION / Math.max(srcW, srcH));
+            const canvasW = Math.round(srcW * scale);
+            const canvasH = Math.round(srcH * scale);
+
             const canvas = document.createElement("canvas");
-            canvas.width = originalImage.naturalWidth;
-            canvas.height = originalImage.naturalHeight;
+            canvas.width = canvasW;
+            canvas.height = canvasH;
             const ctx = canvas.getContext("2d");
             if (!ctx) {
                 showError(
@@ -741,7 +774,7 @@ const breadcrumbSchema = {
                 ctx.fillStyle = "#ffffff";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
-            ctx.drawImage(originalImage, 0, 0);
+            ctx.drawImage(originalImage, 0, 0, canvasW, canvasH);
 
             canvas.toBlob(
                 (blob) => {
@@ -804,8 +837,11 @@ const breadcrumbSchema = {
         });
 
         resetBtn.addEventListener("click", () => {
+            if (originalImage) {
+                originalImage.close();
+                originalImage = null;
+            }
             selectedFile = null;
-            originalImage = null;
             fileInput.value = "";
             if (originalUrl) URL.revokeObjectURL(originalUrl);
             if (convertedUrl) URL.revokeObjectURL(convertedUrl);

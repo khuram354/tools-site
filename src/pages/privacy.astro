@@ -1,22 +1,21 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { SITE_URL, FOUNDER, CONTACT_EMAIL } from "../data/site";
 
-const origin = "https://toolsvibe.online";
+const origin = SITE_URL;
 const pageUrl = `${origin}/privacy/`;
 
 // ---------------------------------------------------------------------------
 // EDIT THESE when the policy or the site changes.
 // ---------------------------------------------------------------------------
 // Set this to the date you last changed the policy. The page shows it.
-const LAST_UPDATED_ISO = "2026-10-29";
-const OPERATOR = "Khuram Shahzad";
-const CONTACT_EMAIL = "khurammirza354@gmail.com";
+const LAST_UPDATED_ISO = "2026-11-19";
 
 // Set to true ONLY after you have added a cookie consent banner (a consent
 // management platform) that asks visitors in the EEA, the UK and Switzerland
-// for their choice before analytics and advertising cookies are set. This
-// switch adds a paragraph that says so. Do not turn it on before the banner
-// really exists, because the policy must describe what the site does.
+// for their choice before advertising cookies are set. This switch adds a
+// paragraph that says so. Do not turn it on before the banner really exists,
+// because the policy must describe what the site does.
 const HAS_CONSENT_BANNER = false;
 // ---------------------------------------------------------------------------
 
@@ -35,7 +34,7 @@ const pageSchema = {
     name: "Privacy Policy — ToolsVibe",
     url: pageUrl,
     description:
-        "How ToolsVibe handles your data: tools run in your browser, what Google Analytics and advertising collect, cookies, and how to contact us about privacy.",
+        "How ToolsVibe handles your data: tools run in your browser, what advertising collects, cookies, and how to contact us about privacy.",
     isPartOf: {
         "@type": "WebSite",
         "@id": `${origin}/#website`,
@@ -67,7 +66,7 @@ const LINK = "text-blue-600 hover:underline";
 
 <Layout
     title="Privacy Policy — ToolsVibe"
-    description="How ToolsVibe handles your data: tools run in your browser, what Google Analytics and advertising collect, cookies, and how to contact us about privacy."
+    description="How ToolsVibe handles your data: tools run in your browser, what advertising collects, cookies, and how to contact us about privacy."
 >
     <article class="max-w-3xl mx-auto">
         <nav aria-label="Breadcrumb" class="text-xs text-gray-500 mb-4">
@@ -92,8 +91,9 @@ const LINK = "text-blue-600 hover:underline";
                     in your browser. It is not sent to our servers.
                 </li>
                 <li>
-                    We use Google Analytics to see how the site is used, and ads
-                    may be shown by Google AdSense. Both use cookies.
+                    Our tools do not use cookies. If we show ads in the future,
+                    Google and its partners may use cookies for advertising, as
+                    described below.
                 </li>
                 <li>We do not sell your personal information.</li>
                 <li>
@@ -115,7 +115,7 @@ const LINK = "text-blue-600 hover:underline";
 
             <h2 class="text-2xl font-bold mt-8 mb-3">1. Who We Are</h2>
             <p>
-                ToolsVibe is operated by {OPERATOR}, an independent developer
+                ToolsVibe is operated by {FOUNDER}, an independent developer
                 based in Pakistan. If you have a question about this policy or
                 your data, email <a
                     href={`mailto:${CONTACT_EMAIL}`}
@@ -137,20 +137,6 @@ const LINK = "text-blue-600 hover:underline";
             <h2 class="text-2xl font-bold mt-8 mb-3">
                 3. Information We Collect
             </h2>
-            <h3 class="text-xl font-semibold mt-4 mb-2">
-                Usage data (Google Analytics)
-            </h3>
-            <p>
-                We use Google Analytics to understand how the site is used. It
-                reports things such as which pages are visited, how visitors
-                arrive, the approximate location (such as country or city),
-                browser and device type, and how long visits last. Google
-                Analytics uses cookies and similar technologies and gives each
-                browser a random identifier, not your name. Google states that
-                Google Analytics 4 does not log or store individual IP
-                addresses.
-            </p>
-
             <h3 class="text-xl font-semibold mt-4 mb-2">Advertising data</h3>
             <p>
                 On pages that show ads, Google and its advertising partners may
@@ -184,8 +170,8 @@ const LINK = "text-blue-600 hover:underline";
             </h2>
             <p>
                 The tools themselves do not use cookies to store what you enter.
-                The cookies on ToolsVibe come from analytics and advertising
-                services:
+                The only cookies on ToolsVibe come from advertising services
+                (when ads are shown):
             </p>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm border border-gray-200 rounded-lg">
@@ -204,16 +190,6 @@ const LINK = "text-blue-600 hover:underline";
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="p-3 border-b"
-                                ><code>_ga</code>, <code>_ga_*</code></td
-                            >
-                            <td class="p-3 border-b">Google Analytics</td>
-                            <td class="p-3 border-b"
-                                >Tells visitors apart and measures how the site
-                                is used. These usually last up to two years.</td
-                            >
-                        </tr>
-                        <tr>
                             <td class="p-3">Advertising cookies</td>
                             <td class="p-3">Google and its partners</td>
                             <td class="p-3"
@@ -228,22 +204,16 @@ const LINK = "text-blue-600 hover:underline";
             <p class="mt-3">
                 You can block or delete cookies in your browser settings at any
                 time. If you do, parts of some websites may not work as
-                expected, though our tools will keep working. You can also stop
-                Google Analytics from measuring your visits with the <a
-                    href="https://tools.google.com/dlpage/gaoptout"
-                    class={LINK}
-                    target="_blank"
-                    rel="noopener">Google Analytics opt-out browser add-on</a
-                >.
+                expected, though our tools will keep working.
             </p>
             {
                 HAS_CONSENT_BANNER && (
                     <p>
                         If you are in the European Economic Area, the United
                         Kingdom, or Switzerland, you will see a message asking
-                        for your choice before analytics and advertising cookies
-                        are set. You can change or withdraw your choice at any
-                        time using the privacy settings link on this site.
+                        for your choice before advertising cookies are set. You
+                        can change or withdraw your choice at any time using the
+                        privacy settings link on this site.
                     </p>
                 )
             }
@@ -306,8 +276,8 @@ const LINK = "text-blue-600 hover:underline";
             <p>
                 We do not sell your personal information. We share information
                 only with service providers that help us run the site, such as
-                Google (for analytics and advertising) and our hosting provider,
-                and where the law requires it.
+                Google (for advertising) and our hosting provider, and where the
+                law requires it.
             </p>
             <p>
                 Some privacy laws, such as those in California, treat sharing
@@ -320,11 +290,10 @@ const LINK = "text-blue-600 hover:underline";
                 8. How Long We Keep Information and Where It Goes
             </h2>
             <p>
-                Google Analytics data is kept for the period set in our Google
-                Analytics account. Messages you send us are kept for as long as
-                we need them to deal with your request. Google and our hosting
-                provider may process information in countries other than your
-                own, including the United States, under their own safeguards.
+                Messages you send us are kept for as long as we need them to
+                deal with your request. Google and our hosting provider may
+                process information in countries other than your own, including
+                the United States, under their own safeguards.
             </p>
 
             <h2 class="text-2xl font-bold mt-8 mb-3">9. Your Rights</h2>
@@ -339,9 +308,9 @@ const LINK = "text-blue-600 hover:underline";
             </p>
             <p>
                 Because what you enter into the tools never reaches us, we have
-                nothing from the tools to give you or delete. For analytics and
-                advertising data held by Google, you can use the tools in
-                sections 4 and 5. For anything else, contact us at <a
+                nothing from the tools to give you or delete. For advertising
+                data held by Google, you can use the tools in section 5. For
+                anything else, contact us at <a
                     href={`mailto:${CONTACT_EMAIL}`}
                     class={LINK}>{CONTACT_EMAIL}</a
                 > or through our <a href="/contact/" class={LINK}
