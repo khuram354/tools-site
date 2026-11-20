@@ -46,7 +46,7 @@ export const toolCategories: ToolCategory[] = [
             {
                 name: "EMI Calculator",
                 description:
-                    "Calculate loan EMI, total interest, and total payment for Pakistan.",
+                    "Free Pakistan EMI calculator in PKR. Work out your monthly installment, total interest, and yearly breakdown for home, car, and personal loans.",
                 href: "/tools/emi-calculator/",
                 icon: "emi",
             },
@@ -144,7 +144,7 @@ export const toolCategories: ToolCategory[] = [
             {
                 name: "Age Calculator",
                 description:
-                    "Find your exact age in years, months, days, plus next birthday countdown.",
+                    "Find your exact age in years, months, and days, total days lived, and next birthday countdown. Free, instant, and private in your browser.",
                 href: "/tools/age-calculator/",
                 icon: "age",
             },
